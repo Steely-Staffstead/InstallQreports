@@ -1,0 +1,2 @@
+# InstallQreports
+Install query reports
