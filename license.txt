@@ -1,0 +1,11 @@
+Copyright (c) 2026 Steelsoft
+
+All rights reserved.
+
+This software (QReports / QueryReports) is proprietary software.
+No permission is granted to use, copy, modify, or distribute this
+software except under a valid commercial license obtained from Steelsoft.
+
+Unauthorized use, redistribution, or reverse engineering is prohibited.
+
+For licensing inquiries, contact: steelsoft@gmail.com
