@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "steps": [
+    {
+      "name": "InstallConnections",
+      "from": "C:\\temp\\qrep\\settings\\company\\\\connections.dat",
+      "to": "company\\connections.dat",
+      "overwrite": true
+    },
+    {
+      "name": "InstallPalettes",
+      "from": "C:\\temp\\qrep\\settings\\company\\themes.json",
+      "to": "company\\themes.json",
+      "overwrite": true
+    }
+  ]
+}
