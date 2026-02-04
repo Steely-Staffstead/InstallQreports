@@ -3,7 +3,7 @@
   "steps": [
     {
       "name": "InstallConnections",
-      "from": "C:\\temp\\qrep\\settings\\company\\\\connections.dat",
+      "from": "C:\\temp\\qrep\\settings\\company\\connections.dat",
       "to": "company\\connections.dat",
       "overwrite": true
     },
@@ -15,3 +15,4 @@
     }
   ]
 }
+
