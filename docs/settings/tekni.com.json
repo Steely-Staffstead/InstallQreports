@@ -1,18 +1,29 @@
 {
   "version": 1,
+  "companyKey": "tekni.com",
+  "description": "Tekni default setup",
+  "variables": {
+    "InstallRoot": "{InstallRoot}",
+    "CompanySettingsDir": "{CompanySettingsDir}",
+    "UserProfile": "{UserProfile}",
+    "UserName": "{UserName}"
+  },
   "steps": [
     {
       "name": "InstallConnections",
-      "from": "C:\\temp\\qrep\\settings\\company\\connections.dat",
-      "to": "company\\connections.dat",
+      "type": "file",
+      "from": "C:\\Users\\{UserName}\\Helgevold Elektro\\Tekni Gruppen - Dokumenter\\Finance\\Business Intelligence\\tool\\qrep\\settings\\company\\connections.dat",
+      "to": "{CompanySettingsDir}\\connections.dat",
       "overwrite": true
     },
     {
       "name": "InstallPalettes",
-      "from": "C:\\temp\\qrep\\settings\\company\\themes.json",
-      "to": "company\\themes.json",
+      "type": "url",
+      "from": "https://steely-staffstead.github.io/InstallQreports/settings/company/themes.json",
+      "to": "{CompanySettingsDir}\\themes.json",
       "overwrite": true
     }
   ]
 }
+
 
