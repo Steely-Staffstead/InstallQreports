@@ -1,7 +1,0 @@
-{
-  "defaultConnectionName": "Prod",
-  "defaultThemeName": "Company Dark",
-  "paletteDefault": "User: Company Dark",
-  "connectionsSourceOrder": ["Workbook", "User", "Company"],
-  "themesSourceOrder": ["User", "Company"]
-}
