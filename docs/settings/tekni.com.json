@@ -4,22 +4,17 @@
   "description": "Tekni defaults",
   "steps": [
     {
-      "name": "InstallConnectionsDefault",
-      "from": "{customaddress}\\company\\connections.default.dat",
+      "name": "InstallConnections",
+      "from": "C:\\Users\\{UserName}\\Helgevold Elektro\\Tekni Gruppen - Dokumenter\\Finance\\Business Intelligence\\tool\\qrep\\settings\\company\\connections.dat",
       "to": "company\\connections.default.dat",
       "overwrite": true
     },
     {
-      "name": "InstallConnectionsDW",
-      "from": "{customaddress}\\company\\connections.dw.dat",
-      "to": "company\\connections.dw.dat",
-      "overwrite": true
-    },
-    {
       "name": "InstallPalettes",
-      "from": "{customaddress}\\company\\themes.json",
+      "from": "C:\\Users\\{UserName}\\Helgevold Elektro\\Tekni Gruppen - Dokumenter\\Finance\\Business Intelligence\\tool\\qrep\\settings\\company\\themes.json",
       "to": "company\\themes.json",
       "overwrite": true
     }
   ]
 }
+
