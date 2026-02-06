@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "companyKey": "tekni.com",
-  "description": "Tekni defaults",
+  "companyKey": "helgevold.com",
+  "description": "Qreports settings for Helgevold AS and Tekni gruppen",
   "steps": [
     {
       "name": "InstallConnections",
@@ -17,6 +17,7 @@
     }
   ]
 }
+
 
 
 
