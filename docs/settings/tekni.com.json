@@ -5,16 +5,17 @@
   "steps": [
     {
       "name": "InstallConnections",
-      "from": "C:\\Users\\{UserName}\\Helgevold Elektro\\Tekni Gruppen - Dokumenter\\Finance\\Business Intelligence\\tool\\qrep\\settings\\company\\connections.dat",
+      "from": "C:\\Users\\{UserName}\\Helgevold Elektro\\Tekni Gruppen - Dokumenter\\Finance\\Business Intelligence\\tools\\qrep\\settings\\company\\connections.dat",
       "to": "company\\connections.default.dat",
       "overwrite": true
     },
     {
       "name": "InstallPalettes",
-      "from": "C:\\Users\\{UserName}\\Helgevold Elektro\\Tekni Gruppen - Dokumenter\\Finance\\Business Intelligence\\tool\\qrep\\settings\\company\\themes.json",
+      "from": "C:\\Users\\{UserName}\\Helgevold Elektro\\Tekni Gruppen - Dokumenter\\Finance\\Business Intelligence\\tools\\qrep\\settings\\company\\themes.json",
       "to": "company\\themes.json",
       "overwrite": true
     }
   ]
 }
+
 
