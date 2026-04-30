@@ -1,0 +1,7 @@
+*.config binary
+*.manifest binary
+*.vsto binary
+*.application binary
+*.dll binary
+*.exe binary
+*.deploy binary
