@@ -16,48 +16,86 @@
   border-left: 1px solid var(--md-default-fg-color--lightest);
 }
 
-/* Worksheet-style examples used in the QRep Excel Code guide. */
+/* Add vertical separators to the normal Markdown reference tables. */
+.md-typeset table:not(.excel-sheet) th,
+.md-typeset table:not(.excel-sheet) td {
+  border-right: 0.05rem solid var(--md-typeset-table-color);
+}
+
+.md-typeset table:not(.excel-sheet) th:first-child,
+.md-typeset table:not(.excel-sheet) td:first-child {
+  border-left: 0.05rem solid var(--md-typeset-table-color);
+}
+
+/* Worksheet-style examples, based on the Formula Helper grid preview. */
 .excel-sheet-wrap {
   max-width: 100%;
   margin: 1rem 0 1.35rem;
   overflow-x: auto;
+  border: 1px solid #8c8c8c;
+  background: #fff;
 }
 
 table.excel-sheet {
+  display: table;
   width: auto;
-  min-width: 34rem;
+  min-width: 30rem;
   margin: 0;
   border-collapse: collapse;
-  border: 1px solid var(--md-default-fg-color--lighter);
-  background: var(--md-default-bg-color);
-  box-shadow: 0 0.15rem 0.45rem rgb(0 0 0 / 8%);
-  font-size: 0.78rem;
+  border: 0;
+  background: #fff;
+  color: #111;
+  box-shadow: none;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.76rem;
+  line-height: 1.25;
 }
 
 table.excel-sheet th,
 table.excel-sheet td {
-  min-width: 6rem;
-  padding: 0.35rem 0.5rem;
-  border: 1px solid var(--md-default-fg-color--lighter);
+  min-width: 5rem;
+  height: 1.55rem;
+  padding: 0.18rem 0.42rem;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  color: #111;
   text-align: left;
+  vertical-align: middle;
   white-space: nowrap;
 }
 
 table.excel-sheet thead th,
 table.excel-sheet tbody th {
-  min-width: 2.6rem;
-  width: 2.6rem;
-  background: var(--md-code-bg-color);
-  color: var(--md-default-fg-color--light);
-  font-weight: 700;
+  min-width: 2.25rem;
+  width: 2.25rem;
+  padding-right: 0.3rem;
+  padding-left: 0.3rem;
+  border-color: #b7b7b7;
+  background: #f0f0f0;
+  color: #111;
+  font-family: "Segoe UI", Arial, sans-serif;
   text-align: center;
 }
 
+table.excel-sheet thead th {
+  font-weight: 700;
+}
+
+table.excel-sheet tbody th {
+  font-weight: 400;
+}
+
 table.excel-sheet td.excel-keyword {
-  color: var(--md-primary-fg-color);
+  color: #111;
   font-weight: 700;
 }
 
 table.excel-sheet td.excel-template {
-  background: color-mix(in srgb, var(--md-primary-fg-color) 8%, transparent);
+  background: #f7fbff;
+}
+
+table.excel-sheet thead th:first-child {
+  background:
+    linear-gradient(135deg, transparent 49%, #a6a6a6 50%, #a6a6a6 52%, transparent 53%),
+    #e7e7e7;
 }
