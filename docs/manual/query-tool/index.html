@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/query-tool/">
       
       
-        <link rel="prev" href="../getting-started/">
+        <link rel="prev" href="../qrep-ribbon/">
       
       
-        <link rel="next" href="../parameters/">
+        <link rel="next" href="../mini-sql/">
       
       
         
@@ -329,6 +329,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qrep-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -683,6 +711,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mini-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../parameters/" class="md-nav__link">
         
   
@@ -718,7 +774,7 @@
   <span class="md-ellipsis">
     
   
-    DAX measures
+    Mini DAX and measures
   
 
     
@@ -845,6 +901,177 @@
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical information
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical information
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IT overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation and updates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage and security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-removal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uninstall and cleanup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1209,6 +1436,7 @@
 </tr>
 </tbody>
 </table>
+<p>The <code>table</code> connection is a core QReports feature. It runs <a href="../mini-sql/">Mini SQL for Excel tables</a>, including filters, joins, groups, calculations, and parameters directly over workbook tables.</p>
 <p>To add or change a named connection:</p>
 <ol>
 <li>Open <strong>Settings &gt; Connections</strong>.</li>
@@ -1324,6 +1552,7 @@ ORDER BY Population DESC;
 </tbody>
 </table>
 <p>Do not assume that a function shown for one mode is valid in another. Select the target connection before opening <strong>Function</strong>.</p>
+<p>See <a href="../mini-sql/">Mini SQL for Excel tables</a> for syntax, function groups, examples, the CSV roadmap, and differences from database SQL.</p>
 <h2 id="editable-query-mode">Editable query mode</h2>
 <p>Use <strong>Query &gt; Editable query</strong> when the result should be edited and written back to a SQL table.</p>
 <ol>
@@ -1371,7 +1600,7 @@ ORDER BY Population DESC;
 <p>See the <a href="../api-tool/">API tool</a> for the dedicated API workflow.</p>
 <h2 id="dax-measures">DAX measures</h2>
 <p>Select <strong>Dax</strong> or <strong>Tools &gt; Define Measures</strong> to manage measures associated with the current query definition. Measures are a separate subject because they can include aggregation behavior, calculated columns, formatting, matrix visibility, and model-specific DAX.</p>
-<p>Continue to <a href="../dax-measures/">DAX measures</a>.</p>
+<p>Continue to <a href="../dax-measures/">Mini DAX and measures</a>.</p>
 <h2 id="power-pivot-menu">Power Pivot menu</h2>
 <p>The <strong>Power Pivot</strong> menu is relevant primarily when the selected connection is <code>model</code> and the workbook contains a Power Pivot model. Its commands link to Excel's model tools:</p>
 <ul>

@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/dax-measures/">
+        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/mini-sql/">
       
       
-        <link rel="prev" href="../parameters/">
+        <link rel="prev" href="../query-tool/">
       
       
-        <link rel="next" href="../api-tool/">
+        <link rel="next" href="../parameters/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Mini DAX and measures - QReports Documentation</title>
+        <title>Mini SQL - QReports Documentation</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mini-dax-and-measures" class="md-skip">
+        <a href="#mini-sql-for-excel-tables" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mini DAX and measures
+              Mini SQL
             
           </span>
         </div>
@@ -390,10 +390,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../mini-sql/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini SQL
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -409,6 +436,136 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#first-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First query
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-statement-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported statement shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#joins-and-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Joins and aliases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filters-and-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filters and parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregate functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#date-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logical-numeric-and-conversion-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical, numeric, and conversion functions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differences-from-database-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Differences from database SQL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#csv-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CSV roadmap
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -446,37 +603,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Mini DAX and measures
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../dax-measures/" class="md-nav__link">
         
   
   
@@ -492,186 +622,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#measure-or-calculated-column" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Measure or calculated column?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-syntax" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic syntax
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#aggregate-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Aggregate functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#math-and-ranking" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Math and ranking
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logical-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Logical functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#text-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Text functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#date-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Date functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#filter-context-with-calculate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Filter context with CALCULATE
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#parameters-in-formulas" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Parameters in formulas
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#more-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        More examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="More examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#average-price" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Average price
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#growth-percentage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Growth percentage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#row-level-category" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Row-level category
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#differences-from-full-dax" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Differences from full DAX
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -992,10 +942,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#measure-or-calculated-column" class="md-nav__link">
+  <a href="#first-query" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Measure or calculated column?
+        First query
       
     </span>
   </a>
@@ -1003,10 +953,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#basic-syntax" class="md-nav__link">
+  <a href="#supported-statement-shape" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Basic syntax
+        Supported statement shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#joins-and-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Joins and aliases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filters-and-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filters and parameters
       
     </span>
   </a>
@@ -1025,32 +997,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#math-and-ranking" class="md-nav__link">
+  <a href="#string-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Math and ranking
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logical-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Logical functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#text-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Text functions
+        String functions
       
     </span>
   </a>
@@ -1069,10 +1019,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#filter-context-with-calculate" class="md-nav__link">
+  <a href="#logical-numeric-and-conversion-functions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Filter context with CALCULATE
+        Logical, numeric, and conversion functions
       
     </span>
   </a>
@@ -1080,10 +1030,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#parameters-in-formulas" class="md-nav__link">
+  <a href="#differences-from-database-sql" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameters in formulas
+        Differences from database SQL
       
     </span>
   </a>
@@ -1091,60 +1041,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#more-examples" class="md-nav__link">
+  <a href="#csv-roadmap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        More examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="More examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#average-price" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Average price
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#growth-percentage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Growth percentage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#row-level-category" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Row-level category
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#differences-from-full-dax" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Differences from full DAX
+        CSV roadmap
       
     </span>
   </a>
@@ -1168,336 +1068,345 @@
 
 
 
-<h1 id="mini-dax-and-measures">Mini DAX and measures</h1>
-<p>Mini DAX is QReports' focused expression engine for measures and calculated columns. It is used by matrices, charts, Canvas visuals, and QReports table output. It is not the same thing as sending a full DAX query to the Excel Power Pivot model.</p>
-<p>When <strong>Conn</strong> is <code>model</code>, Query Tool can run normal model queries. The formulas on this page are the smaller Mini DAX formulas managed with <strong>Dax</strong> or <strong>Tools &gt; Define Measures</strong>.</p>
-<p><img src="../assets/images/mini-dax/mini-dax-editor.png" alt="Placeholder for the Mini DAX measure editor" style="max-width: 760px; width: 100%;"></p>
-<h2 id="measure-or-calculated-column">Measure or calculated column?</h2>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Evaluation context</th>
-<th>Typical use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Measure</td>
-<td>Evaluated after dimensions and filters establish a group.</td>
-<td>Totals, averages, ratios, prior-period values, rank.</td>
-</tr>
-<tr>
-<td>Calculated column</td>
-<td>Evaluated once for each source row before grouping.</td>
-<td>Categories, cleaned text, date parts, row calculations.</td>
-</tr>
-</tbody>
-</table>
-<p>Calculated columns cannot reference aggregate measures and cannot call aggregate or context functions such as <code>SUM</code>, <code>CALCULATE</code>, <code>ALL</code>, or <code>REMOVEFILTERS</code>.</p>
-<h2 id="basic-syntax">Basic syntax</h2>
-<p>The editor stores the output name separately from the formula. For a measure named <code>Margin</code>, enter:</p>
-<pre><code class="language-dax">DIVIDE(SUM(Profit), SUM(Revenue))
+<h1 id="mini-sql-for-excel-tables">Mini SQL for Excel tables</h1>
+<p>Mini SQL is QReports' in-memory query language for Excel tables. It provides a familiar SQL-shaped way to filter, join, group, calculate, and sort workbook data without first loading the tables into an external database.</p>
+<p>Mini SQL is used when <strong>Conn</strong> is set to <code>table</code>. The same engine is also used for published Canvas tables. CSV-file support is a planned extension of the generic table-provider path; CSV files are not yet a normal selectable Mini SQL source in Query Tool.</p>
+<p><img src="../assets/images/mini-sql/mini-sql-query-tool.png" alt="Placeholder for Mini SQL in Query Tool" style="max-width: 760px; width: 100%;"></p>
+<h2 id="first-query">First query</h2>
+<p>Assume the workbook contains Excel tables named <code>country</code> and <code>continent</code>:</p>
+<pre><code class="language-sql">SELECT
+    continent,
+    SUM(population) AS population_total
+FROM country
+WHERE year = 2025
+GROUP BY continent
+ORDER BY population_total DESC
 </code></pre>
-<p>Mini DAX supports arithmetic, comparisons, <code>AND</code>, <code>OR</code>, variables, and comments:</p>
-<pre><code class="language-dax">VAR _revenue = SUM(Revenue)
-VAR _profit = SUM(Profit)
-RETURN
-    IF(_revenue = 0, BLANK(), DIVIDE(_profit, _revenue))
+<p>To run it:</p>
+<ol>
+<li>Open <strong>Query Tool</strong>.</li>
+<li>Select <code>table</code> from <strong>Conn</strong>.</li>
+<li>Select <strong>Table</strong> to list workbook tables.</li>
+<li>Enter the Mini SQL statement.</li>
+<li>Select <strong>Run</strong> or press <strong>F5</strong>.</li>
+</ol>
+<p>Table and column names come from Excel table names and headers, not worksheet names or cell addresses.</p>
+<h2 id="supported-statement-shape">Supported statement shape</h2>
+<p>Mini SQL supports one <code>SELECT</code> statement with the following general shape:</p>
+<pre><code class="language-sql">SELECT [TOP number]
+    expression [AS alias], ...
+FROM table [alias]
+[INNER | LEFT | RIGHT | FULL [OUTER]] JOIN table [alias] ON condition
+[WHERE condition]
+[GROUP BY column, ...]
+[HAVING condition]
+[ORDER BY expression [ASC | DESC], ...]
 </code></pre>
-<p>Comments begin with <code>//</code>. Names are matched without case sensitivity. Use <strong>Ctrl+Space</strong> or begin typing to display available names.</p>
+<p>Supported query features include:</p>
+<ul>
+<li><code>SELECT *</code> for ordinary, non-aggregated projections;</li>
+<li>column aliases with <code>AS</code>;</li>
+<li>table aliases;</li>
+<li><code>TOP n</code>;</li>
+<li>inner, left, right, and full joins;</li>
+<li><code>WHERE</code> comparisons using <code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>;</li>
+<li><code>AND</code>, <code>OR</code>, <code>IN (...)</code>, <code>BETWEEN</code>, <code>LIKE</code>, <code>IS NULL</code>, and <code>IS NOT NULL</code>;</li>
+<li><code>GROUP BY</code>, aggregate expressions, and <code>HAVING</code>;</li>
+<li><code>ORDER BY ... ASC</code> and <code>ORDER BY ... DESC</code>;</li>
+<li><code>CASE WHEN ... THEN ... ELSE ... END</code>;</li>
+<li>QReports parameters such as <code>{{pyear}}</code>.</li>
+</ul>
+<p>With grouping or aggregate expressions, list every required non-aggregate output column in <code>GROUP BY</code>. <code>SELECT *</code> is not supported in an aggregate query.</p>
+<h2 id="joins-and-aliases">Joins and aliases</h2>
+<p>Aliases make joins easier to read and prevent ambiguous column names:</p>
+<pre><code class="language-sql">SELECT
+    c.country_name,
+    c.continent_code,
+    g.continent_name,
+    c.population
+FROM country c
+LEFT JOIN continent g
+    ON c.continent_code = g.continent_code
+WHERE c.population &gt; 1000000
+ORDER BY c.population DESC
+</code></pre>
+<p>Join conditions should use column equality or other straightforward comparisons. Mini SQL is intended for table-shaped reporting logic; highly nested database join expressions should remain in the source database.</p>
+<h2 id="filters-and-parameters">Filters and parameters</h2>
+<pre><code class="language-sql">SELECT country_name, year, population
+FROM country
+WHERE year BETWEEN 2020 AND 2025
+  AND continent_code IN ('EU', 'NA')
+  AND country_name LIKE 'N%'
+  AND population IS NOT NULL
+</code></pre>
+<p>String literals use single quotes. A single quote inside a value is doubled: <code>'O''Brien'</code>.</p>
+<p>Parameters are resolved before Mini SQL runs:</p>
+<pre><code class="language-sql">SELECT country_name, population
+FROM country
+WHERE year = {{pyear}}
+  AND {{continent}}
+</code></pre>
+<p>If <code>continent</code> produces <code>continent IN ('Europe','Asia')</code>, the parsed statement is valid Mini SQL. Use <strong>Query &gt; Parse query</strong> to inspect the exact result.</p>
 <h2 id="aggregate-functions">Aggregate functions</h2>
 <table>
 <thead>
 <tr>
 <th>Function</th>
 <th>Syntax</th>
-<th>Description</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>SUM</code></td>
-<td><code>SUM(column [, filter])</code></td>
-<td>Sum numeric values in context.</td>
+<td><code>COUNT</code></td>
+<td><code>COUNT(column)</code></td>
+<td>Count non-null values.</td>
 </tr>
 <tr>
-<td><code>AVERAGE</code> / <code>AVG</code></td>
-<td><code>AVERAGE(column [, filter])</code></td>
+<td><code>COUNTDISTINCT</code></td>
+<td><code>COUNTDISTINCT(column)</code></td>
+<td>Count distinct non-null values.</td>
+</tr>
+<tr>
+<td><code>SUM</code></td>
+<td><code>SUM(column)</code></td>
+<td>Sum numeric values.</td>
+</tr>
+<tr>
+<td><code>AVG</code></td>
+<td><code>AVG(column)</code></td>
 <td>Average numeric values.</td>
 </tr>
 <tr>
 <td><code>MIN</code></td>
-<td><code>MIN(column [, filter])</code></td>
+<td><code>MIN(column)</code></td>
 <td>Minimum value.</td>
 </tr>
 <tr>
 <td><code>MAX</code></td>
-<td><code>MAX(column [, filter])</code></td>
+<td><code>MAX(column)</code></td>
 <td>Maximum value.</td>
 </tr>
 <tr>
-<td><code>COUNT</code></td>
-<td><code>COUNT(column [, filter])</code></td>
-<td>Count non-blank values.</td>
-</tr>
-<tr>
-<td><code>DISTINCTCOUNT</code></td>
-<td><code>DISTINCTCOUNT(column)</code></td>
-<td>Count distinct non-blank values.</td>
-</tr>
-<tr>
-<td><code>SELECTEDVALUE</code></td>
-<td><code>SELECTEDVALUE(column [, alternate])</code></td>
-<td>Single value in context, otherwise alternate or blank.</td>
+<td><code>CONCAT</code></td>
+<td><code>CONCAT(column [, delimiter])</code></td>
+<td>Join unique text values; comma is the default delimiter.</td>
 </tr>
 </tbody>
 </table>
-<p>An optional aggregate filter is a simple row condition:</p>
-<pre><code class="language-dax">SUM(Revenue, Month = 1)
+<pre><code class="language-sql">SELECT
+    continent,
+    COUNTDISTINCT(country_code) AS countries,
+    SUM(population) AS population,
+    CONCAT(country_name, ', ') AS country_list
+FROM country
+GROUP BY continent
+HAVING SUM(population) &gt; 100000000
+ORDER BY population DESC
 </code></pre>
-<h2 id="math-and-ranking">Math and ranking</h2>
+<h2 id="string-functions">String functions</h2>
 <table>
 <thead>
 <tr>
 <th>Function</th>
 <th>Syntax</th>
-<th>Description</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>DIVIDE</code></td>
-<td><code>DIVIDE(numerator, denominator)</code></td>
-<td>Safe division; zero returns blank.</td>
+<td><code>SUBSTRING</code></td>
+<td><code>SUBSTRING(text, start, length)</code></td>
+<td><code>SUBSTRING(country_name, 1, 3)</code></td>
 </tr>
 <tr>
-<td><code>ROUND</code></td>
-<td><code>ROUND(number, digits)</code></td>
-<td>Round halves away from zero.</td>
+<td><code>LENGTH</code></td>
+<td><code>LENGTH(text)</code></td>
+<td><code>LENGTH(country_name)</code></td>
 </tr>
 <tr>
-<td><code>ROUNDUP</code></td>
-<td><code>ROUNDUP(number, digits)</code></td>
-<td>Round away from zero.</td>
+<td><code>REPLACE</code></td>
+<td><code>REPLACE(text, find, replacement)</code></td>
+<td><code>REPLACE(code, '-', '')</code></td>
 </tr>
 <tr>
-<td><code>ROUNDDOWN</code></td>
-<td><code>ROUNDDOWN(number, digits)</code></td>
-<td>Round towards zero.</td>
+<td><code>TRIM</code></td>
+<td><code>TRIM(text)</code></td>
+<td><code>TRIM(country_name)</code></td>
 </tr>
 <tr>
-<td><code>NEGATE</code> / <code>NEG</code></td>
-<td><code>NEGATE(number)</code></td>
-<td>Reverse the sign.</td>
+<td><code>LEFT</code></td>
+<td><code>LEFT(text, length)</code></td>
+<td><code>LEFT(account, 3)</code></td>
 </tr>
 <tr>
-<td><code>REVERSE_SIGN</code></td>
-<td><code>REVERSE_SIGN(number)</code></td>
-<td>Synonym for <code>NEGATE</code>.</td>
-</tr>
-<tr>
-<td><code>RANK</code></td>
-<td><code>RANK(value [, ASC|DESC] [, DENSE|SKIP])</code></td>
-<td>Rank the aggregated matrix values.</td>
-</tr>
-</tbody>
-</table>
-<p><code>RANK</code> runs after aggregation:</p>
-<pre><code class="language-dax">RANK(Sales_total, DESC, DENSE)
-</code></pre>
-<h2 id="logical-functions">Logical functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>IF</code></td>
-<td><code>IF(condition, trueValue [, falseValue])</code></td>
-<td>Return one of two expressions.</td>
-</tr>
-<tr>
-<td><code>SWITCH</code></td>
-<td><code>SWITCH(expression, value1, result1, ... [, else])</code></td>
-<td>Choose from alternatives.</td>
-</tr>
-<tr>
-<td><code>BLANK</code></td>
-<td><code>BLANK()</code></td>
-<td>Return a blank value.</td>
-</tr>
-<tr>
-<td><code>TRUE</code></td>
-<td><code>TRUE()</code></td>
-<td>Logical true.</td>
-</tr>
-<tr>
-<td><code>FALSE</code></td>
-<td><code>FALSE()</code></td>
-<td>Logical false.</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="language-dax">SWITCH(
-    TRUE(),
-    Margin &lt; 0, &quot;Loss&quot;,
-    Margin &lt; 0.1, &quot;Low&quot;,
-    Margin &lt; 0.25, &quot;Medium&quot;,
-    &quot;High&quot;
-)
-</code></pre>
-<h2 id="text-functions">Text functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>FORMAT</code></td>
-<td><code>FORMAT(value, "format")</code></td>
-</tr>
-<tr>
-<td><code>CONCATENATE</code></td>
-<td><code>CONCATENATE(value1, value2, ...)</code></td>
-</tr>
-<tr>
-<td><code>CONTAINSSTRING</code></td>
-<td><code>CONTAINSSTRING(text, findText)</code></td>
+<td><code>RIGHT</code></td>
+<td><code>RIGHT(text, length)</code></td>
+<td><code>RIGHT(account, 2)</code></td>
 </tr>
 <tr>
 <td><code>UPPER</code></td>
 <td><code>UPPER(text)</code></td>
+<td><code>UPPER(country_name)</code></td>
 </tr>
 <tr>
 <td><code>LOWER</code></td>
 <td><code>LOWER(text)</code></td>
+<td><code>LOWER(country_name)</code></td>
 </tr>
 <tr>
-<td><code>LEFT</code></td>
-<td><code>LEFT(text, count)</code></td>
-</tr>
-<tr>
-<td><code>RIGHT</code></td>
-<td><code>RIGHT(text, count)</code></td>
-</tr>
-<tr>
-<td><code>MID</code></td>
-<td><code>MID(text, start, count)</code></td>
+<td><code>FORMAT</code></td>
+<td><code>FORMAT(value, format)</code></td>
+<td><code>FORMAT(amount, '#,##0.00')</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>MID</code> uses a one-based start. The <code>&amp;</code> operator can also concatenate text.</p>
-<pre><code class="language-dax">CONCATENATE(UPPER(Region), &quot; - &quot;, FORMAT(SUM(Sales), &quot;#,##0&quot;))
-</code></pre>
+<p><code>SUBSTRING</code> uses a one-based start position. <code>FORMAT</code> returns text and uses the current Windows culture.</p>
 <h2 id="date-functions">Date functions</h2>
 <table>
 <thead>
 <tr>
 <th>Function</th>
 <th>Syntax</th>
-<th>Description</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>YEAR</code></td>
-<td><code>YEAR(date)</code></td>
-<td>Extract year.</td>
-</tr>
-<tr>
-<td><code>MONTH</code></td>
-<td><code>MONTH(date)</code></td>
-<td>Extract month.</td>
-</tr>
-<tr>
-<td><code>WEEK</code></td>
-<td><code>WEEK(date)</code></td>
-<td>Culture-based week number.</td>
+<td><code>GETDATE</code></td>
+<td><code>GETDATE()</code></td>
+<td>Current local date and time.</td>
 </tr>
 <tr>
 <td><code>TODAY</code></td>
 <td><code>TODAY()</code></td>
-<td>Current local date.</td>
+<td>Current local date with no time.</td>
 </tr>
 <tr>
-<td><code>DATEFROMPARTS</code></td>
-<td><code>DATEFROMPARTS(year, month, day)</code></td>
-<td>Construct a date.</td>
+<td><code>XLDATE</code></td>
+<td><code>XLDATE(value)</code></td>
+<td>Convert an Excel serial value to a date.</td>
 </tr>
 <tr>
-<td><code>DATEOFFSET</code></td>
-<td><code>DATEOFFSET(date, years, months, days, weeks)</code></td>
-<td>Shift a date.</td>
+<td><code>XLDATETIME</code></td>
+<td><code>XLDATETIME(value)</code></td>
+<td>Convert an Excel serial value to date and time.</td>
+</tr>
+<tr>
+<td><code>DATEADD</code></td>
+<td><code>DATEADD(interval, number, date)</code></td>
+<td>Day, month, year, hour, minute, or second.</td>
+</tr>
+<tr>
+<td><code>DATEDIFF</code></td>
+<td><code>DATEDIFF(interval, date1, date2)</code></td>
+<td>Day, hour, minute, or second.</td>
+</tr>
+<tr>
+<td><code>YEAR</code></td>
+<td><code>YEAR(date)</code></td>
+<td>Extract the year.</td>
+</tr>
+<tr>
+<td><code>MONTH</code></td>
+<td><code>MONTH(date)</code></td>
+<td>Extract the month number.</td>
+</tr>
+<tr>
+<td><code>DATEPART</code></td>
+<td><code>DATEPART(part, date)</code></td>
+<td>Day, month, year, quarter, week, or weekday.</td>
 </tr>
 </tbody>
 </table>
-<p>Calculated-column examples:</p>
-<pre><code class="language-dax">DATEFROMPARTS(YEAR(InvoiceDate), MONTH(InvoiceDate), 1)
+<pre><code class="language-sql">SELECT
+    invoice_date,
+    YEAR(invoice_date) AS invoice_year,
+    DATEADD(month, 1, invoice_date) AS next_month,
+    FORMAT(invoice_date, 'yyyy-MM-dd') AS date_text
+FROM invoices
 </code></pre>
-<pre><code class="language-dax">DATEOFFSET(InvoiceDate, -1, 0, 0, 0)
-</code></pre>
-<h2 id="filter-context-with-calculate">Filter context with CALCULATE</h2>
-<p><code>CALCULATE</code> reevaluates a supported aggregate after changing simple column filters:</p>
-<pre><code class="language-dax">CALCULATE(SUM(Cost), Year = 2025)
-</code></pre>
-<p>Use <code>REMOVEFILTERS</code> or <code>ALL</code> inside <code>CALCULATE</code> to remove selected dimension filters:</p>
-<pre><code class="language-dax">VAR _currentYear = MAX(Year)
-RETURN
-    CALCULATE(
-        SUM(Cost),
-        REMOVEFILTERS(Year),
-        Year = _currentYear - 1
-    )
-</code></pre>
-<p>Here, <code>ALL(column)</code> and <code>REMOVEFILTERS(column)</code> only remove that column's current filter inside <code>CALCULATE</code>; they do not return general-purpose DAX table expressions.</p>
-<h2 id="parameters-in-formulas">Parameters in formulas</h2>
-<p>QReports patches parameter tokens before compiling a formula:</p>
-<pre><code class="language-dax">CALCULATE(
-    SUM(Revenue),
-    Year = {{pyear}}
-)
-</code></pre>
-<p>Use a raw numeric parameter for <code>pyear</code>. For text comparisons, use DAX string parsing or provide quotes through the parameter definition.</p>
-<h2 id="more-examples">More examples</h2>
-<h3 id="average-price">Average price</h3>
-<pre><code class="language-dax">VAR _amount = SUM(Amount)
-VAR _quantity = SUM(Quantity)
-RETURN DIVIDE(_amount, _quantity)
-</code></pre>
-<h3 id="growth-percentage">Growth percentage</h3>
-<pre><code class="language-dax">IF(
-    PriorYear = 0,
-    BLANK(),
-    DIVIDE(CurrentYear - PriorYear, PriorYear)
-)
-</code></pre>
-<h3 id="row-level-category">Row-level category</h3>
-<p>Create a calculated column and enter:</p>
-<pre><code class="language-dax">IF(Amount &lt; 0, &quot;Credit&quot;, &quot;Debit&quot;)
-</code></pre>
-<h2 id="differences-from-full-dax">Differences from full DAX</h2>
-<p>Mini DAX is intentionally smaller than Microsoft DAX:</p>
+<h2 id="logical-numeric-and-conversion-functions">Logical, numeric, and conversion functions</h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Syntax</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CASE</code></td>
+<td><code>CASE WHEN condition THEN value ELSE value END</code></td>
+<td>Conditional output.</td>
+</tr>
+<tr>
+<td><code>IIF</code></td>
+<td><code>IIF(condition, trueValue, falseValue)</code></td>
+<td>Inline condition.</td>
+</tr>
+<tr>
+<td><code>COALESCE</code></td>
+<td><code>COALESCE(value1, value2, ...)</code></td>
+<td>First non-null value.</td>
+</tr>
+<tr>
+<td><code>ISNULL</code></td>
+<td><code>ISNULL(value, replacement)</code></td>
+<td>Replace a null.</td>
+</tr>
+<tr>
+<td><code>ROUND</code></td>
+<td><code>ROUND(number, decimals)</code></td>
+<td>Round to decimal places.</td>
+</tr>
+<tr>
+<td><code>FLOOR</code></td>
+<td><code>FLOOR(number)</code></td>
+<td>Round down.</td>
+</tr>
+<tr>
+<td><code>CEILING</code></td>
+<td><code>CEILING(number)</code></td>
+<td>Round up.</td>
+</tr>
+<tr>
+<td><code>ABS</code></td>
+<td><code>ABS(number)</code></td>
+<td>Absolute value.</td>
+</tr>
+<tr>
+<td><code>MOD</code></td>
+<td><code>MOD(dividend, divisor)</code></td>
+<td>Division remainder.</td>
+</tr>
+<tr>
+<td><code>CAST</code></td>
+<td><code>CAST(expression, 'datatype')</code></td>
+<td>Convert to a supported type.</td>
+</tr>
+</tbody>
+</table>
+<p>Supported <code>CAST</code> targets include integer, long, double, decimal, text, date, datetime, and Boolean aliases. Mini SQL uses <code>CAST(value, 'INT')</code>, not SQL Server's <code>CAST(value AS INT)</code> syntax.</p>
+<p><code>CONVERT</code> may appear in function-help metadata in some builds, but the Mini SQL evaluator currently implements <code>CAST</code>. Prefer <code>CAST</code> for portable QReports definitions.</p>
+<h2 id="differences-from-database-sql">Differences from database SQL</h2>
+<p>Mini SQL deliberately does not try to be a full database server:</p>
 <ul>
-<li>it evaluates QReports table/matrix data, not a semantic model with relationships;</li>
-<li>it is an expression engine, not the DAX query language—<code>EVALUATE</code> and <code>DEFINE</code> belong to model mode;</li>
-<li>iterator and table functions such as <code>SUMX</code>, <code>FILTER</code>, <code>ADDCOLUMNS</code>, <code>SUMMARIZE</code>, and <code>RELATED</code> are not implemented;</li>
-<li>there is no full relationship propagation or Power Pivot storage engine;</li>
-<li><code>CALCULATE</code> supports focused column comparisons plus <code>ALL</code>/<code>REMOVEFILTERS</code>, not every DAX filter expression;</li>
-<li>time-intelligence functions such as <code>SAMEPERIODLASTYEAR</code>, <code>DATESYTD</code>, and DAX <code>DATEADD</code> are not included; use <code>DATEOFFSET</code> and explicit filters;</li>
-<li><code>RANK</code> is a QReports post-aggregation operation, not <code>RANKX</code>;</li>
-<li>blanks use an internal representation and may render as empty output;</li>
-<li>number, week, and date formatting can depend on the current Windows culture.</li>
+<li>it operates on in-memory table data and has no database indexes or query optimizer;</li>
+<li>it supports one <code>SELECT</code>, not <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>MERGE</code>, or stored procedures;</li>
+<li>CTEs, subqueries, <code>UNION</code>, window functions, and database-specific syntax are not supported;</li>
+<li>use <code>TOP n</code>; <code>LIMIT</code> and <code>OFFSET</code> are not part of the parser;</li>
+<li>schema-qualified database names are not relevant to workbook table mode;</li>
+<li>function coverage and null/type conversion rules are smaller than in a database;</li>
+<li>very large workbooks can use substantial memory because source tables are materialized;</li>
+<li>culture can affect text-to-number, date parsing, and <code>FORMAT</code> output;</li>
+<li>database permissions, transactions, indexes, and execution plans do not apply.</li>
 </ul>
-<p>If a formula requires model relationships, iterators, or advanced time intelligence, use a real Power Pivot measure instead. Query Tool's <strong>Power Pivot</strong> menu links to Excel's model tools.</p>
-<p>Return to the <a href="../query-tool/#dax-measures">Query Tool guide</a>.</p>
+<p>Use Mini SQL when the source is already in Excel and the transformation is report-sized. Use a named database connection when the source is large, the SQL is complex, or filtering and aggregation should happen on the server.</p>
+<h2 id="csv-roadmap">CSV roadmap</h2>
+<p>The engine can execute through a generic table-provider route, allowing future providers such as CSV to expose tabular data to the same evaluator. Until a CSV provider is available in the Query Tool connection list, import the CSV into an Excel table or query it through another supported connection.</p>
+<p>Return to the <a href="../query-tool/">Query Tool guide</a>.</p>
 
 
 

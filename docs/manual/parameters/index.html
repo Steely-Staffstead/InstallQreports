@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/parameters/">
       
       
-        <link rel="prev" href="../query-tool/">
+        <link rel="prev" href="../mini-sql/">
       
       
         <link rel="next" href="../dax-measures/">
@@ -337,6 +337,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../qrep-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../query-tool/" class="md-nav__link">
         
   
@@ -345,6 +373,34 @@
     
   
     Query Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mini-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini SQL
   
 
     
@@ -425,10 +481,104 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#parameter-types" class="md-nav__link">
+  <a href="#add-and-order-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameter types
+        Add and order parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Input types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date-picker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date picker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numeric-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric input
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sheet-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sheet scope
       
     </span>
   </a>
@@ -440,6 +590,128 @@
     <span class="md-ellipsis">
       
         Text parsing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Text parsing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalar-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalar modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prefix-and-suffix-around-the-complete-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prefix and suffix around the complete value
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-value-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-value formatting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#none-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        None selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter references
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Input
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-_control-worksheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The _control worksheet
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The _control worksheet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formula-driven-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formula-driven parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-editing-cautions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual-editing cautions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-scoped-tree-lookup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: scoped tree lookup
       
     </span>
   </a>
@@ -469,7 +741,7 @@
   <span class="md-ellipsis">
     
   
-    DAX measures
+    Mini DAX and measures
   
 
     
@@ -600,6 +872,177 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical information
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical information
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IT overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation and updates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage and security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-removal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uninstall and cleanup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -627,10 +1070,104 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#parameter-types" class="md-nav__link">
+  <a href="#add-and-order-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameter types
+        Add and order parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Input types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date-picker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Date picker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numeric-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numeric input
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sheet-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sheet scope
       
     </span>
   </a>
@@ -642,6 +1179,128 @@
     <span class="md-ellipsis">
       
         Text parsing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Text parsing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalar-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalar modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prefix-and-suffix-around-the-complete-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prefix and suffix around the complete value
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-value-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-value formatting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#none-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        None selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter references
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameter Input
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-_control-worksheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The _control worksheet
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The _control worksheet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formula-driven-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Formula-driven parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-editing-cautions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual-editing cautions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-scoped-tree-lookup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: scoped tree lookup
       
     </span>
   </a>
@@ -666,19 +1325,340 @@
 
 
 <h1 id="parameters">Parameters</h1>
-<p>Parameters allow users to change report inputs without editing query text.</p>
-<h2 id="parameter-types">Parameter types</h2>
+<p>Parameters let users change queries, Mini SQL, Mini DAX, API definitions, charts, and Canvas content without editing the underlying text. Definitions are managed in Parameter Manager; user-enabled values appear in the simpler Parameter Input form.</p>
+<p><img src="../assets/images/parameters/parameter-manager.png" alt="Placeholder for Parameter Manager" style="max-width: 760px; width: 100%;"></p>
+<h2 id="add-and-order-parameters">Add and order parameters</h2>
+<ol>
+<li>Open <strong>Parameters</strong> from the QRep Ribbon or select <strong>Param</strong> in Query Tool.</li>
+<li>Open the advanced manager if Parameter Input is shown first.</li>
+<li>Select <strong>Add</strong>.</li>
+<li>Enter the parameter name and current value.</li>
+<li>Choose an input type and configure its tabs.</li>
+<li>Check <strong>User input</strong> if report users should change it.</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<p>Parameter names are referenced as <code>{{name}}</code>. Keep names short and avoid punctuation that could be confused with a property reference.</p>
+<p>The order in Parameter Manager controls Parameter Input. Right-click the list to move a parameter <strong>Up</strong>, <strong>Down</strong>, <strong>First</strong>, or <strong>Last</strong>. A marker in the parameter grid identifies parameters with <strong>User input</strong> enabled.</p>
+<h2 id="common-fields">Common fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Stable token name, for example <code>pyear</code>.</td>
+</tr>
+<tr>
+<td>Current value</td>
+<td>Current raw value or first selected lookup value.</td>
+</tr>
+<tr>
+<td>Default value</td>
+<td>Fallback when no current value exists.</td>
+</tr>
+<tr>
+<td>Display name</td>
+<td>Label shown to the user.</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Help text below the input control.</td>
+</tr>
+<tr>
+<td>User input</td>
+<td>Include the parameter in Parameter Input.</td>
+</tr>
+<tr>
+<td>Allow blank</td>
+<td>Permit an empty selected value.</td>
+</tr>
+<tr>
+<td>Multi select</td>
+<td>Permit more than one list value.</td>
+</tr>
+<tr>
+<td>Sheet scope</td>
+<td>Restrict visibility to selected worksheets; no selection means all sheets.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="input-types">Input types</h2>
+<h3 id="text">Text</h3>
+<p>Use <strong>Text</strong> for free-form input such as a year, account code, or search term.</p>
+<pre><code class="language-sql">WHERE fiscal_year = {{pyear}}
+</code></pre>
+<p>For numeric text, use <strong>Raw text</strong> parsing. For a SQL text value, choose <strong>SQL string</strong> so <code>Europe</code> becomes <code>'Europe'</code>.</p>
+<h3 id="manual-list">Manual list</h3>
+<p>Use <strong>Manual list</strong> when choices are stable and do not need a query. Enter comma-separated items, one item per line, or value/display pairs supported by the editor.</p>
+<pre><code class="language-text">EU=Europe
+NA=North America
+AS=Asia
+</code></pre>
+<p>The stored value can be <code>EU</code> while the user sees <code>Europe</code>.</p>
+<h3 id="sql-list">SQL list</h3>
+<p>Use <strong>SQL list</strong> when choices should be loaded from a connection or Excel table.</p>
+<p><img src="../assets/images/parameters/parameter-lookup.png" alt="Placeholder for parameter lookup settings" style="max-width: 700px; width: 100%;"></p>
+<p>Configure:</p>
 <ul>
-<li>Text</li>
-<li>Manual list</li>
-<li>SQL lookup list</li>
-<li>Date picker</li>
-<li>Numeric input</li>
-<li>Hierarchical multiselect tree</li>
+<li><strong>Lookup connection</strong>: named database connection, <code>table</code>, or another supported source;</li>
+<li><strong>Lookup SQL</strong>: query returning lookup rows;</li>
+<li><strong>Value column</strong>: value inserted into the query;</li>
+<li><strong>Display column</strong>: friendly text shown in Parameter Input;</li>
+<li><strong>Hierarchical tree list</strong>: show multiple parent levels;</li>
+<li><strong>Tree level columns</strong>: comma-separated result columns from root to parent;</li>
+<li><strong>List height</strong>: minimum height of the list control.</li>
 </ul>
-<p>Parameters marked <strong>User input</strong> appear in the parameter input form. Their order follows the order configured in Parameter Manager. Sheet scope can restrict a parameter to selected worksheets.</p>
+<p>Example lookup:</p>
+<pre><code class="language-sql">SELECT
+    Region,
+    Continent,
+    CountryCode,
+    CountryName
+FROM country
+ORDER BY Continent, Region, CountryName
+</code></pre>
+<p>For Continent → Region → Country:</p>
+<ul>
+<li>Value column: <code>CountryCode</code></li>
+<li>Display column: <code>CountryName</code></li>
+<li>Tree level columns: <code>Continent, Region</code></li>
+</ul>
+<p>The value/display columns form the lowest leaf. Checking or clearing a parent checks or clears all descendants. Tree selection is intended for multi-select lists.</p>
+<h3 id="date-picker">Date picker</h3>
+<p>Use <strong>Date picker</strong> to show a calendar control. On <strong>Format</strong>, set the output format. <code>yyyy-MM-dd</code> turns 21 August 2026 into:</p>
+<pre><code class="language-text">2026-08-21
+</code></pre>
+<p>Combine it with <strong>SQL string</strong> parsing when the source expects:</p>
+<pre><code class="language-sql">WHERE order_date = '2026-08-21'
+</code></pre>
+<h3 id="numeric-input">Numeric input</h3>
+<p>Use <strong>Numeric input</strong> for a spinner control. On <strong>Format</strong>, configure minimum, maximum, and increment—for example <code>1</code>, <code>10</code>, or <code>1000</code>.</p>
+<p>The Format tab appears only for Date picker and Numeric input. Lookup appears only for a list input.</p>
+<h2 id="sheet-scope">Sheet scope</h2>
+<p>No checked worksheet means the parameter is available on every sheet. Check one or more sheets to restrict it.</p>
+<p>Example: <code>accountid</code> scoped to <code>Sheet1</code> appears when the input form is opened for Sheet1, but not Sheet2.</p>
+<p>Right-click the sheet list and use <strong>Select all</strong> or <strong>Clear all</strong>. Clear all restores the default all-sheets behavior.</p>
 <h2 id="text-parsing">Text parsing</h2>
-<p>Use prefixes, suffixes, separators, and encapsulation to create valid SQL, API, or other source text from selected values.</p>
+<p>Text parsing controls the exact replacement string. Input type is selected only on <strong>Setup</strong>; there is no second input-type box here.</p>
+<p><img src="../assets/images/parameters/parameter-text-parsing.png" alt="Placeholder for parameter text parsing" style="max-width: 700px; width: 100%;"></p>
+<h3 id="scalar-modes">Scalar modes</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Raw value</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw text</td>
+<td><code>Europe</code></td>
+<td><code>Europe</code></td>
+</tr>
+<tr>
+<td>SQL string</td>
+<td><code>Europe</code></td>
+<td><code>'Europe'</code></td>
+</tr>
+<tr>
+<td>DAX string</td>
+<td><code>Europe</code></td>
+<td><code>"Europe"</code></td>
+</tr>
+</tbody>
+</table>
+<p>Quotes inside values are escaped for the selected string mode.</p>
+<h3 id="prefix-and-suffix-around-the-complete-value">Prefix and suffix around the complete value</h3>
+<p>With Pre value <code>costcenter='</code>, raw value <code>100</code>, and Post value <code>'</code>, the result is:</p>
+<pre><code class="language-sql">costcenter='100'
+</code></pre>
+<p>Keep parsing as Raw text here because the prefix and suffix already supply quotes.</p>
+<h3 id="multi-value-formatting">Multi-value formatting</h3>
+<p>For values <code>100</code>, <code>200</code>, and <code>300</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pre value</td>
+<td><code>costcenter IN (</code></td>
+</tr>
+<tr>
+<td>Separator</td>
+<td><code>,</code></td>
+</tr>
+<tr>
+<td>Encapsulation prefix</td>
+<td><code>'</code></td>
+</tr>
+<tr>
+<td>Encapsulation suffix</td>
+<td><code>'</code></td>
+</tr>
+<tr>
+<td>Post value</td>
+<td><code>)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Result:</p>
+<pre><code class="language-sql">costcenter IN ('100','200','300')
+</code></pre>
+<p>Escapes such as <code>\n</code> and <code>\t</code> are decoded in parsing fields.</p>
+<h3 id="none-selection">None selection</h3>
+<p>List inputs can offer <strong>None</strong>. The <strong>None representation</strong> is emitted instead of values. A common SQL representation is:</p>
+<pre><code class="language-sql">1=1
+</code></pre>
+<p>Place this parameter where a complete condition belongs:</p>
+<pre><code class="language-sql">WHERE {{continent}}
+</code></pre>
+<p>Do not use <code>WHERE continent = {{continent}}</code> with <code>1=1</code>, because it produces invalid logic.</p>
+<h2 id="parameter-references">Parameter references</h2>
+<p>The normal token resolves the formatted value:</p>
+<pre><code class="language-text">{{continent}}
+{{continent.Value}}
+</code></pre>
+<p>Additional properties:</p>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{name.Display}}</code></td>
+<td>Formatted display value(s).</td>
+</tr>
+<tr>
+<td><code>{{name.Current}}</code></td>
+<td>Current scalar value.</td>
+</tr>
+<tr>
+<td><code>{{name.CurrentDisplay}}</code></td>
+<td>Current display scalar.</td>
+</tr>
+<tr>
+<td><code>{{name.Default}}</code></td>
+<td>Default value.</td>
+</tr>
+<tr>
+<td><code>{{name.Name}}</code></td>
+<td>Normalized name.</td>
+</tr>
+<tr>
+<td><code>{{name.DisplayName}}</code> or <code>{{name.Label}}</code></td>
+<td>User-facing label.</td>
+</tr>
+<tr>
+<td><code>{{name.Description}}</code></td>
+<td>Description text.</td>
+</tr>
+<tr>
+<td><code>{{name.Count}}</code></td>
+<td>Number of selected raw values.</td>
+</tr>
+<tr>
+<td><code>{{name.Separator}}</code></td>
+<td>Multi-value separator.</td>
+</tr>
+<tr>
+<td><code>{{name.Prefix}}</code></td>
+<td>Per-item encapsulation prefix.</td>
+</tr>
+<tr>
+<td><code>{{name.Suffix}}</code></td>
+<td>Per-item encapsulation suffix.</td>
+</tr>
+</tbody>
+</table>
+<p>Names and properties are case-insensitive.</p>
+<h2 id="parameter-input">Parameter Input</h2>
+<p>Only parameters marked <strong>User input</strong> and matching the current sheet scope are shown.</p>
+<p><img src="../assets/images/parameters/parameter-input.png" alt="Placeholder for Parameter Input" style="max-width: 700px; width: 100%;"></p>
+<p>The form grows when list controls require more vertical space. List height is a minimum; screen space can constrain the final window.</p>
+<ul>
+<li><strong>Save</strong> stores values without refreshing the report.</li>
+<li><strong>Save and Load</strong> stores all parameters, recalculates dependent workbook formulas, and loads the active report sheet.</li>
+<li><strong>Cancel</strong> closes without applying pending edits.</li>
+</ul>
+<p>Pending control edits are committed before Save; pressing Tab after typing is not required.</p>
+<h2 id="the-_control-worksheet">The <code>_control</code> worksheet</h2>
+<p>Excel-hosted parameters are persisted as <code>set</code> rows on <code>_control</code>.</p>
+<p><img src="../assets/images/parameters/parameter-control-sheet.png" alt="Placeholder for parameter rows on the control sheet" style="max-width: 760px; width: 100%;"></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Keyword <code>set</code>.</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Normalized parameter name.</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Current resolved value or an existing Excel formula.</td>
+</tr>
+<tr>
+<td>D</td>
+<td><code>TRUE</code> for user input; blank/false otherwise.</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Compact JSON with advanced settings.</td>
+</tr>
+</tbody>
+</table>
+<p>Column E can contain display text, selections, input type, lookup definition, hierarchy, list height, scope, parsing, date format, and numeric limits. Older simple <code>set</code> rows remain compatible.</p>
+<h3 id="formula-driven-parameters">Formula-driven parameters</h3>
+<p>For a non-user-input parameter, an existing formula in column C is preserved. This allows the value to depend on other cells or parameters:</p>
+<pre><code class="language-excel">=TEXT(C2,&quot;0000&quot;)
+</code></pre>
+<p>For a user-input parameter, saving writes the user's selected resolved value directly to column C. The input form is the source of that value.</p>
+<p><strong>Save and Load</strong> writes the rows and waits for workbook calculation so formulas depending on the changed parameter are updated before report loading continues.</p>
+<h3 id="manual-editing-cautions">Manual-editing cautions</h3>
+<ul>
+<li>Keep column A as <code>set</code>.</li>
+<li>Keep parameter names unique.</li>
+<li>Do not edit column E unless you can repair JSON.</li>
+<li>A formula in column C should normally have User input disabled.</li>
+<li>Saving Parameter Manager removes stale rows for parameters deleted from the manager.</li>
+</ul>
+<h2 id="example-scoped-tree-lookup">Example: scoped tree lookup</h2>
+<p>Goal: choose countries only on <code>Regional report</code> and create a SQL condition.</p>
+<ol>
+<li>Name it <code>country</code>.</li>
+<li>Enable <strong>User input</strong> and <strong>Multi select</strong>.</li>
+<li>Choose <strong>SQL list</strong>.</li>
+<li>Return <code>Continent</code>, <code>Region</code>, <code>CountryCode</code>, and <code>CountryName</code>.</li>
+<li>Use <code>CountryCode</code> as Value and <code>CountryName</code> as Display.</li>
+<li>Enable the tree and use <code>Continent, Region</code> as levels.</li>
+<li>Use Pre value <code>country_code IN (</code> and Post value <code>)</code>.</li>
+<li>Use a single quote as per-item prefix/suffix and comma as separator.</li>
+<li>Select only <code>Regional report</code> in Sheet scope.</li>
+<li>Write <code>WHERE {{country}}</code> in the query.</li>
+</ol>
+<p>Selecting Norway and Sweden produces:</p>
+<pre><code class="language-sql">WHERE country_code IN ('NO','SE')
+</code></pre>
+<p>Use <strong>Query &gt; Parse query</strong> to verify the final text.</p>
 
 
 
