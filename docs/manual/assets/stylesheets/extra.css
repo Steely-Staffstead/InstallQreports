@@ -1,0 +1,17 @@
+/* Make top-level sidebar groups easier to distinguish from page links. */
+.md-nav--primary > .md-nav__list > .md-nav__item--section > .md-nav__link {
+  margin-top: 0.65rem;
+  padding: 0.38rem 0.5rem;
+  color: var(--md-primary-fg-color);
+  font-weight: 700;
+  background-color: var(--md-code-bg-color);
+  border-left: 0.18rem solid var(--md-primary-fg-color);
+  border-radius: 0.12rem;
+}
+
+/* Keep the pages in a group visually subordinate to its heading. */
+.md-nav--primary > .md-nav__list > .md-nav__item--section > .md-nav > .md-nav__list {
+  margin-left: 0.45rem;
+  padding-left: 0.45rem;
+  border-left: 1px solid var(--md-default-fg-color--lightest);
+}
