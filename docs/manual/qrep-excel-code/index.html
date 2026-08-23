@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/mini-sql/">
+        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/qrep-excel-code/">
       
       
-        <link rel="prev" href="../query-tool/">
+        <link rel="prev" href="../qrep-ribbon/">
       
       
-        <link rel="next" href="../parameters/">
+        <link rel="next" href="../formula-helper/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Mini SQL - QReports Documentation</title>
+        <title>QRep Excel Code - QReports Documentation</title>
       
     
     
@@ -70,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mini-sql-for-excel-tables" class="md-skip">
+        <a href="#qrep-excel-code" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mini SQL
+              QRep Excel Code
             
           </span>
         </div>
@@ -482,10 +482,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../qrep-excel-code/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Excel Code
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -501,6 +528,147 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-smallest-useful-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The smallest useful report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connection-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keyword-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keyword map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-excel-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dynamic Excel table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-headers-and-footers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table headers and footers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subtotal-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subtotal reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#column-definitions-and-crossfilters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Column definitions and crossfilters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-and-control-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters and control rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -566,37 +734,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Mini SQL
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mini-sql/" class="md-nav__link">
         
   
   
@@ -612,136 +753,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#first-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        First query
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#supported-statement-shape" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Supported statement shape
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#joins-and-aliases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Joins and aliases
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#filters-and-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Filters and parameters
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#aggregate-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Aggregate functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#string-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        String functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#date-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Date functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logical-numeric-and-conversion-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Logical, numeric, and conversion functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#differences-from-database-sql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Differences from database SQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#csv-roadmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CSV roadmap
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1064,10 +1075,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#first-query" class="md-nav__link">
+  <a href="#the-smallest-useful-report" class="md-nav__link">
     <span class="md-ellipsis">
       
-        First query
+        The smallest useful report
       
     </span>
   </a>
@@ -1075,10 +1086,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#supported-statement-shape" class="md-nav__link">
+  <a href="#connection-rows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Supported statement shape
+        Connection rows
       
     </span>
   </a>
@@ -1086,10 +1097,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#joins-and-aliases" class="md-nav__link">
+  <a href="#query-rows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Joins and aliases
+        Query rows
       
     </span>
   </a>
@@ -1097,10 +1108,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#filters-and-parameters" class="md-nav__link">
+  <a href="#output-rows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Filters and parameters
+        Output rows
       
     </span>
   </a>
@@ -1108,10 +1119,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#aggregate-functions" class="md-nav__link">
+  <a href="#keyword-map" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Aggregate functions
+        Keyword map
       
     </span>
   </a>
@@ -1119,10 +1130,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#string-functions" class="md-nav__link">
+  <a href="#dynamic-excel-table" class="md-nav__link">
     <span class="md-ellipsis">
       
-        String functions
+        Dynamic Excel table
       
     </span>
   </a>
@@ -1130,10 +1141,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#date-functions" class="md-nav__link">
+  <a href="#table-headers-and-footers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Date functions
+        Table headers and footers
       
     </span>
   </a>
@@ -1141,10 +1152,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#logical-numeric-and-conversion-functions" class="md-nav__link">
+  <a href="#subtotal-reports" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Logical, numeric, and conversion functions
+        Subtotal reports
       
     </span>
   </a>
@@ -1152,10 +1163,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#differences-from-database-sql" class="md-nav__link">
+  <a href="#column-definitions-and-crossfilters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Differences from database SQL
+        Column definitions and crossfilters
       
     </span>
   </a>
@@ -1163,10 +1174,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#csv-roadmap" class="md-nav__link">
+  <a href="#parameters-and-control-rows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CSV roadmap
+        Parameters and control rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended workflow
       
     </span>
   </a>
@@ -1190,345 +1212,294 @@
 
 
 
-<h1 id="mini-sql-for-excel-tables">Mini SQL for Excel tables</h1>
-<p>Mini SQL is QReports' in-memory query language for Excel tables. It provides a familiar SQL-shaped way to filter, join, group, calculate, and sort workbook data without first loading the tables into an external database.</p>
-<p>Mini SQL is used when <strong>Conn</strong> is set to <code>table</code>. The same engine is also used for published Canvas tables. CSV-file support is a planned extension of the generic table-provider path; CSV files are not yet a normal selectable Mini SQL source in Query Tool.</p>
-<p><img src="../assets/images/mini-sql/mini-sql-query-tool.png" alt="Placeholder for Mini SQL in Query Tool" style="max-width: 760px; width: 100%;"></p>
-<h2 id="first-query">First query</h2>
-<p>Assume the workbook contains Excel tables named <code>country</code> and <code>continent</code>:</p>
-<pre><code class="language-sql">SELECT
-    continent,
-    SUM(population) AS population_total
-FROM country
-WHERE year = 2025
-GROUP BY continent
-ORDER BY population_total DESC
-</code></pre>
-<p>To run it:</p>
+<h1 id="qrep-excel-code">QRep Excel Code</h1>
+<p>QRep Excel Code is the worksheet language used to connect to data, run a query, and place the result in Excel. A report block normally has three parts: a connection row, one or more query rows, and an output row.</p>
+<p>Use this page to learn the language. Use the <a href="../formula-helper/">Formula Helper</a> when you already know what you want and need to look up syntax or generate a correctly formatted table or subtotal definition.</p>
+<h2 id="the-smallest-useful-report">The smallest useful report</h2>
+<p>This example uses the saved connection named <code>demo</code>, runs a SQL query, and returns a normal report table. The first row tells QRep where the data comes from, rows 2 and 3 contain the query, and row 4 defines the output.</p>
+<div class="excel-sheet-wrap">
+<table class="excel-sheet">
+  <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
+  <tbody>
+    <tr><th>1</th><td class="excel-keyword">conn</td><td>demo</td><td></td><td></td></tr>
+    <tr><th>2</th><td class="excel-keyword">sql</td><td>SELECT country, population</td><td></td><td></td></tr>
+    <tr><th>3</th><td class="excel-keyword">sql</td><td>FROM country</td><td></td><td></td></tr>
+    <tr><th>4</th><td class="excel-keyword">table</td><td></td><td>country</td><td>population</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Select a cell in the block and choose <strong>Load selected line</strong>, or load the active sheet. QRep reads the definition and writes the result below the output row.</p>
+<p>The keyword is placed in column A. Its main value is normally placed in column B. Output columns begin farther to the right, allowing each Excel column to describe one returned field or measure.</p>
+<h2 id="connection-rows">Connection rows</h2>
+<p>Put the connection row above the query and output belonging to it.</p>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>conn</code></td>
+<td>Uses a named database connection. Put the saved connection name in column B.</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>Uses the workbook Power Pivot model.</td>
+</tr>
+<tr>
+<td><code>powerquery</code></td>
+<td>Uses a supported Power Query connection definition.</td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td>Uses Excel tables through <a href="../mini-sql/">Mini SQL</a>.</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>Uses a supported file source. Put its path or saved definition in column B.</td>
+</tr>
+<tr>
+<td><code>api</code></td>
+<td>Uses a saved API definition. See the <a href="../api-tool/">API tool</a>.</td>
+</tr>
+<tr>
+<td><code>connspec</code></td>
+<td>Uses an advanced connection specification stored as JSON.</td>
+</tr>
+</tbody>
+</table>
+<p>Connections are created and maintained from <strong>QRep &gt; Connections</strong>. The <a href="../query-tool/">Query Tool</a> can also select a connection and write a valid report definition back to the sheet.</p>
+<h2 id="query-rows">Query rows</h2>
+<p>Use <code>sql</code>, <code>q</code>, or <code>query</code> in column A. Put one query line in column B on each row. Keeping SQL on separate worksheet rows makes it easier to insert, remove, and inspect clauses.</p>
+<div class="excel-sheet-wrap">
+<table class="excel-sheet">
+  <thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr></thead>
+  <tbody>
+    <tr><th>1</th><td class="excel-keyword">conn</td><td>sales</td><td></td></tr>
+    <tr><th>2</th><td class="excel-keyword">sql</td><td>SELECT region, SUM(amount) AS revenue</td><td></td></tr>
+    <tr><th>3</th><td class="excel-keyword">sql</td><td>FROM sales</td><td></td></tr>
+    <tr><th>4</th><td class="excel-keyword">sql</td><td>WHERE order_date &gt;= '{{periodfrom}}'</td><td></td></tr>
+    <tr><th>5</th><td class="excel-keyword">sql</td><td>GROUP BY region</td><td></td></tr>
+    <tr><th>6</th><td class="excel-keyword">table</td><td></td><td>region</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Aliases returned by SQL can be used as the output field names. Parameters such as <code>{{periodfrom}}</code> are replaced before execution; see <a href="../parameters/">Parameters</a>.</p>
+<h2 id="output-rows">Output rows</h2>
+<p>The output keyword controls how QRep places the query result in Excel.</p>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>table</code></td>
+<td>A normal QRep report area with optional grouping, header, footer, and outline rows.</td>
+</tr>
+<tr>
+<td><code>dtable</code></td>
+<td>A dynamic structured Excel table.</td>
+</tr>
+<tr>
+<td><code>ptable</code></td>
+<td>A pivot-style result based on grouped fields.</td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td>One compact summary row, commonly used for KPIs and measures.</td>
+</tr>
+<tr>
+<td><code>subtotal</code></td>
+<td>Grouped details with headers, footers, spacing, and Excel outline levels.</td>
+</tr>
+<tr>
+<td><code>load</code></td>
+<td>Loads data using the definition without the normal table presentation.</td>
+</tr>
+</tbody>
+</table>
+<p>Charts and Canvas definitions are handled by the <a href="../chart-tool/">Chart tool</a>. DAX and model measures are covered in <a href="../dax-measures/">Mini DAX and measures</a>.</p>
+<h2 id="keyword-map">Keyword map</h2>
+<p>The following map shows the worksheet codes you are most likely to encounter. Some are generated by a tool and are normally easier to maintain there than by editing their JSON manually.</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Codes</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection</td>
+<td><code>conn</code>, <code>model</code>, <code>powerquery</code>, <code>table</code>, <code>file</code>, <code>api</code>, <code>connspec</code></td>
+<td>Selects the data source for the report block.</td>
+</tr>
+<tr>
+<td>Query</td>
+<td><code>sql</code>, <code>q</code>, <code>query</code></td>
+<td>Adds query text from column B.</td>
+</tr>
+<tr>
+<td>Measures</td>
+<td><code>msr</code></td>
+<td>Stores the serialized measure definitions associated with a connection.</td>
+</tr>
+<tr>
+<td>Output</td>
+<td><code>table</code>, <code>dtable</code>, <code>ptable</code>, <code>summary</code>, <code>subtotal</code>, <code>load</code></td>
+<td>Selects how the result is returned to Excel.</td>
+</tr>
+<tr>
+<td>Chart</td>
+<td><code>chart</code>, <code>graph</code></td>
+<td>Stores chart output and definition data; normally maintained in the Chart tool.</td>
+</tr>
+<tr>
+<td>Companion</td>
+<td><code>column</code>, <code>crossfilter</code>, <code>parameter</code></td>
+<td>Describes an output column, applies a per-column filter, or supplies parameter/value pairs.</td>
+</tr>
+<tr>
+<td>Template</td>
+<td><code>+ header</code>, <code>+ footer</code>, <code>+ footer1</code>, <code>+ footer2</code></td>
+<td>Adds formatting and summary rows to table or subtotal output.</td>
+</tr>
+<tr>
+<td>Control</td>
+<td><code>set</code>, <code>setreport</code>, <code>setpassword</code></td>
+<td>Defines parameters, report-sheet mappings, and protected-sheet loading on <code>_control</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>msr</code>, chart definitions, advanced parameter settings, and <code>connspec</code> can contain JSON. Prefer Query Tool, Chart tool, Parameter Manager, or Connection Manager when changing those definitions.</p>
+<h2 id="dynamic-excel-table">Dynamic Excel table</h2>
+<p>Change the output keyword from <code>table</code> to <code>dtable</code> when the result should be an Excel structured table. Column B supplies the table name.</p>
+<div class="excel-sheet-wrap">
+<table class="excel-sheet">
+  <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
+  <tbody>
+    <tr><th>1</th><td class="excel-keyword">conn</td><td>demo</td><td></td><td></td></tr>
+    <tr><th>2</th><td class="excel-keyword">sql</td><td>SELECT country, population</td><td></td><td></td></tr>
+    <tr><th>3</th><td class="excel-keyword">sql</td><td>FROM country</td><td></td><td></td></tr>
+    <tr><th>4</th><td class="excel-keyword">dtable</td><td>tblCountry</td><td>country</td><td>population</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Useful output options are appended with semicolons:</p>
+<ul>
+<li><code>group(continent,region)</code> groups by fields;</li>
+<li><code>filter(year=2026,amount&gt;1000)</code> filters the output;</li>
+<li><code>sort(year ASC,region DESC)</code> controls ordering;</li>
+<li><code>toprows(20)</code> limits the number of displayed rows;</li>
+<li><code>noheader</code>, <code>nocrossfilter</code>, and <code>leftcolumn=4</code> change output behavior.</li>
+</ul>
+<p>For example: <code>dtable;group(continent);filter(year=2026);sort(population DESC);toprows(20)</code>.</p>
+<h2 id="table-headers-and-footers">Table headers and footers</h2>
+<p>Template rows start with <code>+</code> in column A. The template type is placed in column B. Values in a <code>header</code> row override generated field names and options such as <code>noheader</code>. Remove the <code>+ header</code> row when no explicit header is wanted.</p>
+<div class="excel-sheet-wrap">
+<table class="excel-sheet">
+  <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
+  <tbody>
+    <tr><th>7</th><td class="excel-keyword">table;group(continent)</td><td></td><td>continent</td><td>population</td></tr>
+    <tr><th>8</th><td class="excel-template">+</td><td class="excel-template">header</td><td class="excel-template">CONTINENT</td><td class="excel-template">POPULATION</td></tr>
+    <tr><th>9</th><td class="excel-template">+</td><td class="excel-template">footer;outline</td><td class="excel-template">label(SUMMARY)</td><td class="excel-template">$sum</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Common template rows include:</p>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>header</code></td>
+<td>Supplies the displayed header text.</td>
+</tr>
+<tr>
+<td><code>footer</code></td>
+<td>Adds a final footer or summary row.</td>
+</tr>
+<tr>
+<td><code>footer1</code>, <code>footer2</code></td>
+<td>Adds footer rows at specific subtotal levels.</td>
+</tr>
+<tr>
+<td><code>footer;outline</code></td>
+<td>Adds a footer participating in Excel outline grouping.</td>
+</tr>
+<tr>
+<td><code>footer;outlinec</code></td>
+<td>Adds an initially collapsed outline footer.</td>
+</tr>
+</tbody>
+</table>
+<p>Footer cells can use labels such as <code>label(SUMMARY)</code>, aggregate shortcuts such as <code>$sum</code>, <code>$count</code>, and <code>$avg</code>, or an Excel formula beginning with <code>=</code>.</p>
+<h2 id="subtotal-reports">Subtotal reports</h2>
+<p>Use <code>subtotal</code> for hierarchical reports. List the grouping fields from the outer level to the detail level. Optional footer rows define what appears at each level.</p>
+<div class="excel-sheet-wrap">
+<table class="excel-sheet">
+  <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead>
+  <tbody>
+    <tr><th>12</th><td class="excel-keyword">subtotal;group(continent,region)</td><td></td><td>continent</td><td>region</td><td>population</td></tr>
+    <tr><th>13</th><td class="excel-template">+</td><td class="excel-template">header</td><td class="excel-template">CONTINENT</td><td class="excel-template">REGION</td><td class="excel-template">POPULATION</td></tr>
+    <tr><th>14</th><td class="excel-template">+</td><td class="excel-template">footer1;outlinec</td><td class="excel-template">label(TOTAL)</td><td class="excel-template"></td><td class="excel-template">$sum</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The Formula Helper has dedicated table and subtotal builders for choosing fields, aggregate functions, labels, header/footer rows, and outline behavior.</p>
+<h2 id="column-definitions-and-crossfilters">Column definitions and crossfilters</h2>
+<p><code>column</code> defines a field or measure and can add <code>agg(...)</code>, <code>label(...)</code>, <code>unit(...)</code>, filter, and display options. Supported aggregation choices include <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>, <code>FIRST</code>, and <code>LAST</code>.</p>
+<p><code>crossfilter</code> is a companion row. Put a filter in each output column that it should affect. The values are written directly, without wrapping them in <code>filter(...)</code>.</p>
+<div class="excel-sheet-wrap">
+<table class="excel-sheet">
+  <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
+  <tbody>
+    <tr><th>20</th><td class="excel-keyword">crossfilter</td><td></td><td>year=2025</td><td>year=2026</td></tr>
+    <tr><th>21</th><td class="excel-keyword">summary</td><td></td><td>column;Revenue;agg(SUM);label(2025)</td><td>column;Revenue;agg(SUM);label(2026)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Filter syntax supports equality, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, and <code>&lt;&gt;</code>; <code>|</code> for alternatives; <code>-</code> for ranges; <code>*</code> or <code>%</code> wildcards; and <code>NULL</code> or <code>NOT NULL</code>. Comma-separated conditions are combined with AND.</p>
+<h2 id="parameters-and-control-rows">Parameters and control rows</h2>
+<p>Use <code>{{parameter_name}}</code> in SQL, filters, text, and templates. Parameter definitions are normally stored on the <code>_control</code> sheet:</p>
+<div class="excel-sheet-wrap">
+<table class="excel-sheet">
+  <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead>
+  <tbody>
+    <tr><th>3</th><td class="excel-keyword">set</td><td>pyear</td><td>2026</td><td>TRUE</td><td>{advanced settings JSON}</td></tr>
+    <tr><th>4</th><td class="excel-keyword">setreport</td><td>Template</td><td>Report</td><td>pyear</td><td>2026</td></tr>
+    <tr><th>5</th><td class="excel-keyword">setpassword</td><td>Report</td><td>password</td><td></td><td></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><code>set</code> defines the current value, whether it is user-editable, and optional advanced settings. <code>setreport</code> maps a template sheet to a report sheet with optional parameter pairs. <code>setpassword</code> lets QRep temporarily unprotect and restore a report sheet during loading. See <a href="../parameters/">Parameters</a> for the full setup.</p>
+<h2 id="recommended-workflow">Recommended workflow</h2>
 <ol>
-<li>Open <strong>Query Tool</strong>.</li>
-<li>Select <code>table</code> from <strong>Conn</strong>.</li>
-<li>Select <strong>Table</strong> to list workbook tables.</li>
-<li>Enter the Mini SQL statement.</li>
-<li>Select <strong>Run</strong> or press <strong>F5</strong>.</li>
+<li>Create and test the connection in <strong>QRep &gt; Connections</strong>.</li>
+<li>Build and test the SQL in the <a href="../query-tool/">Query Tool</a>.</li>
+<li>Return the definition to Excel as <code>table</code>, <code>dtable</code>, <code>summary</code>, or another output type.</li>
+<li>Add grouping, filters, column definitions, and template rows.</li>
+<li>Use the <a href="../formula-helper/">Formula Helper</a> to verify syntax or generate table/subtotal code.</li>
+<li>Load the selected line while developing, then load the full sheet.</li>
 </ol>
-<p>Table and column names come from Excel table names and headers, not worksheet names or cell addresses.</p>
-<h2 id="supported-statement-shape">Supported statement shape</h2>
-<p>Mini SQL supports one <code>SELECT</code> statement with the following general shape:</p>
-<pre><code class="language-sql">SELECT [TOP number]
-    expression [AS alias], ...
-FROM table [alias]
-[INNER | LEFT | RIGHT | FULL [OUTER]] JOIN table [alias] ON condition
-[WHERE condition]
-[GROUP BY column, ...]
-[HAVING condition]
-[ORDER BY expression [ASC | DESC], ...]
-</code></pre>
-<p>Supported query features include:</p>
-<ul>
-<li><code>SELECT *</code> for ordinary, non-aggregated projections;</li>
-<li>column aliases with <code>AS</code>;</li>
-<li>table aliases;</li>
-<li><code>TOP n</code>;</li>
-<li>inner, left, right, and full joins;</li>
-<li><code>WHERE</code> comparisons using <code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>;</li>
-<li><code>AND</code>, <code>OR</code>, <code>IN (...)</code>, <code>BETWEEN</code>, <code>LIKE</code>, <code>IS NULL</code>, and <code>IS NOT NULL</code>;</li>
-<li><code>GROUP BY</code>, aggregate expressions, and <code>HAVING</code>;</li>
-<li><code>ORDER BY ... ASC</code> and <code>ORDER BY ... DESC</code>;</li>
-<li><code>CASE WHEN ... THEN ... ELSE ... END</code>;</li>
-<li>QReports parameters such as <code>{{pyear}}</code>.</li>
-</ul>
-<p>With grouping or aggregate expressions, list every required non-aggregate output column in <code>GROUP BY</code>. <code>SELECT *</code> is not supported in an aggregate query.</p>
-<h2 id="joins-and-aliases">Joins and aliases</h2>
-<p>Aliases make joins easier to read and prevent ambiguous column names:</p>
-<pre><code class="language-sql">SELECT
-    c.country_name,
-    c.continent_code,
-    g.continent_name,
-    c.population
-FROM country c
-LEFT JOIN continent g
-    ON c.continent_code = g.continent_code
-WHERE c.population &gt; 1000000
-ORDER BY c.population DESC
-</code></pre>
-<p>Join conditions should use column equality or other straightforward comparisons. Mini SQL is intended for table-shaped reporting logic; highly nested database join expressions should remain in the source database.</p>
-<h2 id="filters-and-parameters">Filters and parameters</h2>
-<pre><code class="language-sql">SELECT country_name, year, population
-FROM country
-WHERE year BETWEEN 2020 AND 2025
-  AND continent_code IN ('EU', 'NA')
-  AND country_name LIKE 'N%'
-  AND population IS NOT NULL
-</code></pre>
-<p>String literals use single quotes. A single quote inside a value is doubled: <code>'O''Brien'</code>.</p>
-<p>Parameters are resolved before Mini SQL runs:</p>
-<pre><code class="language-sql">SELECT country_name, population
-FROM country
-WHERE year = {{pyear}}
-  AND {{continent}}
-</code></pre>
-<p>If <code>continent</code> produces <code>continent IN ('Europe','Asia')</code>, the parsed statement is valid Mini SQL. Use <strong>Query &gt; Parse query</strong> to inspect the exact result.</p>
-<h2 id="aggregate-functions">Aggregate functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>COUNT</code></td>
-<td><code>COUNT(column)</code></td>
-<td>Count non-null values.</td>
-</tr>
-<tr>
-<td><code>COUNTDISTINCT</code></td>
-<td><code>COUNTDISTINCT(column)</code></td>
-<td>Count distinct non-null values.</td>
-</tr>
-<tr>
-<td><code>SUM</code></td>
-<td><code>SUM(column)</code></td>
-<td>Sum numeric values.</td>
-</tr>
-<tr>
-<td><code>AVG</code></td>
-<td><code>AVG(column)</code></td>
-<td>Average numeric values.</td>
-</tr>
-<tr>
-<td><code>MIN</code></td>
-<td><code>MIN(column)</code></td>
-<td>Minimum value.</td>
-</tr>
-<tr>
-<td><code>MAX</code></td>
-<td><code>MAX(column)</code></td>
-<td>Maximum value.</td>
-</tr>
-<tr>
-<td><code>CONCAT</code></td>
-<td><code>CONCAT(column [, delimiter])</code></td>
-<td>Join unique text values; comma is the default delimiter.</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="language-sql">SELECT
-    continent,
-    COUNTDISTINCT(country_code) AS countries,
-    SUM(population) AS population,
-    CONCAT(country_name, ', ') AS country_list
-FROM country
-GROUP BY continent
-HAVING SUM(population) &gt; 100000000
-ORDER BY population DESC
-</code></pre>
-<h2 id="string-functions">String functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>SUBSTRING</code></td>
-<td><code>SUBSTRING(text, start, length)</code></td>
-<td><code>SUBSTRING(country_name, 1, 3)</code></td>
-</tr>
-<tr>
-<td><code>LENGTH</code></td>
-<td><code>LENGTH(text)</code></td>
-<td><code>LENGTH(country_name)</code></td>
-</tr>
-<tr>
-<td><code>REPLACE</code></td>
-<td><code>REPLACE(text, find, replacement)</code></td>
-<td><code>REPLACE(code, '-', '')</code></td>
-</tr>
-<tr>
-<td><code>TRIM</code></td>
-<td><code>TRIM(text)</code></td>
-<td><code>TRIM(country_name)</code></td>
-</tr>
-<tr>
-<td><code>LEFT</code></td>
-<td><code>LEFT(text, length)</code></td>
-<td><code>LEFT(account, 3)</code></td>
-</tr>
-<tr>
-<td><code>RIGHT</code></td>
-<td><code>RIGHT(text, length)</code></td>
-<td><code>RIGHT(account, 2)</code></td>
-</tr>
-<tr>
-<td><code>UPPER</code></td>
-<td><code>UPPER(text)</code></td>
-<td><code>UPPER(country_name)</code></td>
-</tr>
-<tr>
-<td><code>LOWER</code></td>
-<td><code>LOWER(text)</code></td>
-<td><code>LOWER(country_name)</code></td>
-</tr>
-<tr>
-<td><code>FORMAT</code></td>
-<td><code>FORMAT(value, format)</code></td>
-<td><code>FORMAT(amount, '#,##0.00')</code></td>
-</tr>
-</tbody>
-</table>
-<p><code>SUBSTRING</code> uses a one-based start position. <code>FORMAT</code> returns text and uses the current Windows culture.</p>
-<h2 id="date-functions">Date functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GETDATE</code></td>
-<td><code>GETDATE()</code></td>
-<td>Current local date and time.</td>
-</tr>
-<tr>
-<td><code>TODAY</code></td>
-<td><code>TODAY()</code></td>
-<td>Current local date with no time.</td>
-</tr>
-<tr>
-<td><code>XLDATE</code></td>
-<td><code>XLDATE(value)</code></td>
-<td>Convert an Excel serial value to a date.</td>
-</tr>
-<tr>
-<td><code>XLDATETIME</code></td>
-<td><code>XLDATETIME(value)</code></td>
-<td>Convert an Excel serial value to date and time.</td>
-</tr>
-<tr>
-<td><code>DATEADD</code></td>
-<td><code>DATEADD(interval, number, date)</code></td>
-<td>Day, month, year, hour, minute, or second.</td>
-</tr>
-<tr>
-<td><code>DATEDIFF</code></td>
-<td><code>DATEDIFF(interval, date1, date2)</code></td>
-<td>Day, hour, minute, or second.</td>
-</tr>
-<tr>
-<td><code>YEAR</code></td>
-<td><code>YEAR(date)</code></td>
-<td>Extract the year.</td>
-</tr>
-<tr>
-<td><code>MONTH</code></td>
-<td><code>MONTH(date)</code></td>
-<td>Extract the month number.</td>
-</tr>
-<tr>
-<td><code>DATEPART</code></td>
-<td><code>DATEPART(part, date)</code></td>
-<td>Day, month, year, quarter, week, or weekday.</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="language-sql">SELECT
-    invoice_date,
-    YEAR(invoice_date) AS invoice_year,
-    DATEADD(month, 1, invoice_date) AS next_month,
-    FORMAT(invoice_date, 'yyyy-MM-dd') AS date_text
-FROM invoices
-</code></pre>
-<h2 id="logical-numeric-and-conversion-functions">Logical, numeric, and conversion functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>CASE</code></td>
-<td><code>CASE WHEN condition THEN value ELSE value END</code></td>
-<td>Conditional output.</td>
-</tr>
-<tr>
-<td><code>IIF</code></td>
-<td><code>IIF(condition, trueValue, falseValue)</code></td>
-<td>Inline condition.</td>
-</tr>
-<tr>
-<td><code>COALESCE</code></td>
-<td><code>COALESCE(value1, value2, ...)</code></td>
-<td>First non-null value.</td>
-</tr>
-<tr>
-<td><code>ISNULL</code></td>
-<td><code>ISNULL(value, replacement)</code></td>
-<td>Replace a null.</td>
-</tr>
-<tr>
-<td><code>ROUND</code></td>
-<td><code>ROUND(number, decimals)</code></td>
-<td>Round to decimal places.</td>
-</tr>
-<tr>
-<td><code>FLOOR</code></td>
-<td><code>FLOOR(number)</code></td>
-<td>Round down.</td>
-</tr>
-<tr>
-<td><code>CEILING</code></td>
-<td><code>CEILING(number)</code></td>
-<td>Round up.</td>
-</tr>
-<tr>
-<td><code>ABS</code></td>
-<td><code>ABS(number)</code></td>
-<td>Absolute value.</td>
-</tr>
-<tr>
-<td><code>MOD</code></td>
-<td><code>MOD(dividend, divisor)</code></td>
-<td>Division remainder.</td>
-</tr>
-<tr>
-<td><code>CAST</code></td>
-<td><code>CAST(expression, 'datatype')</code></td>
-<td>Convert to a supported type.</td>
-</tr>
-</tbody>
-</table>
-<p>Supported <code>CAST</code> targets include integer, long, double, decimal, text, date, datetime, and Boolean aliases. Mini SQL uses <code>CAST(value, 'INT')</code>, not SQL Server's <code>CAST(value AS INT)</code> syntax.</p>
-<p><code>CONVERT</code> may appear in function-help metadata in some builds, but the Mini SQL evaluator currently implements <code>CAST</code>. Prefer <code>CAST</code> for portable QReports definitions.</p>
-<h2 id="differences-from-database-sql">Differences from database SQL</h2>
-<p>Mini SQL deliberately does not try to be a full database server:</p>
-<ul>
-<li>it operates on in-memory table data and has no database indexes or query optimizer;</li>
-<li>it supports one <code>SELECT</code>, not <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>MERGE</code>, or stored procedures;</li>
-<li>CTEs, subqueries, <code>UNION</code>, window functions, and database-specific syntax are not supported;</li>
-<li>use <code>TOP n</code>; <code>LIMIT</code> and <code>OFFSET</code> are not part of the parser;</li>
-<li>schema-qualified database names are not relevant to workbook table mode;</li>
-<li>function coverage and null/type conversion rules are smaller than in a database;</li>
-<li>very large workbooks can use substantial memory because source tables are materialized;</li>
-<li>culture can affect text-to-number, date parsing, and <code>FORMAT</code> output;</li>
-<li>database permissions, transactions, indexes, and execution plans do not apply.</li>
-</ul>
-<p>Use Mini SQL when the source is already in Excel and the transformation is report-sized. Use a named database connection when the source is large, the SQL is complex, or filtering and aggregation should happen on the server.</p>
-<h2 id="csv-roadmap">CSV roadmap</h2>
-<p>The engine can execute through a generic table-provider route, allowing future providers such as CSV to expose tabular data to the same evaluator. Until a CSV provider is available in the Query Tool connection list, import the CSV into an Excel table or query it through another supported connection.</p>
-<p>Return to the <a href="../query-tool/">Query Tool guide</a>.</p>
+<p>Generated rows such as <code>xlinsr_tbl</code> belong to the loaded result. Edit the QRep definition rows above them, then reload the report.</p>
 
 
 
