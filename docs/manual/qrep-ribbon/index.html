@@ -340,6 +340,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../webview-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebView workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../troubleshooting/" class="md-nav__link">
         
   
@@ -546,6 +574,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Other group">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai-prompt-helper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Prompt Helper
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1210,6 +1255,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Other group">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai-prompt-helper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Prompt Helper
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1292,16 +1354,20 @@
 </thead>
 <tbody>
 <tr>
-<td>Query Tool</td>
-<td>Opens Query Tool using the definition at the active cell and carries existing measures into the editor.</td>
+<td>Query Web</td>
+<td>Opens Query Web using the definition at the active cell.</td>
 </tr>
 <tr>
-<td><a href="../canvas-tool/">Qanvas Tool</a></td>
-<td>Opens QReports Canvas hosted from the active workbook. This is a Premium/Pro licensed feature.</td>
+<td><a href="../canvas-tool/">Canvas Web</a></td>
+<td>Opens the WebView report designer hosted from the active workbook. This is a Premium/Pro licensed feature.</td>
 </tr>
 <tr>
-<td><a href="../api-tool/">API tool</a></td>
-<td>Opens API Explorer. This is a Pro licensed feature.</td>
+<td><a href="../api-tool/">API Web</a></td>
+<td>Opens API Web. This is a Pro licensed feature.</td>
+</tr>
+<tr>
+<td>Measures</td>
+<td>Opens the WebView Measure workspace without loading data until <strong>Load data</strong> is selected.</td>
 </tr>
 <tr>
 <td><a href="../formula-helper/">Formula Helper</a></td>
@@ -1321,6 +1387,7 @@
 </tr>
 </tbody>
 </table>
+<p><strong>Legacy tools</strong> contains the previous Query Tool, Qanvas Tool, API Tool, and legacy Load selected command so old and new workflows can be compared during migration.</p>
 <h2 id="other-group">Other group</h2>
 <table>
 <thead>
@@ -1353,6 +1420,16 @@
 <li><strong>License Status</strong>: shows customer, edition, expiry, features, and license path;</li>
 <li><strong>About</strong>: shows version, environment, installation, and diagnostic path information.</li>
 </ul>
+<h3 id="ai-prompt-helper">AI Prompt Helper</h3>
+<p>Enter the actual problem in <strong>Your question / ask</strong>, then copy the generated Markdown prompt into ChatGPT or another AI assistant. <strong>Auto detect</strong> uses the most recently active Query Tool, API Tool, or Canvas window; select a tool explicitly when you want a different reference.</p>
+<p>For an Excel-sheet question, the helper can include the selected cells, a nearby QRep block, connection/query information, and the embedded QRep syntax library. Worksheet context includes row numbers, column letters, cell addresses, and Excel formulas rather than only calculated values.</p>
+<p>Tool-specific context can include:</p>
+<ul>
+<li>Query Tool connection mode, query, measures, resolved parameters, typed result columns, and a small data sample;</li>
+<li>API request specification, typed result columns, and a small data sample;</li>
+<li>Canvas host, current page/query, selected tile, settings, and Canvas JSON.</li>
+</ul>
+<p>Large selections and Canvas definitions are truncated to keep the prompt useful. API credentials and sensitive header values are replaced with <code>[REDACTED]</code>; do not manually add secrets to the question. Keep <strong>Include library</strong> enabled when asking for QRep worksheet syntax, Mini SQL, Mini DAX, parameters, API definitions, or Canvas model guidance.</p>
 <h2 id="shape-context-menu">Shape context menu</h2>
 <p>Right-clicking a supported Excel shape, picture, or drawing object adds <strong>Open in Qanvas tool</strong>. Use it for workbooks containing QReports Canvas content.</p>
 <h2 id="licensing">Licensing</h2>

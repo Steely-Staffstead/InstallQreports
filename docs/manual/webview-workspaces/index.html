@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/mini-sql/">
+        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/webview-workspaces/">
       
       
-        <link rel="prev" href="../query-tool/">
+        <link rel="prev" href="../getting-started/">
       
       
-        <link rel="next" href="../parameters/">
+        <link rel="next" href="../troubleshooting/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Mini SQL - QReports Documentation</title>
+        <title>WebView workspaces - QReports Documentation</title>
       
     
     
@@ -70,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mini-sql-for-excel-tables" class="md-skip">
+        <a href="#webview-workspaces" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mini SQL
+              WebView workspaces
             
           </span>
         </div>
@@ -201,8 +201,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -213,11 +215,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
         
           
           <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
@@ -238,7 +240,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -337,10 +339,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../webview-workspaces/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebView workspaces
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -356,6 +385,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#common-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Web
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Web
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measure-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measure workspace
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#canvas-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canvas Web
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supporting-web-forms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supporting web forms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy access
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -428,8 +554,6 @@
       
   
   
-    
-  
   
   
     
@@ -442,11 +566,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -467,7 +591,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -594,37 +718,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Mini SQL
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mini-sql/" class="md-nav__link">
         
   
   
@@ -640,136 +737,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#first-query" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        First query
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#supported-statement-shape" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Supported statement shape
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#joins-and-aliases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Joins and aliases
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#filters-and-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Filters and parameters
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#aggregate-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Aggregate functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#string-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        String functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#date-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Date functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logical-numeric-and-conversion-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Logical, numeric, and conversion functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#differences-from-database-sql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Differences from database SQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#csv-and-delimited-text-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CSV and delimited text files
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1263,10 +1230,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#first-query" class="md-nav__link">
+  <a href="#common-layout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        First query
+        Common layout
       
     </span>
   </a>
@@ -1274,10 +1241,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#supported-statement-shape" class="md-nav__link">
+  <a href="#query-web" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Supported statement shape
+        Query Web
       
     </span>
   </a>
@@ -1285,10 +1252,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#joins-and-aliases" class="md-nav__link">
+  <a href="#api-web" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Joins and aliases
+        API Web
       
     </span>
   </a>
@@ -1296,10 +1263,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#filters-and-parameters" class="md-nav__link">
+  <a href="#measure-workspace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Filters and parameters
+        Measure workspace
       
     </span>
   </a>
@@ -1307,10 +1274,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#aggregate-functions" class="md-nav__link">
+  <a href="#canvas-web" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Aggregate functions
+        Canvas Web
       
     </span>
   </a>
@@ -1318,10 +1285,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#string-functions" class="md-nav__link">
+  <a href="#supporting-web-forms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        String functions
+        Supporting web forms
       
     </span>
   </a>
@@ -1329,43 +1296,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#date-functions" class="md-nav__link">
+  <a href="#legacy-access" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Date functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logical-numeric-and-conversion-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Logical, numeric, and conversion functions
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#differences-from-database-sql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Differences from database SQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#csv-and-delimited-text-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CSV and delimited text files
+        Legacy access
       
     </span>
   </a>
@@ -1389,352 +1323,29 @@
 
 
 
-<h1 id="mini-sql-for-excel-tables">Mini SQL for Excel tables</h1>
-<p>Mini SQL is QReports' in-memory query language for Excel tables and delimited files. It provides a familiar SQL-shaped way to filter, join, group, calculate, and sort tabular data without first loading it into an external database.</p>
-<p>Mini SQL is used when <strong>Conn</strong> is set to <code>table</code> and for saved CSV/TEXT file connections. The same engine is also used for published Canvas tables.</p>
-<p><img src="../assets/images/mini-sql/mini-sql-query-tool.png" alt="Placeholder for Mini SQL in Query Tool" style="max-width: 760px; width: 100%;"></p>
-<h2 id="first-query">First query</h2>
-<p>Assume the workbook contains Excel tables named <code>country</code> and <code>continent</code>:</p>
-<pre><code class="language-sql">SELECT
-    continent,
-    SUM(population) AS population_total
-FROM country
-WHERE year = 2025
-GROUP BY continent
-ORDER BY population_total DESC
-</code></pre>
-<p>To run it:</p>
-<ol>
-<li>Open <strong>Query Tool</strong>.</li>
-<li>Select <code>table</code> from <strong>Conn</strong>.</li>
-<li>Select <strong>Table</strong> to list workbook tables.</li>
-<li>Enter the Mini SQL statement.</li>
-<li>Select <strong>Run</strong> or press <strong>F5</strong>.</li>
-</ol>
-<p>Table and column names come from Excel table names and headers, not worksheet names or cell addresses.</p>
-<h2 id="supported-statement-shape">Supported statement shape</h2>
-<p>Mini SQL supports one <code>SELECT</code> statement with the following general shape:</p>
-<pre><code class="language-sql">SELECT [TOP number]
-    expression [AS alias], ...
-FROM table [alias]
-[INNER | LEFT | RIGHT | FULL [OUTER]] JOIN table [alias] ON condition
-[WHERE condition]
-[GROUP BY column, ...]
-[HAVING condition]
-[ORDER BY expression [ASC | DESC], ...]
-</code></pre>
-<p>Supported query features include:</p>
+<h1 id="webview-workspaces">WebView workspaces</h1>
+<p>QReports now uses a shared WebView2 host for its main interactive tools. The web workspaces use the same visual language, pane behavior, keyboard conventions, connection objects, parameters, and result formatting while keeping the established Excel storage formats.</p>
+<h2 id="common-layout">Common layout</h2>
 <ul>
-<li><code>SELECT *</code> for ordinary, non-aggregated projections;</li>
-<li>column aliases with <code>AS</code>;</li>
-<li>table aliases;</li>
-<li><code>TOP n</code>;</li>
-<li>inner, left, right, and full joins;</li>
-<li><code>WHERE</code> comparisons using <code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, and <code>&gt;=</code>;</li>
-<li><code>AND</code>, <code>OR</code>, <code>IN (...)</code>, <code>BETWEEN</code>, <code>LIKE</code>, <code>IS NULL</code>, and <code>IS NOT NULL</code>;</li>
-<li><code>GROUP BY</code>, aggregate expressions, and <code>HAVING</code>;</li>
-<li><code>ORDER BY ... ASC</code> and <code>ORDER BY ... DESC</code>;</li>
-<li><code>CASE WHEN ... THEN ... ELSE ... END</code>;</li>
-<li>QReports parameters such as <code>{{pyear}}</code>.</li>
+<li>Left panes contain sources, fields, saved objects, or document structure.</li>
+<li>The centre is the main editor or design surface.</li>
+<li>Right panes contain properties and supporting tools.</li>
+<li>Side panes can be resized, collapsed to their edge, and reopened without losing their width.</li>
+<li>Long-running actions show a loading state. Render-only Canvas refreshes remain off screen.</li>
+<li>New query and API previews default to 1,000 rows. Existing saved limits are preserved.</li>
 </ul>
-<p>With grouping or aggregate expressions, list every required non-aggregate output column in <code>GROUP BY</code>. <code>SELECT *</code> is not supported in an aggregate query.</p>
-<h2 id="joins-and-aliases">Joins and aliases</h2>
-<p>Aliases make joins easier to read and prevent ambiguous column names:</p>
-<pre><code class="language-sql">SELECT
-    c.country_name,
-    c.continent_code,
-    g.continent_name,
-    c.population
-FROM country c
-LEFT JOIN continent g
-    ON c.continent_code = g.continent_code
-WHERE c.population &gt; 1000000
-ORDER BY c.population DESC
-</code></pre>
-<p>Join conditions should use column equality or other straightforward comparisons. Mini SQL is intended for table-shaped reporting logic; highly nested database join expressions should remain in the source database.</p>
-<h2 id="filters-and-parameters">Filters and parameters</h2>
-<pre><code class="language-sql">SELECT country_name, year, population
-FROM country
-WHERE year BETWEEN 2020 AND 2025
-  AND continent_code IN ('EU', 'NA')
-  AND country_name LIKE 'N%'
-  AND population IS NOT NULL
-</code></pre>
-<p>String literals use single quotes. A single quote inside a value is doubled: <code>'O''Brien'</code>.</p>
-<p>Parameters are resolved before Mini SQL runs:</p>
-<pre><code class="language-sql">SELECT country_name, population
-FROM country
-WHERE year = {{pyear}}
-  AND {{continent}}
-</code></pre>
-<p>If <code>continent</code> produces <code>continent IN ('Europe','Asia')</code>, the parsed statement is valid Mini SQL. Use <strong>Query &gt; Parse query</strong> to inspect the exact result.</p>
-<h2 id="aggregate-functions">Aggregate functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>COUNT</code></td>
-<td><code>COUNT(column)</code></td>
-<td>Count non-null values.</td>
-</tr>
-<tr>
-<td><code>COUNTDISTINCT</code></td>
-<td><code>COUNTDISTINCT(column)</code></td>
-<td>Count distinct non-null values.</td>
-</tr>
-<tr>
-<td><code>SUM</code></td>
-<td><code>SUM(column)</code></td>
-<td>Sum numeric values.</td>
-</tr>
-<tr>
-<td><code>AVG</code></td>
-<td><code>AVG(column)</code></td>
-<td>Average numeric values.</td>
-</tr>
-<tr>
-<td><code>MIN</code></td>
-<td><code>MIN(column)</code></td>
-<td>Minimum value.</td>
-</tr>
-<tr>
-<td><code>MAX</code></td>
-<td><code>MAX(column)</code></td>
-<td>Maximum value.</td>
-</tr>
-<tr>
-<td><code>CONCAT</code></td>
-<td><code>CONCAT(column [, delimiter])</code></td>
-<td>Join unique text values; comma is the default delimiter.</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="language-sql">SELECT
-    continent,
-    COUNTDISTINCT(country_code) AS countries,
-    SUM(population) AS population,
-    CONCAT(country_name, ', ') AS country_list
-FROM country
-GROUP BY continent
-HAVING SUM(population) &gt; 100000000
-ORDER BY population DESC
-</code></pre>
-<h2 id="string-functions">String functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>SUBSTRING</code></td>
-<td><code>SUBSTRING(text, start, length)</code></td>
-<td><code>SUBSTRING(country_name, 1, 3)</code></td>
-</tr>
-<tr>
-<td><code>LENGTH</code></td>
-<td><code>LENGTH(text)</code></td>
-<td><code>LENGTH(country_name)</code></td>
-</tr>
-<tr>
-<td><code>REPLACE</code></td>
-<td><code>REPLACE(text, find, replacement)</code></td>
-<td><code>REPLACE(code, '-', '')</code></td>
-</tr>
-<tr>
-<td><code>TRIM</code></td>
-<td><code>TRIM(text)</code></td>
-<td><code>TRIM(country_name)</code></td>
-</tr>
-<tr>
-<td><code>LEFT</code></td>
-<td><code>LEFT(text, length)</code></td>
-<td><code>LEFT(account, 3)</code></td>
-</tr>
-<tr>
-<td><code>RIGHT</code></td>
-<td><code>RIGHT(text, length)</code></td>
-<td><code>RIGHT(account, 2)</code></td>
-</tr>
-<tr>
-<td><code>UPPER</code></td>
-<td><code>UPPER(text)</code></td>
-<td><code>UPPER(country_name)</code></td>
-</tr>
-<tr>
-<td><code>LOWER</code></td>
-<td><code>LOWER(text)</code></td>
-<td><code>LOWER(country_name)</code></td>
-</tr>
-<tr>
-<td><code>FORMAT</code></td>
-<td><code>FORMAT(value, format)</code></td>
-<td><code>FORMAT(amount, '#,##0.00')</code></td>
-</tr>
-</tbody>
-</table>
-<p><code>SUBSTRING</code> uses a one-based start position. <code>FORMAT</code> returns text and uses the current Windows culture.</p>
-<h2 id="date-functions">Date functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GETDATE</code></td>
-<td><code>GETDATE()</code></td>
-<td>Current local date and time.</td>
-</tr>
-<tr>
-<td><code>TODAY</code></td>
-<td><code>TODAY()</code></td>
-<td>Current local date with no time.</td>
-</tr>
-<tr>
-<td><code>XLDATE</code></td>
-<td><code>XLDATE(value)</code></td>
-<td>Convert an Excel serial value to a date.</td>
-</tr>
-<tr>
-<td><code>XLDATETIME</code></td>
-<td><code>XLDATETIME(value)</code></td>
-<td>Convert an Excel serial value to date and time.</td>
-</tr>
-<tr>
-<td><code>DATEADD</code></td>
-<td><code>DATEADD(interval, number, date)</code></td>
-<td>Day, month, year, hour, minute, or second.</td>
-</tr>
-<tr>
-<td><code>DATEDIFF</code></td>
-<td><code>DATEDIFF(interval, date1, date2)</code></td>
-<td>Day, hour, minute, or second.</td>
-</tr>
-<tr>
-<td><code>YEAR</code></td>
-<td><code>YEAR(date)</code></td>
-<td>Extract the year.</td>
-</tr>
-<tr>
-<td><code>MONTH</code></td>
-<td><code>MONTH(date)</code></td>
-<td>Extract the month number.</td>
-</tr>
-<tr>
-<td><code>DATEPART</code></td>
-<td><code>DATEPART(part, date)</code></td>
-<td>Day, month, year, quarter, week, or weekday.</td>
-</tr>
-</tbody>
-</table>
-<pre><code class="language-sql">SELECT
-    invoice_date,
-    YEAR(invoice_date) AS invoice_year,
-    DATEADD(month, 1, invoice_date) AS next_month,
-    FORMAT(invoice_date, 'yyyy-MM-dd') AS date_text
-FROM invoices
-</code></pre>
-<h2 id="logical-numeric-and-conversion-functions">Logical, numeric, and conversion functions</h2>
-<table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Syntax</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>CASE</code></td>
-<td><code>CASE WHEN condition THEN value ELSE value END</code></td>
-<td>Conditional output.</td>
-</tr>
-<tr>
-<td><code>IIF</code></td>
-<td><code>IIF(condition, trueValue, falseValue)</code></td>
-<td>Inline condition.</td>
-</tr>
-<tr>
-<td><code>COALESCE</code></td>
-<td><code>COALESCE(value1, value2, ...)</code></td>
-<td>First non-null value.</td>
-</tr>
-<tr>
-<td><code>ISNULL</code></td>
-<td><code>ISNULL(value, replacement)</code></td>
-<td>Replace a null.</td>
-</tr>
-<tr>
-<td><code>ROUND</code></td>
-<td><code>ROUND(number, decimals)</code></td>
-<td>Round to decimal places.</td>
-</tr>
-<tr>
-<td><code>FLOOR</code></td>
-<td><code>FLOOR(number)</code></td>
-<td>Round down.</td>
-</tr>
-<tr>
-<td><code>CEILING</code></td>
-<td><code>CEILING(number)</code></td>
-<td>Round up.</td>
-</tr>
-<tr>
-<td><code>ABS</code></td>
-<td><code>ABS(number)</code></td>
-<td>Absolute value.</td>
-</tr>
-<tr>
-<td><code>MOD</code></td>
-<td><code>MOD(dividend, divisor)</code></td>
-<td>Division remainder.</td>
-</tr>
-<tr>
-<td><code>CAST</code></td>
-<td><code>CAST(expression, 'datatype')</code></td>
-<td>Convert to a supported type.</td>
-</tr>
-</tbody>
-</table>
-<p>Supported <code>CAST</code> targets include integer, long, double, decimal, text, date, datetime, and Boolean aliases. Mini SQL uses <code>CAST(value, 'INT')</code>, not SQL Server's <code>CAST(value AS INT)</code> syntax.</p>
-<p><code>CONVERT</code> may appear in function-help metadata in some builds, but the Mini SQL evaluator currently implements <code>CAST</code>. Prefer <code>CAST</code> for portable QReports definitions.</p>
-<h2 id="differences-from-database-sql">Differences from database SQL</h2>
-<p>Mini SQL deliberately does not try to be a full database server:</p>
-<ul>
-<li>it operates on in-memory table data and has no database indexes or query optimizer;</li>
-<li>it supports one <code>SELECT</code>, not <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>MERGE</code>, or stored procedures;</li>
-<li>CTEs, subqueries, <code>UNION</code>, window functions, and database-specific syntax are not supported;</li>
-<li>use <code>TOP n</code>; <code>LIMIT</code> and <code>OFFSET</code> are not part of the parser;</li>
-<li>schema-qualified database names are not relevant to workbook table mode;</li>
-<li>function coverage and null/type conversion rules are smaller than in a database;</li>
-<li>very large workbooks can use substantial memory because source tables are materialized;</li>
-<li>culture can affect text-to-number, date parsing, and <code>FORMAT</code> output;</li>
-<li>database permissions, transactions, indexes, and execution plans do not apply.</li>
-</ul>
-<p>Use Mini SQL when the source is already in Excel and the transformation is report-sized. Use a named database connection when the source is large, the SQL is complex, or filtering and aggregation should happen on the server.</p>
-<h2 id="csv-and-delimited-text-files">CSV and delimited text files</h2>
-<p>Create a <code>CSV</code> or <code>TEXT</code> connection in Connection Manager and select the source file. Configure separator, whether the first row contains headers, and encoding. Quoted fields are supported.</p>
-<p>The source appears using a normalized version of its filename. The stable alias <code>data</code> is also available, which avoids problems when a filename contains spaces or punctuation:</p>
-<pre><code class="language-sql">SELECT region, SUM(amount) AS amount
-FROM data
-GROUP BY region
-ORDER BY amount DESC
-</code></pre>
-<p>Delimited values are initially read as text. Use the Mini SQL conversion functions when numeric or date interpretation is required, and verify separators/encoding if the preview produces an unexpected number of columns.</p>
-<p>Return to the <a href="../query-tool/">Query Tool guide</a>.</p>
+<h2 id="query-web">Query Web</h2>
+<p>Use Query Web to browse schemas, build SQL, edit supported SQL Server tables, run parameterized queries, and inspect Grid, JSON, Parsed SQL, and Messages output. Table and column context menus provide query generation, aliases, distinct-value filters, formatting, column visibility, and previews. The SQL editor supports alias-aware completion and Tab/Shift+Tab indentation for one or several selected lines.</p>
+<h2 id="api-web">API Web</h2>
+<p>API Web separates reusable connections from endpoint definitions. Connections hold the base URL, authentication/workflow, default headers, timeout, and SecretManager references. Endpoints hold method, relative path, request parameters/body, pagination/loop behavior, and response shaping. Use Submitted request to inspect the actual HTTP request without QReports metadata, and Data/Raw response to diagnose the result.</p>
+<h2 id="measure-workspace">Measure workspace</h2>
+<p>Measure workspace creates and validates Mini DAX measures and calculated columns. Right-click a source field for formula templates. Measures support built-in or custom number formats and can be tested in a matrix by dragging fields into Rows, one Columns field, and Values. <strong>Load data</strong> resolves the current workbook/Canvas parameters before executing the source query.</p>
+<h2 id="canvas-web">Canvas Web</h2>
+<p>Canvas Web builds pages from table, matrix, chart, card, text, and picture tiles. The report structure and properties panes dock at the sides. Table and Matrix designers use Fields → selected objects/options → Preview. Chart tiles open Chart Web through <strong>Design</strong>. Returning to Excel or PowerPoint stores the definition with the rendered image.</p>
+<h2 id="supporting-web-forms">Supporting web forms</h2>
+<p>Parameters, connections and secrets, logs/status, selected-sheet loading, and PowerPoint Canvas-shape selection use focused WebView routes. Secret values are stored through the existing SecretManager and are represented in definitions by tokens instead of clear text.</p>
+<h2 id="legacy-access">Legacy access</h2>
+<p>The Excel ribbon keeps <strong>Legacy tools</strong> during the migration period. Use these entries only when comparing behavior or maintaining an older workbook. New workflow buttons open the WebView versions.</p>
 
 
 

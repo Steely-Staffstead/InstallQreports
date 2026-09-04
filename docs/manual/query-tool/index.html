@@ -340,6 +340,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../webview-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebView workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../troubleshooting/" class="md-nav__link">
         
   
@@ -1684,18 +1712,20 @@
 
 
 <h1 id="query-tool">Query Tool</h1>
-<p>The Query Tool is the main workspace for finding data, writing and testing queries, previewing results, and returning a data-source definition to Excel. It supports SQL connections, Excel tables, the Power Pivot model, Canvas tables, and API definitions.</p>
+<p>Query Web is the main workspace for finding data, writing and testing queries, previewing results, and returning a data-source definition to Excel. The current ribbon button opens the WebView workspace; the previous WinForms tool remains available under <strong>Legacy tools</strong> during the transition. Query Web supports SQL connections, Excel tables, the Power Pivot model, Canvas tables, and API definitions.</p>
+<p>The workspace uses three resizable areas: sources and fields on the left, the SQL editor in the upper centre, and results below it. Use the edge buttons to collapse or reopen Sources and Tools. The result area contains <strong>Grid</strong>, <strong>JSON</strong>, <strong>Parsed SQL</strong>, and <strong>Messages</strong>; execution errors automatically activate Messages.</p>
 <p>This page explains the normal workflow first, followed by the individual tools and context menus.</p>
 <p><img src="../assets/images/query-tool/query-tool-overview.png" alt="Query Tool with an example SQL query" style="max-width: 760px; width: 100%;"></p>
 <h2 id="quick-start">Quick start</h2>
 <ol>
-<li>Choose a connection from <strong>Conn</strong>.</li>
-<li>Select <strong>Table</strong> to browse available tables.</li>
+<li>Choose a connection at the top of the Sources pane.</li>
+<li>Expand a table to browse its columns.</li>
 <li>Select a table to inspect its columns, or write SQL directly in <strong>Query</strong>.</li>
 <li>Add parameters such as <code>{{pyear}}</code> when the query needs user input.</li>
-<li>Select <strong>Run</strong> or press <strong>F5</strong> to preview the result.</li>
-<li>Use <strong>Return</strong> when the result and definition are ready for Excel.</li>
+<li>Select <strong>Run</strong> or press <strong>F5</strong> to preview the result. New workspaces default to 1,000 preview rows.</li>
+<li>Use <strong>Apply query</strong> when the result and definition are ready for Excel or the calling Canvas.</li>
 </ol>
+<p>Right-click a table to preview its top rows, insert its name, create <code>SELECT *</code>, or create a query from its selected columns. Each table also has <strong>Selected → query</strong> and <strong>View top</strong> actions. Column filters can load distinct source values or accept advanced expressions such as <code>in (2023,2024)</code>, <code>between</code>, comparisons, <code>like</code>, and null tests.</p>
 <p>When Query Tool was opened from Canvas, Statistics, or the API tool, <strong>Return</strong> sends the query back to that calling window instead.</p>
 <p>When returning to Excel, Query Tool writes a worksheet definition that QReports can reload. See <a href="../qrep-excel-code/">QRep Excel Code</a> to understand those rows, or use <a href="../formula-helper/">Formula Helper</a> to look up and generate output syntax.</p>
 <h2 id="select-or-configure-a-connection">Select or configure a connection</h2>

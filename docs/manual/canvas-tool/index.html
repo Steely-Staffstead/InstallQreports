@@ -340,6 +340,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../webview-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebView workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../troubleshooting/" class="md-nav__link">
         
   
@@ -1431,12 +1459,13 @@
 <blockquote>
 <p><strong>Premium/Pro feature:</strong> Canvas requires the Canvas Tool feature in the QReports license. It is available in the applicable Premium/Pro package. PowerPoint integration additionally requires the PowerPoint add-in feature.</p>
 </blockquote>
-<p>QReports Canvas creates multi-page visual reports from queries, tables, measures, parameters, charts, and formatted tiles. The same Canvas editor is used from Excel and PowerPoint, so a visual definition follows the same query and parameter rules in both hosts.</p>
+<p>Canvas Web creates multi-page visual reports from queries, tables, measures, parameters, charts, and formatted tiles. The current ribbon button opens the WebView report designer; the old Qanvas tool is available under <strong>Legacy tools</strong>. The same web designer is used from Excel and PowerPoint, so a visual definition follows the same query and parameter rules in both hosts.</p>
+<p>The report structure pane is on the left, the page canvas is in the centre, and Properties/Page filters are on the right. Both side panes are resizable and collapsible. Select a tile to edit it; click the page background to clear the selection. Drag a tile by its header and resize it from any corner using the subtle grey handles.</p>
 <p><img src="../assets/images/canvas/canvas-overview.png" alt="Placeholder showing a multi-tile QReports Canvas report" style="max-width: 940px; width: 100%;"></p>
 <h2 id="open-canvas">Open Canvas</h2>
-<p>From Excel, choose <strong>QRep &gt; Qanvas Tool</strong>. You can also right-click a supported QReports shape or picture and choose <strong>Open in Qanvas tool</strong>.</p>
+<p>From Excel, choose <strong>QRep &gt; Canvas Web</strong>. You can also right-click a supported QReports shape or picture and open its stored Canvas definition.</p>
 <p>From PowerPoint, choose <strong>QReports &gt; New Canvas</strong>, select an existing Canvas shape and choose <strong>Edit Selected</strong>, or use the shape context menu. See <a href="../powerpoint-addin/">PowerPoint add-in</a>.</p>
-<p>Canvas can also open and save standalone <code>.qrcn</code> files. A <code>.qrcn</code> file stores the report definition; runtime result tables are refreshed from their sources.</p>
+<p>Canvas Web can open and save standalone <code>.canvasweb.json</code> files. <strong>Recent</strong> lists only valid Canvas Web documents, newest first. The embedded workbook representation remains compatible with the QReports Canvas definition used by Excel and PowerPoint.</p>
 <h2 id="edit-mode-and-view-mode">Edit mode and view mode</h2>
 <ul>
 <li><strong>Edit mode</strong> lets you add, select, move, resize, duplicate, order, configure, and delete tiles.</li>
@@ -1525,7 +1554,7 @@
 <li>Save or return the Canvas to its host.</li>
 </ol>
 <h2 id="tables-and-matrices">Tables and matrices</h2>
-<p>Double-click a table or matrix, or use its design command, to configure fields, hierarchy, measures, column widths, number formats, visibility, totals, and conditional formatting.</p>
+<p>Select a table or matrix and choose <strong>Design</strong> to open the web visual builder. Its layout is consistent for both visuals: available Fields on the left, selected objects and formatting in the middle, and the live preview on the right. Drag fields into the chosen columns, rows, or values and use Advanced ordering for multi-column ascending/descending order.</p>
 <p>Matrix conditional formatting can use a measure that returns a named color, hexadecimal color, or RGB value. Always reopen a tile after saving to confirm that its stored definition contains the intended layout and formatting.</p>
 <h2 id="charts">Charts</h2>
 <p>Chart tiles use the shared <a href="../chart-tool/">Chart tool</a>. Select categories and series, then configure labels, axes, gridlines, colors, markers, lines, and chart-specific options.</p>
@@ -1571,7 +1600,7 @@
 <p>Canvas supports preset or manual page sizes, zoom, solid or gradient backgrounds, background images, rounded page appearance, and configurable tabs. Use <strong>Zoom in</strong>, <strong>Zoom out</strong>, or <strong>Reset zoom to 100%</strong> while editing.</p>
 <p>The File menu can save a <code>.qrcn</code> definition, open a previous file, maintain recent files, export the current canvas to PNG or JPG, and copy the rendered canvas image to the clipboard.</p>
 <h2 id="return-to-excel">Return to Excel</h2>
-<p>When hosted by Excel, <strong>Return</strong> stores the Canvas specification with the workbook shape and replaces or inserts its rendered image. Loading the worksheet can refresh stored Canvas shapes after their source data changes.</p>
+<p>When hosted by Excel, <strong>Return to Excel</strong> stores the Canvas specification with the workbook shape and replaces or inserts its rendered image. Loading the worksheet refreshes stored Canvas shapes through an off-screen render-only process, so the editor does not open or flash during a normal report refresh.</p>
 <p>Keep the underlying workbook connections, <code>_control</code> parameters, and report code with the workbook. The rendered picture is only the visible result; the stored Canvas JSON is required for later editing.</p>
 <h2 id="use-canvas-in-powerpoint">Use Canvas in PowerPoint</h2>
 <p><img src="../assets/images/canvas/canvas-powerpoint.png" alt="Placeholder showing a QReports Canvas rendered on a PowerPoint slide" style="max-width: 900px; width: 100%;"></p>

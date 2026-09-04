@@ -2,90 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/api-tool/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/canvas-tool/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/changelog/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/chart-tool/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/dax-measures/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/formula-helper/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/getting-started/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/installation/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/mini-sql/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/parameters/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/powerpoint-addin/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/powerpoint-ribbon/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/powerpoint-shared/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/qrep-excel-code/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/qrep-ribbon/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/query-tool/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/technical-installation/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/technical-removal/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/technical-security/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/technical/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
     </url>
     <url>
          <loc>https://steely-staffstead.github.io/InstallQreports/manual/troubleshooting/</loc>
-         <lastmod>2026-08-25</lastmod>
+         <lastmod>2026-09-04</lastmod>
+    </url>
+    <url>
+         <loc>https://steely-staffstead.github.io/InstallQreports/manual/webview-workspaces/</loc>
+         <lastmod>2026-09-04</lastmod>
     </url>
 </urlset>
