@@ -808,10 +808,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#edit-mode-and-view-mode" class="md-nav__link">
+  <a href="#select-and-arrange-objects" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Edit mode and view mode
+        Select and arrange objects
       
     </span>
   </a>
@@ -819,10 +819,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pages-and-page-data" class="md-nav__link">
+  <a href="#pages-data-sources-and-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pages and page data
+        Pages, data sources, and parameters
       
     </span>
   </a>
@@ -885,10 +885,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#refresh-commands" class="md-nav__link">
+  <a href="#graphics-and-connectors" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Refresh commands
+        Graphics and connectors
       
     </span>
   </a>
@@ -1307,10 +1307,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#edit-mode-and-view-mode" class="md-nav__link">
+  <a href="#select-and-arrange-objects" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Edit mode and view mode
+        Select and arrange objects
       
     </span>
   </a>
@@ -1318,10 +1318,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pages-and-page-data" class="md-nav__link">
+  <a href="#pages-data-sources-and-parameters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pages and page data
+        Pages, data sources, and parameters
       
     </span>
   </a>
@@ -1384,10 +1384,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#refresh-commands" class="md-nav__link">
+  <a href="#graphics-and-connectors" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Refresh commands
+        Graphics and connectors
       
     </span>
   </a>
@@ -1460,46 +1460,22 @@
 <p><strong>Premium/Pro feature:</strong> Canvas requires the Canvas Tool feature in the QReports license. It is available in the applicable Premium/Pro package. PowerPoint integration additionally requires the PowerPoint add-in feature.</p>
 </blockquote>
 <p>Canvas Web creates multi-page visual reports from queries, tables, measures, parameters, charts, and formatted tiles. The current ribbon button opens the WebView report designer; the old Qanvas tool is available under <strong>Legacy tools</strong>. The same web designer is used from Excel and PowerPoint, so a visual definition follows the same query and parameter rules in both hosts.</p>
-<p>The report structure pane is on the left, the page canvas is in the centre, and Properties/Page filters are on the right. Both side panes are resizable and collapsible. Select a tile to edit it; click the page background to clear the selection. Drag a tile by its header and resize it from any corner using the subtle grey handles.</p>
+<p>The report structure pane is on the left, the page canvas is in the centre, and <strong>Properties</strong> and <strong>Filters</strong> are on the right. Both side panes are resizable and collapsible from their edge buttons. Select a tile to edit it; click the page background to clear the selection. Drag a tile by its header and resize it from any corner. Alignment guides appear while moving or resizing objects.</p>
 <p><img src="../assets/images/canvas/canvas-overview.png" alt="Placeholder showing a multi-tile QReports Canvas report" style="max-width: 940px; width: 100%;"></p>
 <h2 id="open-canvas">Open Canvas</h2>
 <p>From Excel, choose <strong>QRep &gt; Canvas Web</strong>. You can also right-click a supported QReports shape or picture and open its stored Canvas definition.</p>
 <p>From PowerPoint, choose <strong>QReports &gt; New Canvas</strong>, select an existing Canvas shape and choose <strong>Edit Selected</strong>, or use the shape context menu. See <a href="../powerpoint-addin/">PowerPoint add-in</a>.</p>
-<p>Canvas Web can open and save standalone <code>.canvasweb.json</code> files. <strong>Recent</strong> lists only valid Canvas Web documents, newest first. The embedded workbook representation remains compatible with the QReports Canvas definition used by Excel and PowerPoint.</p>
-<h2 id="edit-mode-and-view-mode">Edit mode and view mode</h2>
-<ul>
-<li><strong>Edit mode</strong> lets you add, select, move, resize, duplicate, order, configure, and delete tiles.</li>
-<li><strong>View mode</strong> is intended for interacting with the finished report, including parameters and filters.</li>
-</ul>
-<p>Use the Edit mode button to switch modes. Right-click a tile for <strong>Edit</strong>, <strong>Duplicate</strong>, <strong>Send to Back</strong>, <strong>Bring to Front</strong>, <strong>Remove</strong>, <strong>Edit own query</strong>, or <strong>Refresh data</strong>, depending on the tile type.</p>
-<h2 id="pages-and-page-data">Pages and page data</h2>
-<p>Each Canvas page can have its own name, appearance, size, background, query, filters, and result table. Add pages with <strong>New Page</strong>. Page tabs can be renamed, reordered, or removed.</p>
+<p>Canvas Web can open and save standalone <code>.canvasweb.json</code> files. <strong>Recent</strong> lists only valid Canvas Web documents, newest first, and hides the common file extension for readability. The embedded workbook representation remains compatible with the QReports Canvas definition used by Excel and PowerPoint.</p>
+<h2 id="select-and-arrange-objects">Select and arrange objects</h2>
+<p>Select one object or drag a selection rectangle around several objects. Selected objects can be moved with the mouse or arrow keys. Right-click an object to duplicate, remove, or change its layer order. The <strong>Handles</strong> command hides design handles, and <strong>Header tags</strong> hides the small Table, Matrix, Chart, or Text type labels without hiding the tile title.</p>
+<p>Text tiles and text graphics support formatted HTML content. Double-click their content to open and focus the formatted-text editor; double-click a tile header to edit its title.</p>
+<h2 id="pages-data-sources-and-parameters">Pages, data sources, and parameters</h2>
+<p>Pages define layout, size, background, tiles, and graphics. Data sources are document-level, so the same loaded source can be reused on several pages. Every report has one protected <strong>Main source</strong>, normally created from the Excel source that opened Canvas. Add any number of <strong>Global sources</strong> when visuals need other connections or queries.</p>
 <p><img src="../assets/images/canvas/canvas-page-query.png" alt="Placeholder showing Canvas page query and output fields" style="max-width: 900px; width: 100%;"></p>
-<p>The Page Query area provides data shared by tiles on that page:</p>
-<table>
-<thead>
-<tr>
-<th>Source type</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Source</td>
-<td>Runs SQL against a saved connection.</td>
-</tr>
-<tr>
-<td>Canvas</td>
-<td>Runs <a href="../mini-sql/">Mini SQL</a> against tables published by Canvas tiles.</td>
-</tr>
-<tr>
-<td>API</td>
-<td>Reserved for API-backed page queries; availability can depend on the application version.</td>
-</tr>
-</tbody>
-</table>
-<p>Use <strong>Edit query</strong> to open Query Tool, <strong>Measures</strong> to manage Mini DAX measures, and <strong>Update</strong> to refresh the current page result. The Data tree shows fields available to page tiles.</p>
-<p>Parameters are patched before SQL or Mini SQL is executed. This is the same parameter resolver used by Query Tool and the Excel add-in.</p>
+<p>Each source owns its query and measures. Every data-bound tile initially uses Main source, but its source can be changed independently—for example, several tiles can share Global source 1 while other tiles continue to use Main source.</p>
+<p><img src="../assets/images/canvas/canvas-global-sources.png" alt="Placeholder showing Main and global Canvas data sources with per-tile source selection" style="max-width: 900px; width: 100%;"></p>
+<p>Use <strong>Edit query</strong> to open Query Web, <strong>Measures</strong> to manage Mini DAX measures, and <strong>Update</strong> to load or refresh the selected source. The available fields and measures follow the source of the selected tile.</p>
+<p>Parameters are global definitions shared by every source. A value such as period <code>202605</code> or region <code>Europe</code> can therefore be resolved consistently in Main source and all global sources. Excel <code>_control</code> values remain authoritative when Canvas is opened from a workbook.</p>
 <h2 id="tile-types">Tile types</h2>
 <p><img src="../assets/images/canvas/canvas-tile-types.png" alt="Placeholder showing Canvas table, chart, matrix, card, text, picture, and parameter tiles" style="max-width: 920px; width: 100%;"></p>
 <table>
@@ -1534,28 +1510,25 @@
 <td>Picture</td>
 <td>Logos, icons, illustrations, and other image content.</td>
 </tr>
-<tr>
-<td>Parameter</td>
-<td>An interactive parameter control placed directly on the report.</td>
-</tr>
 </tbody>
 </table>
-<p>Table, Matrix, and Chart tiles can use the page data or their own query, depending on the design. A table or matrix can publish a named result that another Canvas Mini SQL query can use.</p>
+<p>Table, Matrix, Chart, and Card tiles use their selected source. Text and Picture tiles are presentation objects and do not require a data field.</p>
 <h2 id="create-a-first-canvas-report">Create a first Canvas report</h2>
 <ol>
 <li>Open Canvas and add or rename the first page.</li>
-<li>Choose the page source and use <strong>Edit query</strong> to retrieve data.</li>
-<li>Refresh the page query and confirm that fields appear under Data.</li>
+<li>Configure Main source, or add a global source, and use <strong>Edit query</strong> to retrieve data.</li>
+<li>Update the source and confirm that its fields appear under Data.</li>
 <li>Add a Table tile and select the fields to display.</li>
 <li>Add a Chart or Card using the same page data.</li>
-<li>Resize and align tiles in Edit mode.</li>
-<li>Add parameters or filters when the report needs interaction.</li>
-<li>Switch to View mode and test the report.</li>
+<li>Resize and align the tiles on the canvas.</li>
+<li>Add global parameters or source/tile filters when the report needs interaction.</li>
+<li>Hide handles and header tags to review the finished layout.</li>
 <li>Save or return the Canvas to its host.</li>
 </ol>
 <h2 id="tables-and-matrices">Tables and matrices</h2>
 <p>Select a table or matrix and choose <strong>Design</strong> to open the web visual builder. Its layout is consistent for both visuals: available Fields on the left, selected objects and formatting in the middle, and the live preview on the right. Drag fields into the chosen columns, rows, or values and use Advanced ordering for multi-column ascending/descending order.</p>
-<p>Matrix conditional formatting can use a measure that returns a named color, hexadecimal color, or RGB value. Always reopen a tile after saving to confirm that its stored definition contains the intended layout and formatting.</p>
+<p>Matrix rows form an ordered hierarchy. <strong>Tabular</strong> layout keeps a separate column for each row level, while <strong>Outline</strong> uses one indented hierarchy column. Parent levels can show formatted subtotals at the top or bottom, optional blank lines, and expandable <code>+/-</code> controls. The lowest row level remains detail and follows the normal Table/Matrix formatting. Value headers follow their value-column alignment.</p>
+<p><img src="../assets/images/canvas/canvas-matrix-outline-subtotals.png" alt="Placeholder showing an outline matrix with expandable groups and formatted subtotals" style="max-width: 900px; width: 100%;"></p>
 <h2 id="charts">Charts</h2>
 <p>Chart tiles use the shared <a href="../chart-tool/">Chart tool</a>. Select categories and series, then configure labels, axes, gridlines, colors, markers, lines, and chart-specific options.</p>
 <p>When a chart is saved back to Canvas, both its visible rendering and JSON definition are stored. Reopening <strong>Design Chart</strong> should restore the editor from that definition.</p>
@@ -1564,41 +1537,18 @@
 <ul>
 <li>In Excel-hosted Canvas, parameters are refreshed from the workbook <code>_control</code> sheet.</li>
 <li>In PowerPoint, parameters are stored with the presentation and can refresh all Canvas shapes.</li>
-<li>A Parameter tile lets the report user change a value without opening the separate input form.</li>
-<li>Page and visual filters can restrict the displayed data after the page query is loaded.</li>
+<li>Source filters apply to already loaded source data and affect every tile connected to that source.</li>
+<li>Tile filters apply only to their referenced tile and remain listed with the tile name.</li>
 </ul>
+<p><img src="../assets/images/canvas/canvas-source-tile-filters.png" alt="Placeholder showing separate source and tile filters in Canvas Web" style="max-width: 760px; width: 100%;"></p>
 <p>Use the same <code>{{parameter}}</code> syntax in SQL, Mini SQL, text, and supported visual definitions.</p>
-<h2 id="refresh-commands">Refresh commands</h2>
-<table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Update</td>
-<td>Refreshes the current page query.</td>
-</tr>
-<tr>
-<td>Refresh data</td>
-<td>Refreshes the selected tile's own query.</td>
-</tr>
-<tr>
-<td>Refresh Multi</td>
-<td>Refreshes published Canvas sources used by other queries.</td>
-</tr>
-<tr>
-<td>Refresh All</td>
-<td>Refreshes all applicable Canvas data and visuals.</td>
-</tr>
-</tbody>
-</table>
-<p>Use a small page-level query where several visuals need the same data. Use an own query when a tile needs a different source, aggregation, or refresh path.</p>
+<h2 id="graphics-and-connectors">Graphics and connectors</h2>
+<p>Canvas graphics include formatted text, lines, rectangles, and connectors. Lines and rectangles support color, thickness, solid/dotted/dashed styles, shading, transparent fill, rounding, movement, and resizing. Connectors attach to defined points on tile edges and follow tiles as they move. Their route, endpoints, arrow size, line style, and layer order can be configured.</p>
+<p><img src="../assets/images/canvas/canvas-graphics-connectors.png" alt="Placeholder showing Canvas text, rectangle, line, and attached connector graphics" style="max-width: 900px; width: 100%;"></p>
 <h2 id="layout-appearance-and-export">Layout, appearance, and export</h2>
-<p>Canvas supports preset or manual page sizes, zoom, solid or gradient backgrounds, background images, rounded page appearance, and configurable tabs. Use <strong>Zoom in</strong>, <strong>Zoom out</strong>, or <strong>Reset zoom to 100%</strong> while editing.</p>
-<p>The File menu can save a <code>.qrcn</code> definition, open a previous file, maintain recent files, export the current canvas to PNG or JPG, and copy the rendered canvas image to the clipboard.</p>
+<p>Canvas supports preset or manual page sizes, solid page colors, background images, rounded tiles, transparent Card backgrounds, optional tile borders, and explicit layer ordering. Card tiles provide configurable value and caption templates, typography, comparisons, and parameter tokens.</p>
+<p><img src="../assets/images/canvas/canvas-card-caption-formatting.png" alt="Placeholder showing a transparent Card tile with formatted value and caption" style="max-width: 760px; width: 100%;"></p>
+<p>The header can create or open a standalone Canvas document, maintain recent files, and save changes. When hosted by Excel or PowerPoint, returning to the host captures the page and stores both the rendered image and editable definition.</p>
 <h2 id="return-to-excel">Return to Excel</h2>
 <p>When hosted by Excel, <strong>Return to Excel</strong> stores the Canvas specification with the workbook shape and replaces or inserts its rendered image. Loading the worksheet refreshes stored Canvas shapes through an off-screen render-only process, so the editor does not open or flash during a normal report refresh.</p>
 <p>Keep the underlying workbook connections, <code>_control</code> parameters, and report code with the workbook. The rendered picture is only the visible result; the stored Canvas JSON is required for later editing.</p>

@@ -407,24 +407,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Changelog
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -441,58 +423,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#week-36-31-august-to-6-september-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Week 36 — 31 August to 6 September 2026
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#week-35-24-to-30-august-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Week 35 — 24 to 30 August 2026
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#week-34-17-to-23-august-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Week 34 — 17 to 23 August 2026
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1179,47 +1109,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#week-36-31-august-to-6-september-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Week 36 — 31 August to 6 September 2026
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#week-35-24-to-30-august-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Week 35 — 24 to 30 August 2026
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#week-34-17-to-23-august-2026" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Week 34 — 17 to 23 August 2026
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1237,10 +1126,9 @@
 
 <h1 id="changelog">Changelog</h1>
 <p>User-visible changes are grouped by calendar week. Dates identify the Monday-to-Sunday period in which the work was completed.</p>
-<h2 id="week-36-31-august-to-6-september-2026">Week 36 — 31 August to 6 September 2026</h2>
+<h1 id="week-36">Week 36</h1>
+<h2 id="31-august-to-6-september-2026">31 August to 6 September 2026</h2>
 <ul>
-<li>Added and refined WebView workspaces for Query, API, Measures, Canvas, parameters, connections/secrets, logs, selected sheets, and PowerPoint Canvas selection.</li>
-<li>Added a shared persistent CanvasWeb host, self-contained desktop publication, loading surfaces, and off-screen render-only Canvas refresh to reduce startup delay and prevent report-refresh flashes.</li>
 <li>Expanded Query Web with alias-aware completion, table aliases, selected-column SQL generation, value and advanced filters, editable SQL Server results, Grid/JSON/Parsed SQL/Messages tabs, multi-line indentation, and 1,000-row defaults.</li>
 <li>Expanded API Web with reusable connection/authentication settings, SecretManager tokens, submitted/JSON request views, resizable panes, response shaping, flatten-path selection, aliases, exclusions, formats, and sortable data previews.</li>
 <li>Added Measure workspace support for measures and calculated columns, templates, validation, parameters during Load data, custom formats, drag/reorder matrix wells, crosstab testing, and resizable panes.</li>
@@ -1250,15 +1138,23 @@
 <li>Added Canvas basic-value and Top/Bottom N filters, including visible selected values and type-safe comparisons for numeric fields.</li>
 <li>Added editable manual request JSON to API Web and persisted it with saved API definitions; also improved compact fields and collapsed-pane labels.</li>
 <li>Updated the PowerPoint add-in to prefer the latest Canvas Web build, use the WebView parameter editor, and avoid blocking when Canvas is closed with the window close button.</li>
+<li>Added document-level Canvas datasources with one protected Main source, reusable global sources, per-tile source selection, and shared global parameters; existing page queries migrate automatically and Excel <code>_control</code> values remain authoritative.</li>
+<li>Added Canvas source and tile filters that operate on loaded data, retain independent filters per visual, and identify the referenced tile.</li>
+<li>Added Canvas graphics with formatted text, resizable lines and rectangles, layer ordering, alignment guides, and routed connectors that remain attached while tiles move.</li>
+<li>Expanded Matrix tiles with ordered row hierarchies, tabular and Excel-style outline layouts, top or bottom parent subtotals, optional blank rows and <code>+/-</code> groups, aligned value headers, and separate detail/subtotal typography.</li>
+<li>Expanded Card/KPI tiles with smaller layouts, configurable caption templates and typography, rounded corners, transparent backgrounds, and optional border removal.</li>
+<li>Added global Canvas header-tag visibility, improved recent-file labels, and corrected Canvas shutdown so closing the last window releases the Debug process and WebView resources.</li>
 </ul>
-<h2 id="week-35-24-to-30-august-2026">Week 35 — 24 to 30 August 2026</h2>
+<h1 id="week-35">Week 35</h1>
+<h2 id="24-to-30-august-2026">24 to 30 August 2026</h2>
 <ul>
 <li>Improved Chart Designer field selection, automatic categories, validation messages, waterfall layouts, scatter behavior, treemaps, doughnuts, Sankey validation, and responsive settings.</li>
 <li>Expanded hierarchical parameters, list formatting and ordering, <code>_control</code> persistence, and shared Excel/Canvas/PowerPoint behavior.</li>
 <li>Added structured connection editing and file-based CSV/text sources for Mini SQL.</li>
 <li>Simplified legacy Canvas property editors and improved page backgrounds, chart-setting persistence, filters, and PowerPoint help.</li>
 </ul>
-<h2 id="week-34-17-to-23-august-2026">Week 34 — 17 to 23 August 2026</h2>
+<h1 id="week-34">Week 34</h1>
+<h2 id="17-to-23-august-2026">17 to 23 August 2026</h2>
 <ul>
 <li>Added and published the documentation site and Excel Help entry point.</li>
 <li>Unified parameter storage and substitution across Excel, Canvas, and PowerPoint.</li>
