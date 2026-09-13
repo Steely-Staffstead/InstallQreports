@@ -1126,6 +1126,27 @@
 
 <h1 id="changelog">Changelog</h1>
 <p>User-visible changes are grouped by calendar week. Dates identify the Monday-to-Sunday period in which the work was completed.</p>
+<h1 id="week-37">Week 37</h1>
+<h2 id="7-to-13-september-2026">7 to 13 September 2026</h2>
+<ul>
+<li>Added local JSONL schema groups, saved source views/combined sources, reopening definitions, dependency-aware source refresh, import source comments and replayable/removable import steps.</li>
+<li>Expanded Chart Web and Canvas chart properties with responsive plots, multiples, shared-axis/layout controls, grouped shading, label typography, date formats, direct property navigation and plot margins.</li>
+<li>Expanded Matrix subtotal/layout controls, sticky headers, larger item limits and signed data bars; refined local pictures, image sizing, graphic sections and editable text hyperlinks.</li>
+<li>Added offline webpage export definitions with folder/single-HTML formats, named historic files, bundled data/images, page tabs, sorting, filters, date/range calendars, toggles and configurable report header/subheader/button appearance.</li>
+<li>
+<p>Release audit corrected QanvasWeb executable discovery and publish checks after the rename. A fresh signed ClickOnce publish and live Excel startup test are required before shipping these changes.</p>
+</li>
+<li>
+<p>Improved Query Web and its visual join designer with selectable table columns, aliases, table actions, resizable layout, multiple editable join connections, directional join arrows, and join-type tooltips.</p>
+</li>
+<li>Integrated API Designer with Query Web so API definitions can be returned as query sources, browsed alongside tables when enabled, and used with selected-query and preview-row workflows. Improved API pagination/loop design and token-workflow visibility.</li>
+<li>Improved the Measure workspace with expression highlighting, autocomplete, keyboard indentation, clearer selected suggestions, and a docked, resizable function-reference pane.</li>
+<li>Refined Canvas image and chart tiles with transparent backgrounds, stable image positioning when scrollbars are hidden, reduced borders and margins, clearer update/editor status messages, and hidden background console windows when Chart Web opens.</li>
+<li>Corrected Excel add-in connection loading and strengthened Canvas/Matrix specification round-tripping between files and embedded Excel specifications.</li>
+<li>Changed Canvas Web packaging to split self-contained deployment so the first installation contains the .NET runtime while later ClickOnce updates can reuse unchanged runtime files.</li>
+<li>Fixed <code>setreport</code> template refreshes so dependent <code>_control</code> formulas are recalculated after report-specific parameters are applied, including MTD versus prior-year templates.</li>
+<li>Added host-independent calculated parameters with arithmetic and <code>PREVIOUSYEAR</code>, <code>PREVIOUSPERIOD</code>, and <code>ADDMONTHS</code> helpers, removing the need to rely on Excel formulas for common reporting-period calculations.</li>
+</ul>
 <h1 id="week-36">Week 36</h1>
 <h2 id="31-august-to-6-september-2026">31 August to 6 September 2026</h2>
 <ul>

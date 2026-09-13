@@ -929,6 +929,50 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#direct-tile-properties-and-local-pictures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct tile properties and local pictures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperlinks-in-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hyperlinks in text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portable-report-saves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portable report saves
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webpage-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webpage exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#current-considerations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1428,6 +1472,50 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#direct-tile-properties-and-local-pictures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Direct tile properties and local pictures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hyperlinks-in-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hyperlinks in text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#portable-report-saves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Portable report saves
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webpage-exports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webpage exports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#current-considerations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1556,6 +1644,24 @@
 <p><img src="../assets/images/canvas/canvas-powerpoint.png" alt="Placeholder showing a QReports Canvas rendered on a PowerPoint slide" style="max-width: 900px; width: 100%;"></p>
 <p>The PowerPoint add-in opens the same Canvas editor and returns the result as a picture on the slide. The Canvas JSON is stored with that picture so it can be edited and rerendered later.</p>
 <p>PowerPoint provides <strong>New Canvas</strong>, <strong>Edit Selected</strong>, <strong>Load selected</strong>, and <strong>Parameters</strong>. Loading rerenders selected or all stored Canvas shapes from their definitions. See the <a href="../powerpoint-ribbon/">PowerPoint QRep Ribbon</a>.</p>
+<h2 id="direct-tile-properties-and-local-pictures">Direct tile properties and local pictures</h2>
+<p>Chart properties expose the shared chart settings directly in the Canvas pane; see <a href="../chart-tool/#edit-from-canvas">Chart tool</a>. Matrix Subtotals exposes the selected-row subtotal settings, pretext, expand/collapse and initial collapse, layout, repeated tabular labels, blank lines, outline row header and subtotal position. Header columns remain fixed during horizontal scrolling. Matrix designs support up to 2,000 displayed items; large matrices still affect rendering performance. Data bars place positive and negative values on opposite sides of a common zero baseline and can apply to groups and details.</p>
+<p>Picture tiles accept direct image URLs or <strong>Choose image</strong> local files. Local images are embedded in the saved report. Image settings includes the picker, URL, hidden scrollbars and a Wikimedia Commons reference. General settings holds sizing, background and transparency. Image sizing supports Fit to window (whole picture), Fill width and Fill height, with a minimum tile height of 30.</p>
+<p>Card formatting, Target and variance, and Text sections are collapsible. Graphics have General settings for position/size and separate Rectangle, Line or Connector settings. Not all property sections currently use the same order: General settings may appear near Header settings; a consistent ordering review is still pending.</p>
+<h2 id="hyperlinks-in-text">Hyperlinks in text</h2>
+<p>In the formatted text editor, place the cursor or select text and choose <strong>Link…</strong>. Choose http (default), https or no prefix; enter display text and a screen tip. <strong>Place in this document</strong> links to another Canvas page. Links are underlined by default, with a no-underline option. Put the cursor inside an existing link and choose Link to edit it. Internal page links also navigate exported report tabs. External links still require network access.</p>
+<h2 id="portable-report-saves">Portable report saves</h2>
+<p>Saving a <code>.canvasweb.json</code> packages referenced local sources and embedded pictures with the editable report, so it can be copied to a shared file area. SQL/API credentials and external infrastructure are not made portable by this save; test reopening on another computer before distribution.</p>
+<h2 id="webpage-exports">Webpage exports</h2>
+<p>Choose <strong>Export webpage…</strong> and create a named export definition. Settings and last successful export date are stored in the Canvas document: save the Canvas file to persist them. <strong>Save settings</strong> does not export; <strong>Export / update</strong> writes the report.</p>
+<ul>
+<li><strong>File settings</strong>: Folder website or Single HTML file, target folder, and filename for single-file exports. The default single filename is the report name; <code>.html</code> is added automatically. Change the filename to keep a historic copy in the same folder. Re-exporting the same Qanvas filename replaces that export, but unrelated HTML files are protected.</li>
+<li><strong>Filters</strong>: Automatic/all columns or selected columns, filter types, and horizontal/top or vertical/left-pane layout. The filter field list is bordered and scrollable.</li>
+<li><strong>Report appearance</strong>: optional report name with size/color/bold/italic/underline; optional Subheader text on a new line with separate formatting; selected and unselected button colors. A preview shows these choices.</li>
+</ul>
+<p>Folder exports include <code>index.html</code>, application files, exported data, images and an export marker. Choose an empty folder or an existing Qanvas export folder. Keep the whole folder together. Single HTML exports embed application code, styles, data and supported images in one file, with no sidecar files. Both formats can be opened locally in a modern browser. Hosted access requires a suitable web server; uploading HTML to a SharePoint document library is file distribution, not normal static hosting.</p>
+<p>Pages become tabs; exported tables/matrices support header sorting and matrix expansion. Filters use only exported, already loaded rows, with no live SQL/API refresh. Filter types are Basic, Advanced (comparisons/contains/from-to), Multiple values (All/Clear), Date, Date range, Buttons and Toggle (on/off plus All values). Date controls use an Apply/Cancel/Clear calendar, highlight today, and adapt to narrow screens. Choose date(s) uses selected colors; date boxes use unselected colors.</p>
+<p><strong>Security:</strong> every exported row is accessible to recipients, including rows hidden by filters. Filters are not row-level access control. Protect the entire hosting package, not just the landing page. Browser-download rules, large datasets and embedded images can affect size and performance. Re-export to update existing offline reports.</p>
 <h2 id="current-considerations">Current considerations</h2>
 <ul>
 <li>Test queries in Query Tool before building a large visual page.</li>

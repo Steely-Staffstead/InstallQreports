@@ -718,6 +718,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chart tool
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -734,6 +752,80 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chart-web-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart Web workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#category-group-and-multiple" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category, Group and Multiple
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#labels-and-axes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels and axes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-specific-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart-specific controls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-from-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit from Canvas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1109,6 +1201,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chart-web-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart Web workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#category-group-and-multiple" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Category, Group and Multiple
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#labels-and-axes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels and axes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-specific-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart-specific controls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-from-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit from Canvas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1126,7 +1281,34 @@
 
 <h1 id="chart-tool">Chart tool</h1>
 <p>The Chart tool opens the chart designer with the current Query Tool result. It supports chart selection, series definitions, labels, formatting, filters, and returning chart definitions to Excel or Canvas.</p>
-<p>A detailed chart guide will document the individual chart types and their formatting options.</p>
+<h2 id="chart-web-workflow">Chart Web workflow</h2>
+<p>Choose a chart type, select Values and Category, and configure its series. Chart Web supports Bar/column, Stacked, Line, Area, Scatter, Waterfall, Histogram, Boxplot, Treemap, Gauge, Pie and Doughnut. Data and options panes can be resized or collapsed; chart-type settings are collapsible groups.</p>
+<p>When opened from a Canvas tile, the preview uses the tile's source and local filters. The footer indicates row/series counts and global/local filter counts. Design changes are returned as an editable chart specification.</p>
+<h2 id="category-group-and-multiple">Category, Group and Multiple</h2>
+<ul>
+<li><strong>Category</strong> identifies the plotted items, such as year or date.</li>
+<li><strong>Group</strong> is a logical parent level, such as week above dates. Supported plots can show shaded groups with configurable strength, separator color and thickness, including Waterfall.</li>
+<li><strong>Multiple</strong> splits data by another field, such as country. Use <strong>Show as multiples</strong> for separate panels rather than splitting series in one plot.</li>
+</ul>
+<p>Multiple settings include maximum panel count, shared value/category axes, automatic or explicit rows and columns, spacing, and panel-header alignment, size, color, bold, italic and underline. Review the filters and category settings when expected categories are missing.</p>
+<h2 id="labels-and-axes">Labels and axes</h2>
+<p>Category and value axes have visibility, text size/color, formatting and spacing controls. Category ordering supports natural, category ascending/descending and value ascending/descending. Data labels control visibility, category, value, series name, delimiter (including line breaks), placement, text size/color, format, angle and spacing. Group labels have separate content and typography controls.</p>
+<p>Date formatting supports <code>ddd</code> (short weekday), <code>dddd</code> (full weekday) and <code>ww</code> (week). Automatic spacing reduces label crowding; it is distinct from filtering the data. Series-sensitive groups offer All or individual-series settings for data labels, line/markers and scatter/plot settings.</p>
+<h2 id="chart-specific-controls">Chart-specific controls</h2>
+<ul>
+<li>Bar/column and Stacked: bar layout and spacing.</li>
+<li>Line and Area: line and marker settings.</li>
+<li>Scatter: plot and marker settings.</li>
+<li>Waterfall: waterfall options, grouped shading and point tooltips.</li>
+<li>Histogram and Boxplot: distribution options.</li>
+<li>Treemap: hierarchical layout, group borders and chart size. Category content is controlled by <strong>Data labels</strong>, not a separate category-label selector. Group content uses <strong>Group labels</strong>.</li>
+<li>Gauge: responsive gauge arrangement and maximum gauge count (default six).</li>
+<li>Pie and Doughnut: category/data and group-label formatting, and chart size.</li>
+</ul>
+<p>Treemap, Gauge, Pie and Doughnut have no normal axes: axis groups are hidden and category text is configured through Data labels. Theme colors control plotted shapes independently of label font colors. Plot geometry adapts to the available chart area when the editor or tile changes size; editor-only adjustment handles are omitted from the finished visual.</p>
+<h2 id="edit-from-canvas">Edit from Canvas</h2>
+<p>Select a chart tile and use <strong>Chart properties &gt; Property group</strong> for small changes without opening Chart Web. Chart settings, Title settings (including editable title text), Plot margins, axes, labels, legend and applicable chart groups are exposed here. Changes update the stored specification and tile directly.</p>
+<p>Click a plotted bar/point to select Data labels, an x-axis to select Category axis, a y-axis to select Value axis, or the top plot border to select Plot margins. Right-click provides Chart options and available property groups. Open the full designer when changing the data configuration or needing the complete preview.</p>
 <p>Return to <a href="../query-tool/#statistics-and-charts">Statistics and charts in Query Tool</a>.</p>
 
 

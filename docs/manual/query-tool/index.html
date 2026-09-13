@@ -640,6 +640,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#local-tables-source-views-and-combined-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local tables, source views and combined sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import transformations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workspace-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workspace shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#select-or-configure-a-connection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1435,6 +1468,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#local-tables-source-views-and-combined-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local tables, source views and combined sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import transformations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workspace-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workspace shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#select-or-configure-a-connection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1728,6 +1794,17 @@
 <p>Right-click a table to preview its top rows, insert its name, create <code>SELECT *</code>, or create a query from its selected columns. Each table also has <strong>Selected → query</strong> and <strong>View top</strong> actions. Column filters can load distinct source values or accept advanced expressions such as <code>in (2023,2024)</code>, <code>between</code>, comparisons, <code>like</code>, and null tests.</p>
 <p>When Query Tool was opened from Canvas, Statistics, or the API tool, <strong>Return</strong> sends the query back to that calling window instead.</p>
 <p>When returning to Excel, Query Tool writes a worksheet definition that QReports can reload. See <a href="../qrep-excel-code/">QRep Excel Code</a> to understand those rows, or use <a href="../formula-helper/">Formula Helper</a> to look up and generate output syntax.</p>
+<h2 id="local-tables-source-views-and-combined-sources">Local tables, source views and combined sources</h2>
+<p>Choose <strong>local — Local JSONL tables</strong> to query locally stored manual/imported tables and materialized source results. Groups work as schemas: <code>SELECT * FROM [weather].[Temperature]</code> or <code>weather.Temperature</code>. Use qualified names when tables belong to groups, including joins and previews. Table actions include aliases, View top 100, SQL insertion, Source information, editing and reimport where available. Hover a table name for its available type, comment, filename and last-update information.</p>
+<p>Origin badges distinguish <strong>M</strong> manual, <strong>F</strong> file, <strong>W</strong> web file, <strong>V</strong> source view and <strong>C</strong> combined source. Source views materialize a saved SQL/API query into local rows; combined sources query local tables/views (including other combined sources). Neither implies a live cross-database join. Materialize remote sources first, then join their local results efficiently.</p>
+<p>The <strong>Save</strong> dropdown provides <strong>Save as source view</strong> and <strong>Save as combined source</strong>. Reopen them using their edit action to change the stored query/connection definition. Assign tables to groups to keep related sources together. A source view refresh runs its remote query; a combined refresh recomputes its local result. Existing results remain snapshots until refreshed.</p>
+<p><strong>Update sources</strong> provides source/group selection, age/status information and dependency-aware ordering. Refresh required upstream views before downstream combined results; cycles or missing dependencies must be corrected rather than refreshed arbitrarily. Manual tables are not refresh candidates. Review the stored definition, parameters and connection before running updates that access remote services.</p>
+<h2 id="import-transformations">Import transformations</h2>
+<p>Local table editing supports CSV/TXT, Excel and web imports with a source comment. Reopening the import restores the source location and saved transformation steps, so renamed columns, selected/deleted columns, types and deleted source rows can be reproduced. Import-from-web remembers its URL; file import remembers its original location.</p>
+<p>Toggle or resize the <strong>Applied steps</strong> pane. Each column name/type change, removed column or removed source row is an independent step, rather than a long chronological edit log. Delete a step using its red remove button to rebuild the table from the remaining steps. A change targeting a deleted column is skipped. Steps persist when saving and reopening imported tables. Manual tables do not use applied import steps.</p>
+<h2 id="workspace-shortcuts">Workspace shortcuts</h2>
+<p>The <strong>Design</strong> dropdown groups Join designer, API designer and Format SQL. The query-editor context menu includes Run selected, Run all, Copy to clipboard, Select all and Clear query window. Table context menus are constrained to the available window area so actions remain reachable at the bottom of the table list.</p>
+<p>Mini SQL supports elapsed-day age calculations such as <code>datediff('d', t.date, today()) AS age</code>; quoted interval aliases include <code>d</code>/<code>dd</code>/<code>day</code>. Parameters use <code>{{name}}</code>; inspect Parsed SQL when a numeric column is compared to an unresolved or quoted string token.</p>
 <h2 id="select-or-configure-a-connection">Select or configure a connection</h2>
 <p>The <strong>Conn</strong> list controls how the query is interpreted and which tables, columns, functions, and execution engine are available.</p>
 <table>
@@ -1753,6 +1830,10 @@
 <tr>
 <td><code>canvas</code></td>
 <td>Query tables made available by the current Canvas document.</td>
+</tr>
+<tr>
+<td><code>local</code></td>
+<td>Query local JSONL tables, source views and combined sources using Mini SQL.</td>
 </tr>
 <tr>
 <td>API</td>
