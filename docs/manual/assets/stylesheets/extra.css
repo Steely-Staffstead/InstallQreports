@@ -99,3 +99,10 @@ table.excel-sheet thead th:first-child {
     linear-gradient(135deg, transparent 49%, #a6a6a6 50%, #a6a6a6 52%, transparent 53%),
     #e7e7e7;
 }
+.weekly-change { display:flex; align-items:center; gap:2rem; margin:2.5rem 0 1.2rem; }
+.weekly-change .week-badge { flex:0 0 5.5rem; min-height:5.5rem; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#22558c; color:white; border-radius:1.3rem; box-shadow:0 .6rem 1.6rem #22558c22; }
+.weekly-change .week-badge small { font-weight:800; letter-spacing:.1em; font-size:.65rem; }
+.weekly-change .week-badge strong { font-size:2.2rem; line-height:1.3; }
+.weekly-change .week-dates { margin:0 0 .35rem; color:#22558c; font-size:.8rem; font-weight:800; text-transform:uppercase; }
+.weekly-change h2 { margin:0; font-weight:750; }
+@media(max-width:600px) { .weekly-change { gap:1rem; align-items:flex-start; } .weekly-change .week-badge { flex-basis:4rem; min-height:4rem; } }

@@ -629,6 +629,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#execution-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution feedback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1457,6 +1468,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#execution-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution feedback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1781,6 +1803,16 @@
 <p>Query Web is the main workspace for finding data, writing and testing queries, previewing results, and returning a data-source definition to Excel. The current ribbon button opens the WebView workspace; the previous WinForms tool remains available under <strong>Legacy tools</strong> during the transition. Query Web supports SQL connections, Excel tables, the Power Pivot model, Canvas tables, and API definitions.</p>
 <p>The workspace uses three resizable areas: sources and fields on the left, the SQL editor in the upper centre, and results below it. Use the edge buttons to collapse or reopen Sources and Tools. The result area contains <strong>Grid</strong>, <strong>JSON</strong>, <strong>Parsed SQL</strong>, and <strong>Messages</strong>; execution errors automatically activate Messages.</p>
 <p>This page explains the normal workflow first, followed by the individual tools and context menus.</p>
+<h3 id="execution-feedback">Execution feedback</h3>
+<p>While a query runs, <strong>Working</strong> shows elapsed seconds. After successful execution,
+open <strong>Messages</strong> for the returned row count, total elapsed time (including the host
+round trip and result rendering), and local completion time. The row count reflects
+the returned result, so a preview limit may reduce it. Failed queries still show the
+error and submitted SQL. Run selected and Run all use the same feedback.</p>
+<p>The Parameters tool separates <strong>Used in this query</strong> from <strong>Available from Parameter
+Manager / _control</strong>. Collapse Used in this query to leave more room for available
+parameters; the selection is remembered while editing the query. Each list scrolls
+independently when there are many parameters.</p>
 <p><img src="../assets/images/query-tool/query-tool-overview.png" alt="Query Tool with an example SQL query" style="max-width: 760px; width: 100%;"></p>
 <h2 id="quick-start">Quick start</h2>
 <ol>

@@ -1616,12 +1616,12 @@ ORDER BY population DESC
 <tr>
 <td><code>DATEADD</code></td>
 <td><code>DATEADD(interval, number, date)</code></td>
-<td>Day, month, year, hour, minute, or second.</td>
+<td>Adds an interval; fractional numbers truncate and month ends clamp.</td>
 </tr>
 <tr>
 <td><code>DATEDIFF</code></td>
 <td><code>DATEDIFF(interval, date1, date2)</code></td>
-<td>Day, hour, minute, or second.</td>
+<td>Integer date-part boundaries crossed, not fractional elapsed time.</td>
 </tr>
 <tr>
 <td><code>YEAR</code></td>
@@ -1634,12 +1634,80 @@ ORDER BY population DESC
 <td>Extract the month number.</td>
 </tr>
 <tr>
+<td><code>WEEK</code></td>
+<td><code>WEEK(date)</code></td>
+<td>Same as <code>DATEPART(week,date)</code>.</td>
+</tr>
+<tr>
 <td><code>DATEPART</code></td>
 <td><code>DATEPART(part, date)</code></td>
-<td>Day, month, year, quarter, week, or weekday.</td>
+<td>Extract a date part, including ISO week.</td>
 </tr>
 </tbody>
 </table>
+<p>The interval/part accepts both bare keywords and quoted strings: <code>DATEADD(d,7,t.date)</code> and <code>DATEADD('d',7,t.date)</code> are equivalent. Aliases are case-insensitive.</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Accepted aliases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Year</td>
+<td><code>year</code>, <code>yy</code>, <code>yyyy</code>, <code>y</code></td>
+</tr>
+<tr>
+<td>Quarter</td>
+<td><code>quarter</code>, <code>qq</code>, <code>q</code></td>
+</tr>
+<tr>
+<td>Month</td>
+<td><code>month</code>, <code>mm</code>, <code>m</code></td>
+</tr>
+<tr>
+<td>Day</td>
+<td><code>day</code>, <code>dd</code>, <code>d</code></td>
+</tr>
+<tr>
+<td>Day of year</td>
+<td><code>dayofyear</code>, <code>dy</code></td>
+</tr>
+<tr>
+<td>Week</td>
+<td><code>week</code>, <code>wk</code>, <code>ww</code></td>
+</tr>
+<tr>
+<td>Weekday</td>
+<td><code>weekday</code>, <code>dw</code>, <code>wd</code>, <code>w</code></td>
+</tr>
+<tr>
+<td>Hour</td>
+<td><code>hour</code>, <code>hh</code>, <code>h</code></td>
+</tr>
+<tr>
+<td>Minute</td>
+<td><code>minute</code>, <code>mi</code>, <code>n</code></td>
+</tr>
+<tr>
+<td>Second</td>
+<td><code>second</code>, <code>ss</code>, <code>s</code></td>
+</tr>
+<tr>
+<td>Millisecond</td>
+<td><code>millisecond</code>, <code>ms</code></td>
+</tr>
+<tr>
+<td>ISO week (DATEPART only)</td>
+<td><code>iso_week</code>, <code>isowk</code>, <code>isoww</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>DATEPART(week,date)</code> and <code>WEEK(date)</code> use Sunday-first weeks with January 1 in week 1. <code>DATEPART(weekday,date)</code> returns Sunday = 1 through Saturday = 7. MiniSQL does not support <code>SET DATEFIRST</code>. Use <code>DATEPART(iso_week,date)</code> for Monday-first ISO week numbering. This replaces the previous Monday/first-four-day behavior of <code>DATEPART(week,...)</code>.</p>
+<p><code>DATEDIFF</code> counts boundaries: from 23:59:59 to midnight is 1 day, 1 hour, 1 minute and 1 second. Week differences count Sunday boundaries. Year, quarter and month differences count calendar boundaries, not complete elapsed periods. Results are signed 32-bit integers; overflow is an error. This replaces the previous elapsed-time day/hour/minute/second calculation. <code>DATEADD(weekday,...)</code> adds calendar days, not working days. This follows <a href="https://learn.microsoft.com/en-us/sql/t-sql/functions/datediff-transact-sql">SQL Server boundary semantics</a>.</p>
+<p>Compatibility aliases <code>y</code> (year), <code>h</code> (hour), <code>wd</code>/<code>w</code> (weekday) are retained. Unlike SQL Server's <code>y</code>, MiniSQL's legacy <code>y</code> means year; use <code>dy</code> or <code>dayofyear</code> for day of year. NULL arguments return NULL. Dates, date strings and numeric Excel serial dates are supported. <code>MONTH(date)</code> returns 1-12.</p>
+<p><code>FORMAT(value,'pattern')</code> uses system culture and .NET numeric/date patterns. Prefer <code>yyyy-MM</code> for year/month. Excel-style lowercase month tokens are also accepted in date-only patterns: <code>FORMAT(t.date,'yyyy-mm')</code> returns, for example, <code>2026-09</code>. In a time pattern such as <code>yyyy-MM-dd HH:mm</code>, uppercase <code>MM</code> means month and lowercase <code>mm</code> means minutes. The query option to disable FORMAT returns the original value instead of text.</p>
 <pre><code class="language-sql">SELECT
     invoice_date,
     YEAR(invoice_date) AS invoice_year,

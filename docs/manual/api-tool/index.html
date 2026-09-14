@@ -850,6 +850,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#request-layout-and-output-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request layout and output actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Request layout and output actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standalone-request-json-with-baseurl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standalone request JSON with BaseUrl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1372,6 +1400,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#request-layout-and-output-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request layout and output actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Request layout and output actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standalone-request-json-with-baseurl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standalone request JSON with BaseUrl
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1572,6 +1628,37 @@
 </ul>
 <p>If the existing Excel definition contains measures and the API result does not provide replacements, Query Tool preserves the stored measure definition and displays a warning. This prevents an API edit from silently deleting existing report measures.</p>
 <p>Continue with <a href="../query-tool/">Query Tool</a>, <a href="../parameters/">Parameters</a>, or <a href="../dax-measures/">Mini DAX and measures</a>.</p>
+<h2 id="request-layout-and-output-actions">Request layout and output actions</h2>
+<h3 id="standalone-request-json-with-baseurl">Standalone request JSON with BaseUrl</h3>
+<p>Use <code>BaseUrl</code> instead of <code>Connection</code> when a request (including a token workflow request) does not need a saved connection:</p>
+<pre><code class="language-json">{
+  &quot;Type&quot;: &quot;api&quot;,
+  &quot;BaseUrl&quot;: &quot;https://api.example.com&quot;,
+  &quot;Method&quot;: &quot;POST&quot;,
+  &quot;Path&quot;: &quot;auth/token&quot;,
+  &quot;BodyMode&quot;: 1,
+  &quot;ContentType&quot;: &quot;application/json&quot;,
+  &quot;Headers&quot;: {},
+  &quot;Body&quot;: &quot;{\&quot;clientId\&quot;:1,\&quot;tenantId\&quot;:\&quot;example\&quot;,\&quot;apiKey\&quot;:\&quot;{{secret:MyApiKey}}\&quot;}&quot;
+}
+</code></pre>
+<p><code>Path</code> is relative to <code>BaseUrl</code>; it can be empty if BaseUrl is the complete endpoint address. <code>BaseUrl</code> must be an absolute HTTP/HTTPS URL without embedded credentials, query parameters or fragments. Put query parameters in <code>Query</code>.</p>
+<p>With <code>BaseUrl</code>, no connection is created or saved, and no saved authentication or default headers are inherited. Supply required headers/body values in the JSON. If both <code>BaseUrl</code> and <code>Connection</code> are present, <strong>BaseUrl takes precedence</strong> and the saved connection is ignored, preventing its credentials from being forwarded to another host. Omit BaseUrl to retain the existing Connection behavior. Secret references in request text are resolved normally; keep actual API keys/passwords in Secrets, not literal JSON.</p>
+<p>In Authentication → Token workflow → API request JSON, paste this request into <strong>Token request JSON</strong> and set the token JSON path to the property returned by that API, such as <code>accessToken</code>. The main API connection remains separate from this standalone token request.</p>
+<p>Query parameters and Headers are separate, full-width collapsible groups under
+Parameters. Expand either group to edit its key/value rows.</p>
+<p>Right-click a Data cell, Raw response, Submitted request or JSON request to <strong>Copy
+details</strong>, <strong>Copy all</strong>, or <strong>Clear this view</strong>. Copy details uses the selected text
+or clicked cell; Copy all in Data copies the structured result as JSON. Clear is
+local to that output view and does not delete a saved API definition. Clearing JSON
+request while Manual JSON is on means you must provide valid JSON before sending.</p>
+<p>API URLs in Data and Raw response are clickable. Click a link, or right-click
+<strong>Open as API request…</strong> (relative URLs can also be selected). The workspace keeps the current connection and prepares
+a GET request for review; nothing runs until you click Send. Pagination and request
+loops are disabled for this one-off request. Use <strong>Back</strong> to restore the previous
+request and response. Only URLs on the same origin as the current connection are
+accepted, preventing credentials from being forwarded to a different API. Turn
+Manual JSON off before using this navigation.</p>
 
 
 
