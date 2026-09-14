@@ -1,0 +1,8 @@
+.field-menu button { font-size: 12px; padding: 5px 7px; }
+.measure-menu label { font-size: 12px; }
+.measure-menu select,
+.measure-menu input { margin-top: 4px; }
+.format-preview { padding: 7px; color: #526079; background: #f3f6fb; border-radius: 6px; font-size: 12px; }
+.danger { color: #b23b35 !important; }
+.field { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+.field small { color: #7a859d; font-size: 10px; }

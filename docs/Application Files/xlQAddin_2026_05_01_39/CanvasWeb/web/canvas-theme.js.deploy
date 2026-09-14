@@ -1,0 +1,11 @@
+(() => {
+  const defaults={text:'#182230',accent:'#4f6ee8',surface:'#ffffff',headerBackground:'#eef3f9',headerText:'#344054',grid:'#dce3ec',positive:'#16844a',negative:'#c43d4b'};
+  const paths={background:'surface',borderColor:'grid','header.background':'headerBackground','header.color':'headerText',textColor:'text',color:'accent',fill:'surface','card.valueColor':'accent','card.positiveColor':'positive','card.negativeColor':'negative','card.captionColor':'text','appearance.textColor':'text','appearance.headerColor':'headerBackground','appearance.rowHeaderColor':'headerBackground','appearance.totalRowColor':'headerBackground','appearance.alternateColor':'surface','appearance.gridColor':'grid','design.matrixSpec.subtotalStyle.textColor':'text','design.matrixSpec.subtotalStyle.background':'headerBackground'};
+  const get=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
+  function set(object,path,value){const parts=path.split('.'),last=parts.pop();let owner=object;parts.forEach(key=>owner=owner[key]||={});owner[last]=value;}
+  function roles(theme){return {...defaults,accent:theme?.colors?.[0]||defaults.accent,...theme?.roles};}
+  function fields(tile){const result=['background','borderColor','header.background','header.color'];if(['line','rectangle','connector'].includes(tile.kind))result.push('color');if(tile.kind==='rectangle')result.push('fill');if(['text','graphicText'].includes(tile.kind))result.push('textColor');if(tile.kind==='card')result.push('card.valueColor','card.positiveColor','card.negativeColor','card.captionColor');if(['table','matrix'].includes(tile.kind))result.push(...Object.keys(paths).filter(path=>path.startsWith('appearance.')));if(tile.kind==='matrix'&&tile.design?.matrixSpec)result.push('design.matrixSpec.subtotalStyle.textColor','design.matrixSpec.subtotalStyle.background');return result;}
+  function resolve(tile,theme){if(!tile?.themeBindings)return tile;const copy=structuredClone(tile),colors=roles(theme);Object.entries(tile.themeBindings).forEach(([path,role])=>{if(fields(tile).includes(path)&&colors[role])set(copy,path,colors[role]);});return copy;}
+  const inherit=tile=>Object.fromEntries(fields(tile).map(path=>[path,paths[path]]));
+  globalThis.CanvasTheme={defaults,paths,get,set,roles,fields,resolve,inherit};
+})();
