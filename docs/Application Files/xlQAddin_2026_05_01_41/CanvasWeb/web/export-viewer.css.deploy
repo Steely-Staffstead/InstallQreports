@@ -1,0 +1,46 @@
+body { display:flex!important; flex-direction:column; height:100vh; overflow:hidden; }
+body > header.app-header,body > .toolbar,body > .commandbar,.left-panel,.right-panel,.pane-splitter,.statusbar { display:none!important; }
+body > main { display:block!important; flex:1; min-height:0; }
+.workspace { display:block!important; height:100%; }
+.canvas-viewport { height:100%; }
+.tile { outline:none!important; }
+.resize-handle,.connection-port,.tile-kind { display:none!important; }
+.tile-header { cursor:default; }
+#viewerHeader { display:block; padding:12px; background:white; border-bottom:1px solid #ccd5e0; max-height:45vh; overflow:auto; }
+#viewerHeader nav { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+#viewerHeader button.active { background:#e8edff; border-color:#4f6ee8; }
+#viewerHeader details { margin:8px 0; }
+#viewerHeader fieldset { display:flex; flex-wrap:wrap; gap:12px; margin:8px 0; }
+#viewerHeader label { min-width:140px; max-width:240px; }
+.filter-buttons { display:flex; flex-wrap:wrap; gap:4px; max-height:180px; overflow:auto; }
+.date-range-display { display:flex; align-items:center; gap:6px; flex-wrap:nowrap; margin:8px 0; }
+.date-range-display[hidden] { display:none; }
+#viewerHeader .date-picker-selected,#viewerFiltersPane .date-picker-selected { background:var(--viewer-selected-bg,#4f6ee8); color:var(--viewer-selected-color,#fff); border:1px solid var(--viewer-selected-bg,#4f6ee8); border-radius:6px; padding:7px 9px; white-space:nowrap; }
+.range-calendar .range-calendar-grid button.today { border:1px solid currentColor; border-radius:50%; }
+#viewerHeader .date-picker-selected,#viewerFiltersPane .date-picker-selected { font-size:12px; }
+#viewerHeader .date-picker-value,#viewerFiltersPane .date-picker-value { background:var(--viewer-unselected-bg,#fff); color:var(--viewer-unselected-color,#34425e); border:1px solid #cdd5df; border-radius:6px; padding:7px 9px; white-space:nowrap; }
+.advanced-filter { width:240px; max-width:100%; }
+.advanced-filter > select,.advanced-filter-fields { box-sizing:border-box; width:100%; }
+.advanced-filter-fields label { display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:12px; }
+.advanced-filter-fields label[hidden] { display:none; }
+.advanced-filter-fields input { box-sizing:border-box; width:100%; text-align:right; padding:8px; border:1px solid #cdd5df; border-radius:6px; }
+.toggle-filter-row { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-top:8px; }
+#viewerHeader .export-toggle,#viewerFiltersPane .export-toggle { width:52px; height:30px; padding:3px; border-radius:20px; border:1px solid #cdd5df; background:var(--viewer-unselected-bg,#fff); color:var(--viewer-unselected-color,#34425e); }
+.export-toggle span { display:block; width:22px; height:22px; border-radius:50%; background:currentColor; transition:transform .15s; }
+#viewerHeader .export-toggle.active,#viewerFiltersPane .export-toggle.active { background:var(--viewer-selected-bg,#4f6ee8); color:var(--viewer-selected-color,#fff); }
+.export-toggle.active span { transform:translateX(22px); }
+.filter-buttons button.active { background:var(--viewer-selected-bg,#4f6ee8); color:var(--viewer-selected-color,#fff); border-color:var(--viewer-selected-bg,#4f6ee8); }
+#viewerHeader button,#viewerFiltersPane button { background:var(--viewer-unselected-bg,#fff); color:var(--viewer-unselected-color,#34425e); }
+#viewerHeader button.active,#viewerFiltersPane button.active { background:var(--viewer-selected-bg,#4f6ee8); color:var(--viewer-selected-color,#fff); border-color:var(--viewer-selected-bg,#4f6ee8); }
+[data-tile-sort] { cursor:pointer; }
+body:not(.viewer-resize) .chart-margin-controls { pointer-events:none; }
+body:not(.viewer-resize) .chart-margin-controls line { pointer-events:none; }
+#viewerFiltersPane { display:none; }
+body.viewer-vertical-filters { display:grid!important; grid-template-columns:0 minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); }
+body.viewer-vertical-filters > #viewerHeader { grid-column:1 / -1; grid-row:1; }
+body.viewer-vertical-filters > main { grid-column:2; grid-row:2; }
+body.viewer-vertical-filters.viewer-filters-open { grid-template-columns:minmax(200px,280px) minmax(0,1fr); }
+body.viewer-filters-open > #viewerFiltersPane { display:block; grid-column:1; grid-row:2; overflow:auto; padding:12px; background:white; border-right:1px solid #ccd5e0; min-width:0; }
+#viewerFiltersPane fieldset { margin:8px 0; min-width:0; }
+#viewerFiltersPane .export-filter { display:block; max-width:100%; }
+#viewerFiltersPane details { margin:0; }

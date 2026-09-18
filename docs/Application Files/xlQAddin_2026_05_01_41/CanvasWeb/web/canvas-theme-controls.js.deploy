@@ -1,0 +1,27 @@
+(() => {
+  const captions={background:'Background',borderColor:'Border','header.background':'Header background','header.color':'Header text',textColor:'Text',color:'Stroke',fill:'Fill','card.valueColor':'Card value','card.positiveColor':'Positive','card.negativeColor':'Negative','card.captionColor':'Caption','appearance.textColor':'Values','appearance.headerColor':'Column headings','appearance.rowHeaderColor':'Row headings','appearance.totalRowColor':'Totals','appearance.alternateColor':'Alternate rows','appearance.gridColor':'Grid','design.matrixSpec.subtotalStyle.textColor':'Subtotal text','design.matrixSpec.subtotalStyle.background':'Subtotal background'};
+  globalThis.CanvasThemeControls={install({model,selected,changed}){
+    let rolePanel,bindingPanel;
+    function render(){
+      const theme=model().settings.theme,roles=CanvasTheme.roles(theme);
+      if(!rolePanel){rolePanel=document.createElement('details');rolePanel.innerHTML='<summary>Theme color roles</summary><div></div>';document.querySelector('#canvasThemeProperties').append(rolePanel);rolePanel.addEventListener('change',event=>{const role=event.target.dataset.themeRole;if(!role)return;themeUpdate(role,event.target.value);});}
+      rolePanel.querySelector('div').replaceChildren(...Object.entries(roles).map(([role,color])=>{const label=document.createElement('label');label.textContent=role.replace(/([A-Z])/g,' $1');const input=document.createElement('input');input.type='color';input.value=color;input.dataset.themeRole=role;label.append(input);return label;}));
+      if(!bindingPanel){bindingPanel=document.createElement('details');bindingPanel.id='themeBindings';bindingPanel.innerHTML='<summary>Theme colors</summary><button type="button" data-inherit-all>Use canvas theme for all colors</button><div></div>';document.querySelector('#tileProperties').append(bindingPanel);bindingPanel.addEventListener('click',event=>{if(!event.target.matches('[data-inherit-all]'))return;const tile=selected();if(tile){tile.themeBindings=CanvasTheme.inherit(tile);changed();}});bindingPanel.addEventListener('change',event=>{const tile=selected(),path=event.target.dataset.themePath;if(!tile||!path)return;tile.themeBindings||={};if(event.target.matches('[role=switch]')){if(event.target.checked)tile.themeBindings[path]=CanvasTheme.paths[path];else{CanvasTheme.set(tile,path,CanvasTheme.get(CanvasTheme.resolve(tile,model().settings.theme),path));delete tile.themeBindings[path];}}else{delete tile.themeBindings[path];CanvasTheme.set(tile,path,event.target.value);}changed();});}
+      const tile=selected();bindingPanel.hidden=!tile;if(!tile)return;
+      bindingPanel.querySelector('div').replaceChildren(...CanvasTheme.fields(tile).map(path=>{
+        const row=document.createElement('div');row.className='theme-color-row';
+        const heading=document.createElement('div');heading.className='theme-color-heading';
+        const name=document.createElement('label');name.textContent=captions[path];name.htmlFor='theme-color-'+path.replaceAll('.','-');
+        const toggle=document.createElement('label');toggle.className='theme-color-toggle';
+        const text=document.createElement('span');text.textContent='Theme';
+        const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.setAttribute('role','switch');checkbox.setAttribute('aria-label','Use canvas theme for '+captions[path].toLowerCase());checkbox.dataset.themePath=path;checkbox.checked=!!tile.themeBindings?.[path];
+        const track=document.createElement('span');track.className='theme-switch-track';track.setAttribute('aria-hidden','true');toggle.append(text,checkbox,track);heading.append(name,toggle);
+        const input=document.createElement('input');input.type='color';input.id=name.htmlFor;input.dataset.themePath=path;input.value=CanvasTheme.get(CanvasTheme.resolve(tile,theme),path)||'#ffffff';input.disabled=checkbox.checked;input.title=checkbox.checked?'Canvas theme color':'Custom color';
+        row.append(heading,input);return row;
+      }));
+    }
+    function themeUpdate(role,color){model().settings.theme.roles||={};model().settings.theme.roles[role]=color;changed();}
+    document.addEventListener('change',event=>{const input=event.target;if(input.type!=='color'||input.dataset.themePath||input.dataset.themeRole)return;const tile=selected();if(!tile)return;const ids={tileBackground:'background',tileTextColor:'textColor'},path=ids[input.id]||(input.dataset.card?'card.'+input.dataset.card:input.dataset.cardCaption?'card.'+input.dataset.cardCaption:input.dataset.header?'header.'+input.dataset.header:input.dataset.graphicStyle||input.dataset.graphic||(input.dataset.appearance?'appearance.'+input.dataset.appearance:null)||input.dataset.tileBorder);if(path&&tile.themeBindings)delete tile.themeBindings[path];},true);
+    return {render};
+  }};
+})();
