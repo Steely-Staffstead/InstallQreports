@@ -1337,6 +1337,7 @@
 </tbody>
 </table>
 <p>The exact active paths appear in <strong>QRep &gt; Settings &gt; About</strong>.</p>
+<p>Company SQL connections are read from <code>settings\company\connections.dat</code> and merged with the user's connection catalog by name; a same-named personal entry takes precedence. A company/default connection is read-only in the QReports editor, but it is not automatically hidden and it does not gain reduced database permissions. Schema browsing uses the resolved connection and SQL Server's effective <code>SELECT</code> permission (<code>HAS_PERMS_BY_NAME</code>). Enforce visibility with a least-privilege database login or database-side grants/denies, not with the <code>default</code> name or the QReports read-only flag.</p>
 <h2 id="credentials-and-secrets">Credentials and secrets</h2>
 <ul>
 <li>Private secrets use Windows DPAPI with <code>CurrentUser</code> scope and are intended for the same Windows user context.</li>

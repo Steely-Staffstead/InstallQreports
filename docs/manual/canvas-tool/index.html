@@ -1576,6 +1576,7 @@
 <p>From Excel, choose <strong>QRep &gt; Canvas Web</strong>. You can also right-click a supported QReports shape or picture and open its stored Canvas definition.</p>
 <p>From PowerPoint, choose <strong>QReports &gt; New Canvas</strong>, select an existing Canvas shape and choose <strong>Edit Selected</strong>, or use the shape context menu. See <a href="../powerpoint-addin/">PowerPoint add-in</a>.</p>
 <p>Canvas Web can open and save standalone <code>.canvasweb.json</code> files. <strong>Recent</strong> lists only valid Canvas Web documents, newest first, and hides the common file extension for readability. The embedded workbook representation remains compatible with the QReports Canvas definition used by Excel and PowerPoint.</p>
+<p>The application theme applies to the designer, dialogs, filters, source/update/local-data workspaces, SVG editor and native loading screen. Canvas theme palettes are also available to charts and SVG graphics. Surface colors (background, text, headers, grid and controls) remain distinct from data-series palettes, so changing a chart palette does not recolor the application chrome.</p>
 <h2 id="select-and-arrange-objects">Select and arrange objects</h2>
 <p>Select one object or drag a selection rectangle around several objects. Selected objects can be moved with the mouse or arrow keys. Right-click an object to duplicate, remove, or change its layer order. The <strong>Handles</strong> command hides design handles, and <strong>Header tags</strong> hides the small Table, Matrix, Chart, or Text type labels without hiding the tile title.</p>
 <p>Text tiles and text graphics support formatted HTML content. Double-click their content to open and focus the formatted-text editor; double-click a tile header to edit its title.</p>
@@ -1618,11 +1619,12 @@
 </tr>
 <tr>
 <td>Picture</td>
-<td>Logos, icons, illustrations, and other image content.</td>
+<td>Logos, icons, illustrations, SVG templates and other image content.</td>
 </tr>
 </tbody>
 </table>
 <p>Table, Matrix, Chart, and Card tiles use their selected source. Text and Picture tiles are presentation objects and do not require a data field.</p>
+<p>SVG templates can bind text and values and either inherit theme colors or use explicit overrides. The SVG editor uses the same themed form controls as the formatted-text dialog, and theme-derived SVG colors update with the selected Canvas theme.</p>
 <h2 id="create-a-first-canvas-report">Create a first Canvas report</h2>
 <ol>
 <li>Open Canvas and add or rename the first page.</li>
@@ -1676,6 +1678,7 @@
 <p>Saving a <code>.canvasweb.json</code> packages referenced local sources and embedded pictures with the editable report, so it can be copied to a shared file area. SQL/API credentials and external infrastructure are not made portable by this save; test reopening on another computer before distribution.</p>
 <h2 id="webpage-exports">Webpage exports</h2>
 <p>Choose <strong>Export webpage…</strong> and create a named export definition. Settings and last successful export date are stored in the Canvas document: save the Canvas file to persist them. <strong>Save settings</strong> does not export; <strong>Export / update</strong> writes the report.</p>
+<p>The export dialog follows the active application theme. SVG tiles are packaged with the SVG runtime in both folder and single-file exports.</p>
 <ul>
 <li><strong>File settings</strong>: Folder website or Single HTML file, target folder, and filename for single-file exports. The default single filename is the report name; <code>.html</code> is added automatically. Change the filename to keep a historic copy in the same folder. Re-exporting the same Qanvas filename replaces that export, but unrelated HTML files are protected.</li>
 <li><strong>Filters</strong>: Automatic/all columns or selected columns, filter types, and horizontal/top or vertical/left-pane layout. The filter field list is bordered and scrollable.</li>

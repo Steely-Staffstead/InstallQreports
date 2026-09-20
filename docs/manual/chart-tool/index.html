@@ -1282,7 +1282,7 @@
 <h1 id="chart-tool">Chart tool</h1>
 <p>The Chart tool opens the chart designer with the current Query Tool result. It supports chart selection, series definitions, labels, formatting, filters, and returning chart definitions to Excel or Canvas.</p>
 <h2 id="chart-web-workflow">Chart Web workflow</h2>
-<p>Choose a chart type, select Values and Category, and configure its series. Chart Web supports Bar/column, Stacked, Line, Area, Scatter, Waterfall, Histogram, Boxplot, Treemap, Gauge, Pie and Doughnut. Data and options panes can be resized or collapsed; chart-type settings are collapsible groups.</p>
+<p>Choose a chart type, select Values and Category, and configure its series. Chart Web supports Bar/column, Stacked, Line, Area, Scatter, Waterfall, Histogram, Boxplot, Treemap, Heatmap, Gauge, Pie and Doughnut. Data and options panes can be resized or collapsed; chart-type settings are collapsible groups. The designer chrome, loading surface and preview palette follow the selected Canvas/application theme unless a chart-specific override is selected.</p>
 <p>When opened from a Canvas tile, the preview uses the tile's source and local filters. The footer indicates row/series counts and global/local filter counts. Design changes are returned as an editable chart specification.</p>
 <h2 id="category-group-and-multiple">Category, Group and Multiple</h2>
 <ul>
@@ -1301,11 +1301,14 @@
 <li>Scatter: plot and marker settings.</li>
 <li>Waterfall: waterfall options, grouped shading and point tooltips.</li>
 <li>Histogram and Boxplot: distribution options.</li>
+<li>Heatmap Matrix: Category is the leaf X level, Group is its optional parent, and <strong>Rows / split by</strong> is the Y field. Category, Group and Row label sections format those three roles independently. Group shaded areas, separator color/thickness, multiples, shared Data labels and the normal Legend controls are supported; the unrelated Value axis section is hidden.</li>
+<li>Heatmap Calendar: Category is a date and weekdays are derived as rows. It fills the available width and adapts to one or many years. Category-axis controls format/space month labels; Row labels format/space weekdays; Group labels control year visibility, color and vertical position. Optional month outlines, separated month blocks/month spacing, today and whole-current-week outlines are available.</li>
 <li>Treemap: hierarchical layout, group borders and chart size. Category content is controlled by <strong>Data labels</strong>, not a separate category-label selector. Group content uses <strong>Group labels</strong>.</li>
 <li>Gauge: responsive gauge arrangement and maximum gauge count (default six).</li>
 <li>Pie and Doughnut: category/data and group-label formatting, and chart size.</li>
 </ul>
 <p>Treemap, Gauge, Pie and Doughnut have no normal axes: axis groups are hidden and category text is configured through Data labels. Theme colors control plotted shapes independently of label font colors. Plot geometry adapts to the available chart area when the editor or tile changes size; editor-only adjustment handles are omitted from the finished visual.</p>
+<p>For Scatter, <strong>Size by</strong> in Data is the chart-wide default. Select an individual series in <strong>Scatter / plot</strong> only when that series needs a different Size by field; choosing the default there keeps the global binding.</p>
 <h2 id="edit-from-canvas">Edit from Canvas</h2>
 <p>Select a chart tile and use <strong>Chart properties &gt; Property group</strong> for small changes without opening Chart Web. Chart settings, Title settings (including editable title text), Plot margins, axes, labels, legend and applicable chart groups are exposed here. Changes update the stored specification and tile directly.</p>
 <p>Click a plotted bar/point to select Data labels, an x-axis to select Category axis, a y-axis to select Value axis, or the top plot border to select Plot margins. Right-click provides Chart options and available property groups. Open the full designer when changing the data configuration or needing the complete preview.</p>

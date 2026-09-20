@@ -1492,6 +1492,7 @@
 <h1 id="mini-dax-and-measures">Mini DAX and measures</h1>
 <p>Mini DAX is QReports' focused expression engine for measures and calculated columns. The <strong>Measures</strong> ribbon command and the Canvas <strong>Measures</strong> command open the WebView Measure workspace. It is used by matrices, charts, Canvas visuals, and QReports table output. It is not the same thing as sending a full DAX query to the Excel Power Pivot model.</p>
 <p>The workspace places source Fields on the left, saved measures/calculated columns beside them, and the name, expandable expression editor, validation status, matrix wells, and result preview in the main area. The two list panes and matrix result can be resized or collapsed. <strong>Load data</strong> runs the source query with its current QReports parameters; measures remain editable before data is loaded.</p>
+<p>The expression editor provides syntax highlighting, autocomplete and keyboard indentation, with a docked, resizable function reference. Drag fields into Rows, at most one Columns field, and Values to test the calculation as a crosstab. Number formats and matrix visibility are saved with each measure. The workspace follows the selected QReports application theme.</p>
 <p>When the Query Web connection is <code>model</code>, it can run normal model queries. The formulas on this page are the smaller Mini DAX formulas managed in Measure workspace.</p>
 <p><img src="../assets/images/mini-dax/mini-dax-editor.png" alt="Placeholder for the Mini DAX measure editor" style="max-width: 760px; width: 100%;"></p>
 <h2 id="measure-or-calculated-column">Measure or calculated column?</h2>
@@ -1575,6 +1576,7 @@ RETURN
 </tr>
 </tbody>
 </table>
+<p>Charts evaluate a selected measure in each plotted cell/group. For example, a heatmap using <code>AVERAGE(temperature)</code> displays and scales the per-cell average; it does not sum already-calculated averages.</p>
 <p>An optional aggregate filter is a simple row condition:</p>
 <pre><code class="language-dax">SUM(Revenue, Month = 1)
 </code></pre>

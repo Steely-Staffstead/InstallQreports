@@ -756,6 +756,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#performance-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance and limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#csv-and-delimited-text-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1362,6 +1373,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#performance-and-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance and limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#csv-and-delimited-text-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1392,6 +1414,7 @@
 <h1 id="mini-sql-for-excel-tables">Mini SQL for Excel tables</h1>
 <p>Mini SQL is QReports' in-memory query language for Excel tables and delimited files. It provides a familiar SQL-shaped way to filter, join, group, calculate, and sort tabular data without first loading it into an external database.</p>
 <p>Mini SQL is used when <strong>Conn</strong> is set to <code>table</code> and for saved CSV/TEXT file connections. The same engine is also used for published Canvas tables.</p>
+<p>In Query Web, local manual/imported tables, saved source views and combined sources also use this SQL-shaped workflow. <strong>Update sources</strong> refreshes remote source views before dependent combined sources; manual tables are snapshots and are not refresh candidates.</p>
 <p><img src="../assets/images/mini-sql/mini-sql-query-tool.png" alt="Placeholder for Mini SQL in Query Tool" style="max-width: 760px; width: 100%;"></p>
 <h2 id="first-query">First query</h2>
 <p>Assume the workbook contains Excel tables named <code>country</code> and <code>continent</code>:</p>
@@ -1798,6 +1821,10 @@ FROM invoices
 <li>database permissions, transactions, indexes, and execution plans do not apply.</li>
 </ul>
 <p>Use Mini SQL when the source is already in Excel and the transformation is report-sized. Use a named database connection when the source is large, the SQL is complex, or filtering and aggregation should happen on the server.</p>
+<h2 id="performance-and-limits">Performance and limits</h2>
+<p>MiniSQL keeps the native types of source columns in simple projections and joins. A single-table query reads the original table without making an alias copy. For a simple <code>SELECT TOP n</code> without sorting, grouping, or <code>DISTINCT</code>, it stops producing rows when it reaches <code>n</code>. <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, and <code>MAX</code> return NULL when a group has no non-null values; <code>COUNT</code> returns zero. NULL join keys do not match each other.</p>
+<p>Open <strong>Settings → MiniSQL limits</strong> to set maximum rows per source, maximum intermediate rows, maximum result rows, and a query timeout in seconds. A value of <code>0</code> disables each limit, which is the default for existing installations. These limits apply to local MiniSQL execution, not to queries executed by SQL Server. The source-row limit is checked after a source is loaded, so it does not prevent an oversized JSON file from being read into memory first. Timeouts are cooperative checks during MiniSQL execution, not a cancellation of source loading. Stage timings are written to the application log.</p>
+<p>Developers can run <code>tests/mini-sql-performance.ps1</code> to compare 10k, 100k, 250k, 500k, and 1m-row synthetic tables. Those results measure in-memory execution and synthetic table construction separately; they are not a JSON-file loading benchmark.</p>
 <h2 id="csv-and-delimited-text-files">CSV and delimited text files</h2>
 <p>Create a <code>CSV</code> or <code>TEXT</code> connection in Connection Manager and select the source file. Configure separator, whether the first row contains headers, and encoding. Quoted fields are supported.</p>
 <p>The source appears using a normalized version of its filename. The stable alias <code>data</code> is also available, which avoids problems when a filename contains spaces or punctuation:</p>
@@ -1807,6 +1834,7 @@ GROUP BY region
 ORDER BY amount DESC
 </code></pre>
 <p>Delimited values are initially read as text. Use the Mini SQL conversion functions when numeric or date interpretation is required, and verify separators/encoding if the preview produces an unexpected number of columns.</p>
+<p>CSV/TXT, Excel and web imports can store a source comment and replayable preparation steps such as renamed/removed columns, data types and removed source rows. Reopening the local source restores the original location and reapplies the remaining steps. This preparation is separate from the Mini SQL query that consumes the finished local table.</p>
 <p>Return to the <a href="../query-tool/">Query Tool guide</a>.</p>
 
 

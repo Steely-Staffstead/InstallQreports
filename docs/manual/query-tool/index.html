@@ -681,6 +681,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Workspace shortcuts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-tabs-and-workspace-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query tabs and workspace files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -691,6 +708,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Select or configure a connection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#company-and-default-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Company and default connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1520,6 +1554,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Workspace shortcuts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-tabs-and-workspace-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query tabs and workspace files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1530,6 +1581,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Select or configure a connection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#company-and-default-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Company and default connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1835,7 +1903,13 @@ independently when there are many parameters.</p>
 <p>Local table editing supports CSV/TXT, Excel and web imports with a source comment. Reopening the import restores the source location and saved transformation steps, so renamed columns, selected/deleted columns, types and deleted source rows can be reproduced. Import-from-web remembers its URL; file import remembers its original location.</p>
 <p>Toggle or resize the <strong>Applied steps</strong> pane. Each column name/type change, removed column or removed source row is an independent step, rather than a long chronological edit log. Delete a step using its red remove button to rebuild the table from the remaining steps. A change targeting a deleted column is skipped. Steps persist when saving and reopening imported tables. Manual tables do not use applied import steps.</p>
 <h2 id="workspace-shortcuts">Workspace shortcuts</h2>
-<p>The <strong>Design</strong> dropdown groups Join designer, API designer and Format SQL. The query-editor context menu includes Run selected, Run all, Copy to clipboard, Select all and Clear query window. Table context menus are constrained to the available window area so actions remain reachable at the bottom of the table list.</p>
+<h3 id="query-tabs-and-workspace-files">Query tabs and workspace files</h3>
+<p>Turn on <strong>Show tabs</strong> under <strong>Settings → Query</strong> to display the query strip; tabs are off by default. With tabs hidden, use <strong>Run on</strong> above the editor to choose the query's execution connection. Each tab remembers its query text, execution connection, preview limit and current result while the window is open. New tabs inherit the Main tab's connection. The Data Sources pane is an independent reference browser: switching tabs does not change its selection or reload its tables. Parameters remain shared across all tabs.</p>
+<p>Right-click a tab to add a tab, change its execution connection, duplicate or rename it, make it Main, or choose <strong>Compare with…</strong> for a vertical split. Both query editors and result grids remain visible. You can edit either query and run it independently; closing the split leaves the queries and their results in their tabs. The source browser is unchanged.</p>
+<p>The tab marked <strong>★ Main</strong> is the only query returned by <strong>Apply query</strong> to Excel or a calling Canvas/API window. Apply and the source-definition Save menu are unavailable on auxiliary tabs. Use <strong>Set as Main</strong> to change which query is returned. A Main tab cannot be closed until another tab has been made Main.</p>
+<p><strong>Save workspace…</strong> writes every tab and the shared parameter definitions to a versioned <code>.qws</code> JSON file. <strong>Open workspace…</strong> replaces the current tabs after confirmation. Results are not saved; rerun a tab after opening the file. Connection credentials are referenced by connection name rather than exported, and secret-typed parameter values are omitted. Query text and other parameter values remain readable JSON, so protect workspace files that contain sensitive inputs. Named connections must exist on the machine that opens the file.</p>
+<p>The <strong>Design</strong> dropdown groups Edit query, Join designer, API designer and Format SQL. <strong>Edit query</strong> turns a supported single-table <code>SELECT</code> into an editable grid. SQL Server tables must have a primary key included in the selected columns; calculated/aliased columns, joins, aggregation, subqueries and write statements are rejected. Local manual tables support plain selected columns, <code>WHERE</code> and <code>ORDER BY</code>; imported tables and generated sources are not editable in this mode. The table context-menu Edit action remains useful for opening a table directly, while Edit query is better when you need a filtered or ordered subset.</p>
+<p>Right-click an editable result column to configure a lookup from another table on the same connection. Choose its ID and name columns, display ID, ID–name or name, and order the list by ID or name. The saved cell value is always the ID. Lookup settings, hidden editable columns, and expanded source tables are remembered by this web workspace on this machine. Lookups load at most 5,000 options. The <strong>Open</strong> menu separates <strong>Open SQL file…</strong> from <strong>Open workspace…</strong> and lists recent items; selecting a recent item opens it directly rather than showing another file picker. After a <code>.sql</code> file has been opened or saved, <strong>Save</strong> quick-saves to that same path; use <strong>Save SQL as…</strong> to choose another file. The query-editor context menu includes Run selected, Run all, Copy to clipboard, Select all and Clear query window. Table context menus are constrained to the available window area so actions remain reachable at the bottom of the table list.</p>
 <p>Mini SQL supports elapsed-day age calculations such as <code>datediff('d', t.date, today()) AS age</code>; quoted interval aliases include <code>d</code>/<code>dd</code>/<code>day</code>. Parameters use <code>{{name}}</code>; inspect Parsed SQL when a numeric column is compared to an unresolved or quoted string token.</p>
 <h2 id="select-or-configure-a-connection">Select or configure a connection</h2>
 <p>The <strong>Conn</strong> list controls how the query is interpreted and which tables, columns, functions, and execution engine are available.</p>
@@ -1882,6 +1956,9 @@ independently when there are many parameters.</p>
 <li>Return to Query Tool and select it from <strong>Conn</strong>.</li>
 </ol>
 <p>Changing the connection clears the old table and column lookup so metadata from different sources is not mixed. Select <strong>Table</strong> again to load the new source.</p>
+<h3 id="company-and-default-connections">Company and default connections</h3>
+<p>Company connections are loaded from <code>%LocalAppData%\QReports\settings\company\connections.dat</code>; personal connections are loaded from the user settings catalog. The two lists are merged by name, and a personal connection with the same name takes precedence. <code>default</code> is a conventional connection name, not a special restricted database session.</p>
+<p>The company/read-only flags prevent ordinary users from editing centrally supplied definitions. They do not hide a connection from the source browser and do not reduce its database permissions. For SQL Server, QReports lists only objects for which the connected login passes <code>HAS_PERMS_BY_NAME(..., 'OBJECT', 'SELECT')</code>. Therefore a broadly privileged login can browse broadly even when its QReports definition is read-only. Use a least-privilege database account for a restricted default source; do not rely on the connection name or company flag as access control.</p>
 <h2 id="find-tables-and-columns">Find tables and columns</h2>
 <p>Select <strong>Table</strong> to load the table list for the current connection. Selecting a table loads its columns in the adjacent column pane. Double-clicking a column inserts it into the query.</p>
 <p>The table search supports both ordinary table-name searches and schema-qualified searches:</p>

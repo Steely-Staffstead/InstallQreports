@@ -1451,6 +1451,7 @@
 </blockquote>
 <p>API Web builds, tests, previews, and saves reusable API connections and endpoint definitions. The current ribbon button opens the WebView workspace; the previous API Explorer remains under <strong>Legacy tools</strong> for comparison. Its return route goes through Query Web so the definition can use the same parameters and Excel output logic as other QReports sources.</p>
 <p>Saved connections and APIs are grouped in the collapsible left pane. The centre contains the request method, connection, path, request tabs, and a vertically resizable response area. The right details pane contains connection-level settings. Both side panes can be collapsed and resized.</p>
+<p>The workspace, request controls, menus and output states follow the selected QReports application theme.</p>
 <p><img src="../assets/images/api/api-explorer-overview.png" alt="Placeholder showing the main API Explorer window" style="max-width: 900px; width: 100%;"></p>
 <h2 id="normal-workflow">Normal workflow</h2>
 <ol>
@@ -1571,6 +1572,7 @@
 </tbody>
 </table>
 <p>When a successful response produces no displayable table rows, API Explorer selects <strong>Raw</strong> so messages, scalar responses, error details, or unexpected JSON shapes remain visible. <strong>Show table</strong> reruns the table conversion using the current flattening settings.</p>
+<p>Aliases and excluded-column lists accept one entry per line or comma-separated entries. Use <code>source name=alias</code> for names that contain spaces or punctuation; saved response shaping preserves those complete source names, including CSV-style result headings.</p>
 <h2 id="flattening-and-postfilter">Flattening and postfilter</h2>
 <p>APIs often return nested objects or arrays. Flattening selects the array that represents records and expands properties into columns. Use <strong>Flattening help</strong> to inspect the response and choose a path rather than guessing it.</p>
 <p>Settings include:</p>

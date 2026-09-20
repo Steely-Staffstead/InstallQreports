@@ -1133,6 +1133,15 @@
 <li>Query parameter sections have separate scrollable lists. API query parameters and headers use stacked, collapsible groups with wider inputs.</li>
 <li>API outputs offer Copy details, Copy all and Clear. Same-origin response links can be opened as GET requests for review, with Back navigation and no automatic execution.</li>
 <li>Canvas exports all report tabs as a static PDF, one canvas page per PDF page, using the existing WebView2 runtime without installing a separate PDF engine.</li>
+<li>Added optional Query tabs, a designated Main query, per-tab execution connections, editable split comparison and versioned <code>.qws</code> workspace files. The Open menu now separates SQL files and workspaces, recent items open directly, an opened SQL file can be quick-saved, and tab menus include Add tab.</li>
+<li>Applied the selected application theme throughout Query, API, Measure, Parameter, Connection, Update sources, Local data, filter/value-picker, log, SVG, webpage-export and Chart Web surfaces, including native loading screens, autocomplete, context menus, hover/selection states and disabled controls.</li>
+<li>Expanded canvas color presets into chart/SVG palette choices while keeping application surface colors separate from data-series palettes. SVG tiles and the SVG editor can inherit theme colors.</li>
+<li>Added Matrix and Calendar heatmaps. Matrix supports an explicit Rows / split by field, Category and parent Group on X, row-label formatting, shared data-label and legend controls, group shading/separators, multiples and themed colors. Calendar supports responsive one-or-many-year layouts, centered month labels, month spacing/dividers, separated month blocks, and today/current-week outlines.</li>
+<li>Heatmap aggregation now evaluates measures such as <code>AVERAGE</code> per cell instead of summing their displayed results. Calendar year labels follow Group-label visibility, position and theme color.</li>
+<li>Moved Scatter's default Size by field into Data while retaining a per-series Size by override in Scatter / plot settings.</li>
+<li>Added themed AI Assistant actions for a focused prompt, a redacted support pack and a reusable product-reference skill. Corrected offline webpage export packaging so SVG graphics include their required runtime asset.</li>
+<li>Improved CSV API response-shape aliases/exclusions and themed the selected-sheet, parameter, source-update and local-import dialogs.</li>
+<li>added presentation mode to Canvas Web so the current canvas fills the entire window, hides the ribbon and tabs, and disables editing and selection. The Escape key returns to normal mode.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>37</strong></div><div><p class="week-dates">7–13 September 2026</p><h2>Reusable sources, richer charts and offline web reports</h2></div></div>
 
