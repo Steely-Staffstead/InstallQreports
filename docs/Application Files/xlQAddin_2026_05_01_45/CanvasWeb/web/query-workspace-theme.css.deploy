@@ -1,0 +1,397 @@
+/* Query workspace colors are derived from the shared theme roles. */
+html[data-qreports-query-theme] {
+  --query-ink: var(--qreports-text);
+  --query-muted: color-mix(in srgb, var(--qreports-text) 72%, var(--qreports-surface));
+  --query-panel: color-mix(in srgb, var(--qreports-surface) 88%, var(--qreports-header));
+  --query-subtle: color-mix(in srgb, var(--qreports-surface) 76%, var(--qreports-header));
+  --query-raised: color-mix(in srgb, var(--qreports-surface) 94%, var(--qreports-header-text));
+  --query-head: color-mix(in srgb, var(--qreports-header) 74%, var(--qreports-surface));
+  --query-border: var(--qreports-grid);
+  --query-accent-soft: color-mix(in srgb, var(--qreports-accent) 14%, var(--qreports-surface));
+}
+html[data-qreports-query-theme] body,
+html[data-qreports-query-theme] main,
+html[data-qreports-query-theme] .work,
+html[data-qreports-query-theme] .query-compare-pane,
+html[data-qreports-query-theme] .result-wrap,
+html[data-qreports-query-theme] .compare-result-wrap {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+}
+html[data-qreports-query-theme] body > header,
+html[data-qreports-query-theme] .query-head,
+html[data-qreports-query-theme] .result-head,
+html[data-qreports-query-theme] .compare-query-head,
+html[data-qreports-query-theme] .compare-result-head {
+  background: var(--query-head);
+  color: var(--qreports-header-text);
+}
+html[data-qreports-query-theme] header .brand strong,
+html[data-qreports-query-theme] header .toolbar label { color: var(--qreports-header-text); }
+html[data-qreports-query-theme] header .brand small {
+  color: var(--qreports-header-text);
+  opacity: .85;
+}
+html[data-qreports-query-theme] header .brand > span {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+}
+html[data-qreports-query-theme] header .toolbar > button:not(.run):not(.apply),
+html[data-qreports-query-theme] header .toolbar-dropdown > button {
+  background: var(--query-subtle);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] header .toolbar .run,
+html[data-qreports-query-theme] .compare-query-head [data-compare-run],
+html[data-qreports-query-theme] .edit-actions .save-edit {
+  background: var(--qreports-positive);
+  color: var(--qreports-on-positive);
+  border-color: var(--qreports-positive);
+}
+html[data-qreports-query-theme] header .toolbar .apply {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-query-theme] .sources,
+html[data-qreports-query-theme] .inspector,
+html[data-qreports-query-theme] .join-panel,
+html[data-qreports-query-theme] .query-tabbar,
+html[data-qreports-query-theme] .source-actions,
+html[data-qreports-query-theme] .source-group-heading {
+  background: var(--query-panel);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .join-canvas { background: var(--query-panel); }
+html[data-qreports-query-theme] .query-tab {
+  background: var(--query-subtle);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .query-tab.active,
+html[data-qreports-query-theme] .query-tab.compared {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  box-shadow: inset 0 3px var(--qreports-accent);
+}
+html[data-qreports-query-theme] .query-tab .main-mark,
+html[data-qreports-query-theme] .result-wrap th .sort-mark { color: var(--qreports-accent); }
+html[data-qreports-query-theme] .query-tab .tab-close,
+html[data-qreports-query-theme] .join-head small,
+html[data-qreports-query-theme] .tool-subhead,
+html[data-qreports-query-theme] .compare-row-note,
+html[data-qreports-query-theme] .muted { color: var(--query-muted); }
+html[data-qreports-query-theme] .query-tab-actions,
+html[data-qreports-query-theme] .query-compare-pane,
+html[data-qreports-query-theme] .join-panel,
+html[data-qreports-query-theme] .sources,
+html[data-qreports-query-theme] .inspector { border-color: var(--query-border); }
+html[data-qreports-query-theme] .splitter,
+html[data-qreports-query-theme] .join-resize { background: var(--query-border); }
+html[data-qreports-query-theme] .query-tab-actions button,
+html[data-qreports-query-theme] .join-head button,
+html[data-qreports-query-theme] .side-tools button,
+html[data-qreports-query-theme] .source-actions button,
+html[data-qreports-query-theme] .pane-head button {
+  background: var(--query-raised);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .result-tabs button,
+html[data-qreports-query-theme] .compare-result-tabs button { color: var(--qreports-header-text); }
+html[data-qreports-query-theme] .result-tabs button.active,
+html[data-qreports-query-theme] .compare-result-tabs button.active {
+  background: var(--query-accent-soft);
+  color: var(--query-ink);
+  box-shadow: inset 0 -3px var(--qreports-accent);
+}
+html[data-qreports-query-theme] .editor-shell,
+html[data-qreports-query-theme] .compare-query-text,
+html[data-qreports-query-theme] .result-text {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+}
+html[data-qreports-query-theme] #queryHighlight { color: var(--query-ink); }
+html[data-qreports-query-theme] #queryText { caret-color: var(--query-ink); }
+html[data-qreports-query-theme] .sql-keyword,
+html[data-qreports-query-theme] .sql-function,
+html[data-qreports-query-theme] .sql-parameter { color: var(--qreports-accent); }
+html[data-qreports-query-theme] .sql-string { color: var(--qreports-positive); }
+html[data-qreports-query-theme] .sql-number { color: var(--qreports-negative); }
+html[data-qreports-query-theme] .sql-comment { color: var(--query-muted); }
+html[data-qreports-query-theme] .result-wrap th,
+html[data-qreports-query-theme] .compare-result-wrap th,
+html[data-qreports-query-theme] .join-table b {
+  background: var(--query-subtle);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .result-wrap td,
+html[data-qreports-query-theme] .compare-result-wrap td { border-color: var(--query-border); }
+html[data-qreports-query-theme] .result-wrap tr:nth-child(even) { background: var(--query-raised); }
+html[data-qreports-query-theme] .join-table,
+html[data-qreports-query-theme] .table-node,
+html[data-qreports-query-theme] .selection-card,
+html[data-qreports-query-theme] .join-item,
+html[data-qreports-query-theme] .function-item,
+html[data-qreports-query-theme] .parameter-item,
+html[data-qreports-query-theme] .dialog,
+html[data-qreports-query-theme] .context-menu,
+html[data-qreports-query-theme] .toolbar-dropdown-menu,
+html[data-qreports-query-theme] .autocomplete {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .join-table label,
+html[data-qreports-query-theme] .column,
+html[data-qreports-query-theme] .sources label,
+html[data-qreports-query-theme] .pane-head h2,
+html[data-qreports-query-theme] .inspector h2 { color: var(--query-ink); }
+html[data-qreports-query-theme] input:not([type="checkbox"]):not([type="radio"]),
+html[data-qreports-query-theme] select,
+html[data-qreports-query-theme] textarea:not(#queryText),
+html[data-qreports-query-theme] .context-menu button,
+html[data-qreports-query-theme] .toolbar-dropdown-menu button {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .result-text.message-result,
+html[data-qreports-query-theme] .parameter-warning { color: var(--qreports-negative); }
+html[data-qreports-query-theme] .stats-meter,
+html[data-qreports-query-theme] .stats-quartiles { background: var(--query-border); }
+html[data-qreports-query-theme] .stats-meter > span,
+html[data-qreports-query-theme] .stats-iqr,
+html[data-qreports-query-theme] .stats-median { background: var(--qreports-accent); }
+html[data-qreports-query-theme] .context-menu button:hover,
+html[data-qreports-query-theme] .toolbar-dropdown-menu button:hover,
+html[data-qreports-query-theme] .function-item:hover,
+html[data-qreports-query-theme] .parameter-item:hover,
+html[data-qreports-query-theme] .table-title:hover { background: var(--query-accent-soft); }
+html[data-qreports-query-theme] .autocomplete button {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .autocomplete button:is(:hover, .active) {
+  background: var(--query-accent-soft);
+  color: var(--query-ink);
+}
+html[data-qreports-query-theme] .autocomplete small { color: var(--query-muted); }
+html[data-qreports-query-theme] .tool-panel :is(.tool-search, [data-edit-parameters]) {
+  background: var(--query-raised);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .tool-panel [data-edit-parameters]:not(:disabled):hover {
+  background: var(--query-accent-soft);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-query-theme] .used-parameters,
+html[data-qreports-query-theme] .used-parameters > summary {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .context-menu :is(.tab-menu-title, .tab-menu-label) {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .context-menu .tab-menu-label :is(select, input) {
+  background: var(--query-raised);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .context-menu .tab-menu-label small { color: var(--query-muted); }
+html[data-qreports-query-theme] .context-menu label:has([data-table-aliases]) {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+}
+html[data-qreports-query-theme] .context-menu [data-table-aliases] {
+  background: var(--query-raised);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+  caret-color: var(--query-ink);
+}
+html[data-qreports-query-theme] .context-menu [data-table-aliases]::placeholder {
+  color: var(--query-muted);
+}
+html[data-qreports-query-theme] .context-menu label:has([data-table-aliases]):hover {
+  background: var(--query-accent-soft);
+}
+html[data-qreports-query-theme] .column:has([data-select-column]:checked) {
+  background: var(--query-accent-soft);
+  color: var(--query-ink);
+  box-shadow: inset 3px 0 var(--qreports-accent);
+}
+html[data-qreports-query-theme] .column:has([data-select-column]:checked) small { color: var(--query-muted); }
+html[data-qreports-query-theme] .column:hover,
+html[data-qreports-query-theme] .column:has([data-select-column]:checked):hover {
+  background: var(--query-accent-soft);
+  color: var(--query-ink);
+}
+html[data-qreports-query-theme] .column:hover small { color: var(--query-muted); }
+html[data-qreports-query-theme] .column:hover .column-filter {
+  background: var(--query-raised);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .column:hover .column-filter::placeholder { color: var(--query-muted); }
+html[data-qreports-query-theme] .menu-separator { background: var(--query-border); }
+html[data-qreports-query-theme] .menu-heading,
+html[data-qreports-query-theme] .menu-empty,
+html[data-qreports-query-theme] .recent-query-files button small { color: var(--query-muted); }
+html[data-qreports-query-theme] :where(button:not(.run):not(.apply):not(.primary)),
+html[data-qreports-query-theme] .source-group-heading,
+html[data-qreports-query-theme] .local-mode-selector button {
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .source-group-heading,
+html[data-qreports-query-theme] .local-grid th,
+html[data-qreports-query-theme] .local-steps-head,
+html[data-qreports-query-theme] .source-update-tree summary,
+html[data-qreports-query-theme] .local-grid-summary {
+  background: var(--query-subtle);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .local-grid,
+html[data-qreports-query-theme] .local-steps-pane,
+html[data-qreports-query-theme] .source-update-tree,
+html[data-qreports-query-theme] .local-data-dialog,
+html[data-qreports-query-theme] .local-info-dialog {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .local-grid td,
+html[data-qreports-query-theme] .local-steps-pane li,
+html[data-qreports-query-theme] .source-update-tree details,
+html[data-qreports-query-theme] .result-wrap th,
+html[data-qreports-query-theme] .result-wrap td { border-color: var(--query-border); }
+html[data-qreports-query-theme] .local-steps-pane li,
+html[data-qreports-query-theme] .source-group-name,
+html[data-qreports-query-theme] .source-age,
+html[data-qreports-query-theme] .column small,
+html[data-qreports-query-theme] .function-item small,
+html[data-qreports-query-theme] .parameter-item small { color: var(--query-muted); }
+html[data-qreports-query-theme] .local-steps-pane li.current,
+html[data-qreports-query-theme] .local-actions [data-local-steps-toggle].active {
+  background: var(--query-accent-soft);
+  color: var(--query-ink);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-query-theme] .result-wrap td.edit-readonly { background: var(--query-subtle);color: var(--query-muted); }
+html[data-qreports-query-theme] .result-wrap tr.edit-dirty { background: color-mix(in srgb, var(--qreports-accent) 12%, var(--qreports-surface)); }
+html[data-qreports-query-theme] .result-wrap tr.edit-new { background: color-mix(in srgb, var(--qreports-positive) 12%, var(--qreports-surface)); }
+html[data-qreports-query-theme] .result-wrap tr.edit-deleted { background: color-mix(in srgb, var(--qreports-negative) 12%, var(--qreports-surface)); }
+html[data-qreports-query-theme] .result-wrap td.row-action button,
+html[data-qreports-query-theme] .remove-last-step { color: var(--qreports-negative); }
+html[data-qreports-query-theme] .join-links > path,
+html[data-qreports-query-theme] .join-links marker path { stroke: var(--qreports-accent); }
+
+/* Update Sources uses a flat list; keep its layout and contrast independent
+   from the older nested source-tree editor. */
+html[data-qreports-query-theme] .modal:has(.source-update-dialog) {
+  background: color-mix(in srgb, var(--qreports-header) 58%, transparent);
+}
+html[data-qreports-query-theme] .source-update-dialog,
+html[data-qreports-query-theme] .source-update-dialog .source-update-tree {
+  background: var(--qreports-surface);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .source-update-dialog h2,
+html[data-qreports-query-theme] .source-update-dialog .source-update-tree > label b { color: var(--query-ink); }
+html[data-qreports-query-theme] .source-update-dialog .muted,
+html[data-qreports-query-theme] .source-update-dialog .source-update-tree > label span { color: var(--query-muted); }
+html[data-qreports-query-theme] .source-update-dialog .source-update-tree > label {
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .source-update-dialog .source-update-tree > label:hover { background: var(--query-accent-soft); }
+html[data-qreports-query-theme] .source-update-dialog input[type="checkbox"] { accent-color: var(--qreports-accent); }
+html[data-qreports-query-theme] .source-update-dialog :is(.source-update-actions, .dialog-actions, .filter-head) button:not(.apply) {
+  background: var(--query-raised);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .source-update-dialog :is(.source-update-actions, .dialog-actions, .filter-head) button:not(.apply):not(:disabled):hover {
+  background: var(--query-accent-soft);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-query-theme] .source-update-dialog button.apply {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-query-theme] .source-update-dialog button:disabled {
+  background: var(--query-subtle);
+  color: var(--query-muted);
+  border-color: var(--query-border);
+  opacity: .72;
+}
+html[data-qreports-query-theme] .source-update-dialog [data-update-status] { color: var(--qreports-positive); }
+
+/* Local Data is a themed editor; imported values remain data, while every
+   surrounding control follows the application roles. */
+html[data-qreports-query-theme] .local-data-dialog {
+  color-scheme: var(--qreports-color-scheme, light);
+}
+html[data-qreports-query-theme] .local-data-dialog h2,
+html[data-qreports-query-theme] .local-data-dialog label,
+html[data-qreports-query-theme] .local-grid-summary { color: var(--query-ink); }
+html[data-qreports-query-theme] .local-data-dialog .muted,
+html[data-qreports-query-theme] .local-source-meta,
+html[data-qreports-query-theme] .local-data-dialog input::placeholder,
+html[data-qreports-query-theme] .local-data-dialog textarea::placeholder { color: var(--query-muted); }
+html[data-qreports-query-theme] .local-mode-selector {
+  background: var(--query-raised);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .local-mode-selector button,
+html[data-qreports-query-theme] .local-actions button,
+html[data-qreports-query-theme] .local-grid-summary button,
+html[data-qreports-query-theme] .local-grid .add-local-column button,
+html[data-qreports-query-theme] .local-data-dialog .dialog-actions button:not(.apply) {
+  background: var(--query-raised);
+  color: var(--query-ink);
+  border-color: var(--query-border);
+}
+html[data-qreports-query-theme] .local-mode-selector button[aria-pressed="true"],
+html[data-qreports-query-theme] .local-data-dialog .dialog-actions button.apply {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-query-theme] .local-data-dialog :is(.local-mode-selector, .local-actions, .local-grid-summary, .add-local-column, .dialog-actions) button:not(:disabled):hover {
+  background: var(--query-accent-soft);
+  color: var(--query-ink);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-query-theme] .local-mode-selector button[aria-pressed="true"]:not(:disabled):hover,
+html[data-qreports-query-theme] .local-data-dialog .dialog-actions button.apply:not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-accent) 82%, var(--qreports-header-text));
+  color: var(--qreports-on-accent);
+}
+html[data-qreports-query-theme] .local-data-dialog button:disabled {
+  background: var(--query-subtle);
+  color: var(--query-muted);
+  border-color: var(--query-border);
+  opacity: .72;
+  cursor: not-allowed;
+}
+html[data-qreports-query-theme] .local-data-dialog .filter-head > button {
+  background: var(--qreports-negative);
+  color: var(--qreports-on-negative);
+  border-color: var(--qreports-negative);
+}
+html[data-qreports-query-theme] .local-grid th,
+html[data-qreports-query-theme] .local-grid td,
+html[data-qreports-query-theme] .local-grid-summary { border-color: var(--query-border); }
+html[data-qreports-query-theme] .join-links marker path { fill: var(--qreports-accent); }

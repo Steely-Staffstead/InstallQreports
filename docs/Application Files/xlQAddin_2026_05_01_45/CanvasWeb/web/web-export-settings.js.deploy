@@ -1,0 +1,113 @@
+(() => {
+  const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  window.WebExportSettings={install(ctx){
+    let dialog,activeId,themeSelect,presetSelect,presetLabel,busy=false;
+    const buttons=[...document.querySelectorAll('[data-action="exportWebpage"],[data-action="presentationSettings"]')];
+    buttons.forEach(button=>button.onclick=()=>open(button.dataset.action==="presentationSettings"?"presentation":"export"));
+    window.openWebExportSettings=open;
+    const definitions=()=>{const model=ctx.model();model.webExports||=[];if(!model.webExports.length&&model.webExport?.targetFolder)model.webExports.push({id:crypto.randomUUID(),name:"Default export",targetFolder:model.webExport.targetFolder,includeReportName:true,filterMode:"automatic",filterColumns:[]});return model.webExports;};
+    const blank=()=>({id:crypto.randomUUID(),name:"New export",targetFolder:"",includeReportName:true,useForPresentation:false,filterMode:"automatic",filterColumns:[]});
+    function open(mode="export"){
+      if(dialog){dialog.focus();return;}
+      dialog=document.createElement("dialog");dialog.className="web-export-dialog";
+      dialog.innerHTML=`<div class="web-export-heading"><h2>${mode==="presentation"?"Presentation settings":"Webpage exports"}</h2><button type="button" data-close-x aria-label="Close">×</button></div><div class="web-export-layout"><div><div data-export-list></div><button type="button" data-new>+ New export</button></div><form><label>Name<input data-name required maxlength="100"></label><label>Target folder<div class="web-export-path"><input data-folder required><button type="button" data-pick>Browse…</button></div></label><label class="check"><input data-header type="checkbox"> Include report name in header</label><label>Filters<select data-mode><option value="automatic">Automatic — all columns</option><option value="pick">Pick filters from columns</option></select></label><div data-columns></div><p data-last></p><small>Settings are stored in the canvas document. Save the canvas to keep them.</small><p data-message role="status"></p><div class="web-export-buttons"><button type="button" data-close>Close</button><button type="button" data-save>Save settings</button><button type="submit" class="primary" data-run>Export / update</button></div></form></div>`;
+      document.body.append(dialog);
+      dialog.querySelector('[data-folder]').closest('label').insertAdjacentHTML('beforebegin','<label>Export format<select data-format><option value="folder">Folder website</option><option value="singleHtml">Single HTML file — everything embedded</option></select></label>');
+      dialog.querySelector('[data-format]').closest('label').insertAdjacentHTML('afterend','<label data-filename-label>File name<input type="text" data-filename maxlength="150"><small>.html is added automatically. Use a different name to keep a historic report.</small></label>');
+      dialog.querySelector('[data-format]').onchange=()=>{dialog.querySelector('[data-filename-label]').hidden=dialog.querySelector('[data-format]').value!=="singleHtml";};
+      dialog.querySelector('[data-mode]').closest('label').insertAdjacentHTML('afterend','<label>Filter placement<select data-layout><option value="horizontal">Top</option><option value="vertical">Left pane</option><option value="right">Right pane</option></select></label>');
+      dialog.querySelector('[data-last]').insertAdjacentHTML('beforebegin','<details><summary>Report appearance</summary><div class="property-grid"><label>Selected button background<input type="color" data-appearance="selectedBackground"></label><label>Selected button font<input type="color" data-appearance="selectedColor"></label><label>Unselected button background<input type="color" data-appearance="unselectedBackground"></label><label>Unselected button font<input type="color" data-appearance="unselectedColor"></label></div><label class="check"><input type="checkbox" data-appearance="showSnapshotText"> Show snapshot text</label><label>Snapshot text<input type="text" data-appearance="snapshotText"></label><div class="property-grid"><label>Text size<input type="number" min="8" max="48" data-appearance="snapshotSize"></label><label>Text color<input type="color" data-appearance="snapshotColor"></label></div><div class="header-emphasis"><label class="check"><input type="checkbox" data-appearance="snapshotBold"> Bold</label><label class="check"><input type="checkbox" data-appearance="snapshotItalic"> Italic</label><label class="check"><input type="checkbox" data-appearance="snapshotUnderline"> Underline</label></div></details><div data-export-preview class="export-preview"><strong data-preview-title></strong><p data-preview-note></p><div><button type="button" data-preview-active>Selected page</button> <button type="button" data-preview-inactive>Other page</button></div></div>');
+      const group=(name,nodes)=>{const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent=name;details.append(summary);nodes[0].before(details);details.append(...nodes);return details;};
+      group('File settings',[dialog.querySelector('[data-format]').closest('label'),dialog.querySelector('[data-filename-label]'),dialog.querySelector('[data-folder]').closest('label')]);
+      group('Filters',[dialog.querySelector('[data-mode]').closest('label'),dialog.querySelector('[data-layout]').closest('label'),dialog.querySelector('[data-columns]')]);
+      const appearanceGroup=dialog.querySelector('[data-appearance]').closest('details');
+      const themeLabel=document.createElement('label');themeLabel.textContent='Report theme';themeSelect=document.createElement('select');themeSelect.dataset.appearance='themeMode';themeSelect.innerHTML='<option value="inherit">Inherit from canvas</option><option value="application">Current application theme</option><option value="preset">Choose theme…</option><option value="custom">Custom colors</option>';themeLabel.append(themeSelect);presetLabel=document.createElement('label');presetLabel.textContent='Theme';presetSelect=document.createElement('select');presetSelect.dataset.appearance='themeName';const presetLabels=window.QReportsSettings?.presetLabels||{};presetSelect.replaceChildren(...Object.keys(window.QReportsSettings?.presets||{}).map(name=>new Option(presetLabels[name]||name,name)));presetLabel.append(presetSelect);appearanceGroup.querySelector('summary').after(themeLabel,presetLabel);
+      appearanceGroup.querySelector('summary').after(dialog.querySelector('[data-header]').closest('label'));
+      dialog.querySelector('[data-header]').closest('label').insertAdjacentHTML('afterend','<label class="check"><input data-presentation type="checkbox"> Use this export profile for presentation mode</label>');
+      dialog.querySelector('[data-header]').closest('label').insertAdjacentHTML('afterend','<div class="property-grid"><label>Report name text size<input type="number" min="8" max="72" data-appearance="reportNameSize"></label><label>Report name color<input type="color" data-appearance="reportNameColor"></label></div><div class="header-emphasis"><label class="check"><input type="checkbox" data-appearance="reportNameBold"> Bold</label><label class="check"><input type="checkbox" data-appearance="reportNameItalic"> Italic</label><label class="check"><input type="checkbox" data-appearance="reportNameUnderline"> Underline</label></div>');
+      const subheader=dialog.querySelector('[data-appearance="showSnapshotText"]').closest('label'),subheaderText=dialog.querySelector('[data-appearance="snapshotText"]').closest('label'),subheaderFont=dialog.querySelector('[data-appearance="snapshotSize"]').closest('.property-grid'),subheaderEmphasis=dialog.querySelector('[data-appearance="snapshotBold"]').closest('.header-emphasis');
+      subheader.lastChild.textContent=' Show subheader text';subheaderText.firstChild.textContent='Subheader text';
+      dialog.querySelector('[data-appearance="reportNameBold"]').closest('.header-emphasis').after(subheader,subheaderText,subheaderFont,subheaderEmphasis);
+      const headerToggle=dialog.querySelector('[data-header]').closest('label'),headerFont=dialog.querySelector('[data-appearance="reportNameSize"]').closest('.property-grid'),headerEmphasis=dialog.querySelector('[data-appearance="reportNameBold"]').closest('.header-emphasis'),headerGroup=document.createElement('details');headerGroup.className='appearance-subgroup';headerGroup.open=false;headerGroup.innerHTML='<summary>Report header</summary>';headerGroup.append(headerToggle,headerFont,headerEmphasis);const subheaderGroup=document.createElement('details');subheaderGroup.className='appearance-subgroup';subheaderGroup.open=false;subheaderGroup.innerHTML='<summary>Report subheader</summary>';subheaderGroup.append(subheader,subheaderText,subheaderFont,subheaderEmphasis);presetLabel.after(headerGroup,subheaderGroup);
+      const navigation=document.createElement('div');navigation.className='property-grid presentation-navigation';navigation.innerHTML='<label>Page navigation<select data-appearance="navigationStyle"><option value="buttons">Buttons</option><option value="tabs">Tabs</option></select></label><label>Navigation position<select data-appearance="tabPosition"><option value="top">Top</option><option value="left">Left</option></select></label>';subheaderGroup.after(navigation);navigation.querySelector('[data-appearance="navigationStyle"]').addEventListener('change',syncNavigation);
+      dialog.querySelector('form').addEventListener('input',preview);
+      dialog.querySelector('form').addEventListener('change',preview);
+      themeSelect.addEventListener('change',()=>{presetLabel.hidden=themeSelect.value!=="preset";applyThemeChoice();preview();});presetSelect.addEventListener('change',()=>{applyThemeChoice();preview();});
+      dialog.addEventListener("close",()=>{dialog.remove();dialog=null;});
+      dialog.querySelectorAll('[data-close],[data-close-x]').forEach(button=>button.onclick=()=>{if(!busy)dialog.close();});
+      dialog.addEventListener("cancel",event=>{if(busy)event.preventDefault();});
+      dialog.querySelector('[data-new]').onclick=()=>load(blank());
+      dialog.querySelector('[data-pick]').onclick=()=>ctx.post("pickWebExportFolder",{folder:dialog.querySelector('[data-folder]').value});
+      dialog.querySelector('[data-mode]').onchange=()=>dialog.querySelector('[data-columns]').hidden=dialog.querySelector('[data-mode]').value!=="pick";
+      dialog.querySelector('[data-save]').onclick=()=>save();
+      dialog.querySelector('form').onsubmit=event=>{event.preventDefault();const definition=save();if(definition&&!busy)ctx.post("exportWebpage",{document:ctx.model(),definition});};
+      const available=definitions(),initial=mode==="presentation"?(available.find(item=>item.useForPresentation)||available[0]):available[0];list();load(initial||blank());dialog.showModal();
+    }
+    function list(){
+      const container=dialog.querySelector('[data-export-list]');container.replaceChildren();
+      definitions().forEach(definition=>{const row=document.createElement("button");row.type="button";row.textContent=definition.name;row.className=definition.id===activeId?"active":"";
+        const columns=definition.filterMode==="pick"?(definition.filterColumns||[]).map(c=>`${c.sourceId}.${c.column}`).join(', '):"All columns";
+        row.title=`Folder: ${definition.targetFolder}\nReport name: ${definition.includeReportName!==false?'On':'Off'}\nFilters: ${columns}\nLayout: ${definition.filterLayout||'horizontal'}\nLast export: ${definition.lastExportUtc?new Date(definition.lastExportUtc).toLocaleString():'Never'}`;
+        row.onclick=()=>{if(!busy)load(definition);};container.append(row);
+      });
+    }
+    function load(definition){
+      activeId=definition.id;dialog.querySelector('[data-name]').value=definition.name;
+      dialog.querySelector('[data-folder]').value=definition.targetFolder;dialog.querySelector('[data-header]').checked=definition.includeReportName!==false;
+      dialog.querySelector('[data-presentation]').checked=definition.useForPresentation===true;
+      dialog.querySelector('[data-mode]').value=definition.filterMode||"automatic";
+      dialog.querySelector('[data-format]').value=definition.exportFormat||"folder";
+      dialog.querySelector('[data-filename]').value=definition.fileName||ctx.model().name||"Report";
+      dialog.querySelector('[data-format]').onchange();
+      dialog.querySelector('[data-layout]').value=definition.filterLayout||"horizontal";
+      dialog.querySelector('[data-last]').textContent=`Last export: ${definition.lastExportUtc?new Date(definition.lastExportUtc).toLocaleString():'Never'}`;
+      const appearance={...appearanceDefaults,...definition.appearance};dialog.querySelectorAll('[data-appearance]').forEach(control=>{if(control.type==='checkbox')control.checked=appearance[control.dataset.appearance];else control.value=appearance[control.dataset.appearance];});syncNavigation();presetLabel.hidden=themeSelect.value!=="preset";if(themeSelect.value!=="custom")applyThemeChoice();preview();
+      const columns=dialog.querySelector('[data-columns]');columns.hidden=definition.filterMode!=="pick";
+      columns.innerHTML=(ctx.model().sources||[]).map(source=>`<fieldset><legend>${esc(source.name)}</legend>${(source.query?.data?.columns||[]).map(column=>{const config=(definition.filterColumns||[]).find(c=>c.sourceId===source.id&&c.column===column);return `<label class="check"><input type="checkbox" data-filter-source="${esc(source.id)}" data-filter-column="${esc(column)}" ${config?'checked':''}>${esc(column)}<select data-filter-type>${[["basic","Basic"],["advanced","Advanced"],["multiple","Multiple values"],["searchMultiple","Searchable multi-select"],["date","Date picker"],["relativeDate","Relative date"],["buttons","Buttons (multiple)"],["toggle","Toggle"],["range","Numeric range (one handle)"],["rangeBetween","Numeric range (two handles)"]].map(([value,label])=>`<option value="${value}" ${(config?.filterType||"basic")===value?'selected':''}>${label}</option>`).join('')}</select></label>`;}).join('')}</fieldset>`).join('');
+      columns.querySelectorAll('[data-filter-type]').forEach(select=>{const range=select.querySelector('option[value="date"]');if(range)range.textContent='Date range';select.insertBefore(new Option('Date','dateSingle'),range);const config=(definition.filterColumns||[]).find(c=>c.sourceId===select.closest('label').querySelector('[data-filter-source]').dataset.filterSource&&c.column===select.closest('label').querySelector('[data-filter-column]').dataset.filterColumn);select.value=config?.filterType||'basic';});
+      dialog.querySelector('[data-message]').textContent="";list();
+    }
+    function syncNavigation(){
+      if(!dialog)return;
+      const style=dialog.querySelector('[data-appearance="navigationStyle"]'),position=dialog.querySelector('[data-appearance="tabPosition"]');
+      if(style&&position)position.closest('label').hidden=false;
+    }
+    function save(){
+      const form=dialog.querySelector('form');if(!form.reportValidity())return null;
+      const name=dialog.querySelector('[data-name]').value.trim(),targetFolder=dialog.querySelector('[data-folder]').value.trim();
+      if(!name||!targetFolder){dialog.querySelector('[data-message]').textContent="Enter a name and target folder.";return null;}
+      if(definitions().some(d=>d.id!==activeId&&d.name.toLowerCase()===name.toLowerCase())){dialog.querySelector('[data-message]').textContent="An export with this name already exists.";return null;}
+      const useForPresentation=dialog.querySelector('[data-presentation]').checked;if(useForPresentation)definitions().forEach(item=>item.useForPresentation=false);const prior=definitions().find(d=>d.id===activeId),definition={...prior,id:activeId,name,targetFolder,includeReportName:dialog.querySelector('[data-header]').checked,useForPresentation,filterMode:dialog.querySelector('[data-mode]').value,filterColumns:[...dialog.querySelectorAll('[data-filter-source]:checked')].map(c=>({sourceId:c.dataset.filterSource,column:c.dataset.filterColumn,filterType:c.closest('label').querySelector('[data-filter-type]').value}))};
+      if(prior)Object.assign(prior,definition);else definitions().push(definition);
+      definition.filterLayout=dialog.querySelector('[data-layout]').value;
+      definition.exportFormat=dialog.querySelector('[data-format]').value;
+      definition.fileName=dialog.querySelector('[data-filename]').value.trim()||ctx.model().name||"Report";
+      definition.appearance=readAppearance();
+      const saved=definitions().find(d=>d.id===definition.id);saved.filterLayout=definition.filterLayout;
+      saved.appearance=definition.appearance;
+      saved.exportFormat=definition.exportFormat;
+      saved.fileName=definition.fileName;
+      ctx.changed();list();dialog.querySelector('[data-message]').textContent="Settings saved in this canvas. Save the canvas file to persist them.";return definition;
+    }
+    const appearanceDefaults={themeMode:'inherit',themeName:'Light',navigationStyle:'buttons',tabPosition:'top',reportNameSize:16,reportNameColor:'#34425e',reportNameBold:true,reportNameItalic:false,reportNameUnderline:false,selectedBackground:'#4f6ee8',selectedColor:'#ffffff',unselectedBackground:'#ffffff',unselectedColor:'#34425e',showSnapshotText:true,snapshotText:'Offline snapshot — filters use exported rows only',snapshotSize:11,snapshotColor:'#667085',snapshotBold:false,snapshotItalic:false,snapshotUnderline:false};
+    const contrast=color=>{const value=String(color||'').replace('#','');if(value.length!==6)return'#fff';const luminance=[0,2,4].map(index=>parseInt(value.slice(index,index+2),16)/255).map(channel=>channel<=.04045?channel/12.92:((channel+.055)/1.055)**2.4);return .2126*luminance[0]+.7152*luminance[1]+.0722*luminance[2]>.38?'#17213a':'#ffffff';};
+    function selectedThemeRoles(){const mode=themeSelect.value,defaults={text:'#182230',accent:'#4f6ee8',surface:'#ffffff',headerBackground:'#eef3f9',headerText:'#344054',grid:'#dce3ec',positive:'#16844a',negative:'#c43d4b'};if(mode==='inherit')return{...defaults,...window.CanvasTheme?.roles(ctx.model().settings?.theme)};if(mode==='application')return{...defaults,...window.QReportsSettings?.get()?.themeRoles};if(mode==='preset')return{...defaults,...window.QReportsSettings?.presets?.[presetSelect.value]?.roles};return{...defaults,text:dialog.querySelector('[data-appearance="unselectedColor"]').value,accent:dialog.querySelector('[data-appearance="selectedBackground"]').value,surface:dialog.querySelector('[data-appearance="unselectedBackground"]').value,headerText:dialog.querySelector('[data-appearance="reportNameColor"]').value};}
+    function applyThemeChoice(){if(themeSelect.value==='custom')return;const roles=selectedThemeRoles();dialog.querySelector('[data-appearance="selectedBackground"]').value=roles.accent;dialog.querySelector('[data-appearance="selectedColor"]').value=contrast(roles.accent);dialog.querySelector('[data-appearance="unselectedBackground"]').value=roles.surface;dialog.querySelector('[data-appearance="unselectedColor"]').value=roles.text;dialog.querySelector('[data-appearance="reportNameColor"]').value=roles.headerText;dialog.querySelector('[data-appearance="snapshotColor"]').value=roles.text;}
+    function readAppearance(){const result=Object.fromEntries([...dialog.querySelectorAll('[data-appearance]')].map(c=>[c.dataset.appearance,c.type==='checkbox'?c.checked:c.type==='number'?+c.value:c.value]));result.themeRoles=selectedThemeRoles();return result;}
+    function preview(){if(!dialog)return;const a=readAppearance(),roles=a.themeRoles;const title=dialog.querySelector('[data-preview-title]');title.textContent=ctx.model().name;title.hidden=!dialog.querySelector('[data-header]').checked;Object.assign(title.style,{fontSize:a.reportNameSize+'px',color:a.reportNameColor,fontWeight:a.reportNameBold?'700':'400',fontStyle:a.reportNameItalic?'italic':'normal',textDecoration:a.reportNameUnderline?'underline':'none'});const note=dialog.querySelector('[data-preview-note]');note.textContent=a.snapshotText;note.hidden=!a.showSnapshotText;Object.assign(note.style,{fontSize:a.snapshotSize+'px',color:a.snapshotColor,fontWeight:a.snapshotBold?'700':'400',fontStyle:a.snapshotItalic?'italic':'normal',textDecoration:a.snapshotUnderline?'underline':'none'});const previewBox=dialog.querySelector('[data-export-preview]');previewBox.classList.toggle('preview-tabs',a.navigationStyle==='tabs');previewBox.classList.toggle('preview-left-tabs',a.tabPosition==='left');Object.assign(previewBox.style,{background:roles.surface,color:roles.text,borderColor:roles.grid});Object.assign(dialog.querySelector('[data-preview-active]').style,{background:a.selectedBackground,color:a.selectedColor,borderColor:roles.grid});Object.assign(dialog.querySelector('[data-preview-inactive]').style,{background:a.unselectedBackground,color:a.unselectedColor,borderColor:roles.grid});}
+    ctx.host.addEventListener("message",event=>{
+      const m=event.data;
+      if(m.type==="webExportFolderPicked"&&dialog&&m.folder)dialog.querySelector('[data-folder]').value=m.folder;
+      if(m.type==="webpageExportProgress"){busy=true;buttons.forEach(button=>button.disabled=true);ctx.status(m.message);}
+      if(m.type==="webpageExportFailed"){busy=false;buttons.forEach(button=>button.disabled=false);ctx.status(`Export failed: ${m.message}`);}
+      if(m.type==="webpageExported"){
+        busy=false;buttons.forEach(button=>button.disabled=false);const definition=definitions().find(d=>d.id===m.definitionId);if(definition){definition.lastExportUtc=m.exportedUtc;ctx.changed();}
+        ctx.status("Webpage exported. Save the canvas to keep the export settings and date.");if(dialog){load(definition||definitions()[0]);const message=dialog.querySelector('[data-message]');message.replaceChildren(document.createTextNode('Export completed successfully. '));if(m.file){const link=document.createElement('button');link.type='button';link.className='exported-file-link';link.textContent='Open exported webpage';link.onclick=()=>ctx.post('openExportedWebpage',{file:m.file});message.append(link);}}
+      }
+      if(dialog&&["webpageExportProgress","webpageExportFailed","webpageExported"].includes(m.type)){
+        dialog.querySelectorAll('button,input,select').forEach(control=>control.disabled=busy);
+        if(m.type!=="webpageExported")dialog.querySelector('[data-message]').textContent=m.message;
+      }
+    });
+  }};
+})();
