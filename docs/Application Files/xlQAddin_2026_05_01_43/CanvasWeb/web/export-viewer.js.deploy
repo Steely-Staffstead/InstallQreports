@@ -1,0 +1,43 @@
+(() => {
+  const api=window.canvasWeb;
+  api.viewerLoad(window.QanvasReport);
+  const doc=api.viewerDocument();
+  document.title=doc.name||"Qanvas report";
+  const header=document.createElement("header");header.id="viewerHeader";
+  const title=document.createElement("strong");title.textContent=doc.name;if(doc.viewerOptions?.includeReportName!==false)header.append(title);
+  const a=doc.viewerOptions?.appearance||{};
+  const color=(value,fallback)=>/^#[0-9a-f]{6}$/i.test(value||'')?value:fallback;
+  const roles={text:'#182230',accent:'#4f6ee8',surface:'#ffffff',headerBackground:'#eef3f9',headerText:'#344054',grid:'#dce3ec',...(a.themeRoles||{})};
+  for(const[name,value]of Object.entries(roles))document.documentElement.style.setProperty(`--viewer-theme-${name.replace(/[A-Z]/g,letter=>'-'+letter.toLowerCase())}`,color(value,'#ffffff'));
+  Object.assign(title.style,{fontSize:Math.max(8,Math.min(72,+a.reportNameSize||16))+'px',color:color(a.reportNameColor,'#34425e'),fontWeight:a.reportNameBold!==false?'700':'400',fontStyle:a.reportNameItalic?'italic':'normal',textDecoration:a.reportNameUnderline?'underline':'none'});
+  document.documentElement.style.setProperty('--viewer-selected-bg',color(a.selectedBackground,roles.accent));document.documentElement.style.setProperty('--viewer-selected-color',color(a.selectedColor,'#ffffff'));document.documentElement.style.setProperty('--viewer-unselected-bg',color(a.unselectedBackground,roles.surface));document.documentElement.style.setProperty('--viewer-unselected-color',color(a.unselectedColor,roles.text));
+  const note=document.createElement("small");note.textContent=a.snapshotText??"Offline snapshot — filters use exported rows only";Object.assign(note.style,{fontSize:Math.max(8,Math.min(48,+a.snapshotSize||11))+'px',color:color(a.snapshotColor,'#667085'),fontWeight:a.snapshotBold?'700':'400',fontStyle:a.snapshotItalic?'italic':'normal',textDecoration:a.snapshotUnderline?'underline':'none',marginLeft:'8px'});if(a.showSnapshotText!==false)header.append(note);
+  const tabs=document.createElement("nav");header.append(tabs);
+  Object.assign(note.style,{display:'block',marginLeft:'0',marginTop:'6px'});
+  let page=0;
+  doc.pages.forEach((p,i)=>{const b=document.createElement("button");b.textContent=p.name;b.onclick=()=>{page=i;draw();};tabs.append(b);});
+  const filters=document.createElement("details");filters.innerHTML="<summary>Filters (loaded data only)</summary>";header.append(filters);
+  window.ExportFilters.install(doc,filters,()=>draw());
+  const sideFilters=["vertical","right"].includes(doc.viewerOptions?.filterLayout);
+  if(sideFilters){
+    document.body.classList.add("viewer-vertical-filters");
+    document.body.classList.toggle("viewer-right-filters",doc.viewerOptions.filterLayout==="right");
+    const pane=document.createElement("aside");pane.id="viewerFiltersPane";
+    filters.open=true;pane.append(filters);
+    const toggle=document.createElement("button");toggle.className="viewer-filter-toggle";toggle.textContent="Show filters";toggle.setAttribute("aria-expanded","false");toggle.setAttribute("aria-controls",pane.id);header.append(toggle);
+    const setOpen=open=>{document.body.classList.toggle("viewer-filters-open",open);toggle.textContent=open?"Hide filters":"Show filters";toggle.setAttribute("aria-expanded",String(open));};
+    filters.querySelector("summary").addEventListener("click",event=>{event.preventDefault();setOpen(false);});
+    toggle.onclick=()=>setOpen(!document.body.classList.contains("viewer-filters-open"));
+    document.body.append(pane);
+  }
+  document.body.prepend(header);
+  function draw(){tabs.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("active",i===page));api.viewerRender(page);}
+  // Stop designer interaction at the window capture boundary. Keep viewer
+  // controls, matrix expansion, scrolling and native SVG tooltips available.
+  ["pointerdown","click","dblclick","contextmenu","keydown"].forEach(type=>window.addEventListener(type,event=>{
+    if(event.target.closest("#viewerHeader,#viewerFiltersPane,.range-calendar"))return;
+    if(type==="click"){const link=event.target.closest('a[href^="#qanvas-page="]');if(link){event.preventDefault();const key=decodeURIComponent(link.getAttribute('href').slice(13)),index=doc.pages.findIndex(p=>(p.id||p.name)===key);if(index>=0){page=index;draw();}}const toggle=event.target.closest("[data-matrix-toggle]");if(toggle)api.viewerToggle(toggle.closest(".tile").dataset.id,decodeURIComponent(toggle.dataset.matrixToggle));const sort=event.target.closest("[data-tile-sort]");if(sort)api.viewerSort(sort.closest(".tile").dataset.id,sort.dataset.tileSort,event.shiftKey);}
+    event.stopImmediatePropagation();if(type==="contextmenu"||type==="dblclick")event.preventDefault();
+  },true));
+  draw();
+})();

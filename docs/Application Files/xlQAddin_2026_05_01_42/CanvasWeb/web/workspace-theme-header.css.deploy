@@ -1,0 +1,13 @@
+/* The light-header presets must not inherit subtitle colors from the original dark header. */
+html[data-qreports-app-theme] body > header { background: var(--qreports-header); color: var(--qreports-header-text); }
+html[data-qreports-app-theme] body > header .brand strong {
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] body > header .brand small {
+  color: var(--qreports-header-text);
+  opacity: .85;
+}
+html[data-qreports-app-theme] body > header .brand > span {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+}

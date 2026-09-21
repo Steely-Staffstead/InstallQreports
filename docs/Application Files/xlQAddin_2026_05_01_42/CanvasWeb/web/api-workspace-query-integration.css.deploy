@@ -1,0 +1,4 @@
+.loop-query-control{display:grid;grid-template-columns:1fr auto;align-items:stretch}
+.loop-query-control textarea{border-radius:8px 0 0 8px}
+.loop-query-control button{border-radius:0 8px 8px 0}
+#testToken{background:#398d55;border-color:#398d55;color:#fff;font-weight:600}

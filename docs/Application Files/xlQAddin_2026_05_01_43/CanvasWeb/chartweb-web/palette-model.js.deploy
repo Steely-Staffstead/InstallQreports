@@ -1,0 +1,15 @@
+(() => {
+  const name = value => /^(canvas|global|use canvas theme)$/i.test(String(value || '').trim()) ? 'Canvas' : String(value || '').trim();
+  // Legacy stores use AARRGGBB; web palettes use opaque RRGGBB series colors.
+  const colors = values => (Array.isArray(values) ? values : []).map(value => {
+    const hex = String(value || '').replace(/^#/, '');
+    return /^[0-9a-f]{8}$/i.test(hex) ? `#${hex.slice(2)}` : /^[0-9a-f]{6}$/i.test(hex) ? `#${hex}` : null;
+  }).filter(Boolean);
+  const catalog = values => (Array.isArray(values) ? values : []).map(item => ({name:name(item.name || item.Name), colors:colors(item.colors || item.Colors)})).filter(item => item.name && item.colors.length);
+  const selection = (spec = {}, settingsJson = '', fallback = 'Canvas') => {
+    let settings = {}; try { settings = JSON.parse(settingsJson || '{}'); } catch {}
+    return name(spec.ChartOptions?.PaletteName || settings.renderer?.PaletteName || spec.Style?.PaletteName || fallback);
+  };
+  const resolve = (selected, theme, palettes, embedded) => name(selected) === 'Canvas' ? colors(theme?.colors) : colors(embedded).length ? colors(embedded) : catalog(palettes).find(item => item.name === name(selected))?.colors;
+  globalThis.QReportsPalette = {name, colors, catalog, selection, resolve};
+})();

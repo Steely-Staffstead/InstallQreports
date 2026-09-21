@@ -1,0 +1,275 @@
+/* Keep the response area stable while the request editor scrolls independently. */
+main > * {
+  min-height: 0;
+}
+
+#workspaceMain {
+  --left-pane: 260px;
+  --right-pane: 280px;
+  display: grid;
+  grid-template-columns: var(--left-pane) 6px minmax(420px, 1fr) 6px var(--right-pane);
+}
+
+#workspaceMain .workspace {
+  grid-column: 3;
+  margin-right: 0 !important;
+}
+
+#workspaceMain #library { grid-column: 1; }
+#workspaceMain #leftResize { grid-column: 2; }
+#workspaceMain #rightResize { grid-column: 4; }
+#workspaceMain #inspector { grid-column: 5; }
+
+#workspaceMain #inspector {
+  position: static !important;
+  inset: auto !important;
+  width: auto;
+  box-shadow: none;
+}
+
+#workspaceMain.left-hidden {
+  grid-template-columns: 0 34px minmax(420px, 1fr) 6px var(--right-pane);
+}
+
+#workspaceMain.right-hidden {
+  grid-template-columns: var(--left-pane) 6px minmax(420px, 1fr) 34px 0;
+}
+
+#workspaceMain.left-hidden.right-hidden {
+  grid-template-columns: 0 34px minmax(420px, 1fr) 34px 0;
+}
+
+#workspaceMain.left-hidden #library,
+#workspaceMain.right-hidden #inspector {
+  display: none;
+}
+
+#workspaceMain.left-hidden #leftResize {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  cursor: pointer;
+}
+
+#workspaceMain.left-hidden #leftResize::after {
+  content: "SAVED APIS";
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  letter-spacing: .07em;
+  color: #40547e;
+  font-weight: 700;
+}
+
+#workspaceMain.right-hidden #rightResize {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  cursor: pointer;
+}
+
+#workspaceMain.right-hidden #rightResize::after {
+  content: "API DETAILS";
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  letter-spacing: .07em;
+  color: #40547e;
+  font-weight: 700;
+}
+
+.pane-resizer {
+  position: relative;
+  z-index: 4;
+  min-height: 0;
+  background: #d6deeb;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.pane-resizer:hover,
+.pane-resizer.dragging,
+.horizontal-resizer:hover,
+.horizontal-resizer.dragging {
+  background: #6686ee;
+}
+
+.workspace {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.request-line,
+.workspace > .tabs,
+.response-head {
+  flex: 0 0 auto;
+}
+
+.request-panels {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.horizontal-resizer {
+  flex: 0 0 6px;
+  position: relative;
+  z-index: 4;
+  background: #d6deeb;
+  cursor: row-resize;
+  touch-action: none;
+}
+
+.response {
+  flex: 0 0 var(--response-size, 38%);
+  height: auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.response-panel {
+  min-height: 100%;
+}
+
+#rawBody,
+#bodyText {
+  width: 100%;
+  max-width: none;
+}
+
+#bodyText {
+  display: block;
+  min-height: 280px;
+}
+
+body.resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+body.resizing-rows {
+  cursor: row-resize;
+  user-select: none;
+}
+
+/* Compact, collapsible saved API navigation. */
+.library-connection {
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.library-connection .connection-toggle {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 0;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.connection-chevron {
+  color: #67738d;
+}
+
+.connection-toggle small {
+  color: #8893a9;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.library-endpoints {
+  padding: 0 5px 4px;
+}
+
+.library-endpoint {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: start;
+  gap: 5px;
+  width: 100%;
+  margin: 1px 0;
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 6px;
+  background: #f3f6fc;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.library-endpoint .method {
+  color: #65738f;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.library-endpoint.active .method {
+  color: #304fc6;
+}
+
+.pane-title-actions,
+.connection-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.connection-actions {
+  margin: 2px 0 16px;
+}
+
+.connection-actions button {
+  flex: 1 1 0;
+}
+
+.credential-card {
+  margin: 14px 0;
+  padding: 13px;
+  border: 1px solid #d7dfec;
+  border-radius: 10px;
+  background: #f8faff;
+}
+
+.credential-card p {
+  margin: -3px 0 12px;
+  color: #6f7b96;
+  font-size: 12px;
+}
+
+#grid th { cursor: pointer; user-select: none; }
+#grid th .sort-mark { margin-left: 6px; color: #526ed8; font-size: 10px; }
+#grid th .column-resizer { position:absolute; top:0; right:-3px; width:7px; height:100%; cursor:col-resize; }
+#grid table { table-layout: fixed; }
+#grid td { overflow:hidden; text-overflow:ellipsis; }
+
+.context-menu { position:fixed; z-index:30; min-width:235px; max-height:70vh; overflow:auto; padding:7px; border:1px solid #c8d2e3; border-radius:9px; background:#fff; box-shadow:0 10px 30px #17213c33; }
+.context-menu button,.context-menu label { display:flex; width:100%; align-items:center; gap:7px; margin:2px 0; padding:7px 9px; text-align:left; }
+.context-menu label { color:#4e5b76; font-size:12px; }
+.context-menu label input[type=checkbox] { flex:0 0 auto; width:14px; height:14px; margin:0; }
+.context-menu select { width:auto; min-width:105px; margin-left:auto; }
+.context-menu label:has(input[type=text]) { display:grid; }
+.context-menu input[type=text] { width:100%; margin-top:4px; }
+.context-menu hr { border:0; border-top:1px solid #dbe2ed; }
+.context-menu button { border:0; border-radius:5px; background:#fff; }
+.context-menu button { font-size:12px; }
+.context-menu button:hover,.context-menu label:hover { background:#edf2ff; }
+.menu-title { padding:6px 9px; color:#6c7890; font-size:10px; font-weight:700; text-transform:uppercase; }
+
+.path-card { width:min(780px,90vw); }
+.path-tree { min-height:180px; max-height:52vh; overflow:auto; border:1px solid #d7dfec; border-radius:9px; padding:9px; }
+.path-group { margin:5px 0; padding:8px; border:1px solid #e0e6ef; border-radius:8px; }
+.path-group > label { font-weight:700; }
+.path-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:4px; margin:8px 0 0 22px; }
+.path-group > label,.path-fields label { display:flex; align-items:center; gap:7px; font-size:12px; }
+.path-group input[type=radio],.path-fields input[type=checkbox] { flex:0 0 auto; width:14px; height:14px; margin:0; }
+.modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:13px; }
+
+.modal { z-index:100; }
+.modal-card { position:relative; z-index:101; }
