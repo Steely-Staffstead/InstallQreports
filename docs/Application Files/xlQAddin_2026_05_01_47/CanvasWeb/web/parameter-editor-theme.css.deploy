@@ -1,0 +1,116 @@
+/* Parameter input, manager and scope dialogs follow the shared application theme. */
+html[data-qreports-app-theme] {
+  --parameter-panel: color-mix(in srgb, var(--qreports-surface) 88%, var(--qreports-header));
+  --parameter-raised: color-mix(in srgb, var(--qreports-surface) 94%, var(--qreports-header-text));
+  --parameter-accent-soft: color-mix(in srgb, var(--qreports-accent) 14%, var(--qreports-surface));
+  --parameter-muted: color-mix(in srgb, var(--qreports-text) 70%, var(--qreports-surface));
+}
+html[data-qreports-app-theme] .pw-overlay {
+  background: color-mix(in srgb, var(--qreports-header) 56%, transparent);
+}
+html[data-qreports-app-theme] .pw-dialog,
+html[data-qreports-app-theme] body .pw-scope-dialog .pw-dialog {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pw-head {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] .pw-head p {
+  color: var(--qreports-header-text);
+  opacity: .82;
+}
+html[data-qreports-app-theme] .pw-head .pw-close {
+  background: transparent;
+  color: var(--qreports-header-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pw-body,
+html[data-qreports-app-theme] .pw-input-body,
+html[data-qreports-app-theme] .pw-properties,
+html[data-qreports-app-theme] .pw-scope-list { background: var(--qreports-surface); }
+html[data-qreports-app-theme] .pw-sidebar {
+  background: var(--parameter-panel);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pw-section,
+html[data-qreports-app-theme] .pw-input-row,
+html[data-qreports-app-theme] .pw-item,
+html[data-qreports-app-theme] body .pw-tree {
+  background: var(--parameter-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pw-item.active {
+  background: var(--parameter-accent-soft);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .pw-dialog label,
+html[data-qreports-app-theme] .pw-input-row > label > span,
+html[data-qreports-app-theme] body .pw-tree label,
+html[data-qreports-app-theme] body .pw-tree summary { color: var(--qreports-text); }
+html[data-qreports-app-theme] .pw-dialog label.pw-check {
+  color: var(--qreports-text) !important;
+}
+html[data-qreports-app-theme] :is(.pw-item small, .pw-grip, .pw-help, .pw-empty, .pw-section h3) { color: var(--parameter-muted); }
+html[data-qreports-app-theme] .pw-dialog :is(input, select, textarea),
+html[data-qreports-app-theme] .pw-multi {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pw-dialog :is(input[type="checkbox"], input[type="radio"]) { accent-color: var(--qreports-accent); }
+html[data-qreports-app-theme] .pw-foot {
+  background: var(--qreports-surface);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pw-dialog button:not(.pw-primary) {
+  background: var(--parameter-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pw-dialog button:not(.pw-primary):not(:disabled):hover {
+  background: var(--parameter-accent-soft);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .pw-dialog .pw-primary {
+  background: var(--qreports-accent) !important;
+  color: var(--qreports-on-accent) !important;
+  border-color: var(--qreports-accent) !important;
+}
+html[data-qreports-app-theme] .pw-dialog .pw-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-accent) 82%, var(--qreports-header-text)) !important;
+}
+html[data-qreports-app-theme] .pw-dialog button:focus-visible {
+  outline: 2px solid var(--qreports-accent);
+  outline-offset: 2px;
+}
+html[data-qreports-app-theme] .pw-danger,
+html[data-qreports-app-theme] .pw-error { color: var(--qreports-negative); }
+html[data-qreports-app-theme] body .pw-user-dot { border-color: var(--qreports-text); }
+html[data-qreports-app-theme] body .pw-user-dot.required {
+  background: var(--qreports-negative);
+  border-color: var(--qreports-negative);
+}
+html[data-qreports-app-theme] body .pw-tree details > div { border-color: var(--qreports-grid); }
+html[data-qreports-app-theme] body .pw-tree summary::marker { color: var(--parameter-muted); }
+html[data-qreports-app-theme] body .pw-collapsible[open] > summary { border-color: var(--qreports-grid); }
+html[data-qreports-app-theme] body .pw-calculation-preview {
+  background: color-mix(in srgb, var(--qreports-positive) 14%, var(--qreports-surface));
+  color: var(--qreports-positive);
+}
+html[data-qreports-app-theme] body .pw-calculation-preview.pw-calculation-error {
+  background: color-mix(in srgb, var(--qreports-negative) 14%, var(--qreports-surface));
+  color: var(--qreports-negative);
+}
+html[data-qreports-app-theme] body .pw-scope-dialog::backdrop {
+  background: color-mix(in srgb, var(--qreports-header) 62%, transparent);
+}
+html[data-qreports-app-theme] body.parameter-workspace,
+html[data-qreports-app-theme] body.parameter-workspace .pw-overlay { background: var(--qreports-surface); }
+html[data-qreports-app-theme] body.parameter-workspace .pw-head::before {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+}

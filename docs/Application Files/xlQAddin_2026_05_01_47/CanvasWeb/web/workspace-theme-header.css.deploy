@@ -1,0 +1,63 @@
+/* The light-header presets must not inherit subtitle colors from the original dark header. */
+html[data-qreports-app-theme] body > header { background: var(--qreports-header); color: var(--qreports-header-text); }
+html[data-qreports-app-theme] body > header .brand strong {
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] body > header .brand small {
+  color: var(--qreports-header-text);
+  opacity: .85;
+}
+html[data-qreports-app-theme] body > header .brand > span {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+}
+
+/* API workspace surfaces use the same semantic roles as the application
+   header instead of retaining the original light-only palette. */
+html[data-qreports-app-theme] body:has(#library):has(#inspector) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(aside,.workspace,.request-panels,.response) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(aside,#inspector,.request-line,.tabs,details,th,td) {
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(button,input,select,textarea,.library-connection,.library-endpoint,.credential-card,.modal-card,.context-menu) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(label,.pane-title p,.request-line #status,.connection-chevron,.connection-toggle small) {
+  color: var(--qreports-text);
+  opacity: .82;
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.tabs button.active,.library-endpoint.active) {
+  color: var(--qreports-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.primary,.tabs button.active) {
+  background: color-mix(in srgb,var(--qreports-accent) 14%,var(--qreports-surface));
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.primary,.run,#testToken) {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.pane-resizer,.horizontal-resizer) {
+  background: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .response-head {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) th {
+  background: color-mix(in srgb,var(--qreports-header) 70%,var(--qreports-surface));
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) #toast {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+}
