@@ -1,0 +1,24 @@
+(() => {
+  const button = document.getElementById("manualJson");
+  button.onclick = () => setManualJson(!button.classList.contains("active"));
+
+  const baseEndpointObject = endpointObject;
+  endpointObject = () => ({
+    ...baseEndpointObject(),
+    ManualRequestJson: manualJson ? document.getElementById("jsonRequestEditor").textContent.trim() : ""
+  });
+
+  const baseSelectEndpoint = selectEndpoint;
+  selectEndpoint = endpoint => {
+    baseSelectEndpoint(endpoint);
+    const saved = String(endpoint?.ManualRequestJson || "").trim();
+    document.getElementById("jsonRequestEditor").textContent = saved;
+    setManualJson(Boolean(saved), false);
+  };
+
+  const baseNewRequest = newRequest;
+  newRequest = () => {
+    setManualJson(false, false);
+    baseNewRequest();
+  };
+})();

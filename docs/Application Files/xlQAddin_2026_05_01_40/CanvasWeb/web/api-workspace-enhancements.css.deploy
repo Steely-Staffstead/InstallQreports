@@ -1,6 +1,0 @@
-.kv-row input { font-size: 13px; }
-.kv-row button { font-size: 13px; padding: 5px 8px; }
-.response-actions { display: flex; align-items: center; gap: 10px; padding-right: 12px; }
-.response-actions button { padding: 6px 9px; background: #70798d; color: #fff; border-color: #8d97aa; font-size: 12px; }
-.response-actions button.active { background: #6686ee; border-color: #aebdff; }
-#jsonRequest[contenteditable="true"] { min-height: 100%; outline: 2px solid #6686ee; outline-offset: -2px; background: #fbfcff; white-space: pre; tab-size: 2; }

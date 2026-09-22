@@ -1,9 +1,0 @@
-.canvas-filter-row { grid-template-columns: 32px 1fr 1fr; gap: 7px; padding: 8px 0; border-bottom: 1px solid #e1e6ef; }
-.canvas-filter-row > input, .canvas-filter-row > button:not(.remove-filter), .canvas-filter-row > select:nth-of-type(n+3) { grid-column: 2 / -1; }
-.filter-values-dialog { width: min(520px, 86vw); max-height: 78vh; border: 0; border-radius: 15px; padding: 20px; box-shadow: 0 20px 70px #17213c55; color: #17213c; }
-.filter-values-dialog::backdrop { background: #17213c77; }
-.filter-values-dialog h2 { margin: 0 0 14px; }
-.filter-values-dialog [data-value-search] { width: 100%; padding: 9px; border: 1px solid #cbd5e5; border-radius: 8px; }
-.filter-value-list { max-height: 350px; overflow: auto; margin: 10px 0; border: 1px solid #dbe2ed; border-radius: 8px; padding: 7px; }
-.filter-value-list label { display: block; padding: 4px 6px; }
-.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }

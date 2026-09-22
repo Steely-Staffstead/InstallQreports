@@ -1,0 +1,546 @@
+/* Designer chrome follows the application theme; tile colors stay report-owned. */
+html[data-qreports-app-theme] {
+  --designer-panel: color-mix(in srgb, var(--qreports-surface) 88%, var(--qreports-header));
+  --designer-subtle: color-mix(in srgb, var(--qreports-surface) 76%, var(--qreports-header));
+  --designer-raised: color-mix(in srgb, var(--qreports-surface) 94%, var(--qreports-header-text));
+  --designer-accent-soft: color-mix(in srgb, var(--qreports-accent) 14%, var(--qreports-surface));
+  --designer-muted: color-mix(in srgb, var(--qreports-text) 72%, var(--qreports-surface));
+}
+html[data-qreports-app-theme] .app-header {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] .app-header .brand strong,
+html[data-qreports-app-theme] .app-header .brand small { color: var(--qreports-header-text); }
+html[data-qreports-app-theme] .app-header .brand small { opacity: .85; }
+html[data-qreports-app-theme] .app-header .brand-mark {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+}
+html[data-qreports-app-theme] .app-header .file-actions button:not(.primary) {
+  color: var(--qreports-header-text);
+  background: transparent;
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .app-header .file-actions > button:not(.primary):hover {
+  background: color-mix(in srgb, var(--qreports-header-text) 12%, var(--qreports-header));
+}
+html[data-qreports-app-theme] .app-header .file-actions > button.primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-accent) 82%, var(--qreports-header-text));
+  color: var(--qreports-on-accent);
+}
+html[data-qreports-app-theme] .app-header .file-actions button.primary {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] body,
+html[data-qreports-app-theme] main,
+html[data-qreports-app-theme] .commandbar,
+html[data-qreports-app-theme] .statusbar {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .left-panel,
+html[data-qreports-app-theme] .right-panel {
+  background: var(--designer-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pane-splitter,
+html[data-qreports-app-theme] .separator { background: var(--qreports-grid); }
+html[data-qreports-app-theme] .canvas-viewport { background: var(--designer-subtle); }
+html[data-qreports-app-theme] .canvas {
+  color: var(--qreports-text);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--qreports-grid) 14%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--qreports-grid) 14%, transparent) 1px, transparent 1px);
+}
+html[data-qreports-app-theme] .recent-menu {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .app-header .file-actions .recent-menu button:not(.primary) {
+  background: transparent;
+  color: var(--qreports-text);
+  border: 0;
+}
+html[data-qreports-app-theme] .app-header .file-actions .recent-menu button:not(.primary):hover { background: var(--designer-accent-soft); }
+html[data-qreports-app-theme] .recent-menu button small,
+html[data-qreports-app-theme] .recent-empty { color: var(--designer-muted); }
+html[data-qreports-app-theme] .empty-state,
+html[data-qreports-app-theme] .property-empty,
+html[data-qreports-app-theme] .query-summary dt,
+html[data-qreports-app-theme] .query-summary small { color: var(--designer-muted); }
+html[data-qreports-app-theme] .empty-state b { color: var(--qreports-text); }
+html[data-qreports-app-theme] .command {
+  background: transparent;
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] .commandbar .command:is(:hover, :focus-visible) {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] .commandbar .command:focus-visible {
+  outline: 2px solid var(--qreports-accent);
+  outline-offset: -2px;
+}
+html[data-qreports-app-theme] .command span { color: var(--qreports-accent); }
+html[data-qreports-app-theme] .command.accent span { color: var(--qreports-positive); }
+html[data-qreports-app-theme] .command.danger span { color: var(--qreports-negative); }
+html[data-qreports-app-theme] .badge {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] .page-item,
+html[data-qreports-app-theme] .source-item,
+html[data-qreports-app-theme] .panel-tabs button,
+html[data-qreports-app-theme] .query-summary,
+html[data-qreports-app-theme] #canvasThemeProperties,
+html[data-qreports-app-theme] .menu,
+html[data-qreports-app-theme] .tile-context-menu {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .page-item.active,
+html[data-qreports-app-theme] .source-item.active,
+html[data-qreports-app-theme] .panel-tabs button.active {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+  box-shadow: inset 3px 0 var(--qreports-accent);
+}
+html[data-qreports-app-theme] .source-item small,
+html[data-qreports-app-theme] .panel-title,
+html[data-qreports-app-theme] .tile-settings > summary,
+html[data-qreports-app-theme] summary,
+html[data-qreports-app-theme] label { color: var(--designer-muted); }
+html[data-qreports-app-theme] .source-item.active small { color: var(--qreports-text); }
+html[data-qreports-app-theme] .source-item > span { color: var(--qreports-accent); }
+html[data-qreports-app-theme] .query-summary,
+html[data-qreports-app-theme] #canvasThemeProperties,
+html[data-qreports-app-theme] .page-style,
+html[data-qreports-app-theme] .tile-settings,
+html[data-qreports-app-theme] .filter-divider { border-color: var(--qreports-grid); }
+html[data-qreports-app-theme] :where(button:not(.command):not(.primary), .file-button),
+html[data-qreports-app-theme] input:not([type="color"]),
+html[data-qreports-app-theme] select,
+html[data-qreports-app-theme] textarea {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] :where(button:not(.command):not(.primary), .file-button):hover {
+  background: var(--designer-accent-soft);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] :is(.left-panel, .right-panel, .menu, .tile-context-menu, .web-export-dialog, .svg-dialog) :is(button, .file-button):not(.primary):not(.danger-button):not(:disabled):hover,
+html[data-qreports-app-theme] #sharedSettingsDialog button:not(.settings-save):not(:disabled):hover {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] :is(.tile-context-menu .danger, .svg-dialog .danger-button):not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-negative) 16%, var(--qreports-surface));
+  color: var(--qreports-negative);
+  border-color: var(--qreports-negative);
+}
+html[data-qreports-app-theme] :is(.left-panel, .right-panel, .menu, .tile-context-menu, .web-export-dialog, .svg-dialog) :is(button, .file-button):not(.primary):not(.danger-button):focus-visible,
+html[data-qreports-app-theme] #sharedSettingsDialog button:focus-visible {
+  outline: 2px solid var(--qreports-accent);
+  outline-offset: 2px;
+}
+html[data-qreports-app-theme] :is(.left-panel, .right-panel, .web-export-dialog, .svg-dialog) button.primary:not(:disabled):hover,
+html[data-qreports-app-theme] #sharedSettingsDialog .settings-save:not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-accent) 82%, var(--qreports-header-text));
+  color: var(--qreports-on-accent);
+}
+html[data-qreports-app-theme] .panel-tabs button.active,
+html[data-qreports-app-theme] .page-item.active,
+html[data-qreports-app-theme] .source-item.active { background: var(--designer-accent-soft); }
+html[data-qreports-app-theme] button.primary {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .error { color: var(--qreports-negative); }
+
+/* SVG editor chrome follows the application theme. The SVG artwork keeps its
+   own selected colors so changing the app theme does not change report output. */
+html[data-qreports-app-theme] .svg-dialog {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--qreports-text) 28%, transparent);
+}
+html[data-qreports-app-theme] .svg-dialog::backdrop {
+  background: color-mix(in srgb, var(--qreports-header) 58%, transparent);
+}
+html[data-qreports-app-theme] .svg-dialog h3 { color: var(--qreports-text); }
+html[data-qreports-app-theme] .svg-dialog > form > p:not(.error),
+html[data-qreports-app-theme] .svg-dialog .svg-builder label,
+html[data-qreports-app-theme] .svg-dialog .svg-option-help { color: var(--designer-muted); }
+html[data-qreports-app-theme] .svg-dialog .svg-template-description,
+html[data-qreports-app-theme] .svg-dialog .svg-manual-help {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .svg-dialog .svg-tool-section {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .svg-dialog .svg-tool-section > summary {
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .svg-dialog .svg-builder { background: transparent; }
+html[data-qreports-app-theme] .svg-dialog .svg-builder fieldset {
+  background: var(--designer-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .svg-dialog .svg-builder legend { color: var(--qreports-text); }
+html[data-qreports-app-theme] .svg-dialog .svg-preview {
+  background: var(--designer-subtle);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .svg-dialog :is(input:not([type="color"]), select, textarea) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .svg-dialog :is(input, select, textarea):focus {
+  border-color: var(--qreports-accent);
+  outline-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .svg-dialog input::placeholder {
+  color: var(--designer-muted);
+  opacity: 1;
+}
+html[data-qreports-app-theme] .svg-dialog button[value="insert"] {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .svg-dialog button[value="insert"]:not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-accent) 82%, var(--qreports-header-text));
+  color: var(--qreports-on-accent);
+}
+html[data-qreports-app-theme] .svg-dialog .danger-button {
+  background: var(--qreports-surface);
+  color: var(--qreports-negative);
+  border-color: var(--qreports-negative);
+}
+
+/* Webpage export settings are application chrome. The colors shown inside the
+   report appearance preview remain controlled by the export definition. */
+html[data-qreports-app-theme] .web-export-dialog {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--qreports-text) 28%, transparent);
+}
+html[data-qreports-app-theme] .web-export-dialog::backdrop {
+  background: color-mix(in srgb, var(--qreports-header) 58%, transparent);
+}
+html[data-qreports-app-theme] .web-export-dialog h2,
+html[data-qreports-app-theme] .web-export-dialog legend { color: var(--qreports-text); }
+html[data-qreports-app-theme] .web-export-dialog [data-export-list] button {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .web-export-dialog [data-export-list] button.active {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+  box-shadow: inset 3px 0 var(--qreports-accent);
+}
+html[data-qreports-app-theme] .web-export-dialog details {
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .web-export-dialog details > summary {
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] .web-export-dialog [data-columns],
+html[data-qreports-app-theme] .web-export-dialog .export-preview {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .web-export-dialog small,
+html[data-qreports-app-theme] .web-export-dialog [data-last] { color: var(--designer-muted); }
+html[data-qreports-app-theme] .web-export-dialog [data-message] { color: var(--qreports-positive); }
+html[data-qreports-app-theme] .web-export-dialog button[data-run] {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+
+/* Filter configuration and the value picker are designer chrome. */
+html[data-qreports-app-theme] .canvas-filter-row,
+html[data-qreports-app-theme] .filter-context {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .canvas-filter-row {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid var(--qreports-grid);
+  border-radius: 9px;
+}
+html[data-qreports-app-theme] .canvas-filter-row .filter-row-heading,
+html[data-qreports-app-theme] .canvas-filter-row .filter-row-heading b { color: var(--qreports-text); }
+html[data-qreports-app-theme] .canvas-filter-row .remove-filter {
+  background: var(--qreports-surface);
+  color: var(--qreports-negative);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .canvas-filter-row .remove-filter:hover {
+  background: color-mix(in srgb, var(--qreports-negative) 14%, var(--qreports-surface));
+  border-color: var(--qreports-negative);
+}
+html[data-qreports-app-theme] .filter-values-dialog {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border: 1px solid var(--qreports-grid);
+  box-shadow: 0 20px 70px color-mix(in srgb, var(--qreports-text) 30%, transparent);
+}
+html[data-qreports-app-theme] .filter-values-dialog::backdrop {
+  background: color-mix(in srgb, var(--qreports-header) 62%, transparent);
+}
+html[data-qreports-app-theme] .filter-values-dialog h2 { color: var(--qreports-text); }
+html[data-qreports-app-theme] .filter-values-dialog [data-value-search],
+html[data-qreports-app-theme] .filter-values-dialog input:not([type="checkbox"]) {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .filter-values-dialog input::placeholder {
+  color: var(--designer-muted);
+  opacity: 1;
+}
+html[data-qreports-app-theme] .filter-value-list {
+  background: var(--designer-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .filter-value-list label { color: var(--qreports-text); }
+html[data-qreports-app-theme] .filter-value-list label:hover { background: var(--designer-accent-soft); }
+html[data-qreports-app-theme] .filter-values-dialog button.primary {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .chart-type-control output {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+
+/* Table and matrix designer chrome follows the application theme. The
+   resulting tile still keeps its report-owned formatting after Apply. */
+html[data-qreports-app-theme] .visual-designer {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border: 1px solid var(--qreports-grid);
+  color-scheme: var(--qreports-color-scheme, light);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--qreports-text) 30%, transparent);
+}
+html[data-qreports-app-theme] .visual-designer-overlay {
+  background: color-mix(in srgb, var(--qreports-header) 62%, transparent);
+}
+html[data-qreports-app-theme] .visual-designer > header {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+  border-bottom: 1px solid var(--qreports-grid);
+}
+html[data-qreports-app-theme] .visual-designer > header strong,
+html[data-qreports-app-theme] .visual-designer > header small { color: var(--qreports-header-text); }
+html[data-qreports-app-theme] .visual-designer > header small { opacity: .82; }
+html[data-qreports-app-theme] .visual-designer > header button {
+  background: transparent;
+  color: var(--qreports-header-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .visual-designer > header button:hover {
+  background: color-mix(in srgb, var(--qreports-header-text) 12%, var(--qreports-header));
+}
+html[data-qreports-app-theme] .visual-designer-layout { background: var(--designer-subtle); }
+html[data-qreports-app-theme] .visual-designer-layout > aside {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .designer-preview {
+  background: var(--designer-panel);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] .designer-splitter { background: var(--qreports-grid); }
+html[data-qreports-app-theme] .designer-splitter:is(:hover, :active) { background: var(--qreports-accent); }
+html[data-qreports-app-theme] .visual-designer :is(h3, h4, .column-bars summary) { color: var(--qreports-text); }
+html[data-qreports-app-theme] .visual-designer :is(p, small, label) { color: var(--designer-muted); }
+html[data-qreports-app-theme] .visual-designer :is(input:not([type="color"]), select, textarea) {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .visual-designer :is(input, select, textarea):focus {
+  border-color: var(--qreports-accent);
+  outline-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .visual-designer :is(input, textarea)::placeholder {
+  color: var(--designer-muted);
+  opacity: 1;
+}
+html[data-qreports-app-theme] .designer-preview [data-designer-preview] {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .designer-preview .data-table { color: var(--qreports-text); }
+html[data-qreports-app-theme] .designer-preview .data-table th {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .designer-preview .data-table td {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .designer-field-row,
+html[data-qreports-app-theme] .matrix-field {
+  color: var(--qreports-text);
+  border-bottom-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .designer-field-row:hover,
+html[data-qreports-app-theme] .matrix-field:hover {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .designer-chip,
+html[data-qreports-app-theme] .matrix-value,
+html[data-qreports-app-theme] .sort-row {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .designer-drag-handle { color: var(--designer-muted); }
+html[data-qreports-app-theme] :is(.designer-chip, .matrix-value).selected {
+  background: var(--designer-accent-soft);
+  border-color: var(--qreports-accent);
+  box-shadow: 0 0 0 1px var(--qreports-accent) inset;
+}
+html[data-qreports-app-theme] .field-well {
+  background: var(--designer-panel);
+  color: var(--designer-muted);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .field-well.drag-over {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .column-bars,
+html[data-qreports-app-theme] .card-properties { border-color: var(--qreports-grid); }
+html[data-qreports-app-theme] .visual-designer button:not(.primary) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .visual-designer button.primary {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .visual-designer > footer {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+
+/* Formatted text editor chrome and editing surface. Explicit formatting inside
+   the HTML remains visible and continues to be saved with the text graphic. */
+html[data-qreports-app-theme] #richTextGroup .field-label { color: var(--designer-muted); }
+html[data-qreports-app-theme] #richTextGroup .rich-toolbar {
+  background: var(--designer-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] #richTextGroup .rich-toolbar button {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .inline-text-toolbar .rich-toolbar {
+  background: var(--designer-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .inline-text-toolbar .rich-toolbar button {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .inline-text-toolbar .rich-toolbar button:is(:hover, :focus-visible) {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .inline-text-toolbar .rich-toolbar :is(select,input) {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  color-scheme: var(--qreports-color-scheme, light);
+}
+html[data-qreports-app-theme] .inline-text-toolbar .inline-text-done {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .inline-parameter-menu {
+  background: var(--designer-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .inline-parameter-menu span { color: var(--designer-muted); }
+html[data-qreports-app-theme] .tile.text-editing {
+  outline-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] #richTextGroup .rich-toolbar button:is(:hover, :focus-visible) {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] #richTextGroup .rich-toolbar :is(select, input[type="color"]) {
+  background: var(--designer-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  color-scheme: var(--qreports-color-scheme, light);
+}
+html[data-qreports-app-theme] #richTextGroup .rich-editor {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  caret-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] #richTextGroup .rich-editor:focus {
+  border-color: var(--qreports-accent);
+  outline-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] #richTextGroup .rich-editor:empty::before {
+  color: var(--designer-muted);
+}
+html[data-qreports-app-theme] #richTextGroup .parameter-tooltip {
+  background: var(--designer-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
