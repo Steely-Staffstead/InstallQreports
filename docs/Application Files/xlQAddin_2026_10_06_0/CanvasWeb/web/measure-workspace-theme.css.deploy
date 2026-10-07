@@ -1,0 +1,148 @@
+/* Keep workspace chrome in the shared application theme; measure results remain data. */
+html[data-qreports-app-theme] {
+  --measure-panel: color-mix(in srgb, var(--qreports-surface) 88%, var(--qreports-header));
+  --measure-subtle: color-mix(in srgb, var(--qreports-surface) 76%, var(--qreports-header));
+  --measure-raised: color-mix(in srgb, var(--qreports-surface) 94%, var(--qreports-header-text));
+  --measure-accent-soft: color-mix(in srgb, var(--qreports-accent) 14%, var(--qreports-surface));
+  --measure-muted: color-mix(in srgb, var(--qreports-text) 72%, var(--qreports-surface));
+  --measure-scrollbar-track: color-mix(in srgb, var(--qreports-surface) 82%, var(--qreports-header));
+  --measure-scrollbar-thumb: color-mix(in srgb, var(--qreports-text) 42%, var(--measure-scrollbar-track));
+  --measure-scrollbar-thumb-hover: color-mix(in srgb, var(--qreports-accent) 78%, var(--qreports-text));
+  color-scheme: var(--qreports-color-scheme, light);
+  scrollbar-color: var(--measure-scrollbar-thumb) var(--measure-scrollbar-track);
+}
+html[data-qreports-app-theme] * {
+  scrollbar-color: var(--measure-scrollbar-thumb) var(--measure-scrollbar-track);
+}
+html[data-qreports-app-theme] ::-webkit-scrollbar { width: 12px; height: 12px; }
+html[data-qreports-app-theme] ::-webkit-scrollbar-track,
+html[data-qreports-app-theme] ::-webkit-scrollbar-corner,
+html[data-qreports-app-theme] ::-webkit-scrollbar-button { background: var(--measure-scrollbar-track); }
+html[data-qreports-app-theme] ::-webkit-scrollbar-thumb {
+  background: var(--measure-scrollbar-thumb);
+  border: 3px solid var(--measure-scrollbar-track);
+  border-radius: 999px;
+}
+html[data-qreports-app-theme] ::-webkit-scrollbar-thumb:hover { background: var(--measure-scrollbar-thumb-hover); }
+html[data-qreports-app-theme] body,
+html[data-qreports-app-theme] main,
+html[data-qreports-app-theme] .workspace,
+html[data-qreports-app-theme] .result {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] aside,
+html[data-qreports-app-theme] .measures,
+html[data-qreports-app-theme] .dax-functions-pane {
+  background: var(--measure-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .side-splitter,
+html[data-qreports-app-theme] .matrix-splitter,
+html[data-qreports-app-theme] .dax-functions-splitter { background: var(--qreports-grid);border-color:var(--qreports-grid); }
+html[data-qreports-app-theme] .pane-tab,
+html[data-qreports-app-theme] .fields-collapsed [data-resize=fields],
+html[data-qreports-app-theme] .measures-collapsed [data-resize=measures] {
+  background: var(--measure-panel);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .pane-tab:is(:hover, :focus-visible) {
+  background: var(--measure-accent-soft);
+  color: var(--qreports-text);
+  box-shadow: inset 3px 0 var(--qreports-accent);
+  outline: 0;
+}
+html[data-qreports-app-theme] .matrix-splitter span { background: var(--qreports-accent); }
+html[data-qreports-app-theme] .field,
+html[data-qreports-app-theme] .measure,
+html[data-qreports-app-theme] .dropzone,
+html[data-qreports-app-theme] .menu,
+html[data-qreports-app-theme] .dax-autocomplete {
+  background: var(--measure-raised);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .measure.active,
+html[data-qreports-app-theme] .dax-autocomplete button.active {
+  background: var(--measure-accent-soft);
+  color: var(--qreports-text);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] .measure small,
+html[data-qreports-app-theme] .field small,
+html[data-qreports-app-theme] aside p,
+html[data-qreports-app-theme] h3 small,
+html[data-qreports-app-theme] .editor-head label,
+html[data-qreports-app-theme] .formula-label,
+html[data-qreports-app-theme] .validation,
+html[data-qreports-app-theme] .dax-function-card p { color: var(--measure-muted); }
+html[data-qreports-app-theme] .measure.calculated b:after { color: var(--qreports-accent); }
+html[data-qreports-app-theme] input,
+html[data-qreports-app-theme] textarea:not(#expression),
+html[data-qreports-app-theme] select,
+html[data-qreports-app-theme] .dax-editor pre,
+html[data-qreports-app-theme] .dax-autocomplete button {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] .dax-editor textarea { caret-color: var(--qreports-text); }
+html[data-qreports-app-theme] .dax-keyword,
+html[data-qreports-app-theme] .dax-function { color: var(--qreports-accent); }
+html[data-qreports-app-theme] .dax-variable,
+html[data-qreports-app-theme] .dax-string { color: var(--qreports-positive); }
+html[data-qreports-app-theme] .dax-column,
+html[data-qreports-app-theme] .dax-number { color: var(--qreports-negative); }
+html[data-qreports-app-theme] .validation.ok { color: var(--qreports-positive); }
+html[data-qreports-app-theme] .validation.error { color: var(--qreports-negative); }
+html[data-qreports-app-theme] .matrix-builder,
+html[data-qreports-app-theme] .result th,
+html[data-qreports-app-theme] .result td,
+html[data-qreports-app-theme] .dax-function-card { border-color: var(--qreports-grid); }
+html[data-qreports-app-theme] .result-head {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] .result th {
+  background: var(--measure-subtle);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] .chip { background: var(--measure-accent-soft);color: var(--qreports-text); }
+html[data-qreports-app-theme] .menu button,
+html[data-qreports-app-theme] .menu label { background: var(--qreports-surface);color: var(--qreports-text); }
+html[data-qreports-app-theme] .menu .section { color: var(--measure-muted); }
+html[data-qreports-app-theme] body > header nav button:not(.primary):not(.run) {
+  background: transparent;
+  color: var(--qreports-header-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body > header nav .toolbar-tools > summary {
+  background: transparent;
+  color: var(--qreports-header-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body > header nav .toolbar-tools > div {
+  background: var(--qreports-header);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body > header nav button:not(.primary):not(.run):not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-header-text) 12%, var(--qreports-header));
+}
+html[data-qreports-app-theme] body > header nav .toolbar-tools > summary:hover,
+html[data-qreports-app-theme] body > header nav .toolbar-tools[open] > summary {
+  background: color-mix(in srgb, var(--qreports-header-text) 12%, var(--qreports-header));
+}
+html[data-qreports-app-theme] body > header nav button:focus-visible {
+  outline: 2px solid var(--qreports-accent);
+  outline-offset: 2px;
+}
+html[data-qreports-app-theme] .run { background: var(--qreports-positive);color: var(--qreports-on-positive);border-color:var(--qreports-positive); }
+html[data-qreports-app-theme] .primary { background: var(--qreports-accent);color: var(--qreports-on-accent);border-color:var(--qreports-accent); }
+html[data-qreports-app-theme] body > header nav .run:not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-positive) 82%, var(--qreports-header-text));
+}
+html[data-qreports-app-theme] body > header nav .primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--qreports-accent) 82%, var(--qreports-header-text));
+}

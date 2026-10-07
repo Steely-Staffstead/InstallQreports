@@ -1,0 +1,82 @@
+.matrix-builder {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 12px 14px;
+}
+.matrix-zone { min-width: 0; }
+.matrix-zone-values,
+.matrix-test-actions { grid-column: 1 / -1; }
+.matrix-zone h3 { margin: 0 0 7px; }
+.matrix-builder .dropzone {
+  min-height: 60px;
+  align-content: flex-start;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px;
+}
+.matrix-zone-values .dropzone {
+  min-height: 76px;
+  max-height: 158px;
+  overflow-y: auto;
+}
+.matrix-builder .dropzone:empty::before {
+  content: attr(data-empty-label);
+  align-self: center;
+  padding: 8px;
+  color: var(--measure-muted, #69758e);
+  font-size: 13px;
+}
+.matrix-builder .dropzone-active {
+  border-color: var(--qreports-accent, #657fee);
+  background: color-mix(in srgb, var(--qreports-accent, #657fee) 8%, var(--qreports-surface, #fff));
+}
+.matrix-builder .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+  max-width: 100%;
+  padding: 3px 4px 3px 8px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  cursor: grab;
+  user-select: none;
+}
+.matrix-builder .chip:active { cursor: grabbing; }
+.matrix-builder .chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.matrix-builder .chip-handle { opacity: .65; font-size: 15px; letter-spacing: -3px; padding-right: 4px; }
+.matrix-builder .chip.drop-before {
+  border-left: 4px solid var(--qreports-accent, #657fee);
+  padding-left: 5px;
+}
+.matrix-builder .chip:focus-visible,
+.matrix-builder .chip-remove:focus-visible {
+  outline: 2px solid var(--qreports-accent, #657fee);
+  outline-offset: 2px;
+}
+.matrix-builder .chip-remove {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.matrix-builder .chip-remove:hover {
+  background: color-mix(in srgb, var(--qreports-negative, #b0443b) 16%, transparent);
+  color: var(--qreports-negative, #b0443b);
+}
+.matrix-test-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}

@@ -1,0 +1,99 @@
+.qv-brand-icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border-radius: 13px;
+  object-fit: cover;
+  box-shadow: 0 3px 10px rgb(7 17 31 / 35%);
+}
+
+.workspace-header > .qv-brand-icon {
+  width: 46px;
+  height: 46px;
+  flex-basis: 46px;
+  border-radius: 12px;
+}
+
+.experience-mode-icon {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.experience-mode-icon > img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 7px rgb(2 12 28 / 45%);
+}
+
+.brand > .experience-mode-icon {
+  background: transparent;
+}
+
+.brand > .experience-mode-icon > img {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+}
+
+.settings-experience-concepts {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 7px;
+  margin: 12px 0;
+}
+
+.settings-experience-concepts[hidden] { display: none; }
+
+.settings-experience-concepts article {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--qreports-grid);
+  border-radius: 8px;
+  background: var(--qreports-surface);
+}
+
+.settings-experience-concepts article > img,
+.settings-experience-concepts article > span {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  background: color-mix(in srgb,var(--qreports-accent) 12%,var(--qreports-surface));
+  color: var(--qreports-accent);
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.settings-experience-concepts article > div { padding: 7px; }
+.settings-experience-concepts b { display: block; font-size: 11px; }
+.settings-experience-concepts small { margin-top: 2px; font-size: 9px !important; }
+
+@media (max-width: 650px) {
+  .settings-experience-concepts { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
+body.busy::before {
+  min-width: 190px;
+  padding-top: 70px;
+  text-align: center;
+  background-image: var(--qvitr-icon-url);
+  background-repeat: no-repeat;
+  background-position: center 12px;
+  background-size: 48px 48px;
+}
+
+[data-shared-settings].shared-settings-icon {
+  box-sizing: border-box;
+  width: 42px;
+  min-width: 42px;
+  padding-inline: 0 !important;
+  font-size: 18px;
+  line-height: 1;
+}

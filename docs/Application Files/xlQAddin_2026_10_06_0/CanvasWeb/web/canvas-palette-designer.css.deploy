@@ -1,0 +1,9 @@
+#sharedSettingsDialog .settings-palette-designer { margin:18px 0 4px; padding:14px; border:1px solid var(--qreports-grid); border-radius:9px; }
+#sharedSettingsDialog .settings-palette-designer>summary { cursor:pointer; font-weight:700; }
+#sharedSettingsDialog .settings-palette-designer[open]>summary { margin-bottom:12px; }
+#sharedSettingsDialog .settings-palette-slots { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+#sharedSettingsDialog .settings-palette-slots label { margin:2px 0; font-size:12px; }
+#sharedSettingsDialog .settings-palette-actions { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 8px; }
+#sharedSettingsDialog .settings-palette-actions button { padding:8px 10px; }
+#sharedSettingsDialog [data-palette-status] { min-height:1.4em; }
+@media(max-width:600px) { #sharedSettingsDialog .settings-palette-slots { grid-template-columns:repeat(2,minmax(0,1fr)); } }

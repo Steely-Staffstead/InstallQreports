@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Get from Qanvas</title>
+  <link rel="stylesheet" href="powerpoint-import.css?v=20261002-multi-import">
+  <link rel="stylesheet" href="powerpoint-import-progress.css?v=20261002-1">
+  <link rel="stylesheet" href="powerpoint-import-layout.css?v=20261001-2">
+  <link rel="stylesheet" href="powerpoint-import-source-filter.css?v=20261002-1">
+  <link rel="stylesheet" href="powerpoint-import-selection.css?v=20261002-1">
+  <style>.page-node.collapsed .page-children{display:none}.tree-item.page .chevron{flex:0 0 14px}.tree-item.page img{margin-left:auto}.page-children{padding-left:10px}</style>
+  <script src="shared-settings.js?v=20261005-toolbar-1"></script>
+</head>
+<body data-powerpoint-import>
+  <header class="workspace-header">
+    <div class="brand-mark">Q</div>
+    <div><h1>Get from Qanvas</h1><p id="hostInstruction">Choose a page or tile, review it, adjust filters, and import it into the current slide.</p></div>
+  </header>
+  <main>
+    <aside class="source-pane">
+      <div class="pane-heading"><div class="source-heading-copy"><strong>Qanvas content</strong><small>Check one or more pages or tiles to import</small><div class="source-view-toggle" role="tablist" aria-label="Qanvas file source"><button id="currentSources" type="button" role="tab" aria-selected="true"><span id="currentSourceCaption">Workbook &amp; linked</span></button><button id="recentSources" type="button" role="tab" aria-selected="false">Recent</button></div></div><label class="text-toggle"><input id="includeText" type="checkbox"> Text tiles</label></div>
+      <div id="sourceTree" class="source-tree" role="tree"></div>
+    </aside>
+    <div id="sourceSplitter" class="source-splitter" role="separator" aria-orientation="vertical" aria-label="Resize navigation" title="Drag to resize the file navigation"><span></span></div>
+    <section class="content-pane">
+      <div class="selection-heading"><div><strong id="selectionTitle">Choose a page or tile</strong><small id="selectionType" class="selection-type"></small><small id="selectionPath">Select an item on the left to see its preview.</small></div></div>
+      <div class="preview-shell"><img id="preview" alt="CanvasWeb preview"><div id="previewEmpty" class="preview-empty" role="status" aria-live="polite" aria-busy="false"><b>Preview</b><span id="previewMessage">Select a page or tile from the navigation.</span><div class="preview-working" aria-hidden="true"><span class="preview-spinner"></span><span class="preview-progress"><i></i></span></div></div></div>
+      <div id="filterSplitter" class="filter-splitter" role="separator" aria-orientation="horizontal" aria-label="Resize filters" title="Drag to resize the filter area"><span></span></div>
+      <section class="filter-card">
+        <div class="filter-heading"><div><strong>Additional filters for this imported copy</strong><small>Canvas page and tile filters remain protected and are applied first. Only extra filters added here are stored with the Excel or PowerPoint image.</small></div><div class="filter-tools"><label>Image quality <select id="imageCompression" disabled><option value="original">Original</option><option value="high">High</option><option value="balanced">Balanced</option><option value="small">Small</option></select><small id="imageEstimate"></small></label><label>Lookup limit <input id="lookupLimit" type="number" min="10" max="1000" value="100"></label><button id="addFilter" type="button">+ Add filter</button></div></div>
+        <div class="filter-table"><div class="filter-columns"><span>Scope</span><span>Source ID</span><span>Field</span><span>Operator</span><span>Value</span><span></span></div><div id="filterRows"></div></div>
+      </section>
+    </section>
+  </main>
+  <footer><span id="status">Loading CanvasWeb files…</span><div class="footer-actions"><label><input id="embed" type="checkbox" checked> <span id="embedCaption">Embed definition in this presentation</span></label><button id="cancel" type="button">Cancel</button><button id="import" class="primary" type="button" disabled>Import selection</button></div></footer>
+  <div id="lookupMenu" class="lookup-menu" hidden></div>
+  <div id="sourceMenu" class="source-menu" hidden></div>
+  <script src="powerpoint-import.js?v=20261002-protected-filters"></script>
+</body>
+</html>

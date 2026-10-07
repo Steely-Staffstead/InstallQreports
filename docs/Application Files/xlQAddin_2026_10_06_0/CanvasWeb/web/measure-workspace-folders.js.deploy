@@ -1,0 +1,203 @@
+// A measure's Folder is presentation metadata. Names, expressions and matrix references stay unchanged.
+const normalizeMeasureFolder = value => String(value ?? '').split('/').map(part => part.trim()).filter(Boolean).join('/').slice(0, 120);
+const collapsedMeasureFolders = new Set();
+const originalSelectMeasure = selectMeasure;
+const originalSaveMeasureDraft = saveDraft;
+const originalNewMeasure = newMeasure;
+const originalCreateMetric = createMetric;
+const originalMeasureMenu = measureMenu;
+let folderDialogAction = 'assign';
+let folderDialogOldPath = '';
+
+saveDraft = function () {
+  originalSaveMeasureDraft();
+  if (selected >= 0 && measures[selected]) measures[selected].Folder = normalizeMeasureFolder($('folder').value);
+};
+
+selectMeasure = function (index) {
+  originalSelectMeasure(index);
+  $('folder').value = normalizeMeasureFolder(measures[index]?.Folder ?? measures[index]?.folder);
+};
+
+newMeasure = function () {
+  const folder = normalizeMeasureFolder($('folder').value);
+  originalNewMeasure();
+  if (selected >= 0) measures[selected].Folder = folder;
+  $('folder').value = folder;
+  renderMeasures();
+};
+$('newMeasure').onclick = newMeasure;
+
+function duplicateMeasure(index = selected) {
+  if (index < 0 || !measures[index]) return;
+  if (selected !== index) selectMeasure(index);
+  saveDraft();
+  const source = measures[index];
+  const base = String(source.Name || 'Measure').replace(/_\d+$/, '');
+  let suffix = 1;
+  while (measures.some(metric => String(metric.Name).toLowerCase() === `${base}_${suffix}`.toLowerCase())) suffix++;
+  const copy = structuredClone(source);
+  copy.Name = `${base}_${suffix}`;
+  if (copy.Id != null) copy.Id = crypto.randomUUID();
+  if (copy.id != null) copy.id = crypto.randomUUID();
+  measures.splice(index + 1, 0, copy);
+  selectMeasure(index + 1);
+  $('name').focus();
+  $('name').select();
+  hideMenus();
+  toast(`Duplicated as ${copy.Name}`);
+}
+$('duplicateMeasure').onclick = () => duplicateMeasure();
+
+createMetric = function (field, template, kind = 0) {
+  const folder = normalizeMeasureFolder($('folder').value);
+  originalCreateMetric(field, template, kind);
+  if (selected >= 0) measures[selected].Folder = folder;
+  $('folder').value = folder;
+  renderMeasures();
+};
+
+function moveMeasureToFolder(index, folder) {
+  if (!measures[index]) return;
+  if (selected === index) saveDraft();
+  measures[index].Folder = normalizeMeasureFolder(folder);
+  if (selected === index) $('folder').value = measures[index].Folder;
+  renderMeasures();
+}
+
+function openMeasureFolderDialog(action, path = '') {
+  if (action === 'assign' && selected < 0) {
+    toast('Select a measure first, then create its folder.');
+    return;
+  }
+  saveDraft();
+  folderDialogAction = action;
+  folderDialogOldPath = path;
+  $('folderDialogTitle').textContent = action === 'rename' ? 'Rename measure folder' : 'New measure folder';
+  $('folderDialogName').value = path;
+  $('folderDialog').showModal();
+  $('folderDialogName').focus();
+  $('folderDialogName').select();
+}
+
+$('newFolder').onclick = () => openMeasureFolderDialog('assign', selected >= 0 ? normalizeMeasureFolder(measures[selected]?.Folder) : '');
+$('folderDialog').addEventListener('close', () => {
+  if ($('folderDialog').returnValue !== 'apply') return;
+  const path = normalizeMeasureFolder($('folderDialogName').value);
+  if (!path) { toast('Enter a folder name.'); return; }
+  if (folderDialogAction === 'rename') {
+    const oldPath = folderDialogOldPath;
+    measures.forEach(metric => {
+      const current = normalizeMeasureFolder(metric.Folder ?? metric.folder);
+      if (current === oldPath || current.startsWith(`${oldPath}/`)) metric.Folder = path + current.slice(oldPath.length);
+    });
+    collapsedMeasureFolders.delete(oldPath);
+    toast('Folder renamed');
+  } else {
+    moveMeasureToFolder(selected, path);
+    toast('Measure moved to folder');
+  }
+  renderMeasures();
+});
+
+function measureFolderMenu(event, path) {
+  const menu = $('fieldMenu');
+  menu.className = 'menu measure-menu';
+  menu.style.left = `${Math.max(8, Math.min(event.clientX, innerWidth - 300))}px`;
+  menu.style.top = `${Math.max(8, Math.min(event.clientY, innerHeight - 220))}px`;
+  menu.innerHTML = `<div class="section">${esc(path || 'Unfiled')}</div><button id="renameMeasureFolder" ${path ? '' : 'disabled'}>Rename folder</button><button id="unfileMeasureFolder" ${path ? '' : 'disabled'}>Move measures to Unfiled</button>`;
+  $('renameMeasureFolder').onclick = () => { hideMenus(); openMeasureFolderDialog('rename', path); };
+  $('unfileMeasureFolder').onclick = () => {
+    measures.forEach(metric => {
+      const current = normalizeMeasureFolder(metric.Folder ?? metric.folder);
+      if (current === path || current.startsWith(`${path}/`)) metric.Folder = '';
+    });
+    if (selected >= 0) $('folder').value = normalizeMeasureFolder(measures[selected]?.Folder);
+    hideMenus(); renderMeasures();
+  };
+}
+
+measureMenu = function (event, index) {
+  originalMeasureMenu(event, index);
+  const menu = $('fieldMenu');
+  const separator = document.createElement('hr');
+  const label = document.createElement('label');
+  label.textContent = 'Folder';
+  const input = document.createElement('input');
+  input.value = normalizeMeasureFolder(measures[index]?.Folder ?? measures[index]?.folder);
+  input.setAttribute('list', 'measureFolderSuggestions');
+  label.append(input);
+  const button = document.createElement('button');
+  button.textContent = 'Move to folder';
+  button.onclick = () => { moveMeasureToFolder(index, input.value); hideMenus(); };
+  const duplicate = document.createElement('button');
+  duplicate.textContent = 'Duplicate measure';
+  duplicate.onclick = () => duplicateMeasure(index);
+  menu.insertBefore(separator, $('deleteMeasureMenu'));
+  menu.insertBefore(label, $('deleteMeasureMenu'));
+  menu.insertBefore(button, $('deleteMeasureMenu'));
+  menu.insertBefore(duplicate, $('deleteMeasureMenu'));
+};
+
+function measureFolderTree() {
+  const root = { path: '', children: new Map(), entries: [] };
+  measures.forEach((metric, index) => {
+    const path = normalizeMeasureFolder(metric.Folder ?? metric.folder);
+    metric.Folder = path;
+    let node = root;
+    for (const part of path.split('/').filter(Boolean)) {
+      const childPath = node.path ? `${node.path}/${part}` : part;
+      if (!node.children.has(part)) node.children.set(part, { path: childPath, children: new Map(), entries: [] });
+      node = node.children.get(part);
+    }
+    node.entries.push({ metric, index });
+  });
+  return root;
+}
+
+renderMeasures = function () {
+  const search = $('measureSearch').value.trim().toLowerCase();
+  $('duplicateMeasure').disabled = selected < 0 || !measures[selected];
+  const tree = measureFolderTree();
+  const folders = new Set();
+  const itemHtml = ({ metric, index }) => `<div class="measure ${index === selected ? 'active' : ''} ${+metric.Kind === 1 ? 'calculated' : ''}" draggable="true" data-measure="${index}"><b>${esc(metric.Name || 'Unnamed')}</b><small>${esc(metric.FormatString || 'Auto')} · ${esc(metric.DataType || 'Number')}</small></div>`;
+  const count = node => node.entries.length + [...node.children.values()].reduce((sum, child) => sum + count(child), 0);
+  const draw = (node, depth = 0) => {
+    if (node.path) folders.add(node.path);
+    const pathMatches = Boolean(search && node.path.toLowerCase().includes(search));
+    const entries = node.entries.filter(entry => !search || pathMatches || String(entry.metric.Name || '').toLowerCase().includes(search));
+    const children = [...node.children.values()].sort((a, b) => a.path.localeCompare(b.path)).map(child => draw(child, depth + 1)).filter(Boolean);
+    if (search && !entries.length && !children.length) return '';
+    const items = entries.map(itemHtml).join('');
+    if (!node.path) {
+      const unfiled = items ? `<details class="measure-folder" data-folder-path="" open><summary>Unfiled <small>${node.entries.length}</small></summary><div class="folder-content">${items}</div></details>` : '';
+      return children.join('') + unfiled;
+    }
+    const name = node.path.split('/').pop();
+    const open = search || !collapsedMeasureFolders.has(node.path);
+    return `<details class="measure-folder" data-folder-path="${esc(node.path)}" ${open ? 'open' : ''}><summary><span class="folder-icon">▸</span>${esc(name)} <small>${count(node)}</small></summary><div class="folder-content">${children.join('')}${items}</div></details>`;
+  };
+  $('measureList').innerHTML = draw(tree) || '<p class="measure-empty">No measures found.</p>';
+  $('measureFolderSuggestions').innerHTML = [...folders].sort().map(path => `<option value="${esc(path)}"></option>`).join('');
+  $('measureList').querySelectorAll('[data-measure]').forEach(element => {
+    element.onclick = () => selectMeasure(+element.dataset.measure);
+    element.oncontextmenu = event => { event.preventDefault(); measureMenu(event, +element.dataset.measure); };
+    element.ondragstart = event => event.dataTransfer.setData('text/plain', `measure:${element.dataset.measure}`);
+  });
+  $('measureList').querySelectorAll('[data-folder-path]').forEach(element => {
+    const path = element.dataset.folderPath;
+    element.ontoggle = () => { if (element.open) collapsedMeasureFolders.delete(path); else collapsedMeasureFolders.add(path); };
+    element.querySelector('summary').oncontextmenu = event => { event.preventDefault(); measureFolderMenu(event, path); };
+    element.ondragover = event => event.preventDefault();
+    element.ondrop = event => {
+      const raw = event.dataTransfer.getData('text/plain');
+      if (!raw.startsWith('measure:')) return;
+      event.preventDefault(); event.stopPropagation();
+      moveMeasureToFolder(+raw.slice(8), path);
+    };
+  });
+};
+
+$('folder').addEventListener('change', () => { saveDraft(); renderMeasures(); });
+$('measureSearch').oninput = renderMeasures;
+$('delete').addEventListener('click', () => { if (selected < 0) $('folder').value = ''; });

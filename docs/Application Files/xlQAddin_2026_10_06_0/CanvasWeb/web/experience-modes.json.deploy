@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "defaultMode": "standard",
+  "modes": [
+    {
+      "id": "standard",
+      "name": "Standard",
+      "description": "Use the familiar Qanvas names and standard interface icons.",
+      "terms": {}
+    },
+    {
+      "id": "qvitr",
+      "name": "Qvitr mode",
+      "description": "A playful Nordic vocabulary for the Qvitr product journey. Functionality and file formats remain unchanged.",
+      "terms": {
+        "canvasProduct": "Tafla",
+        "canvas": "Tafla",
+        "canvasTheme": "Tafla theme",
+        "canvasSize": "Tafla size",
+        "query": "Query",
+        "connections": "Vefr",
+        "connection": "Vefr connection",
+        "aiAssistant": "Vitr AI",
+        "aiTool": "Vitr AI tool",
+        "measures": "Runes",
+        "measureEditor": "Rúnatal"
+      },
+      "icons": {
+        "connections": "assets/experience/qvitr/vefr.png",
+        "aiAssistant": "assets/experience/qvitr/vitr.png",
+        "canvas": "assets/experience/qvitr/tafla.png",
+        "measures": "assets/experience/qvitr/runes.png"
+      },
+      "concepts": [
+        {
+          "letter": "Q",
+          "name": "Query",
+          "tagline": "Ask the data."
+        },
+        {
+          "letter": "V",
+          "name": "Vefr",
+          "tagline": "Connect the data.",
+          "icon": "assets/experience/qvitr/vefr.png"
+        },
+        {
+          "letter": "I",
+          "name": "Vitr",
+          "tagline": "Understand the data.",
+          "icon": "assets/experience/qvitr/vitr.png"
+        },
+        {
+          "letter": "T",
+          "name": "Tafla",
+          "tagline": "Arrange and communicate the data.",
+          "icon": "assets/experience/qvitr/tafla.png"
+        },
+        {
+          "letter": "R",
+          "name": "Runes",
+          "tagline": "Define the logic.",
+          "icon": "assets/experience/qvitr/runes.png"
+        }
+      ]
+    }
+  ]
+}

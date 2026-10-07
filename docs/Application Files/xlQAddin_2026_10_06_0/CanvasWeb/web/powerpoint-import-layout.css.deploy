@@ -1,0 +1,36 @@
+main {
+  --source-width: 390px;
+  grid-template-columns: var(--source-width) 10px minmax(0, 1fr);
+}
+.source-splitter {
+  display: grid;
+  place-items: center;
+  cursor: col-resize;
+  background: var(--qreports-header, #e8eef7);
+  border-right: 1px solid var(--qreports-grid, #cbd5e2);
+  touch-action: none;
+}
+.source-splitter span {
+  width: 3px;
+  height: 54px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--qreports-text, #182230) 35%, transparent);
+}
+.source-splitter:hover,
+.source-splitter.dragging {
+  background: color-mix(in srgb, var(--qreports-accent, #4f6ee8) 16%, var(--qreports-header, #e8eef7));
+}
+.tree-item.page img {
+  order: 2;
+  margin-left: auto;
+}
+.tree-item.page span {
+  order: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 1050px) {
+  main { --source-width: 320px; }
+}

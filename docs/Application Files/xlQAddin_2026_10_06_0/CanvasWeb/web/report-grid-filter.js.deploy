@@ -1,0 +1,31 @@
+(()=>{
+  const text=value=>String(value??'').trim();
+  const unquote=value=>{const source=text(value),match=/^(?:'([^']*)'|"([^"]*)")$/.exec(source);return match?match[1]??match[2]:source;};
+  function split(source,separator){const parts=[];let start=0,quote='';for(let index=0;index<source.length;index++){const char=source[index];if(quote){if(char===quote&&source[index-1]!=='\\')quote='';continue;}if(char==='"'||char==="'"){quote=char;continue;}if(char===separator){parts.push(source.slice(start,index));start=index+1;}}parts.push(source.slice(start));return parts;}
+  const resolve=(value,parameterValue)=>unquote(text(value).replace(/\{\{\s*([^}]+?)\s*\}\}/g,(_,name)=>text(parameterValue?.(name))));
+  const normalized=value=>{const source=text(value);if(!source)return'';if(/^(true|false)$/i.test(source))return source.toLowerCase()==='true'?1:0;const number=Number(source.replace(',','.'));if(Number.isFinite(number))return number;const timestamp=/^\d{4}-\d{2}-\d{2}(?:[T ]|$)/.test(source)?Date.parse(source):NaN;return Number.isFinite(timestamp)?timestamp:source.toLocaleLowerCase();};
+  const compare=(actual,expected)=>{const left=normalized(actual),right=normalized(expected);return left<right?-1:left>right?1:0;};
+  function condition(source){const match=/^\s*(.+?)\s*(>=|<=|<>|=|>|<)\s*(.*?)\s*$/.exec(source);if(!match)throw new Error(`#FILTER! ${source.trim()}`);return{field:match[1].replace(/^\[|\]$/g,'').trim(),operator:match[2],value:match[3]};}
+  function matches(actual,rule,parameterValue){
+    const expected=resolve(rule.value,parameterValue),empty=actual==null||text(actual)==='';
+    if(rule.operator==='='&&/^NULL$/i.test(expected))return empty;
+    if(rule.operator==='='&&/^NOT\s+NULL$/i.test(expected))return !empty;
+    if(rule.operator==='='){
+      const options=split(expected,'|').map(item=>unquote(item));
+      if(options.length>1)return options.some(option=>matches(actual,{...rule,value:option},parameterValue));
+      const range=/^(-?\d+(?:[.,]\d+)?)\s*-\s*(-?\d+(?:[.,]\d+)?)$/.exec(expected);
+      if(range)return compare(actual,range[1])>=0&&compare(actual,range[2])<=0;
+      if(/[*%]/.test(expected)){const pattern=expected.replace(/[.+?^${}()|[\]\\]/g,'\\$&').replace(/[*%]/g,'.*');return new RegExp(`^${pattern}$`,'i').test(text(actual));}
+      return compare(actual,expected)===0;
+    }
+    const result=compare(actual,expected);return rule.operator==='>'?result>0:rule.operator==='>='?result>=0:rule.operator==='<'?result<0:rule.operator==='<='?result<=0:result!==0;
+  }
+  function expression(filter){if(filter&&typeof filter==='object'){const advanced=text(filter.expression);return advanced||filter.field?advanced||`${filter.field}${filter.operator||'='}${filter.value??''}`:'';}return text(filter).replace(/^filter\s*\((.*)\)$/i,'$1');}
+  function apply(rows,columns,filter,parameterValue){
+    const source=expression(filter);if(!source)return rows;
+    const rules=split(source,',').map(item=>item.trim()).filter(Boolean).map(condition);
+    const indexed=rules.map(rule=>{const index=columns.findIndex(column=>text(column).toLocaleLowerCase()===rule.field.toLocaleLowerCase());if(index<0)throw new Error(`#FIELD! ${rule.field}`);return{rule,index};});
+    return rows.filter(row=>indexed.every(({rule,index})=>matches(row[index],rule,parameterValue)));
+  }
+  window.CanvasReportGridFilter={apply,condition,matches};
+})();

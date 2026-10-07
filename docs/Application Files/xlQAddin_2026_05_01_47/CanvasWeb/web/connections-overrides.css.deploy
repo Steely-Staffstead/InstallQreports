@@ -1,9 +1,0 @@
-body.secrets-only{display:block;background:#eef2f8}
-body.secrets-only>header,body.secrets-only>main{display:none}
-body.secrets-only .modal{position:fixed;inset:0;padding:0;background:#eef2f8;backdrop-filter:none}
-body.secrets-only .modal-card{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:0;box-shadow:none}
-html[data-qreports-theme] .modal-head{background:var(--qreports-header);color:var(--qreports-header-text)}
-html[data-qreports-theme] .modal-head h2{color:var(--qreports-header-text)}
-html[data-qreports-theme] .modal-head p{color:var(--qreports-header-text);opacity:.85}
-html[data-qreports-theme] .modal-head button{color:var(--qreports-header-text);border-color:currentColor}
-html[data-qreports-theme] body>header .brand small{color:var(--qreports-header-text);opacity:.85}

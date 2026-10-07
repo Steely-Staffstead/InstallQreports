@@ -1,9 +1,0 @@
-.tile-picture .tile-body{padding:0;display:grid;place-items:center;background:transparent;overflow:scroll;scrollbar-gutter:stable}
-.tile-picture:not(:has(.tile-header)){border-top-color:transparent}
-.tile-picture img{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain}
-.tile-picture.hide-picture-scrollbars .tile-body{overflow:scroll;scrollbar-width:none}
-.tile-picture.hide-picture-scrollbars .tile-body::-webkit-scrollbar{width:0;height:0}
-.tile-picture.hide-picture-scrollbars img{width:100%;height:100%;max-width:none;max-height:none}
-body.busy::before{content:attr(data-busy-label)}
-.tile-chart .tile-body{padding:0}
-.tile-chart .simple-chart{height:100%;padding:0}

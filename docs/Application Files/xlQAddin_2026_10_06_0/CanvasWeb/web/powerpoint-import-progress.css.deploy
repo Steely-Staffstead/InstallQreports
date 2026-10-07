@@ -1,0 +1,54 @@
+.preview-working {
+  display: none;
+  justify-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.preview-empty.loading .preview-working {
+  display: grid;
+}
+
+.preview-spinner {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid color-mix(in srgb, var(--qreports-accent, #4f6ee8) 22%, transparent);
+  border-top-color: var(--qreports-accent, #4f6ee8);
+  border-radius: 50%;
+  animation: preview-spin .8s linear infinite;
+}
+
+.preview-progress {
+  display: block;
+  position: relative;
+  width: 180px;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--qreports-accent, #4f6ee8) 16%, var(--qreports-surface, #fff));
+}
+
+.preview-progress i {
+  position: absolute;
+  inset: 0 auto 0 -42%;
+  width: 42%;
+  border-radius: inherit;
+  background: var(--qreports-accent, #4f6ee8);
+  animation: preview-progress 1.25s ease-in-out infinite;
+}
+
+@keyframes preview-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes preview-progress {
+  0% { left: -42%; }
+  55% { left: 58%; }
+  100% { left: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-spinner { animation-duration: 1.8s; }
+  .preview-progress i { animation-duration: 2.4s; }
+}

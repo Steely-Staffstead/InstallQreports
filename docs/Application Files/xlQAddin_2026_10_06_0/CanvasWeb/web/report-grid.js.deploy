@@ -1,0 +1,1167 @@
+(() => {
+  const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+  const hex = (value, fallback) => /^#[0-9a-f]{6}$/i.test(String(value)) ? value : fallback;
+  const defaults = () => ({
+    sheetMode: true,
+    showColumnLetters: true,
+    showRowNumbers: true,
+    paddingTop: 0,
+    paddingBottom: 0,
+    cornerCell: {},
+    columns: Array.from({length:4},()=>({ id: crypto.randomUUID(), caption: '', headerCell: {} })),
+    rows: Array.from({length:2},()=>({ id: crypto.randomUUID(), kind: 'measure', caption: '', cells: Array.from({length:4},()=>({})) })),
+    style: { background: '#ffffff', color: '#182230', fontFamily: 'Segoe UI', fontSize: 14, align: 'left', borderColor: '#d9e0ea', borderWidth: 0, borderStyle: 'solid' },
+    headerStyle: { background: '#e9edf5', color: '#182230', bold: true, borderWidth: 1 },
+  });
+  function normalizeGrid(grid) {
+    for(const [index,column] of (grid?.columns||[]).entries())if(column?.kind==='spacer'){
+      // Older files kept visual spacing as a special column. Keep its position,
+      // width and cells, but let it behave like every other editable column.
+      delete column.kind;
+      column.caption ||= '';
+      const blankBackground=grid.style?.background||'#ffffff';
+      column.style={background:blankBackground,borderWidth:0,...column.style};
+      column.headerStyle={background:blankBackground,borderWidth:0,...column.headerStyle};
+      for(const row of grid.rows||[])if(row.cells?.[index])row.cells[index].style={background:blankBackground,borderWidth:0,...row.cells[index].style};
+    }
+    for(const row of grid?.rows||[])if(row?.kind==='spacer'){
+      row.kind='measure';
+      row.caption ||= '';
+      row.height ||= 18;
+    }
+    return grid;
+  }
+  const sides = ['top','right','bottom','left'];
+  const sideName = side => side[0].toUpperCase()+side.slice(1);
+  const sideKey = (side,part) => `border${sideName(side)}${sideName(part)}`;
+  const styleKeys = new Set(['background','color','fontFamily','fontSize','align','borderColor','borderWidth','borderStyle','bold','italic','underline',...sides.flatMap(side=>['Width','Style','Color'].map(part=>`border${sideName(side)}${part}`))]);
+  const themeRoles = ['surface','text','headerBackground','headerText','grid','accent','positive','negative'];
+  const mergeStyles = (...styles) => styles.reduce((merged,style)=>({ ...merged,...style,themeColors:{...merged.themeColors,...style?.themeColors} }),{});
+  const theme = context => typeof context?.theme==='function'?context.theme():context?.theme;
+  const roles = context => window.CanvasTheme?.roles?.(theme(context)) || {};
+  function resolvedStyle(style,context) {
+    const palette=roles(context),required=theme(context)?.requireColors===true,choice=style.themeColors||{};
+    const resolved={...style,background:(required||choice.background)&&palette[choice.background||'surface']||style.background,color:(required||choice.color)&&palette[choice.color||'text']||style.color};
+    if(required||choice.borderColor){const color=palette[choice.borderColor||'grid'];if(color){resolved.borderColor=color;sides.forEach(side=>resolved[sideKey(side,'color')]=color);}}
+    return resolved;
+  }
+  function themeEditorHtml(style,context) {
+    const required=theme(context)?.requireColors===true,using=required||!!style.themeColors?.background||!!style.themeColors?.color||!!style.themeColors?.borderColor;
+    const choices=[...new Set([...themeRoles,...Object.keys(roles(context)).filter(key=>/^color\d+$/.test(key))])];
+    const options=selected=>choices.map(role=>`<option value="${role}" ${role===selected?'selected':''}>${/^color\d+$/.test(role)?`Theme color ${role.slice(5)}`:role.replace(/([A-Z])/g,' $1')}</option>`).join('');
+    return `<div class="report-grid-theme-controls"><label class="check"><input type="checkbox" data-grid-theme-toggle ${using?'checked':''} ${required?'disabled':''}> Use theme colors</label>${using?`<div class="report-grid-theme-roles"><label>Background<select data-grid-theme-role="background">${options(style.themeColors?.background||'surface')}</select></label><label>Text<select data-grid-theme-role="color">${options(style.themeColors?.color||'text')}</select></label><label>Borders<select data-grid-theme-role="borderColor">${options(style.themeColors?.borderColor||'grid')}</select></label></div>`:''}</div>`;
+  }
+  const numberFormats = ['Auto','N0','N1','N2','P0','P1','P2','Custom'];
+  const columnAddress=index=>{let result='',number=index+1;while(number>0){number--;result=String.fromCharCode(65+number%26)+result;number=Math.floor(number/26);}return result;};
+  const gridViewOptionsHtml=grid=>`<div class="report-grid-view-options">${grid.sheetMode?'':`<button type="button" data-grid-upgrade-sheet>Use Excel cell addresses</button><small>Moves existing formula references one row and column to include the header cells.</small>`}<label class="check"><input type="checkbox" data-grid-view-option="showGrid" ${grid.showGrid?'checked':''}> Gridlines</label><label class="check"><input type="checkbox" data-grid-view-option="showHeadings" ${grid.showColumnLetters&&grid.showRowNumbers?'checked':''}> Headings</label><label class="check"><input type="checkbox" data-grid-view-option="showTopFormatAndFormula" ${grid.showTopFormatControls&&grid.showFormulaBar?'checked':''}> Format and formula bar</label><label class="check"><input type="checkbox" data-grid-view-option="showTopGridControls" ${grid.showTopGridControls?'checked':''}> Grid controls</label><div class="report-grid-spacing"><label>Space above grid<input type="number" min="0" max="120" step="1" data-grid-spacing="paddingTop" value="${Math.max(0,Math.min(120,Number(grid.paddingTop)||0))}"></label><label>Space below grid<input type="number" min="0" max="120" step="1" data-grid-spacing="paddingBottom" value="${Math.max(0,Math.min(120,Number(grid.paddingBottom)||0))}"></label></div></div>`;
+  function setGridViewOption(grid,key,checked){
+    if(key==='showHeadings'){grid.showColumnLetters=checked;grid.showRowNumbers=checked;}
+    else if(key==='showTopFormatAndFormula'){grid.showTopFormatControls=checked;grid.showFormulaBar=checked;}
+    else grid[key]=checked;
+  }
+  function topToolbarHtml(grid,tile){
+    if(!grid.showTopGridControls&&!grid.showTopFormatControls&&!grid.showFormulaBar)return'';
+    const position=selectedCell?.tileId===tile.id&&validPosition(grid,selectedCell)?selectedCell:null,disabled=position?'':'disabled',style=position?effectiveStyle(grid,position):{},address=position?(grid.sheetMode?formulaAddress(grid,position):position.kind==='value'?`${columnAddress(position.column)}${position.row+1}`:''):'',entry=position?topFormulaEntry(grid,position):'';
+    const button=(attribute,value,label,title,pressed='')=>`<button type="button" ${attribute}="${value}" title="${title}" aria-label="${title}" ${pressed} ${disabled}>${label}</button>`;
+    const gridControls=grid.showTopGridControls?`<div class="report-grid-top-group" aria-label="Grid controls">${button('data-grid-top-command','insert-row','＋R','Insert row below')}${button('data-grid-top-command','insert-column','＋C','Insert column right')}${button('data-grid-top-command','delete-row','R×','Delete row')}${button('data-grid-top-command','delete-column','C×','Delete column')}</div>`:'';
+    const formatControls=grid.showTopFormatControls?`<div class="report-grid-top-group" aria-label="Format controls">${button('data-grid-top-style','bold','B','Bold',`aria-pressed="${!!style.bold}"`)}${button('data-grid-top-style','italic','I','Italic',`aria-pressed="${!!style.italic}"`)}${button('data-grid-top-style','underline','U','Underline',`aria-pressed="${!!style.underline}"`)}<label class="report-grid-top-color" title="Text color"><span>A</span><input type="color" data-grid-top-color="color" aria-label="Text color" value="${hex(style.color,'#182230')}" ${disabled}></label><label class="report-grid-top-color" title="Background color"><span>▣</span><input type="color" data-grid-top-color="background" aria-label="Background color" value="${hex(style.background,'#ffffff')}" ${disabled}></label><label class="report-grid-top-font-size" title="Font size"><input type="number" data-grid-top-font-size min="6" max="96" step="1" aria-label="Font size" value="${Math.max(6,Math.min(96,Number(style.fontSize)||14))}" ${disabled}><span>px</span></label>${button('data-grid-top-align','left','⇤','Align left',`aria-pressed="${style.align==='left'}"`)}${button('data-grid-top-align','center','↔','Align center',`aria-pressed="${style.align==='center'}"`)}${button('data-grid-top-align','right','⇥','Align right',`aria-pressed="${style.align==='right'}"`)}</div>`:'';
+    const formula=grid.showFormulaBar?`<label class="report-grid-top-formula"><span data-grid-top-address>${escape(address||'—')}</span><input data-grid-top-formula value="${escape(entry)}" placeholder="Select a cell" ${disabled}></label>`:'';
+    return `<div class="report-grid-top-tools">${gridControls}${formatControls}${formula}</div>`;
+  }
+  const defaultCustomFormat = '#,##0.0';
+  function numberFormatHtml(pattern,selectAttribute,inputAttribute,formatter) {
+    const current=pattern||'Auto',preset=numberFormats.includes(current)?current:'Custom';
+    const custom=preset==='Custom'?(current==='Custom'?defaultCustomFormat:current):defaultCustomFormat;
+    return `<label>Number format<select ${selectAttribute}>${numberFormats.map(format=>`<option ${format===preset?'selected':''}>${format}</option>`).join('')}</select></label><label data-grid-custom-format-wrap class="${preset==='Custom'?'':'hidden'}">Custom format<input ${inputAttribute} value="${escape(custom)}" placeholder='#,# "BP"'><small data-grid-format-preview>Preview: ${escape(formatter?.(1234567.89,custom)||'')}</small></label>`;
+  }
+  let selectedCell = null;
+  let selectedCells = [];
+  let selectionAxis = null;
+  let selectionAnchor = null;
+  let selectionDrag = null;
+  let ignoreGridClick = false;
+  let paintFormat = null;
+  let clipboard = null;
+  let painterDrag = null;
+  let resizeDrag = null;
+  let measurePicker = null;
+  function crossFilterParts(filter) {
+    if (filter && typeof filter==='object') return {field:String(filter.field||''),value:String(filter.value??''),advanced:String(filter.expression||'')};
+    const match=/^(?:filter\s*\()?\s*([^=()]+?)\s*=\s*(.*?)\s*\)?$/i.exec(String(filter||''));
+    return match?{field:match[1].trim(),value:match[2].trim(),advanced:''}:{field:'',value:'',advanced:String(filter||'')};
+  }
+  const hasCrossFilter=owner=>{const filter=crossFilterParts(owner?.crossFilter);return !!(filter.field||filter.advanced);};
+  const crossFilterLabel=owner=>{const {field,value,advanced}=crossFilterParts(owner?.crossFilter);return advanced?` ⌄ ${advanced}`:field?` ⌄ ${field}=${value}`:'';};
+  function crossFilterHtml(owner,sourceId,context,attribute) {
+    const sources=context.sources(),source=sources.find(item=>item.id===sourceId),fields=source?.query?.data?.columns||[],filter=crossFilterParts(owner.crossFilter);
+    return `<fieldset class="report-grid-crossfilter"><legend>Measure crossfilter</legend><label>Source<select data-grid-context-source="${attribute}"><option value="">Inherit from tile</option>${sources.map(item=>`<option value="${escape(item.id)}" ${owner.sourceId===item.id?'selected':''}>${escape(item.name)}</option>`).join('')}</select></label><label>Field<select data-grid-context-field="${attribute}"><option value="">No simple crossfilter</option>${fields.map(field=>`<option value="${escape(field)}" ${String(field).toLowerCase()===filter.field.toLowerCase()?'selected':''}>${escape(field)}</option>`).join('')}${filter.field&&!fields.some(field=>String(field).toLowerCase()===filter.field.toLowerCase())?`<option selected value="${escape(filter.field)}">${escape(filter.field)} (not in source)</option>`:''}</select></label><label>Equals<input data-grid-context-value="${attribute}" value="${escape(filter.value)}" placeholder="6 or {{period}}"></label><label>Advanced filter<input data-grid-context-advanced="${attribute}" value="${escape(filter.advanced)}" placeholder="period=1|2|3, year=2025"></label><details class="report-grid-filter-reference"><summary>Filter syntax</summary><dl><dt>=</dt><dd>Equal: region=100</dd><dt>&gt; &gt;= &lt; &lt;= &lt;&gt;</dt><dd>Compare: amount&gt;1000</dd><dt>|</dt><dd>OR: region=1|2|3</dd><dt>-</dt><dd>Range: account=3000-3999</dd><dt>* or %</dt><dd>Wildcard: description=*salary*</dd><dt>NULL / NOT NULL</dt><dd>Empty or non-empty</dd><dt>,</dt><dd>AND: year=2025, period&lt;=12</dd></dl></details><small>Advanced text takes priority. Row and column filters combine. Use {{parameterName}} for a canvas parameter.</small></fieldset>`;
+  }
+  const cellMode=cell=>cell?.inputMode==='formula'||cell?.inputMode==='measure'?cell.inputMode:String(cell?.formula||'').trim()||cell?.text!=null&&!cell?.measure?'formula':'measure';
+  const cellContents=cell=>({formula:cell.formula||'',measure:cell.measure||'',sourceId:cell.sourceId||'',text:cell.text||'',inputMode:cellMode(cell),spanColumns:cell.spanColumns||1});
+  function cycleFormulaReference(value,start,end=start){
+    const source=String(value||'');if(!source.trimStart().startsWith('='))return null;
+    const visible=source.replace(/"(?:[^"]|"")*"/g,match=>' '.repeat(match.length));
+    const matches=[...visible.matchAll(/(?<![A-Za-z0-9_])(\$?)([A-Za-z]+)(\$?)([1-9]\d*)(?![A-Za-z0-9_])/g)];
+    const selected=matches.filter(match=>start===end?match.index<=start&&start<=match.index+match[0].length:match.index>=start&&match.index+match[0].length<=end);
+    if(!selected.length)return null;
+    const targets=start===end?[selected.at(-1)]:selected;
+    let result=source,change=0;
+    for(const match of [...targets].reverse()){
+      const columnFixed=!!match[1],rowFixed=!!match[3],next=!columnFixed&&!rowFixed?`$${match[2]}$${match[4]}`:columnFixed&&rowFixed?`${match[2]}$${match[4]}`:rowFixed?`$${match[2]}${match[4]}`:`${match[2]}${match[4]}`;
+      result=result.slice(0,match.index)+next+result.slice(match.index+match[0].length);change+=next.length-match[0].length;
+    }
+    return {value:result,start:targets[0].index,end:targets.at(-1).index+targets.at(-1)[0].length+change};
+  }
+  function mapFormulaAddresses(formula,mapper) {
+    return String(formula||'').replace(/"(?:[^"]|"")*"|(?<![A-Za-z0-9_])(\$?)([A-Za-z]+)(\$?)([1-9]\d*)(?![A-Za-z0-9_])/g,(match,fixedColumn,letters,fixedRow,digits)=>letters?mapper(match,fixedColumn,letters,fixedRow,digits):match);
+  }
+  function shiftFormula(formula,from,to) {
+    const rowOffset=to.row-from.row,columnOffset=to.column-from.column;
+    return mapFormulaAddresses(formula,(match,fixedColumn,letters,fixedRow,digits)=>{
+      let column=0;for(const letter of letters.toUpperCase())column=column*26+letter.charCodeAt(0)-64;
+      column+=fixedColumn?0:columnOffset;const row=Number(digits)+(fixedRow?0:rowOffset);
+      if(column<1||row<1)return '#REF!';
+      let address='';while(column>0){column--;address=String.fromCharCode(65+column%26)+address;column=Math.floor(column/26);}
+      return `${fixedColumn?'$':''}${address}${fixedRow?'$':''}${row}`;
+    });
+  }
+  function rebaseGridFormulas(grid,axis,operation,index,otherIndex) {
+    const offset=grid.sheetMode?2:1,changed=index+offset,other=otherIndex+offset;
+    const moveCoordinate=coordinate=>{
+      if(operation==='insert'&&coordinate>=changed)return coordinate+1;
+      if(operation==='delete'){if(coordinate===changed)return null;return coordinate>changed?coordinate-1:coordinate;}
+      if(operation==='move'){if(coordinate===changed)return other;if(coordinate===other)return changed;}
+      return coordinate;
+    };
+    const rewrite=formula=>{
+      const ranges=[];
+      const masked=String(formula||'').replace(/"(?:[^"]|"")*"|(?<![A-Za-z0-9_])(\$?)([A-Za-z]+)(\$?)([1-9]\d*)\s*:\s*(\$?)([A-Za-z]+)(\$?)([1-9]\d*)(?![A-Za-z0-9_])/g,(match,firstColumnFixed,firstLetters,firstRowFixed,firstDigits,lastColumnFixed,lastLetters,lastRowFixed,lastDigits)=>{
+        if(!firstLetters)return match;
+        const firstColumn=[...firstLetters.toUpperCase()].reduce((value,letter)=>value*26+letter.charCodeAt(0)-64,0),lastColumn=[...lastLetters.toUpperCase()].reduce((value,letter)=>value*26+letter.charCodeAt(0)-64,0);
+        const first=axis==='row'?Number(firstDigits):firstColumn,last=axis==='row'?Number(lastDigits):lastColumn,low=Math.min(first,last),high=Math.max(first,last);
+        const candidates=operation==='delete'?[low,low+1,high-1,high]:operation==='move'?[low,high,changed,other]:[low,high];
+        const survivors=candidates.filter((value,index,array)=>value!=null&&value>=low&&value<=high&&array.indexOf(value)===index).map(moveCoordinate).filter(value=>value!=null);
+        const begin=survivors.length?Math.min(...survivors):null,finish=survivors.length?Math.max(...survivors):null;
+        const start=first<=last?begin:finish,end=first<=last?finish:begin;
+        const format=(columnFixed,letters,rowFixed,digits,coordinate)=>`${columnFixed||''}${axis==='column'?columnAddress(coordinate-1):letters}${rowFixed||''}${axis==='row'?coordinate:digits}`;
+        ranges.push(start==null?'#REF!':`${format(firstColumnFixed,firstLetters,firstRowFixed,firstDigits,start)}:${format(lastColumnFixed,lastLetters,lastRowFixed,lastDigits,end)}`);
+        return `\u0000${ranges.length-1}\u0000`;
+      });
+      const shifted=mapFormulaAddresses(masked,(match,fixedColumn,letters,fixedRow,digits)=>{
+      let column=0;for(const letter of letters.toUpperCase())column=column*26+letter.charCodeAt(0)-64;
+      let row=Number(digits),coordinate=moveCoordinate(axis==='row'?row:column);
+      if(coordinate==null)return '#REF!';
+      if(axis==='row')row=coordinate;else column=coordinate;
+      return `${fixedColumn?'$':''}${columnAddress(column-1)}${fixedRow?'$':''}${row}`;
+    });
+      return shifted.replace(/\u0000(\d+)\u0000/g,(_,index)=>ranges[Number(index)]);
+    };
+    const update=cell=>{if(cell?.formula)cell.formula=rewrite(cell.formula);};
+    update(grid.cornerCell);
+    for(const column of grid.columns||[])update(column.headerCell);
+    for(const row of grid.rows||[]){update(row.labelCell);for(const cell of row.cells||[])update(cell);}
+  }
+  function rebaseFormula(formula) {
+    return mapFormulaAddresses(formula,(match,fixedColumn,letters,fixedRow,digits)=>{
+      let column=0;for(const letter of letters.toUpperCase())column=column*26+letter.charCodeAt(0)-64;
+      return `${fixedColumn?'$':''}${columnAddress(column)}${fixedRow?'$':''}${Number(digits)+1}`;
+    });
+  }
+  function upgradeSheet(grid) {
+    if(grid.sheetMode)return false;
+    for(const row of grid.rows||[])for(const cell of row.cells||[])if(cell?.formula)cell.formula=rebaseFormula(cell.formula);
+    grid.sheetMode=true;grid.showColumnLetters=true;grid.showRowNumbers=true;return true;
+  }
+  function copyGrid(grid,position,mode) {
+    if(!validPosition(grid,position))return false;
+    if(mode!=='format'&&!grid.sheetMode&&(position.kind!=='value'||grid.rows[position.row]?.kind!=='measure'))return false;
+    const cell=sheetCell(grid,position)||{};
+    clipboard={mode,origin:{row:position.row,column:position.column},content:mode==='format'?null:mode==='formula'?{formula:cell.formula||'',measure:cell.measure||'',sourceId:cell.sourceId||'',inputMode:cellMode(cell)}:{...cellContents(cell),text:cellText(grid,position)},style:mode==='formula'?null:structuredClone(effectiveStyle(grid,position)),format:mode==='formula'?null:cell.format,conditionalFormat:mode==='formula'?undefined:structuredClone(cell.conditionalFormat||null)};
+    paintFormat={mode};updatePainterClass();return true;
+  }
+  function pasteGrid(grid,position) {
+    if(clipboard?.mode==='cut')return pasteCutGrid(grid,position);
+    if(!clipboard||!validPosition(grid,position))return false;
+    if(clipboard.content&&!grid.sheetMode&&(position.kind!=='value'||grid.rows[position.row]?.kind!=='measure'))return false;
+    if(clipboard.style){const destination=styleTarget(grid,position);for(const key of Object.keys(destination))delete destination[key];Object.assign(destination,structuredClone(clipboard.style));const cell=sheetCell(grid,position);if(cell){if(clipboard.format!==undefined)cell.format=clipboard.format;if(clipboard.conditionalFormat)cell.conditionalFormat=structuredClone(clipboard.conditionalFormat);else delete cell.conditionalFormat;}}
+    if(clipboard.content){const content=structuredClone(clipboard.content);content.formula=shiftFormula(content.formula,clipboard.origin,position);Object.assign(sheetCell(grid,position),content);}
+    paintFormat=null;updatePainterClass();
+    return true;
+  }
+  function borderSide(style,side) {
+    const width=style[sideKey(side,'width')]??style.borderWidth??0;
+    const line=style[sideKey(side,'style')]??style.borderStyle??'solid';
+    const color=style[sideKey(side,'color')]??style.borderColor??'#d9e0ea';
+    return {width:Math.max(0,Math.min(8,Number(width)||0)),style:['solid','double','dashed','dotted','none'].includes(line)?line:'solid',color:hex(color,'#d9e0ea')};
+  }
+  function borderEditorHtml(style,context) {
+    const themed=resolvedStyle(style,context),lock=theme(context)?.requireColors||style.themeColors?.borderColor;
+    return `<fieldset class="report-grid-border-editor"><legend>Borders</legend><div class="report-grid-border-presets"><button type="button" data-border-preset="all">All sides</button><button type="button" data-border-preset="none">Clear</button></div><div class="report-grid-border-head"><span>Side</span><span>Width</span><span>Line</span><span>Color</span></div>${sides.map(side=>{const border=borderSide(themed,side);return `<div class="report-grid-border-row"><label class="report-grid-border-toggle"><input type="checkbox" data-border-side="${side}" data-border-part="enabled" ${border.width&&border.style!=='none'?'checked':''}> ${sideName(side)}</label><input type="number" min="0" max="8" value="${border.width}" data-border-side="${side}" data-border-part="width" aria-label="${sideName(side)} border width"><select data-border-side="${side}" data-border-part="style" aria-label="${sideName(side)} border style">${['solid','double','dashed','dotted'].map(line=>`<option value="${line}" ${line===border.style?'selected':''}>${line}</option>`).join('')}</select><input type="color" value="${border.color}" data-border-side="${side}" data-border-part="color" aria-label="${sideName(side)} border color" ${lock?'disabled':''}></div>`}).join('')}</fieldset>`;
+  }
+  function formatToolbarHtml(style,previewText,context) {
+    const selected=(actual,expected)=>actual===expected?'selected':'',pressed=value=>value?'true':'false';
+    const display=resolvedStyle(style,context);
+    const previewCss=styleCss(style,context).replace(/border-(?:top|right|bottom|left):[^;]*;/g,'');
+    return `<div class="report-grid-format-card"><div class="report-grid-format-toolbar" role="toolbar" aria-label="Cell formatting"><button type="button" data-grid-format-toggle="bold" aria-pressed="${pressed(style.bold)}" title="Bold"><b>B</b></button><button type="button" data-grid-format-toggle="italic" aria-pressed="${pressed(style.italic)}" title="Italic"><i>I</i></button><button type="button" data-grid-format-toggle="underline" aria-pressed="${pressed(style.underline)}" title="Underline"><u>U</u></button><select data-grid-property-style="fontFamily" aria-label="Font">${['Segoe UI','Arial','Calibri','Georgia','Consolas'].map(font=>`<option ${selected(font,style.fontFamily||'Segoe UI')}>${font}</option>`).join('')}</select><input data-grid-property-style="fontSize" type="number" min="8" max="72" value="${style.fontSize||14}" aria-label="Font size"><input data-grid-property-style="color" type="color" value="${hex(display.color,'#182230')}" title="Text color" aria-label="Text color" ${display.themeColors?.color?'disabled':''}><input data-grid-property-style="background" type="color" value="${hex(display.background,'#ffffff')}" title="Cell background" aria-label="Cell background" ${display.themeColors?.background?'disabled':''}><button type="button" data-grid-format-align="left" aria-pressed="${pressed((style.align||'left')==='left')}" title="Align left">⇤</button><button type="button" data-grid-format-align="center" aria-pressed="${pressed(style.align==='center')}" title="Align center">↔</button><button type="button" data-grid-format-align="right" aria-pressed="${pressed(style.align==='right')}" title="Align right">⇥</button></div><div class="report-grid-format-preview" style="${previewCss}" aria-label="Cell formatting preview">${escape(previewText||'Cell preview')}</div></div>`;
+  }
+  function changeBorder(style,input) {
+    const side=input.dataset.borderSide,part=input.dataset.borderPart;
+    if (!sides.includes(side)) return false;
+    const current=borderSide(style,side);
+    if (part==='enabled') {style[sideKey(side,'width')]=input.checked?Math.max(current.width,current.style==='double'?3:1):0;if(input.checked&&current.style==='none') style[sideKey(side,'style')]='solid';}
+    else if (part==='width') style[sideKey(side,'width')]=Math.max(0,Math.min(8,Number(input.value)||0));
+    else if (part==='style') {style[sideKey(side,'style')]=input.value;style[sideKey(side,'width')]=Math.max(current.width,input.value==='double'?3:1);}
+    else if (part==='color') style[sideKey(side,'color')]=hex(input.value,current.color);
+    else return false;
+    return true;
+  }
+  function presetBorder(style,preset) {
+    if (!['all','none'].includes(preset)) return false;
+    sides.forEach(side=>{const border=borderSide(style,side);style[sideKey(side,'width')]=preset==='none'?0:Math.max(border.width,border.style==='double'?3:1);if(preset==='all'&&border.style==='none')style[sideKey(side,'style')]='solid';});
+    return true;
+  }
+  function styleCss(style,context) {
+    style=resolvedStyle(style,context);
+    const font = String(style.fontFamily || 'Segoe UI').replace(/[^a-z0-9 ,'-]/gi, '');
+    const align = ['left','center','right'].includes(style.align) ? style.align : 'left';
+    return `background:${hex(style.background,'#ffffff')};color:${hex(style.color,'#182230')};font-family:${font};font-size:${Math.max(8,Math.min(72,Number(style.fontSize)||14))}px;font-weight:${style.bold?'700':'400'};font-style:${style.italic?'italic':'normal'};text-decoration:${style.underline?'underline':'none'};text-align:${align};${sides.map(side=>{const border=borderSide(style,side);return `border-${side}:${border.width}px ${border.style} ${border.color};`}).join('')}`;
+  }
+  function formulaValue(expression,reference) {
+    const source=String(expression||'').trim().replace(/^=/,'');
+    if(source.replace(/"(?:[^"]|"")*"/g,'').includes('#REF!'))throw new Error('#REF!');
+    const tokens=[],tokenPattern=/\s*("(?:[^"]|"")*"|(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?|\$?[A-Za-z]+\$?[1-9]\d*|[A-Za-z_][A-Za-z0-9_]*|>=|<=|<>|!=|==|[(),:+*/<>=&-])/gy;
+    for(let offset=0;offset<source.length;){
+      tokenPattern.lastIndex=offset;
+      const match=tokenPattern.exec(source);
+      if(!match){if(/^\s*$/.test(source.slice(offset)))break;throw new Error('#FORMULA!');}
+      tokens.push(match[1]);offset=tokenPattern.lastIndex;
+    }
+    if(!tokens.length)throw new Error('#FORMULA!');
+    let cursor=0;
+    const numeric=value=>{if(Array.isArray(value))throw new Error('#VALUE!');const number=Number(value);if(!Number.isFinite(number))throw new Error('#VALUE!');return number;};
+    const comparable=value=>typeof value==='string'&&value.trim()!==''&&Number.isFinite(Number(value))?Number(value):value;
+    const address=/^\$?([A-Za-z]+)\$?([1-9]\d*)$/;
+    const coordinates=value=>{const match=address.exec(value);if(!match)throw new Error('#FORMULA!');let column=0;for(const letter of match[1].toUpperCase())column=column*26+letter.charCodeAt(0)-64;return {row:Number(match[2]),column};};
+    const rangeValues=(start,end)=>{const first=coordinates(start),last=coordinates(end),top=Math.min(first.row,last.row),bottom=Math.max(first.row,last.row),left=Math.min(first.column,last.column),right=Math.max(first.column,last.column);if((bottom-top+1)*(right-left+1)>10000)throw new Error('#VALUE!');const values=[];for(let row=top;row<=bottom;row++)for(let column=left;column<=right;column++){let number=column,letters='';while(number>0){number--;letters=String.fromCharCode(65+number%26)+letters;number=Math.floor(number/26);}values.push(reference(`${letters}${row}`));}return values;};
+    const aggregateValues=args=>args.flatMap(arg=>{const result=arg();return Array.isArray(result)?result.filter(value=>value!==''&&value!=null&&Number.isFinite(Number(value))).map(Number):[numeric(result)];});
+    const primary=()=>{
+      const token=tokens[cursor++];
+      if(token==='('){const value=comparison();if(tokens[cursor++]!==')')throw new Error('#FORMULA!');return value;}
+      if(token==='-'){const value=primary();return()=>-numeric(value());}
+      if(token==='+'){const value=primary();return()=>numeric(value());}
+      if(token?.startsWith('"')){const value=token.slice(1,-1).replace(/""/g,'"');return()=>value;}
+      if(/^(?:\d|\.\d)/.test(token||'')){const value=Number(token);return()=>value;}
+      if(/^[A-Za-z_][A-Za-z0-9_]*$/.test(token||'')&&tokens[cursor]==='('){
+        cursor++;
+        const args=[];
+        if(tokens[cursor]!==')'){do{args.push(comparison());if(tokens[cursor]!==',')break;cursor++;}while(true);}
+        if(tokens[cursor++]!==')')throw new Error('#FORMULA!');
+        const name=token.toUpperCase();
+        if(name==='IF'&&args.length===3)return()=>args[0]()?args[1]():args[2]();
+        if(name==='IFERROR'&&args.length===2)return()=>{try{return args[0]();}catch{return args[1]();}};
+        if(name==='DIVIDE'&&(args.length===2||args.length===3))return()=>{const denominator=numeric(args[1]());return denominator===0?(args[2]?args[2]():''):numeric(args[0]())/denominator;};
+        if(name==='ABS'&&args.length===1)return()=>Math.abs(numeric(args[0]()));
+        if(name==='ROUND'&&args.length===2)return()=>{const value=numeric(args[0]()),digits=Math.trunc(numeric(args[1]()));if(Math.abs(digits)>12)throw new Error('#VALUE!');const factor=10**(-digits);return Math.sign(value)*Math.round(Math.abs(value)/factor)*factor;};
+        if(['SUM','AVG','AVERAGE','MIN','MAX'].includes(name)&&args.length)return()=>{const values=aggregateValues(args);if(name==='SUM')return values.reduce((sum,value)=>sum+value,0);if(name==='AVG'||name==='AVERAGE'){if(!values.length)throw new Error('#DIV/0!');return values.reduce((sum,value)=>sum+value,0)/values.length;}return values.length?(name==='MIN'?Math.min(...values):Math.max(...values)):0;};
+        throw new Error('#FORMULA!');
+      }
+      if(address.test(token||'')&&tokens[cursor]===':'){cursor++;const end=tokens[cursor++];if(!address.test(end||''))throw new Error('#FORMULA!');return()=>rangeValues(token,end);}
+      if(address.test(token||'')||/^[A-Za-z_][A-Za-z0-9_]*$/.test(token||''))return()=>reference(token);
+      throw new Error('#FORMULA!');
+    };
+    const multiplication=()=>{let value=primary();while(tokens[cursor]==='*'||tokens[cursor]==='/'){const left=value,operator=tokens[cursor++],right=primary();value=()=>{const a=numeric(left()),b=numeric(right());if(operator==='/'&&b===0)throw new Error('#DIV/0!');return operator==='*'?a*b:a/b;};}return value;};
+    const addition=()=>{let value=multiplication();while(tokens[cursor]==='+'||tokens[cursor]==='-'){const left=value,operator=tokens[cursor++],right=multiplication();value=()=>operator==='+'?numeric(left())+numeric(right()):numeric(left())-numeric(right());}return value;};
+    const concatenation=()=>{let value=addition();while(tokens[cursor]==='&'){const left=value;cursor++;const right=addition();value=()=>String(left()??'')+String(right()??'');}return value;};
+    const comparison=()=>{let value=concatenation();while(['>','<','>=','<=','=','==','<>','!='].includes(tokens[cursor])){const left=value,operator=tokens[cursor++],right=concatenation();value=()=>{const a=comparable(left()),b=comparable(right());return Number(operator==='>'?a>b:operator==='<'?a<b:operator==='>='?a>=b:operator==='<='?a<=b:operator==='='||operator==='=='?a===b:a!==b);};}return value;};
+    const parsed=comparison();if(cursor!==tokens.length)throw new Error('#FORMULA!');const result=parsed();
+    if(typeof result!=='string'&&!(typeof result==='number'&&Number.isFinite(result)))throw new Error('#FORMULA!');
+    return result;
+  }
+  function formulaGuideHtml() {
+    return `<details class="report-grid-formula-help"><summary>Supported formulas</summary><p>Enter plain text directly, or start with <code>=</code> to calculate a formula. A simple entry such as <code>=40,5%</code> becomes <code>=0.405</code> with percent formatting; <code>=10,2</code> becomes <code>=10.2</code>. Function arguments still use commas. Use cell addresses such as <code>B2</code>, named cells, numbers, <code>+ − * /</code> and parentheses. <code>$B$2</code> keeps its row and column fixed when copying.</p><p>Comparisons: <code>= &lt;&gt; &lt; &lt;= &gt; &gt;=</code>. Text goes in double quotes. For example, <code>=IF(I12&lt;0,"GOOD","")</code> returns text or an empty cell. Use <code>&amp;</code> to join text, such as <code>="Year " &amp; B2</code>.</p><p>Functions: <code>IF(condition, true, false)</code>, <code>IFERROR(value, fallback)</code>, <code>ABS(number)</code>, <code>ROUND(number, digits)</code>, and <code>SUM</code>, <code>AVG</code> (or <code>AVERAGE</code>), <code>MIN</code>, <code>MAX</code>. <code>DIVIDE(numerator, denominator, fallback)</code> returns a blank cell for an empty or zero denominator unless you provide a fallback, for example <code>=DIVIDE(B2,C2,0)</code>. Use ranges such as <code>=SUM(B2:B10)</code> or <code>=AVG(B2:B10)</code>, including rectangular ranges. Blank and text cells in a range are ignored; an average with no numbers shows <code>#DIV/0!</code>. Only the chosen IF branch is calculated. IF calls can be nested, for example <code>=IF(A1&gt;0,"Positive",IF(A1&lt;0,"Negative","Zero"))</code>.</p><p>Results may show <code>#REF!</code>, <code>#DIV/0!</code>, <code>#CYCLE!</code>, <code>#VALUE!</code> or <code>#FORMULA!</code> when a reference or expression is invalid. Double-click a cell or press F2 to edit inside the grid. Click the formula to place the cursor, type a function name to see suggestions, or click another cell to insert its address. Drag across cells to insert a range. Press <code>F4</code> on a reference to cycle <code>A1 → $A$1 → A$1 → $A1 → A1</code>; with a selected cell, F4 repeats the latest formatting or insert action.</p></details>`;
+  }
+  function conditionalFormatHtml(cell,context,measures=[]) {
+    const rule=cell?.conditionalFormat||{},operator=rule.operator||'<',color=rule.useThemeColor!==false,required=theme(context)?.requireColors===true,compareMode=rule.compareMode||'fixed';
+    return `<details class="report-grid-conditional"><summary>Conditional formatting</summary><label class="check"><input type="checkbox" data-grid-conditional="enabled" ${rule.enabled?'checked':''}> Apply conditional formatting</label><div class="report-grid-conditional-condition"><label>Condition<select data-grid-conditional="operator">${[['<','Less than'],['<=','Less than or equal'],['>','Greater than'],['>=','Greater than or equal'],['=','Equal'],['<>','Not equal']].map(([value,label])=>`<option value="${escape(value)}" ${operator===value?'selected':''}>${label}</option>`).join('')}</select></label><label>Compare to<select data-grid-conditional="compareMode"><option value="fixed" ${compareMode==='fixed'?'selected':''}>Fixed value</option><option value="measure" ${compareMode==='measure'?'selected':''}>Measure</option></select></label></div>${compareMode==='measure'?`<label>Comparison measure<select data-grid-conditional="compareMeasure"><option value="">Choose measure…</option>${measures.map(measure=>{const name=measure.Name??measure.name??measure.OutputName??measure.outputName??'';return `<option value="${escape(name)}" ${name===rule.compareMeasure?'selected':''}>${escape(name)}</option>`;}).join('')}</select></label>`:`<label>Fixed value<input data-grid-conditional="threshold" type="number" step="any" value="${Number.isFinite(Number(rule.threshold))?Number(rule.threshold):0}"></label>`}<div class="two-cols"><label>Icon set<select data-grid-conditional="iconType">${['None','Arrows','Triangles','Circles','Status'].map(value=>`<option value="${value}" ${value===(rule.iconType||'None')?'selected':''}>${value}</option>`).join('')}</select></label><label>Icon position<select data-grid-conditional="iconPosition"><option value="left" ${rule.iconPosition!=='right'?'selected':''}>Left</option><option value="right" ${rule.iconPosition==='right'?'selected':''}>Right</option></select></label></div><label class="check"><input type="checkbox" data-grid-conditional="useThemeColor" ${color||required?'checked':''} ${required?'disabled':''}> Use theme negative color when condition matches</label><label>Text color<input data-grid-conditional="textColor" type="color" value="${hex(rule.textColor,'#c43d4b')}" ${color||required?'disabled':''}></label><label class="check"><input type="checkbox" data-grid-conditional="useBackground" ${rule.useBackground?'checked':''}> Also color background when condition matches</label><label>Background color<input data-grid-conditional="backgroundColor" type="color" value="${hex(rule.backgroundColor,'#fff0f0')}" ${color||required||!rule.useBackground?'disabled':''}></label><label class="check"><input type="checkbox" data-grid-conditional="strength" ${rule.strength?'checked':''}> Color background by value strength</label><div class="two-cols"><label>Low color<input data-grid-conditional="lowColor" type="color" value="${hex(rule.lowColor,'#f1f5ff')}"></label><label>High color<input data-grid-conditional="highColor" type="color" value="${hex(rule.highColor,'#536ee1')}"></label></div><div class="two-cols"><label>At / above icon color<input data-grid-conditional="goodColor" type="color" value="${hex(rule.goodColor,'#16844a')}"></label><label>Below icon color<input data-grid-conditional="badColor" type="color" value="${hex(rule.badColor,'#c43d4b')}"></label></div><small>Rules use the underlying number before display formatting. Measure comparisons use the selected cell's row and column filters.</small></details>`;
+  }
+  function updateConditionalFormat(cell,input) {
+    const key=input.dataset.gridConditional;if(!cell||!['enabled','operator','threshold','compareMode','compareMeasure','iconType','iconPosition','useThemeColor','textColor','useBackground','backgroundColor','strength','lowColor','highColor','goodColor','badColor'].includes(key))return false;
+    const rule=cell.conditionalFormat||={operator:'<',threshold:0,useThemeColor:true,textColor:'#c43d4b',backgroundColor:'#fff0f0'};
+    rule[key]=input.type==='checkbox'?input.checked:key==='threshold'?Number(input.value)||0:input.value;
+    return true;
+  }
+  function setSheetCell(grid,position,cell) {
+    if(position.kind==='corner'){grid.cornerCell=cell;grid.cornerCaption=cell.text||'';}
+    else if(position.kind==='header'){grid.columns[position.column].headerCell=cell;grid.columns[position.column].caption=cell.text||'';}
+    else if(position.kind==='caption'){grid.rows[position.row].labelCell=cell;grid.rows[position.row].caption=cell.text||'';}
+    else {grid.rows[position.row].cells||=[];grid.rows[position.row].cells[position.column]=cell;}
+  }
+  function rewriteMovedReferences(grid,mapping) {
+    const rewrite=cell=>{if(cell?.formula)cell.formula=mapFormulaAddresses(cell.formula,(match,fixedColumn,letters,fixedRow,digits)=>{
+      let column=0;for(const letter of letters.toUpperCase())column=column*26+letter.charCodeAt(0)-64;
+      const target=mapping.get(`${Number(digits)}:${column}`);
+      return target?`${fixedColumn?'$':''}${columnAddress(target.column-1)}${fixedRow?'$':''}${target.row}`:match;
+    });};
+    rewrite(grid.cornerCell);for(const column of grid.columns)rewrite(column.headerCell);
+    for(const row of grid.rows){rewrite(row.labelCell);for(const cell of row.cells||[])rewrite(cell);}
+  }
+  function cutGrid(grid,positions,axis,tileId) {
+    if(!grid.sheetMode||!positions.length||positions.some(position=>!validPosition(grid,position)))return false;
+    const kind=axis==='row'?'row':axis==='column'?'column':'cells';
+    const indices=kind==='row'?[...new Set(positions.map(position=>position.row))].filter(index=>index>=0).sort((a,b)=>a-b):kind==='column'?[...new Set(positions.map(position=>position.column))].filter(index=>index>=0).sort((a,b)=>a-b):[];
+    if(kind!=='cells'&&!indices.length)return false;
+    const origin={row:Math.min(...positions.map(position=>position.row)),column:Math.min(...positions.map(position=>position.column))};
+    clipboard={mode:'cut',kind,tileId,grid,origin,indices,positions:positions.map(position=>({...position,cell:structuredClone(sheetCell(grid,position)||{})}))};
+    paintFormat=null;updatePainterClass();return true;
+  }
+  function pasteCutGrid(grid,position) {
+    const cut=clipboard;
+    if(cut?.mode!=='cut'||cut.grid!==grid||cut.tileId!==position.tileId||!validPosition(grid,position))return false;
+    if(cut.kind==='row'||cut.kind==='column'){
+      const rowAxis=cut.kind==='row',axis=rowAxis?'row':'column',target=position[axis];
+      if(selectionAxis!==axis||target<0||(rowAxis?position.column!==-1:position.row!==-1))return false;
+      const count=rowAxis?grid.rows.length:grid.columns.length,from=cut.indices;
+      if(from.some(index=>index>=count)||from.includes(target))return false;
+      const order=Array.from({length:count},(_,index)=>index),remaining=order.filter(index=>!from.includes(index));
+      const insertAt=remaining.filter(index=>index<target).length;
+      remaining.splice(insertAt,0,...from);
+      const mapping=new Map();
+      order.forEach(oldIndex=>{const newIndex=remaining.indexOf(oldIndex);if(newIndex!==oldIndex){const oldCoordinate=oldIndex+2,newCoordinate=newIndex+2;for(let cross=1;cross<=(rowAxis?grid.columns.length+1:grid.rows.length+1);cross++)mapping.set(rowAxis?`${oldCoordinate}:${cross}`:`${cross}:${oldCoordinate}`,rowAxis?{row:newCoordinate,column:cross}:{row:cross,column:newCoordinate});}});
+      if(rowAxis)grid.rows=remaining.map(index=>grid.rows[index]);
+      else {grid.columns=remaining.map(index=>grid.columns[index]);for(const row of grid.rows){const cells=row.cells||[];row.cells=remaining.map(index=>cells[index]||{});}}
+      rewriteMovedReferences(grid,mapping);
+      const newIndices=from.map(index=>remaining.indexOf(index)),first=Math.min(...newIndices);
+      selectCells(newIndices.flatMap(index=>axisCells(grid,{tileId:position.tileId,row:rowAxis?index:-1,column:rowAxis?-1:index,kind:rowAxis?'caption':'header'},axis)),{tileId:position.tileId,row:rowAxis?first:-1,column:rowAxis?-1:first,kind:rowAxis?'caption':'header'});
+      selectionAxis=axis;
+    }else{
+      const rowDelta=position.row-cut.origin.row,columnDelta=position.column-cut.origin.column;
+      const destinations=cut.positions.map(source=>({tileId:position.tileId,row:source.row+rowDelta,column:source.column+columnDelta}));
+      for(const dest of destinations){dest.kind=dest.row<0?dest.column<0?'corner':'header':dest.column<0?'caption':'value';if(!validPosition(grid,dest))return false;}
+      const mapping=new Map();
+      cut.positions.forEach((source,index)=>mapping.set(`${source.row+2}:${source.column+2}`,{row:destinations[index].row+2,column:destinations[index].column+2}));
+      for(const source of cut.positions)setSheetCell(grid,source,{});
+      cut.positions.forEach((source,index)=>setSheetCell(grid,destinations[index],structuredClone(source.cell)));
+      rewriteMovedReferences(grid,mapping);
+      selectCells(destinations,destinations[0]);selectionAxis=null;
+    }
+    clipboard=null;updatePainterClass();return true;
+  }
+  function conditionalMatches(rule,number,comparison) {
+    const operator=rule.operator||'<';return operator==='<'?number<comparison:operator==='<='?number<=comparison:operator==='>'?number>comparison:operator==='>='?number>=comparison:operator==='='?number===comparison:operator==='<>'?number!==comparison:false;
+  }
+  function conditionalStrengthColor(rule,number,range) {
+    if(!rule.strength||!Number.isFinite(number)||!Number.isFinite(range?.minimum)||!Number.isFinite(range?.maximum))return '';
+    const low=hex(rule.lowColor,'#f1f5ff'),high=hex(rule.highColor,'#536ee1'),amount=Math.max(0,Math.min(1,(number-range.minimum)/(range.maximum-range.minimum||1))),channel=index=>Math.round(parseInt(low.slice(index,index+2),16)*(1-amount)+parseInt(high.slice(index,index+2),16)*amount).toString(16).padStart(2,'0');return `#${channel(1)}${channel(3)}${channel(5)}`;
+  }
+  function conditionalStyleCss(cell,value,context,comparisonValue,range) {
+    const rule=cell?.conditionalFormat;if(!rule?.enabled||value==null||value==='')return '';
+    const number=Number(value),threshold=Number(rule.compareMode==='measure'?comparisonValue:rule.threshold??0);if(!Number.isFinite(number))return '';
+    const strength=conditionalStrengthColor(rule,number,range),matches=Number.isFinite(threshold)&&conditionalMatches(rule,number,threshold);if(!matches&&!strength)return '';
+    const themed=theme(context)?.requireColors===true||rule.useThemeColor!==false,negative=hex(roles(context).negative,'#c43d4b'),color=themed?negative:hex(rule.textColor,'#c43d4b');
+    const background=strength||matches&&rule.useBackground?(strength||(themed?`color-mix(in srgb, ${negative} 15%, ${hex(roles(context).surface,'#ffffff')})`:hex(rule.backgroundColor,'#fff0f0'))):'';
+    return `${matches?`color:${color}!important;`:''}${background?`background:${background}!important;`:''}`;
+  }
+  function conditionalIconHtml(cell,value,comparisonValue,content) {
+    const rule=cell?.conditionalFormat||{},number=Number(value),comparison=Number(rule.compareMode==='measure'?comparisonValue:rule.threshold??0),type=rule.iconType||'None';if(!rule.enabled||type==='None'||!Number.isFinite(number))return content;if(!Number.isFinite(comparison))return rule.compareMode==='measure'?`<span class="matrix-conditional-cell"><span class="matrix-conditional-content">${content}</span><span class="matrix-conditional-icon matrix-conditional-unavailable" title="Comparison measure could not be evaluated" aria-label="Comparison measure unavailable">?</span></span>`:content;
+    const good=number>=comparison,symbol={Arrows:['↓','↑'],Triangles:['▼','▲'],Circles:['●','●'],Status:['✕','✓']}[type]||['↓','↑'],icon=`<span class="matrix-conditional-icon" aria-label="${good?'At or above':'Below'} target" style="color:${good?hex(rule.goodColor,'#16844a'):hex(rule.badColor,'#c43d4b')}">${symbol[good?1:0]}</span>`,body=`<span class="matrix-conditional-content">${content}</span>`;return `<span class="matrix-conditional-cell ${rule.iconPosition==='right'?'matrix-conditional-icon-right':'matrix-conditional-icon-left'}">${rule.iconPosition==='right'?body+icon:icon+body}</span>`;
+  }
+  function calculateCells(grid,tile,context) {
+    const cache=new Map(),visiting=new Set(),columns=grid.columns||[],rows=grid.rows||[];
+    const position=(row,column)=>({kind:row<0?column<0?'corner':'header':column<0?'caption':'value',row,column});
+    const named=name=>{for(let r=grid.sheetMode?-1:0;r<rows.length;r++)for(let c=grid.sheetMode?-1:0;c<columns.length;c++){const current=position(r,c);if(!validPosition(grid,current))continue;if(String(sheetCell(grid,current)?.name||'').toLowerCase()===name.toLowerCase())return[r,c];}return null;};
+    const at=(row,column)=>{
+      const key=`${row}:${column}`;if(cache.has(key))return cache.get(key);if(visiting.has(key))throw new Error('#CYCLE!');
+      const current=position(row,column);if(!validPosition(grid,current)||!grid.sheetMode&&(row<0||column<0))throw new Error('#REF!');
+      const cell=sheetCell(grid,current);visiting.add(key);
+      try{
+        let value;
+        if(cellMode(cell)==='formula'&&String(cell?.formula||'').trim())value=formulaValue(cell.formula,name=>{
+          const address=/^\$?([A-Za-z]+)\$?([1-9]\d*)$/.exec(name);
+          if(address){let index=0;for(const letter of address[1].toUpperCase())index=index*26+letter.charCodeAt(0)-64;return at(Number(address[2])-(grid.sheetMode?2:1),index-(grid.sheetMode?2:1));}
+          const found=named(name);if(!found)throw new Error('#REF!');return at(...found);
+        });
+        else if(cellMode(cell)==='measure'&&cell?.measure){const selectedSource=cell.sourceId||columns[column]?.sourceId||rows[row]?.sourceId||tile.sourceId||'main';value=context.evaluate(selectedSource,cell.measure,tile,[rows[row]?.crossFilter,columns[column]?.crossFilter]);}
+        else value=cellText(grid,current);
+        cache.set(key,value);return value;
+      }finally{visiting.delete(key);}
+    };
+    return at;
+  }
+  function setCellName(grid,cell,input) {
+    const name=input.value.trim(),candidates=[grid.cornerCell,...(grid.columns||[]).map(column=>column.headerCell),...(grid.rows||[]).flatMap(row=>[row.labelCell,...(row.cells||[])])],used=candidates.some(other=>other&&other!==cell&&String(other.name||'').toLowerCase()===name.toLowerCase());
+    input.setCustomValidity(name&&!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)||/^[A-Za-z]+[1-9]\d*$/.test(name)||used?'Use a unique name with letters, numbers or underscore; cell addresses are reserved.':'');
+    if(!input.reportValidity())return false;
+    cell.name=name;return true;
+  }
+  function render(tile, context) {
+    const grid = normalizeGrid(tile.reportGrid || defaults()), columns = Array.isArray(grid.columns) ? grid.columns : [], rows = Array.isArray(grid.rows) ? grid.rows : [];
+    const text = value => escape(String(value??'').replace(/\{\{\s*([^}]+?)\s*\}\}/g,(token,name)=>context.parameterValue?String(context.parameterValue(name.trim())??''):token));
+    const base = grid.style || {}, header = mergeStyles(base,grid.headerStyle),calculate=calculateCells(grid,tile,context),numericValues=[];
+    for(let row=-1;row<rows.length;row++)for(let column=-1;column<columns.length;column++){const position={kind:row<0?column<0?'corner':'header':column<0?'caption':'value',row,column};if(!validPosition(grid,position))continue;try{const number=Number(calculate(row,column));if(Number.isFinite(number))numericValues.push(number);}catch{}}
+    const conditionalRange={minimum:Math.min(0,...numericValues),maximum:Math.max(0,...numericValues)};
+    const editing=!window.QanvasReport&&!document.body.classList.contains('presentation-mode');
+    const cellClass = (kind,row,column) => editing&&activeCells().some(position=>position.tileId===tile.id&&position.kind===kind&&position.row===row&&position.column===column) ? 'report-grid-cell-selected' : '';
+    const conditionalComparison=(cell,row,column)=>{const rule=cell?.conditionalFormat||{};if(rule.compareMode!=='measure'||!rule.compareMeasure)return rule.threshold;const sourceId=cell.sourceId||columns[column]?.sourceId||rows[row]?.sourceId||tile.sourceId||'main';try{return context.evaluate(sourceId,rule.compareMeasure,tile,[rows[row]?.crossFilter,columns[column]?.crossFilter]);}catch{return NaN;}};
+    const displayCell=(kind,row,column)=>{
+      const position={kind,row,column},cell=sheetCell(grid,position);
+      let content;
+      if(cellMode(cell)==='formula'&&cell?.formula||cellMode(cell)==='measure'&&cell?.measure){
+        try{const result=calculate(row,column),sourceId=cell.sourceId||columns[column]?.sourceId||rows[row]?.sourceId||tile.sourceId||'main';if(result==null||Number.isNaN(result))content='—';else if(cellMode(cell)==='formula'&&typeof result==='string')content=escape(result);else content=escape(context.format(result,cell.format||(cellMode(cell)==="measure"&&context.measureFormat?.(sourceId,cell.measure))||'Auto'));}
+        catch(error){content=escape(error.message||'#FORMULA!');}
+      }else content=text(cellText(grid,position));
+      let value;try{value=calculate(row,column);}catch{value=null;}
+      return conditionalIconHtml(cell,value,conditionalComparison(cell,row,column),content);
+    };
+    const conditionalCss=(kind,row,column)=>{const cell=sheetCell(grid,{kind,row,column});if(!cell?.conditionalFormat?.enabled)return '';try{return conditionalStyleCss(cell,calculate(row,column),context,conditionalComparison(cell,row,column),conditionalRange);}catch{return '';}};
+    const spannedCells=(rowIndex,renderCell)=>{let html='';for(let column=-1;column<columns.length;){const kind=rowIndex<0?column<0?'corner':'header':column<0?'caption':'value',span=cellSpan(grid,{kind,row:rowIndex,column});html+=renderCell(column,span);column+=span;}return html;};
+    const headingCells=spannedCells(-1,(index,span)=>index<0?`<th data-report-grid-cell="corner" ${span>1?`colspan="${span}"`:''} class="${cellClass('corner',-1,-1)}" style="${styleCss(mergeStyles(header,grid.cornerStyle),context)}${conditionalCss('corner',-1,-1)}">${displayCell('corner',-1,-1)}</th>`:`<th data-report-grid-cell="header" data-grid-column="${index}" ${span>1?`colspan="${span}"`:''} ${editing&&hasCrossFilter(columns[index])?'data-crossfilter="true" title="Column crossfilter"':''} class="${cellClass('header',-1,index)}" style="${styleCss(mergeStyles(header,columns[index].style,columns[index].headerStyle),context)}${conditionalCss('header',-1,index)}">${displayCell('header',-1,index)}</th>`);
+    const heading = `<thead>${grid.showColumnLetters?`<tr class="report-grid-address-heading">${grid.showRowNumbers?'<th class="report-grid-axis-corner"></th>':''}<th data-report-grid-cell="corner" data-grid-axis="column" data-grid-column="-1" class="report-grid-axis-column">${grid.sheetMode?"A":""}${editing?'<span class="report-grid-resize-handle column" data-grid-resize-column="-1"></span>':''}</th>${columns.map((column,index)=>`<th data-report-grid-cell="header" data-grid-axis="column" data-grid-column="${index}" class="report-grid-axis-column">${columnAddress(grid.sheetMode?index+1:index)}${editing?`<span class="report-grid-resize-handle column" data-grid-resize-column="${index}"></span>`:''}</th>`).join('')}</tr>`:''}<tr style="${grid.headerRowHeight?`height:${Math.max(18,Math.min(600,Number(grid.headerRowHeight)||32))}px`:''}">${grid.showRowNumbers?`<th data-report-grid-cell="corner" data-grid-axis="row" data-grid-row="-1" class="report-grid-row-number report-grid-axis-row">${grid.sheetMode?'1':''}${editing?'<span class="report-grid-resize-handle row" data-grid-resize-row="-1"></span>':''}</th>`:''}${headingCells}</tr></thead>`;
+    const body = rows.map((row,rowIndex) => {
+      const rowOverrides = mergeStyles(row.kind === 'heading' ? grid.headerStyle : {},row.style);
+      const rowStyle = mergeStyles(base,rowOverrides);
+      if (row.kind === 'heading' && row.spanAllColumns) return `<tr class="report-grid-heading">${grid.showRowNumbers?`<td data-report-grid-cell="caption" data-grid-row="${rowIndex}" data-grid-axis="row" class="report-grid-row-number report-grid-axis-row">${rowIndex+(grid.sheetMode?2:1)}${editing?`<span class="report-grid-resize-handle row" data-grid-resize-row="${rowIndex}"></span>`:''}</td>`:''}<td colspan="${columns.length+1}" data-report-grid-cell="caption" data-grid-row="${rowIndex}" class="report-grid-caption ${cellClass('caption',rowIndex,-1)}" style="${styleCss(mergeStyles(rowStyle,row.captionStyle),context)}${conditionalCss('caption',rowIndex,-1)}">${displayCell('caption',rowIndex,-1)}</td></tr>`;
+      const cells = spannedCells(rowIndex,(index,span) => {
+        if(index<0)return `<td data-report-grid-cell="caption" data-grid-row="${rowIndex}" ${span>1?`colspan="${span}"`:''} ${editing&&hasCrossFilter(row)?'data-crossfilter="true" title="Row crossfilter"':''} class="report-grid-caption ${cellClass('caption',rowIndex,-1)}" style="${styleCss(mergeStyles(rowStyle,row.captionStyle),context)}${conditionalCss('caption',rowIndex,-1)}">${displayCell('caption',rowIndex,-1)}</td>`;
+        const column=columns[index];
+        const cell = row.cells?.[index] || {}, style = mergeStyles(base,column.style,rowOverrides,cell.style,{align:cell.style?.align ?? row.style?.align ?? column.style?.align ?? (row.kind === 'heading' ? 'left' : 'right')});
+        if(row.kind==='heading'&&!grid.sheetMode)return `<td data-report-grid-cell="value" data-grid-row="${rowIndex}" data-grid-column="${index}" ${span>1?`colspan="${span}"`:''} class="${cellClass('value',rowIndex,index)}" style="${styleCss(style,context)}${conditionalCss('value',rowIndex,index)}">${text(cell.text)}</td>`;
+        return `<td data-report-grid-cell="value" data-grid-row="${rowIndex}" data-grid-column="${index}" ${span>1?`colspan="${span}"`:''} class="${cellClass('value',rowIndex,index)}" style="${styleCss(style,context)}${conditionalCss('value',rowIndex,index)}">${displayCell('value',rowIndex,index)}</td>`;
+      });
+      return `<tr class="report-grid-${escape(row.kind || 'measure')} ${Number(row.height)>0&&Number(row.height)<28?'report-grid-compact-row':''} ${Number(row.height)>0&&Number(row.height)<=12&&!cellText(grid,{kind:'caption',row:rowIndex,column:-1})&&!(row.cells||[]).some(cell=>cell?.text||cell?.formula||cell?.measure)?'report-grid-tiny-row':''}" style="${row.height?`height:${Math.max(5,Math.min(600,Number(row.height)||32))}px`:''}">${grid.showRowNumbers?`<td data-report-grid-cell="caption" data-grid-row="${rowIndex}" data-grid-axis="row" class="report-grid-row-number report-grid-axis-row">${rowIndex+(grid.sheetMode?2:1)}${editing?`<span class="report-grid-resize-handle row" data-grid-resize-row="${rowIndex}"></span>`:''}</td>`:''}${cells}</tr>`;
+    }).join('');
+    const labelWidth=Number(grid.labelColumnWidth),fixedWidth=(Number.isFinite(labelWidth)&&labelWidth>0?labelWidth:120)+columns.reduce((sum,column)=>sum+(Number(column.width)>0?Number(column.width):100),0)+(grid.showRowNumbers?36:0);
+    return `<div class="report-grid-view ${editing&&paintFormat ? 'report-grid-painting' : ''} ${grid.showGrid?'report-grid-show-lines':''}">${editing?topToolbarHtml(grid,tile):''}<table style="width:${Math.max(0,fixedWidth)}px;table-layout:fixed"><colgroup>${grid.showRowNumbers?'<col style="width:36px">':''}<col style="${labelWidth>0?`width:${Math.max(5,Math.min(1200,labelWidth))}px`:'width:42%'}">${columns.map(column=>Number(column.width)>0?`<col style="width:${Math.max(5,Math.min(1200,Number(column.width)))}px">`:'<col>').join('')}</colgroup>${heading}<tbody>${body}</tbody></table></div>`;
+  }
+  function location(element,tileId) {
+    return { tileId, kind:element.dataset.reportGridCell, row:Number(element.dataset.gridRow ?? -1), column:Number(element.dataset.gridColumn ?? -1) };
+  }
+  function styleTarget(grid,position) {
+    if (position.kind === 'corner') return grid.cornerStyle ||= {};
+    if (position.kind === 'header') return grid.columns[position.column].headerStyle ||= {};
+    if (position.kind === 'caption') return grid.rows[position.row].captionStyle ||= {};
+    const row=grid.rows[position.row]; row.cells ||= []; row.cells[position.column] ||= {};
+    return row.cells[position.column].style ||= {};
+  }
+  function valueCell(grid,position) {
+    if (position.kind !== 'value') return null;
+    const row=grid.rows[position.row]; row.cells ||= []; row.cells[position.column] ||= {};
+    return row.cells[position.column];
+  }
+  function sheetCell(grid,position) {
+    if(!grid.sheetMode)return valueCell(grid,position);
+    if(position.kind==='corner')return grid.cornerCell ||= {};
+    if(position.kind==='header')return grid.columns[position.column].headerCell ||= {};
+    if(position.kind==='caption')return grid.rows[position.row].labelCell ||= {};
+    return valueCell(grid,position);
+  }
+  const positionKey=position=>`${position.tileId}:${position.row}:${position.column}`;
+  function activeCells(){return selectedCell?(selectedCells.some(position=>positionKey(position)===positionKey(selectedCell))?selectedCells:[selectedCell]):[];}
+  function selectCells(positions,primary=positions.at(-1)){selectedCells=[...new Map(positions.map(position=>[positionKey(position),position])).values()];selectedCell=primary||selectedCells.at(-1)||null;highlightSelection();}
+  function rangeCells(grid,from,to){const cells=[];for(let row=Math.max(-1,Math.min(from.row,to.row));row<=Math.min(grid.rows.length-1,Math.max(from.row,to.row));row++)for(let column=Math.max(-1,Math.min(from.column,to.column));column<=Math.min(grid.columns.length-1,Math.max(from.column,to.column));column++){const position={tileId:to.tileId,row,column,kind:row<0?column<0?'corner':'header':column<0?'caption':'value'};if(validPosition(grid,position))cells.push(position);}return cells;}
+  function axisCells(grid,position,axis){if(axis==='column')return rangeCells(grid,{...position,row:-1},{...position,row:grid.rows.length-1});if(axis==='row')return rangeCells(grid,{...position,column:-1},{...position,column:grid.columns.length-1});return[position];}
+  function cellSpan(grid,position) {
+    const maximum=grid.columns.length-position.column;
+    if(position.kind==='caption'&&grid.rows[position.row]?.kind==='heading'&&grid.rows[position.row]?.spanAllColumns)return maximum;
+    const cell=position.kind==='corner'?grid.cornerCell:position.kind==='header'?grid.columns[position.column]?.headerCell:position.kind==='caption'?grid.rows[position.row]?.labelCell:grid.rows[position.row]?.cells?.[position.column];
+    const count=Math.trunc(Number(cell?.spanColumns)||1);
+    return Math.max(1,Math.min(maximum,count));
+  }
+  function adjustColumnSpans(grid,operation,index) {
+    const update=(cell,start)=>{
+      const count=Math.trunc(Number(cell?.spanColumns)||1);
+      if(count<2||index<=start||index>=start+count)return;
+      const next=count+(operation==='insert'?1:-1);
+      if(next<2)delete cell.spanColumns;else cell.spanColumns=next;
+    };
+    update(grid.cornerCell,-1);
+    grid.columns.forEach((column,start)=>update(column.headerCell,start));
+    grid.rows.forEach(row=>{update(row.labelCell,-1);row.cells?.forEach((cell,start)=>update(cell,start));});
+  }
+  function visibleCellPosition(grid,position) {
+    if(position.row>=0&&grid.rows[position.row]?.kind==='heading'&&grid.rows[position.row]?.spanAllColumns)return {...position,kind:'caption',column:-1};
+    for(let column=-1;column<=position.column;){
+      const kind=position.row<0?column<0?'corner':'header':column<0?'caption':'value';
+      const anchor={...position,column,kind};
+      if(position.column<column+cellSpan(grid,anchor))return anchor;
+      column+=cellSpan(grid,anchor);
+    }
+    return position;
+  }
+  function cellText(grid,position) {
+    const cell=sheetCell(grid,position);
+    if(cell?.text!=null)return cell.text;
+    if(position.kind==='corner')return grid.cornerCaption||'';
+    if(position.kind==='header')return grid.columns[position.column]?.caption||'';
+    if(position.kind==='caption')return grid.rows[position.row]?.caption||'';
+    return '';
+  }
+  function cellEntry(grid,position) {
+    const formula=String(sheetCell(grid,position)?.formula||'').trim();
+    return formula?(formula.startsWith('=')?formula:`=${formula}`):cellText(grid,position);
+  }
+  function topFormulaEntry(grid,position) {
+    const cell=sheetCell(grid,position),measure=String(cell?.measure||'').trim();
+    return measure&&cellMode(cell)==='measure'?`Measure:${measure}`:cellEntry(grid,position);
+  }
+  function normalizeGridFormula(input) {
+    const source=String(input??'').trim();
+    const literal=/^=\s*([+-]?(?:\d+(?:[.,]\d*)?|[.,]\d+))\s*(%)?\s*$/.exec(source);
+    if(literal){const number=Number(literal[1].replace(',','.'));if(Number.isFinite(number)){if(literal[2]){const decimals=literal[1].split(/[.,]/)[1]?.length||0;return {formula:`=${Number((number/100).toPrecision(15))}`,format:`P${Math.min(2,decimals)}`};}return {formula:`=${number}`,format:null};}}
+    let result='',depth=0,quoted=false;
+    for(let index=0;index<source.length;){const char=source[index];if(char==='"'){if(quoted&&source[index+1]==='"'){result+='""';index+=2;continue;}quoted=!quoted;result+=char;index++;continue;}
+      if(!quoted&&(char>='0'&&char<='9'||char==='.'&&/\d/.test(source[index+1]||''))&&!/[\w.$]/.test(source[index-1]||'')){
+        const token=/^(?:\d+(?:[.,]\d*)?|\.\d+)(?:[eE][+-]?\d+)?/.exec(source.slice(index))?.[0];
+        if(token){const numberText=depth===0?token:/^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/.exec(token)?.[0];if(numberText){const percent=source[index+numberText.length]==='%',number=Number(numberText.replace(',','.'));if(Number.isFinite(number)){result+=percent?String(Number((number/100).toPrecision(15))):String(number);index+=numberText.length+(percent?1:0);continue;}}}
+      }
+      if(!quoted){if(char==='(')depth++;else if(char===')')depth=Math.max(0,depth-1);}result+=char;index++;
+    }
+    return {formula:result,format:null};
+  }
+  function setCellEntry(grid,position,input,commit=true) {
+    const cell=sheetCell(grid,position),text=String(input??'');
+    const measure=/^\s*measure\s*:\s*(.+?)\s*$/i.exec(text);
+    if(measure){cell.measure=measure[1];cell.formula='';cell.text='';cell.inputMode='measure';return;}
+    if(text.trimStart().startsWith('=')){const normalized=commit?normalizeGridFormula(text):{formula:text.trim(),format:null};cell.formula=normalized.formula;cell.measure='';cell.text='';if(normalized.format)cell.format=normalized.format;}
+    else {cell.formula='';cell.measure='';cell.text=text;if(position.kind==='corner')grid.cornerCaption=text;else if(position.kind==='header')grid.columns[position.column].caption=text;else if(position.kind==='caption')grid.rows[position.row].caption=text;}
+    cell.inputMode='formula';
+  }
+  function effectiveStyle(grid,position) {
+    const base=grid.style||{}, header=grid.headerStyle||{};
+    if (position.kind === 'corner') return mergeStyles(base,header,grid.cornerStyle);
+    const column=grid.columns[position.column];
+    if (position.kind === 'header') return mergeStyles(base,header,column.style,column.headerStyle);
+    const row=grid.rows[position.row], rowOverrides=mergeStyles(row.kind==='heading'?header:{},row.style);
+    if (position.kind === 'caption') return mergeStyles(base,rowOverrides,row.captionStyle);
+    const cell=valueCell(grid,position);
+    return mergeStyles(base,column.style,rowOverrides,cell.style,{align:cell.style?.align??row.style?.align??column.style?.align??(row.kind==='heading'?'left':'right')});
+  }
+  function validPosition(grid,position) {
+    if (!grid || !position) return false;
+    if (position.kind==='corner') return true;
+    if (position.kind==='header') return !!grid.columns?.[position.column];
+    if (position.kind==='caption') return !!grid.rows?.[position.row];
+    return position.kind==='value'&&!!grid.rows?.[position.row]&&!!grid.columns?.[position.column];
+  }
+  function gridToolbarHtml(grid,position) {
+    const row=position.row,column=position.column,hasRow=row>=0,hasColumn=column>=0;
+    const button=(command,icon,title,enabled=true)=>`<button type="button" data-grid-command="${command}" title="${title}" aria-label="${title}" ${enabled?'':'disabled'}>${icon}</button>`;
+    const group=(name,buttons)=>`<div class="report-grid-tool-group" role="group" aria-label="${name}"><span class="report-grid-tool-label">${name}</span><div class="report-grid-tool-buttons">${buttons}</div></div>`;
+    return `<div class="report-grid-mini-toolbar" role="toolbar" aria-label="Report grid actions">${group('Copy / paste',`${button('copy-all','▣','Copy all (Ctrl+C)',(grid.sheetMode||position.kind==='value'&&grid.rows[row]?.kind==='measure'))}${button('cut','✂','Cut selection (Ctrl+X)',grid.sheetMode)}${button('copy-format','▧','Copy formats')}${button('copy-formula','ƒx','Copy formula or measure',(grid.sheetMode||position.kind==='value'&&grid.rows[row]?.kind==='measure'))}${button('paste','↧','Paste (Ctrl+V)',!!clipboard&&(!clipboard.content||(grid.sheetMode||position.kind==='value'&&grid.rows[row]?.kind==='measure')))}`)}${group('Insert / delete',`${button('insert-row','＋↓','Insert row below',hasRow||grid.sheetMode&&row===-1)}${button('insert-column','＋→','Insert column right',hasColumn||grid.sheetMode&&column===-1)}${button('delete-row','R×','Delete row',hasRow&&grid.rows.length>1)}${button('delete-column','C×','Delete column',hasColumn&&grid.columns.length>1)}`)}${group('Move',`${button('row-up','↑','Move row up',row>0)}${button('row-down','↓','Move row down',hasRow&&row<grid.rows.length-1)}${button('column-left','←','Move column left',column>0)}${button('column-right','→','Move column right',hasColumn&&column<grid.columns.length-1)}`)}</div>`;
+  }
+  function gridContextMenuHtml(grid,position,axis='') {
+    const button=(command,label,enabled=true)=>`<button type="button" data-command="${command}" role="menuitem" ${enabled?'':'disabled'}>${label}</button>`;
+    const canContent=grid.sheetMode||position.kind==='value'&&grid.rows[position.row]?.kind==='measure';
+    const columnActions=axis==='column'||axis!=='row'&&position.row===-1;
+    const rowActions=axis==='row'||axis!=='column'&&position.column===-1;
+    return `${canContent&&!axis?`${button('choose-measure','Add/change measure…')}<hr>`:''}${button('copy-all','Copy all',canContent)}${button('cut',axis==='row'?'Cut row(s)':axis==='column'?'Cut column(s)':'Cut cell(s)',grid.sheetMode)}${button('copy-format','Copy formats')}${button('copy-formula','Copy formula / measure',canContent)}<hr>${button('paste','Paste',!!clipboard&&(!clipboard.content||canContent))}${columnActions?`<hr>${button('insert-column','Insert column to right')}${button('column-left','Move column left',position.column>0)}${button('column-right','Move column right',position.column>=0&&position.column<grid.columns.length-1)}${button('delete-column','Delete column',position.column>=0&&grid.columns.length>1)}`:''}${rowActions?`<hr>${button('insert-row','Insert row below')}${button('row-up','Move row up',position.row>0)}${button('row-down','Move row down',position.row>=0&&position.row<grid.rows.length-1)}${button('delete-row','Delete row',position.row>=0&&grid.rows.length>1)}`:''}`;
+  }
+  function gridDimensionsHtml(grid,position) {
+    const width=position.column<0?grid.labelColumnWidth:grid.columns[position.column]?.width,height=position.row<0?grid.headerRowHeight:grid.rows[position.row]?.height;
+    return `<fieldset class="report-grid-dimensions"><legend>Size</legend><div class="report-grid-dimension-row"><label>W <input data-grid-dimension="column" type="number" min="5" max="1200" value="${Number(width)>0?Math.round(width):''}" placeholder="Auto" aria-label="Column width in pixels"></label><button type="button" data-grid-auto="column" title="Automatic column width" aria-label="Automatic column width">↔</button></div>${position.row>=0||grid.sheetMode?`<div class="report-grid-dimension-row"><label>H <input data-grid-dimension="row" type="number" min="5" max="600" value="${Number(height)>0?Math.round(height):''}" placeholder="Auto" aria-label="Row height in pixels"></label><button type="button" data-grid-auto="row" title="Automatic row height" aria-label="Automatic row height">↕</button></div>`:''}</fieldset>`;
+  }
+  function gridCommand(grid,position,command) {
+    let {row,column}=position;
+    if(command==='cut')return cutGrid(grid,activeCells(),selectionAxis,position.tileId);
+    if(command==='copy-all'||command==='copy-format'||command==='copy-formula')return copyGrid(grid,position,command.slice(5));
+    if(command==='paste')return pasteGrid(grid,position);
+    if(command==='insert-row'){
+      rebaseGridFormulas(grid,'row','insert',row+1);
+      grid.rows.splice(row+1,0,{id:crypto.randomUUID(),kind:'measure',caption:'',cells:grid.columns.map(()=>({}))});position.row=row+1;position.kind='caption';position.column=-1;return true;
+    }
+    if(command==='row-up'||command==='row-down'){
+      const next=row+(command==='row-up'?-1:1);if(row<0||next<0||next>=grid.rows.length)return false;rebaseGridFormulas(grid,'row','move',row,next);[grid.rows[row],grid.rows[next]]=[grid.rows[next],grid.rows[row]];position.row=next;return true;
+    }
+    if(command==='insert-column'){
+      adjustColumnSpans(grid,'insert',column+1);
+      rebaseGridFormulas(grid,'column','insert',column+1);
+      grid.columns.splice(column+1,0,{id:crypto.randomUUID(),caption:''});grid.rows.forEach(item=>{item.cells||=[];item.cells.splice(column+1,0,{})});position.kind='header';position.row=-1;position.column=column+1;return true;
+    }
+    if(command==='column-left'||command==='column-right'){
+      const next=column+(command==='column-left'?-1:1);if(column<0||next<0||next>=grid.columns.length)return false;rebaseGridFormulas(grid,'column','move',column,next);[grid.columns[column],grid.columns[next]]=[grid.columns[next],grid.columns[column]];grid.rows.forEach(item=>{item.cells||=[];while(item.cells.length<grid.columns.length)item.cells.push({});[item.cells[column],item.cells[next]]=[item.cells[next],item.cells[column]]});position.column=next;return true;
+    }
+    if(command==='delete-column'){
+      if(column<0||grid.columns.length<=1)return false;adjustColumnSpans(grid,'delete',column);rebaseGridFormulas(grid,'column','delete',column);grid.columns.splice(column,1);grid.rows.forEach(item=>item.cells?.splice(column,1));position.kind='header';position.row=-1;position.column=Math.min(column,grid.columns.length-1);return true;
+    }
+    if(command==='delete-row'){
+      if(row<0||grid.rows.length<=1)return false;rebaseGridFormulas(grid,'row','delete',row);grid.rows.splice(row,1);position.kind='caption';position.row=Math.min(row,grid.rows.length-1);position.column=-1;return true;
+    }
+    return false;
+  }
+  function highlightSelection() {
+    document.querySelectorAll('.tile-reportGrid .report-grid-cell-selected').forEach(cell=>cell.classList.remove('report-grid-cell-selected'));
+    for(const position of activeCells())selectedCellElement(position)?.classList.add('report-grid-cell-selected');
+  }
+  function updatePainterClass() {
+    document.querySelectorAll('.tile-reportGrid .report-grid-view').forEach(view=>view.classList.toggle('report-grid-painting',!!paintFormat));
+    document.querySelectorAll('.tile-reportGrid .report-grid-cell-cut').forEach(cell=>cell.classList.remove('report-grid-cell-cut'));
+    if(clipboard?.mode==='cut')for(const position of clipboard.positions)selectedCellElement(position)?.classList.add('report-grid-cell-cut');
+  }
+  function applyPaint(grid,position) {
+    return pasteGrid(grid,position);
+  }
+  function paintRowPosition(tileId,row,column) {
+    return {tileId,row,column,kind:row===-1?(column===-1?'corner':'header'):(column===-1?'caption':'value')};
+  }
+  function highlightPaintRange() {
+    document.querySelectorAll('.report-grid-paint-range').forEach(cell=>cell.classList.remove('report-grid-paint-range'));
+    if(!painterDrag)return;
+    const start=painterDrag.start,end=painterDrag.end,vertical=Math.abs(end.row-start.row)>Math.abs(end.column-start.column),low=Math.min(vertical?start.row:start.column,vertical?end.row:end.column),high=Math.max(vertical?start.row:start.column,vertical?end.row:end.column);
+    painterDrag.node.querySelectorAll('[data-report-grid-cell]:not([data-grid-axis])').forEach(cell=>{const position=location(cell,painterDrag.tile.id);if((vertical?position.column===start.column:position.row===start.row)&&(vertical?position.row:position.column)>=low&&(vertical?position.row:position.column)<=high)cell.classList.add('report-grid-paint-range');});
+  }
+  function selectedCellElement(position=selectedCell) {
+    if(!position)return null;
+    return [...document.querySelectorAll(`.tile-reportGrid[data-id="${CSS.escape(position.tileId)}"] [data-report-grid-cell]:not([data-grid-axis])`)].find(cell=>cell.dataset.reportGridCell===position.kind&&Number(cell.dataset.gridRow??-1)===position.row&&Number(cell.dataset.gridColumn??-1)===position.column)||null;
+  }
+  function showSelectedCellDraft(value){const cell=selectedCellElement();if(!cell)return;if(!cell.classList.contains('report-grid-cell-editing'))cell.dataset.gridCommittedHtml=cell.innerHTML;cell.textContent=String(value??'');cell.classList.add('report-grid-cell-editing');}
+  function restoreSelectedCellDraft(){const cell=selectedCellElement();if(!cell?.classList.contains('report-grid-cell-editing'))return;cell.innerHTML=cell.dataset.gridCommittedHtml||'';delete cell.dataset.gridCommittedHtml;cell.classList.remove('report-grid-cell-editing');}
+  const formulaFunctions=[
+    {name:'IF',signature:'IF(condition, true_value, false_value)',hint:'Choose between two values. IF calls can be nested.'},
+    {name:'IFERROR',signature:'IFERROR(value, fallback)',hint:'Use a fallback when the first expression fails.'},
+    {name:'SUM',signature:'SUM(number1, …)',hint:'Sum cells, numbers, or a range such as A1:A5.'},
+    {name:'AVG',signature:'AVG(number1, …)',hint:'Average numeric cells or a range.'},
+    {name:'AVERAGE',signature:'AVERAGE(number1, …)',hint:'Same as AVG.'},
+    {name:'MIN',signature:'MIN(number1, …)',hint:'Smallest numeric value.'},
+    {name:'MAX',signature:'MAX(number1, …)',hint:'Largest numeric value.'},
+    {name:'ABS',signature:'ABS(number)',hint:'Absolute value.'},
+    {name:'ROUND',signature:'ROUND(number, digits)',hint:'Round to the chosen decimal place.'},
+    {name:'DIVIDE',signature:'DIVIDE(numerator, denominator, fallback)',hint:'Return blank or a fallback when dividing by zero.'}
+  ];
+  let inlineFormulaEditor=null,syncingInlineFormula=false;
+  function inlineFormulaContext(value,caret){
+    const before=value.slice(0,caret),prefix=/([A-Za-z_][A-Za-z0-9_]*)$/.exec(before),suggestions=prefix&&before.trimStart().startsWith('=')?formulaFunctions.filter(item=>item.name.startsWith(prefix[1].toUpperCase())).slice(0,6):[];
+    const stack=[];for(const token of before.matchAll(/"(?:[^"]|"")*"|[A-Za-z_][A-Za-z0-9_]*\s*\(|[(),]/g)){const part=token[0];if(part.startsWith('"'))continue;if(part.endsWith('('))stack.push({name:part.slice(0,-1).trim().toUpperCase(),argument:0});else if(part==='(')stack.push({name:'',argument:0});else if(part===')')stack.pop();else if(part===','&&stack.length)stack.at(-1).argument++;}
+    return {prefix,suggestions,active:formulaFunctions.find(item=>item.name===stack.at(-1)?.name),argument:stack.at(-1)?.argument??0};
+  }
+  function highlightedFormula(value){if(!value.trimStart().startsWith('='))return escape(value);const names=formulaFunctions.map(item=>item.name).join('|'),pattern=new RegExp(`\\b(${names})\\b(?=\\s*\\()`, 'gi'),highlight=part=>escape(part).replace(pattern,match=>`<span class="report-grid-function-token">${match}</span>`);let html='',offset=0;for(const quoted of value.matchAll(/"(?:[^"]|"")*"/g)){html+=highlight(value.slice(offset,quoted.index))+escape(quoted[0]);offset=quoted.index+quoted[0].length;}return html+highlight(value.slice(offset));}
+  function refreshInlineFormula(){const state=inlineFormulaEditor;if(!state)return;const {textarea,mirror,hint}=state,value=textarea.value,context=inlineFormulaContext(value,textarea.selectionStart);mirror.innerHTML=highlightedFormula(value)+(value.endsWith('\n')?'\n ':'');textarea.style.height='auto';textarea.style.height=`${Math.max(28,textarea.scrollHeight)}px`;mirror.style.minHeight=textarea.style.height;
+    if(context.suggestions.length&&context.prefix){hint.innerHTML=context.suggestions.map(item=>`<button type="button" data-grid-suggest="${item.name}"><strong>${item.name}</strong><small>${escape(item.signature)}</small></button>`).join('');hint.hidden=false;}
+    else if(context.active){hint.innerHTML=`<strong>${escape(context.active.signature)}</strong><small>Argument ${context.argument+1} · ${escape(context.active.hint)}</small>`;hint.hidden=false;}
+    else {hint.hidden=true;hint.replaceChildren();}
+  }
+  function beginInlineFormulaEdit(initial=null){const cell=selectedCellElement(),input=document.querySelector('#reportGridCellProperties [data-grid-property="formula"]');if(!cell||!input)return false;input.focus();if(initial!==null){input.value=initial;input.dispatchEvent(new Event('input',{bubbles:true}));}showSelectedCellDraft(input.value);cell.replaceChildren();const wrapper=document.createElement('div');wrapper.className='report-grid-inline-editor';wrapper.innerHTML='<div class="report-grid-inline-highlight" aria-hidden="true"></div><textarea class="report-grid-inline-input" aria-label="Edit cell formula or text" spellcheck="false" rows="1"></textarea><div class="report-grid-inline-hint" hidden></div>';cell.append(wrapper);const textarea=wrapper.querySelector('textarea'),mirror=wrapper.querySelector('.report-grid-inline-highlight'),hint=wrapper.querySelector('.report-grid-inline-hint');textarea.value=input.value;inlineFormulaEditor={cell,input,textarea,mirror,hint};textarea.addEventListener('input',()=>{input.value=textarea.value;syncingInlineFormula=true;input.dispatchEvent(new Event('input',{bubbles:true}));syncingInlineFormula=false;refreshInlineFormula();});textarea.addEventListener('click',refreshInlineFormula);textarea.addEventListener('keyup',refreshInlineFormula);textarea.addEventListener('blur',()=>{if(inlineFormulaEditor?.textarea===textarea)finishInlineFormulaEdit(true);});hint.addEventListener('pointerdown',event=>event.preventDefault());hint.addEventListener('click',event=>{const name=event.target.closest('[data-grid-suggest]')?.dataset.gridSuggest;if(!name)return;const prefix=inlineFormulaContext(textarea.value,textarea.selectionStart).prefix;if(!prefix)return;const start=textarea.selectionStart-prefix[1].length;textarea.setRangeText(`${name}(`,start,textarea.selectionStart,'end');textarea.dispatchEvent(new Event('input',{bubbles:true}));textarea.focus();});textarea.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();finishInlineFormulaEdit(false);return;}if(event.key==='Enter'||event.key==='Tab'){event.preventDefault();event.stopPropagation();finishInlineFormulaEdit(true,event.key==='Tab'?(event.shiftKey?'ArrowLeft':'ArrowRight'):null);}});textarea.focus();textarea.setSelectionRange(textarea.value.length,textarea.value.length);refreshInlineFormula();return true;}
+  function finishInlineFormulaEdit(commit,advanceKey=null){const state=inlineFormulaEditor;if(!state)return;inlineFormulaEditor=null;const tile=propertyContext?.tile(),grid=tile?.reportGrid,position=selectedCell?{...selectedCell}:null,advance=advanceKey&&grid&&position?nextCellPosition(grid,position,advanceKey):null;if(commit)state.input.dispatchEvent(new Event('change',{bubbles:true}));else cancelFormulaEdit(state.input);if(advance){selectCells([advance]);if(tile&&propertyContext)renderProperties(document.querySelector('#reportGridCellProperties')?.parentElement,tile,propertyContext);}requestAnimationFrame(()=>focusSelectedCell(true));}
+  function focusSelectedCell(scroll=false) {
+    const cell=selectedCellElement();if(!cell)return false;
+    cell.tabIndex=-1;cell.focus({preventScroll:true});
+    if(scroll)cell.scrollIntoView({block:'nearest',inline:'nearest'});
+    return true;
+  }
+  function nextCellPosition(grid,position,key) {
+    const row=position.row+(key==='ArrowDown'?1:key==='ArrowUp'?-1:0),column=position.column+(key==='ArrowRight'?cellSpan(grid,position):key==='ArrowLeft'?-1:0);
+    if(row< -1||row>=grid.rows.length||column< -1||column>=grid.columns.length)return null;
+    return visibleCellPosition(grid,{tileId:position.tileId,row,column,kind:row<0?column<0?'corner':'header':column<0?'caption':'value'});
+  }
+  function moveGridSelection(grid,key,extend){const next=nextCellPosition(grid,selectedCell,key);if(!next)return null;if(extend){selectionAnchor=selectionAnchor?.tileId===next.tileId?selectionAnchor:{...selectedCell};selectCells(rangeCells(grid,selectionAnchor,next),next);}else{selectionAnchor=next;selectCells([next]);}return next;}
+  function highlightFormulaReferences(formula='') {
+    document.querySelectorAll('.report-grid-formula-reference').forEach(cell=>cell.classList.remove('report-grid-formula-reference'));
+    if(!selectedCell||!String(formula).trimStart().startsWith('='))return;
+    const grid=propertyContext?.tile()?.reportGrid;if(!grid)return;
+    const refs=new Set(),names=new Set(),referenceFormula=String(formula).replace(/"(?:[^"]|"")*"/g,' ');
+    for(const match of referenceFormula.matchAll(/\$?([A-Za-z]+)\$?([1-9]\d*)\s*:\s*\$?([A-Za-z]+)\$?([1-9]\d*)/g)){
+      const number=letters=>[...letters.toUpperCase()].reduce((value,letter)=>value*26+letter.charCodeAt(0)-64,0);
+      const top=Math.min(Number(match[2]),Number(match[4]))-(grid.sheetMode?2:1),bottom=Math.max(Number(match[2]),Number(match[4]))-(grid.sheetMode?2:1);
+      const left=Math.min(number(match[1]),number(match[3]))-(grid.sheetMode?2:1),right=Math.max(number(match[1]),number(match[3]))-(grid.sheetMode?2:1);
+      if((bottom-top+1)*(right-left+1)>10000)continue;
+      for(let row=top;row<=bottom;row++)for(let column=left;column<=right;column++){const kind=row<0?column<0?'corner':'header':column<0?'caption':'value';if(validPosition(grid,{kind,row,column}))refs.add(`${kind}:${row}:${column}`);}
+    }
+    for(const match of referenceFormula.matchAll(/\$?([A-Za-z]+)\$?([1-9]\d*)/g)){
+      let column=0;for(const letter of match[1].toUpperCase())column=column*26+letter.charCodeAt(0)-64;
+      const row=Number(match[2])-(grid.sheetMode?2:1);column-=grid.sheetMode?2:1;
+      const kind=row<0?column<0?'corner':'header':column<0?'caption':'value';
+      if(validPosition(grid,{kind,row,column}))refs.add(`${kind}:${row}:${column}`);
+    }
+    for(const match of referenceFormula.replace(/\$?[A-Za-z]+\$?[1-9]\d*/g,' ').matchAll(/\b[A-Za-z_][A-Za-z0-9_]*\b/g))names.add(match[0].toLowerCase());
+    for(let row=grid.sheetMode?-1:0;row<grid.rows.length;row++)for(let column=grid.sheetMode?-1:0;column<grid.columns.length;column++){
+      const kind=row<0?column<0?'corner':'header':column<0?'caption':'value',position={kind,row,column};
+      if(validPosition(grid,position)&&names.has(String(sheetCell(grid,position)?.name||'').toLowerCase()))refs.add(`${kind}:${row}:${column}`);
+    }
+    document.querySelectorAll(`.tile-reportGrid[data-id="${CSS.escape(selectedCell.tileId)}"] [data-report-grid-cell]:not([data-grid-axis])`).forEach(cell=>{
+      if(refs.has(`${cell.dataset.reportGridCell}:${Number(cell.dataset.gridRow??-1)}:${Number(cell.dataset.gridColumn??-1)}`))cell.classList.add('report-grid-formula-reference');
+    });
+  }
+  document.addEventListener('pointerdown',event=>{
+    const handle=event.target.closest?.('[data-grid-resize-column],[data-grid-resize-row]');
+    if(!handle||event.button!==0||window.QanvasReport||document.body.classList.contains('presentation-mode'))return;
+    const node=handle.closest('.tile-reportGrid'),tile=window.canvasWeb?.viewerDocument()?.pages?.flatMap(page=>[...(page.tiles||[]),...(page.graphics||[])]).find(item=>item.id===node?.dataset.id);
+    if(!tile?.reportGrid)return;
+    const column=handle.dataset.gridResizeColumn,row=handle.dataset.gridResizeRow,isColumn=column!=null,index=Number(isColumn?column:row);
+    const configured=isColumn?(index<0?tile.reportGrid.labelColumnWidth:tile.reportGrid.columns[index]?.width):(index<0?tile.reportGrid.headerRowHeight:tile.reportGrid.rows[index]?.height);
+    const size=Number(configured)>0?Number(configured):isColumn?handle.parentElement.getBoundingClientRect().width:handle.closest('tr').getBoundingClientRect().height;
+    resizeDrag={node,tile,isColumn,index,pointerId:event.pointerId,start:isColumn?event.clientX:event.clientY,size};
+    node.setPointerCapture(event.pointerId);event.preventDefault();event.stopImmediatePropagation();
+  },true);
+  document.addEventListener('pointermove',event=>{
+    if(!resizeDrag||event.pointerId!==resizeDrag.pointerId)return;
+    const drag=resizeDrag,delta=(drag.isColumn?event.clientX:event.clientY)-drag.start,value=Math.round(Math.max(5,Math.min(drag.isColumn?1200:600,drag.size+delta)));
+    if(drag.isColumn){const col=drag.node.querySelectorAll('.report-grid-view col')[drag.index+1+(drag.tile.reportGrid.showRowNumbers?1:0)];if(col)col.style.width=`${value}px`;}
+    else{const target=drag.node.querySelectorAll('.report-grid-view tbody tr')[drag.index]||drag.node.querySelector('.report-grid-view thead tr:last-child');if(target)target.style.height=`${value}px`;}
+    drag.current=value;event.preventDefault();
+  },true);
+  document.addEventListener('pointerup',event=>{
+    if(!resizeDrag||event.pointerId!==resizeDrag.pointerId)return;
+    const drag=resizeDrag;resizeDrag=null;
+    if(drag.current!=null){if(drag.isColumn){if(drag.index<0)drag.tile.reportGrid.labelColumnWidth=drag.current;else drag.tile.reportGrid.columns[drag.index].width=drag.current;}else if(drag.index<0)drag.tile.reportGrid.headerRowHeight=drag.current;else drag.tile.reportGrid.rows[drag.index].height=drag.current;document.dispatchEvent(new CustomEvent('report-grid-painted',{detail:{tileId:drag.tile.id}}));}
+    event.preventDefault();event.stopImmediatePropagation();
+  },true);
+  document.addEventListener('pointercancel',event=>{if(resizeDrag?.pointerId===event.pointerId)resizeDrag=null;},true);
+  document.addEventListener('pointerdown',event=>{
+    if(!paintFormat||event.button!==0||window.QanvasReport||document.body.classList.contains('presentation-mode'))return;
+    const cell=event.target.closest?.('[data-report-grid-cell]:not([data-grid-axis])'),node=cell?.closest('.tile-reportGrid');if(!node)return;
+    const tile=window.canvasWeb?.viewerDocument()?.pages?.flatMap(page=>[...(page.tiles||[]),...(page.graphics||[])]).find(item=>item.id===node.dataset.id);
+    const start=tile&&location(cell,tile.id);if(!validPosition(tile?.reportGrid,start))return;
+    painterDrag={tile,node,start,end:start,pointerId:event.pointerId};
+    node.setPointerCapture(event.pointerId);
+    highlightPaintRange();event.preventDefault();event.stopImmediatePropagation();
+  },true);
+  document.addEventListener('pointermove',event=>{
+    if(!painterDrag||event.pointerId!==painterDrag.pointerId)return;
+    const cell=document.elementFromPoint(event.clientX,event.clientY)?.closest?.('[data-report-grid-cell]:not([data-grid-axis])');
+    if(cell?.closest('.tile-reportGrid')===painterDrag.node){const position=location(cell,painterDrag.tile.id);if(validPosition(painterDrag.tile.reportGrid,position)){painterDrag.end=position;highlightPaintRange();}}
+    event.preventDefault();
+  },true);
+  document.addEventListener('pointerup',event=>{
+    if(!painterDrag||event.pointerId!==painterDrag.pointerId)return;
+    const {tile,start,end}=painterDrag;painterDrag=null;highlightPaintRange();
+    if(paintFormat){const vertical=Math.abs(end.row-start.row)>Math.abs(end.column-start.column),low=Math.min(vertical?start.row:start.column,vertical?end.row:end.column),high=Math.max(vertical?start.row:start.column,vertical?end.row:end.column);for(let index=low;index<=high;index++){const position=paintRowPosition(tile.id,vertical?index:start.row,vertical?start.column:index);if(validPosition(tile.reportGrid,position))applyPaint(tile.reportGrid,position);}selectCells([paintRowPosition(tile.id,vertical?end.row:start.row,vertical?start.column:end.column)]);paintFormat=null;updatePainterClass();document.dispatchEvent(new CustomEvent('report-grid-painted',{detail:{tileId:tile.id}}));}
+    event.preventDefault();event.stopImmediatePropagation();
+  },true);
+  document.addEventListener('pointercancel',event=>{if(painterDrag?.pointerId===event.pointerId){painterDrag=null;highlightPaintRange();}},true);
+  function handleCanvasClick(tile,element,event) {
+    if(ignoreGridClick){ignoreGridClick=false;return false;}
+    const position=location(element,tile.id),grid=tile.reportGrid;
+    if (!validPosition(grid,position)) return false;
+    if (paintFormat) {
+      applyPaint(grid,position);
+      paintFormat=null;
+      updatePainterClass();
+      selectCells([position]);
+      selectionAnchor=position;
+      return true;
+    }
+    const previous=selectedCell?.tileId===tile.id?activeCells():[];
+    const additions=event?.shiftKey&&selectedCell?.tileId===tile.id?rangeCells(grid,selectionAnchor?.tileId===tile.id?selectionAnchor:selectedCell,position):axisCells(grid,position,element.dataset.gridAxis);
+    if(event?.ctrlKey||event?.metaKey){const keys=new Set(additions.map(positionKey)),existing=previous.filter(item=>!keys.has(positionKey(item)));const removed=existing.length<previous.length;selectCells(removed?(existing.length?existing:additions):[...previous,...additions],removed&&existing.length?existing.at(-1):position);selectionAxis=selectionAxis===element.dataset.gridAxis?selectionAxis:null;}
+    else if(event?.shiftKey&&selectedCell?.tileId===tile.id)selectCells(additions,position);
+    else selectCells(additions,position);
+    if(!(event?.ctrlKey||event?.metaKey))selectionAxis=element.dataset.gridAxis||null;
+    if(!event?.shiftKey)selectionAnchor=selectedCell;
+    else selectionAnchor||=previous[0]||position;
+    focusSelectedCell();
+    refreshTopToolbar(tile);
+    return false;
+  }
+  function refreshTopToolbar(tile){
+    const grid=tile?.reportGrid,node=document.querySelector(`.tile-reportGrid[data-id="${CSS.escape(tile?.id||'')}"] .report-grid-top-tools`),position=selectedCell?.tileId===tile?.id&&validPosition(grid,selectedCell)?selectedCell:null;if(!node)return;
+    const style=position?effectiveStyle(grid,position):{},input=node.querySelector('[data-grid-top-formula]'),address=node.querySelector('[data-grid-top-address]');
+    node.querySelectorAll('[data-grid-top-command],[data-grid-top-style],[data-grid-top-align],[data-grid-top-color],[data-grid-top-font-size]').forEach(control=>control.disabled=!position);
+    node.querySelectorAll('[data-grid-top-style]').forEach(button=>button.setAttribute('aria-pressed',String(!!style[button.dataset.gridTopStyle])));
+    node.querySelectorAll('[data-grid-top-align]').forEach(button=>button.setAttribute('aria-pressed',String(style.align===button.dataset.gridTopAlign)));
+    node.querySelectorAll('[data-grid-top-color]').forEach(control=>control.value=hex(style[control.dataset.gridTopColor],control.dataset.gridTopColor==='background'?'#ffffff':'#182230'));
+    const fontSize=node.querySelector('[data-grid-top-font-size]');if(fontSize)fontSize.value=Math.max(6,Math.min(96,Number(style.fontSize)||14));
+    if(address)address.textContent=position?(grid.sheetMode?formulaAddress(grid,position):position.kind==='value'?`${columnAddress(position.column)}${position.row+1}`:'')||'—':'—';
+    if(input){input.disabled=!position;input.value=position?topFormulaEntry(grid,position):'';}
+  }
+  document.addEventListener('click',event=>{
+    const control=event.target.closest?.('.tile-reportGrid [data-grid-top-command],[data-grid-top-style],[data-grid-top-align]');if(!control)return;
+    const node=control.closest('.tile-reportGrid'),tile=propertyContext?.tile(),grid=tile?.reportGrid,position=selectedCell;
+    if(!grid||node?.dataset.id!==tile.id||position?.tileId!==tile.id||!validPosition(grid,position))return;
+    event.preventDefault();event.stopPropagation();
+    if(control.dataset.gridTopStyle){const style=styleTarget(grid,position),key=control.dataset.gridTopStyle;style[key]=!effectiveStyle(grid,position)[key];rememberGridAction({type:'style',key,value:style[key]});}
+    else if(control.dataset.gridTopAlign){const style=styleTarget(grid,position);style.align=control.dataset.gridTopAlign;rememberGridAction({type:'style',key:'align',value:style.align});}
+    else if(!gridCommand(grid,position,control.dataset.gridTopCommand))return;
+    propertyContext.change();
+  });
+  document.addEventListener('change',event=>{
+    const format=event.target.closest?.('.tile-reportGrid [data-grid-top-color],.tile-reportGrid [data-grid-top-font-size]');
+    if(format){
+      const node=format.closest('.tile-reportGrid'),tile=propertyContext?.tile(),grid=tile?.reportGrid,position=selectedCell;
+      if(!grid||node?.dataset.id!==tile.id||position?.tileId!==tile.id||!validPosition(grid,position))return;
+      event.preventDefault();event.stopImmediatePropagation();
+      const key=format.dataset.gridTopColor||'fontSize',value=key==='fontSize'?Math.max(6,Math.min(96,Number(format.value)||14)):format.value;
+      for(const target of activeCells().filter(item=>item.tileId===tile.id&&validPosition(grid,item)))styleTarget(grid,target)[key]=value;
+      rememberGridAction({type:'style',key,value});propertyContext.change();return;
+    }
+    const input=event.target.closest?.('.tile-reportGrid [data-grid-top-formula]');if(!input)return;
+    const node=input.closest('.tile-reportGrid'),tile=propertyContext?.tile(),grid=tile?.reportGrid,position=selectedCell;
+    if(!grid||node?.dataset.id!==tile.id||position?.tileId!==tile.id||!validPosition(grid,position))return;
+    setCellEntry(grid,position,input.value);requestAnimationFrame(()=>propertyContext?.change());
+  });
+  document.addEventListener('keydown',event=>{if(event.target.matches?.('[data-grid-top-formula]')&&event.key==='Enter'){event.preventDefault();event.target.dispatchEvent(new Event('change',{bubbles:true}));}});
+  let lastRepeatGridAction=null;
+  function rememberGridAction(action){lastRepeatGridAction={...structuredClone(action),tileId:propertyContext?.tile()?.id||selectedCell?.tileId};}
+  function repeatGridAction(grid,position){const action=lastRepeatGridAction;if(!action||action.tileId!==position.tileId)return false;const targets=activeCells().filter(item=>item.tileId===position.tileId&&validPosition(grid,item));if(!targets.length)targets.push(position);
+    if(action.type==='command')return gridCommand(grid,position,action.command);
+    for(const target of targets){if(action.type==='style')styleTarget(grid,target)[action.key]=action.value;else if(action.type==='border-preset')presetBorder(styleTarget(grid,target),action.preset);else if(action.type==='border-side')changeBorder(styleTarget(grid,target),{dataset:{borderSide:action.side,borderPart:action.part},value:action.value,checked:action.checked});else if(action.type==='number-format'){const cell=sheetCell(grid,target);if(cell)cell.format=action.value;}else return false;}return true;
+  }
+  function rememberGridPropertyChange(input,grid,position){const key=input.dataset.gridPropertyStyle;if(key&&styleKeys.has(key))rememberGridAction({type:'style',key,value:styleTarget(grid,position)[key]});else if(input.dataset.gridProperty==='format'||input.hasAttribute('data-grid-custom-format'))rememberGridAction({type:'number-format',value:sheetCell(grid,position)?.format});else if(input.dataset.borderSide)rememberGridAction({type:'border-side',side:input.dataset.borderSide,part:input.dataset.borderPart,value:input.value,checked:input.checked});}
+  function formulaAddress(grid,position) {
+    return `${columnAddress(position.column+(grid.sheetMode?1:0))}${position.row+(grid.sheetMode?2:1)}`;
+  }
+  let formulaPointerCell=null,formulaPointerDrag=null;
+  function updateFormulaPointerRange(event) {
+    const drag=formulaPointerDrag;
+    if(!drag||event.pointerId!==drag.pointerId)return false;
+    const cell=document.elementFromPoint(event.clientX,event.clientY)?.closest?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])');
+    if(!cell||cell.closest('.tile-reportGrid')!==drag.node)return false;
+    const position=location(cell,drag.tileId);
+    if(!validPosition(drag.grid,position)||positionKey(position)===drag.lastKey)return false;
+    const address=positionKey(position)===positionKey(drag.start)?formulaAddress(drag.grid,drag.start):`${formulaAddress(drag.grid,drag.start)}:${formulaAddress(drag.grid,position)}`;
+    drag.input.setRangeText(address,drag.insertStart,drag.insertEnd,'end');
+    drag.insertEnd=drag.insertStart+address.length;drag.lastKey=positionKey(position);
+    drag.input.dispatchEvent(new Event('input',{bubbles:true}));
+    document.dispatchEvent(new CustomEvent('report-grid-formula-input',{detail:{tileId:drag.tileId}}));
+    drag.input.focus();return true;
+  }
+  document.addEventListener('pointerdown',event=>{
+    if(event.button!==0||paintFormat||resizeDrag||window.QanvasReport||document.body.classList.contains('presentation-mode'))return;
+    const input=document.activeElement,cell=event.target.closest?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])');
+    if(!cell||input!==inlineFormulaEditor?.textarea&&!input?.matches?.('#reportGridCellProperties [data-grid-property="formula"]')||input===inlineFormulaEditor?.textarea&&cell===inlineFormulaEditor.cell||input.value.trim()&&!input.value.trimStart().startsWith('='))return;
+    const node=cell.closest('.tile-reportGrid'),tile=propertyContext?.tile(),grid=tile?.reportGrid;
+    if(!grid||node?.dataset.id!==selectedCell?.tileId||tile.id!==selectedCell.tileId)return;
+    const position=location(cell,tile.id);if(!validPosition(grid,position))return;
+    if(!input.value.trim()){input.value='=';input.setSelectionRange(1,1);}
+    const start=input.selectionStart,end=input.selectionEnd,address=formulaAddress(grid,position);
+    input.setRangeText(address,start,end,'end');
+    input.dispatchEvent(new Event('input',{bubbles:true}));
+    document.dispatchEvent(new CustomEvent('report-grid-formula-input',{detail:{tileId:tile.id}}));
+    input.focus();formulaPointerCell=cell;
+    formulaPointerDrag={pointerId:event.pointerId,input,node,grid,tileId:tile.id,start:position,lastKey:positionKey(position),insertStart:start,insertEnd:start+address.length};
+    event.preventDefault();event.stopImmediatePropagation();
+  },true);
+  document.addEventListener('pointermove',event=>{if(!formulaPointerDrag||event.pointerId!==formulaPointerDrag.pointerId||!(event.buttons&1))return;updateFormulaPointerRange(event);event.preventDefault();event.stopImmediatePropagation();},true);
+  document.addEventListener('pointerup',event=>{if(!formulaPointerDrag||event.pointerId!==formulaPointerDrag.pointerId)return;updateFormulaPointerRange(event);formulaPointerDrag=null;setTimeout(()=>formulaPointerCell=null,0);event.preventDefault();event.stopImmediatePropagation();},true);
+  document.addEventListener('pointercancel',event=>{if(formulaPointerDrag?.pointerId===event.pointerId){formulaPointerDrag=null;formulaPointerCell=null;}},true);
+  document.addEventListener('pointerdown',event=>{if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||paintFormat||resizeDrag||window.QanvasReport||document.body.classList.contains('presentation-mode')||document.activeElement?.matches?.('#reportGridCellProperties [data-grid-property="formula"]')||document.activeElement===inlineFormulaEditor?.textarea)return;const cell=event.target.closest?.('.tile-reportGrid [data-report-grid-cell]');if(!cell||event.target.closest('.report-grid-resize-handle'))return;const node=cell.closest('.tile-reportGrid'),tile=window.canvasWeb?.viewerDocument()?.pages?.flatMap(page=>[...(page.tiles||[]),...(page.graphics||[])]).find(item=>item.id===node.dataset.id),start=tile&&location(cell,tile.id);if(!validPosition(tile?.reportGrid,start))return;selectionDrag={pointerId:event.pointerId,tile,start,axis:cell.dataset.gridAxis||'',moved:false};},true);
+  document.addEventListener('pointermove',event=>{const drag=selectionDrag;if(!drag||event.pointerId!==drag.pointerId||!(event.buttons&1))return;const cell=document.elementFromPoint(event.clientX,event.clientY)?.closest?.('.tile-reportGrid [data-report-grid-cell]');if(!cell||cell.closest('.tile-reportGrid')?.dataset.id!==drag.tile.id)return;const end=location(cell,drag.tile.id);if(!validPosition(drag.tile.reportGrid,end)||positionKey(end)===positionKey(drag.start)&&!drag.moved)return;drag.moved=true;const grid=drag.tile.reportGrid,from=drag.start;const positions=drag.axis==='column'?rangeCells(grid,{...from,row:-1},{...end,row:grid.rows.length-1}):drag.axis==='row'?rangeCells(grid,{...from,column:-1},{...end,column:grid.columns.length-1}):rangeCells(grid,from,end);selectCells(positions,end);selectionAxis=drag.axis||null;event.preventDefault();},true);
+  document.addEventListener('pointerup',event=>{const drag=selectionDrag;if(!drag||event.pointerId!==drag.pointerId)return;selectionDrag=null;if(!drag.moved)return;selectionAnchor=drag.start;focusSelectedCell();refreshTopToolbar(drag.tile);ignoreGridClick=true;setTimeout(()=>ignoreGridClick=false,0);document.dispatchEvent(new CustomEvent('report-grid-selection',{detail:{tileId:drag.tile.id}}));event.preventDefault();},true);
+  document.addEventListener('pointercancel',event=>{if(selectionDrag?.pointerId===event.pointerId)selectionDrag=null;},true);
+  document.addEventListener('click',event=>{
+    if(!formulaPointerCell)return;
+    const consumed=event.target.closest?.('.tile-reportGrid')===formulaPointerCell.closest('.tile-reportGrid');
+    formulaPointerCell=null;
+    if(consumed){event.preventDefault();event.stopImmediatePropagation();}
+  },true);
+  function closeMeasurePicker(){measurePicker?.remove();measurePicker=null;}
+  function measurePickerTree(measures,term,currentMeasure){
+    const root={folders:new Map(),measures:[]},query=String(term||'').trim().toLocaleLowerCase();
+    for(const metric of measures||[]){
+      const name=String(metric.Name??metric.name??'').trim(),folder=String(metric.Folder??metric.folder??'').split('/').map(part=>part.trim()).filter(Boolean),path=folder.join('/');
+      if(!name||query&&!name.toLocaleLowerCase().includes(query)&&!path.toLocaleLowerCase().includes(query))continue;
+      let node=root;
+      for(const part of folder){if(!node.folders.has(part))node.folders.set(part,{folders:new Map(),measures:[]});node=node.folders.get(part);}
+      node.measures.push(metric);
+    }
+    const measureHtml=metric=>{const name=String(metric.Name??metric.name??''),format=String(metric.FormatString??metric.formatString??''),type=String(metric.DataType??metric.dataType??'');return `<button type="button" class="report-grid-measure-option" role="option" data-grid-measure-choice="${escape(name)}" aria-selected="${name===currentMeasure}"><strong>${escape(name)}</strong>${format||type?`<small>${escape([format,type].filter(Boolean).join(' · '))}</small>`:''}</button>`;};
+    const sorted=node=>[...node.measures].sort((a,b)=>String(a.Name??a.name??'').localeCompare(String(b.Name??b.name??''),undefined,{sensitivity:'base'}));
+    const count=node=>node.measures.length+[...node.folders.values()].reduce((total,child)=>total+count(child),0);
+    const folders=(node,path='')=>[...node.folders].sort(([a],[b])=>a.localeCompare(b,undefined,{sensitivity:'base'})).map(([name,child])=>{const fullPath=path?`${path}/${name}`:name;return `<details class="report-grid-measure-folder" open><summary><span>${escape(name)}</span><small>${count(child)}</small></summary><div>${sorted(child).map(measureHtml).join('')}${folders(child,fullPath)}</div></details>`;}).join('');
+    const unfiled=sorted(root).map(measureHtml).join(''),folderHtml=folders(root);
+    if(!unfiled&&!folderHtml)return '<p class="report-grid-measure-empty">No matching measures.</p>';
+    return `${unfiled?`<div class="report-grid-measure-section">Unfiled</div>${unfiled}`:''}${folderHtml}`;
+  }
+  function openMeasurePicker(anchor,tile,grid,position){
+    closeMeasurePicker();
+    const cell=sheetCell(grid,position),sources=propertyContext.sources(),sourceId=cell.sourceId||grid.columns[position.column]?.sourceId||grid.rows[position.row]?.sourceId||tile.sourceId||sources[0]?.id||'main',source=sources.find(item=>item.id===sourceId),measures=propertyContext.measures(sourceId)||[];
+    const picker=document.createElement('div');picker.className='report-grid-measure-picker';picker.setAttribute('role','dialog');picker.setAttribute('aria-label','Choose measure');
+    picker.innerHTML=`<div class="report-grid-measure-picker-head"><div><strong>Choose measure</strong><small>${escape(source?.name||sourceId)}</small></div><button type="button" data-grid-measure-close aria-label="Close measure picker">×</button></div><input type="search" data-grid-measure-search placeholder="Search measures or folders" aria-label="Search measures or folders"><div class="report-grid-measure-list" role="listbox"></div>`;
+    document.body.append(picker);measurePicker=picker;
+    const list=picker.querySelector('.report-grid-measure-list'),search=picker.querySelector('[data-grid-measure-search]'),renderList=()=>{list.innerHTML=measurePickerTree(measures,search.value,cell.measure||'');};renderList();
+    const bounds=anchor.getBoundingClientRect(),width=Math.min(390,innerWidth-16),left=Math.max(8,Math.min(bounds.left,innerWidth-width-8));picker.style.width=`${width}px`;picker.style.left=`${left}px`;picker.style.top=`${Math.max(8,Math.min(bounds.bottom+5,innerHeight-picker.offsetHeight-8))}px`;
+    const head=picker.querySelector('.report-grid-measure-picker-head');
+    head.addEventListener('pointerdown',event=>{
+      if(event.button!==0||event.target.closest('button'))return;
+      const start=picker.getBoundingClientRect(),pointerId=event.pointerId,offsetX=event.clientX-start.left,offsetY=event.clientY-start.top;
+      head.setPointerCapture(pointerId);picker.classList.add('report-grid-measure-picker-moving');event.preventDefault();
+      const move=moveEvent=>{if(moveEvent.pointerId!==pointerId)return;const rect=picker.getBoundingClientRect(),nextLeft=Math.max(0,Math.min(moveEvent.clientX-offsetX,innerWidth-rect.width)),nextTop=Math.max(0,Math.min(moveEvent.clientY-offsetY,innerHeight-rect.height));picker.style.left=`${nextLeft}px`;picker.style.top=`${nextTop}px`;};
+      const finish=finishEvent=>{if(finishEvent.pointerId!==pointerId)return;picker.classList.remove('report-grid-measure-picker-moving');head.removeEventListener('pointermove',move);head.removeEventListener('pointerup',finish);head.removeEventListener('pointercancel',finish);};
+      head.addEventListener('pointermove',move);head.addEventListener('pointerup',finish);head.addEventListener('pointercancel',finish);
+    });
+    picker.addEventListener('input',event=>{if(event.target===search)renderList();});
+    picker.addEventListener('click',event=>{if(event.target.closest('[data-grid-measure-close]')){closeMeasurePicker();focusSelectedCell(true);return;}const option=event.target.closest('[data-grid-measure-choice]');if(!option)return;cell.inputMode='measure';cell.measure=option.dataset.gridMeasureChoice;closeMeasurePicker();propertyContext.change();requestAnimationFrame(()=>focusSelectedCell(true));});
+    picker.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();closeMeasurePicker();focusSelectedCell(true);return;}if(!['ArrowDown','ArrowUp','Enter'].includes(event.key))return;const options=[...picker.querySelectorAll('[data-grid-measure-choice]')],active=document.activeElement,index=options.indexOf(active);if(event.key==='Enter'&&index>=0){event.preventDefault();active.click();return;}if(!options.length||event.key==='Enter')return;event.preventDefault();options[event.key==='ArrowDown'?Math.min(options.length-1,index+1):Math.max(0,index<0?options.length-1:index-1)].focus();});
+    search.focus();
+  }
+  document.addEventListener('dblclick',event=>{
+    const element=event.target.closest?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])');
+    if(!element)return;
+    const tile=propertyContext?.tile(),grid=tile?.reportGrid,position=tile&&location(element,tile.id);
+    if(!grid||element.closest('.tile-reportGrid')?.dataset.id!==tile.id||!validPosition(grid,position))return;
+    selectCells([position]);selectionAnchor=position;
+    const cell=sheetCell(grid,position);
+    if(cellMode(cell)==='measure'&&(cell.inputMode==='measure'||!!cell.measure)){event.preventDefault();openMeasurePicker(element,tile,grid,position);return;}
+    if(cellMode(cell)!=='formula'){cell.inputMode='formula';propertyContext.change();}
+    requestAnimationFrame(()=>beginInlineFormulaEdit());
+  });
+  function closeContextMenu(){document.querySelector('.report-grid-context-menu')?.remove();}
+  document.addEventListener('contextmenu',event=>{
+    const cell=event.target.closest?.('.tile-reportGrid [data-report-grid-cell]');
+    if(!cell||window.QanvasReport||document.body.classList.contains('presentation-mode'))return;
+    const node=cell.closest('.tile-reportGrid'),tile=window.canvasWeb?.viewerDocument()?.pages?.flatMap(page=>[...(page.tiles||[]),...(page.graphics||[])]).find(item=>item.id===node.dataset.id);
+    if(!tile?.reportGrid)return;
+    const position=location(cell,tile.id);if(!validPosition(tile.reportGrid,position))return;
+    event.preventDefault();event.stopImmediatePropagation();closeContextMenu();
+    if(!activeCells().some(item=>positionKey(item)===positionKey(position))){selectCells(axisCells(tile.reportGrid,position,cell.dataset.gridAxis));selectionAnchor=position;selectionAxis=cell.dataset.gridAxis||null;}
+    const menu=document.createElement('div');menu.className='report-grid-context-menu';menu.setAttribute('role','menu');
+    menu.innerHTML=gridContextMenuHtml(tile.reportGrid,position,cell.dataset.gridAxis||'');
+    document.body.append(menu);menu.style.left=`${Math.min(event.clientX,innerWidth-menu.offsetWidth-8)}px`;menu.style.top=`${Math.min(event.clientY,innerHeight-menu.offsetHeight-8)}px`;
+    menu.addEventListener('click',click=>{const command=click.target.closest('[data-command]')?.dataset.command;if(!command)return;
+      if(command==='choose-measure'){closeContextMenu();openMeasurePicker(cell,tile,tile.reportGrid,position);return;}
+      if(gridCommand(tile.reportGrid,position,command)&&!command.startsWith('copy-')&&command!=='cut'){if(['insert-row','insert-column','row-up','row-down','column-left','column-right'].includes(command))rememberGridAction({type:'command',command});document.dispatchEvent(new CustomEvent('report-grid-painted',{detail:{tileId:tile.id}}));}
+      closeContextMenu();const panel=document.querySelector('#reportGridCellProperties');if(panel&&propertyContext?.tile()?.id===tile.id)renderProperties(panel.parentElement,propertyContext.tile(),propertyContext);
+    });
+  },true);
+  document.addEventListener('pointerdown',event=>{if(!event.target.closest?.('.report-grid-context-menu'))closeContextMenu();if(measurePicker&&!event.target.closest?.('.report-grid-measure-picker'))closeMeasurePicker();},true);
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeContextMenu();closeMeasurePicker();}},true);
+  document.addEventListener('keydown',event=>{
+    const key=event.key.toLowerCase();
+    if(!['c','v','x'].includes(key)||!(event.ctrlKey||event.metaKey)||event.altKey||event.shiftKey||!selectedCell||key==='c'&&activeCells().length>1||window.QanvasReport||document.body.classList.contains('presentation-mode')||document.querySelector('.report-grid-dialog[open]'))return;
+    const active=event.target;
+    if(!active?.matches?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])')||active.closest('.tile-reportGrid')?.dataset.id!==selectedCell.tileId)return;
+    const tile=propertyContext?.tile(),grid=tile?.reportGrid;
+    if(!grid||tile.id!==selectedCell.tileId||!validPosition(grid,selectedCell))return;
+    const changed=key==='c'?copyGrid(grid,selectedCell,'all'):key==='x'?cutGrid(grid,activeCells(),selectionAxis,tile.id):pasteGrid(grid,selectedCell);
+    if(!changed)return;
+    event.preventDefault();event.stopPropagation();
+    if(key==='c'||key==='x'){paintFormat=null;updatePainterClass();const panel=document.querySelector('#reportGridCellProperties');if(panel)renderProperties(panel.parentElement,tile,propertyContext);}
+    else {propertyContext.change();requestAnimationFrame(()=>focusSelectedCell(true));}
+  },true);
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='Delete'||event.ctrlKey||event.altKey||event.metaKey||!selectedCell||activeCells().length>1||paintFormat||window.QanvasReport||document.body.classList.contains('presentation-mode')||document.querySelector('.report-grid-dialog[open]'))return;
+    const active=event.target;
+    if(!active?.matches?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])')||active.closest('.tile-reportGrid')?.dataset.id!==selectedCell.tileId)return;
+    const tile=propertyContext?.tile(),grid=tile?.reportGrid;
+    if(!grid||tile.id!==selectedCell.tileId||!validPosition(grid,selectedCell))return;
+    const cell=sheetCell(grid,selectedCell);if(!cell)return;
+    event.preventDefault();event.stopPropagation();
+    cell.measure='';cell.sourceId='';setCellEntry(grid,selectedCell,'');
+    propertyContext.change();requestAnimationFrame(()=>focusSelectedCell(true));
+  },true);
+  document.addEventListener('keydown',event=>{
+    if(event.key.length!==1||event.ctrlKey||event.altKey||event.metaKey||event.isComposing||!selectedCell||activeCells().length>1||paintFormat||window.QanvasReport||document.body.classList.contains('presentation-mode')||document.querySelector('.report-grid-dialog[open]'))return;
+    const active=event.target;
+    if(!active?.matches?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])')||active.closest('.tile-reportGrid')?.dataset.id!==selectedCell.tileId)return;
+    const current=propertyContext?.tile(),grid=current?.reportGrid;
+    if(!grid||selectedCell.tileId!==current.id||!validPosition(grid,selectedCell))return;
+    const cell=sheetCell(grid,selectedCell);
+    if(!cell||cell.measure)return;
+    event.preventDefault();event.stopPropagation();
+    if(cellMode(cell)!=='formula'){cell.inputMode='formula';propertyContext.change();}
+    beginInlineFormulaEdit(event.key);
+  },true);
+  document.addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','F2'].includes(event.key)||event.ctrlKey||event.altKey||event.metaKey||!selectedCell||paintFormat||window.QanvasReport||document.body.classList.contains('presentation-mode')||document.querySelector('.report-grid-dialog[open]'))return;
+    const active=event.target;
+    if(!active?.matches?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])')||active.closest('.tile-reportGrid')?.dataset.id!==selectedCell.tileId)return;
+    const tile=propertyContext?.tile(),grid=tile?.reportGrid;
+    if(!grid||tile.id!==selectedCell.tileId||!validPosition(grid,selectedCell))return;
+    event.preventDefault();event.stopPropagation();
+    if(event.key==='F2'){
+      if(event.shiftKey||activeCells().length>1)return;
+      const cell=sheetCell(grid,selectedCell);
+      if(!cell)return;
+      if(cellMode(cell)!=='formula'){cell.inputMode='formula';propertyContext.change();}
+      beginInlineFormulaEdit();
+      return;
+    }
+    const next=moveGridSelection(grid,event.key,event.shiftKey);selectionAxis=null;
+    if(!next)return;
+    if(!focusSelectedCell(true)){
+      selectionAnchor={...next,kind:'caption',column:-1};selectCells([selectionAnchor]);
+      if(!focusSelectedCell(true))return;
+    }
+    highlightSelection();
+    const panel=document.querySelector('#reportGridCellProperties');
+    if(panel)renderProperties(panel.parentElement,tile,propertyContext);
+  },true);
+  function clearSelection(tileId) {
+    if (!tileId||selectedCell?.tileId===tileId){selectedCell=null;selectedCells=[];selectionAnchor=null;selectionAxis=null;}
+    paintFormat=null;painterDrag=null;highlightPaintRange();updatePainterClass();highlightSelection();
+    const panel=document.querySelector('#reportGridCellProperties');
+    if(panel&&propertyContext)renderProperties(panel.parentElement,propertyContext.tile(),propertyContext);
+  }
+  document.addEventListener('pointerdown',event=>{
+     if(event.target.closest?.('.report-grid-dialog,.report-grid-context-menu,.report-grid-top-tools,#reportGridCellProperties,#reportGridControls'))return;
+    if(!event.target.closest?.('.tile-reportGrid [data-report-grid-cell]')&&selectedCell)clearSelection();
+  },true);
+  document.addEventListener('keydown',event=>{
+    if (event.key==='Escape'&&paintFormat) {paintFormat=null;painterDrag=null;highlightPaintRange();updatePainterClass();const panel=document.querySelector('#reportGridCellProperties');if(panel&&propertyContext)renderProperties(panel.parentElement,propertyContext.tile(),propertyContext);event.stopPropagation();}
+    if(event.key==='Escape'&&clipboard?.mode==='cut'){clipboard=null;updatePainterClass();const panel=document.querySelector('#reportGridCellProperties');if(panel&&propertyContext)renderProperties(panel.parentElement,propertyContext.tile(),propertyContext);event.stopPropagation();}
+  },true);
+  let propertyContext=null;
+  let formulaEditSnapshot=null;
+  const canceledFormulaInputs=new WeakSet();
+  function cancelFormulaEdit(input){const snapshot=formulaEditSnapshot,grid=propertyContext?.tile()?.reportGrid;if(snapshot&&grid&&validPosition(grid,snapshot.position)){const cell=sheetCell(grid,snapshot.position);Object.keys(cell).forEach(key=>delete cell[key]);Object.assign(cell,snapshot.cell);grid.cornerCaption=snapshot.cornerCaption;if(snapshot.position.row>=0)grid.rows[snapshot.position.row].caption=snapshot.rowCaption;if(snapshot.position.column>=0)grid.columns[snapshot.position.column].caption=snapshot.columnCaption;}canceledFormulaInputs.add(input);formulaEditSnapshot=null;restoreSelectedCellDraft();highlightFormulaReferences();focusSelectedCell(true);const panel=document.querySelector('#reportGridCellProperties');if(panel&&propertyContext)renderProperties(panel.parentElement,propertyContext.tile(),propertyContext);}
+  document.addEventListener('keydown',event=>{if(event.key!=='F4'||event.ctrlKey||event.altKey||event.metaKey||window.QanvasReport||document.body.classList.contains('presentation-mode'))return;const input=event.target===inlineFormulaEditor?.textarea?inlineFormulaEditor.textarea:event.target.matches?.('#reportGridCellProperties [data-grid-property="formula"]')?event.target:null;if(input){const cycled=cycleFormulaReference(input.value,input.selectionStart,input.selectionEnd);event.preventDefault();event.stopImmediatePropagation();if(!cycled)return;input.value=cycled.value;input.setSelectionRange(cycled.start,cycled.end);input.dispatchEvent(new Event('input',{bubbles:true}));return;}const active=event.target;if(!active.matches?.('.tile-reportGrid [data-report-grid-cell]:not([data-grid-axis])')||!selectedCell||active.closest('.tile-reportGrid')?.dataset.id!==selectedCell.tileId)return;const tile=propertyContext?.tile(),grid=tile?.reportGrid;if(!grid||tile.id!==selectedCell.tileId||!validPosition(grid,selectedCell)||!lastRepeatGridAction)return;event.preventDefault();event.stopImmediatePropagation();if(repeatGridAction(grid,selectedCell)){propertyContext.change();requestAnimationFrame(()=>focusSelectedCell(true));}},true);
+  function sheetEditorHtml(grid,position,tile,context) {
+    const cell=sheetCell(grid,position),sources=context.sources(),sourceId=cell.sourceId||grid.columns[position.column]?.sourceId||grid.rows[position.row]?.sourceId||tile.sourceId||sources[0]?.id||'main',measures=context.measures(sourceId),mode=position.kind==='value'?cellMode(cell):cell.inputMode||'formula';
+    const maximumSpan=grid.columns.length-position.column,spanHtml=maximumSpan>1?`<label>Span columns<input data-grid-property="spanColumns" type="number" min="1" max="${maximumSpan}" value="${cellSpan(grid,position)}"><small>Covered cells keep their contents. Set 1 to show them again.</small></label>`:'';
+    return `<div class="report-grid-sheet-editor"><h4>Cell content</h4><div class="report-grid-input-mode" role="group" aria-label="Cell content type"><button type="button" data-grid-input-mode="measure" aria-pressed="${mode==='measure'}">Measure</button><button type="button" data-grid-input-mode="formula" aria-pressed="${mode==='formula'}">Formula / text</button></div>${mode==='measure'?`<label>Source<select data-grid-property="source"><option value="" ${cell.sourceId?'':'selected'}>Inherit from row / column</option>${sources.map(source=>`<option value="${escape(source.id)}" ${cell.sourceId===source.id?'selected':''}>${escape(source.name)}</option>`).join('')}</select></label><label>Measure<select data-grid-property="measure"><option value="">Choose measure…</option>${measures.map(metric=>`<option value="${escape(metric.Name)}" ${cell.measure===metric.Name?'selected':''}>${escape(metric.Name)}</option>`).join('')}</select></label>`:`<label>Text / formula<input data-grid-property="formula" value="${escape(cellEntry(grid,position))}" placeholder="Text or =B2+C2"><small>Plain text needs no =. Start with = for a formula; click a cell for one address, or drag across cells for a range.</small></label>${formulaGuideHtml()}`}${spanHtml}${numberFormatHtml(cell.format,'data-grid-property="format"','data-grid-custom-format',context.format)}</div>`;
+  }
+  function selectedFormatCells(grid,tile){return activeCells().filter(position=>position.tileId===tile?.id&&validPosition(grid,position));}
+  function multiFormatHtml(grid,tile,context){const positions=selectedFormatCells(grid,tile),first=positions[0],style=effectiveStyle(grid,first),cell=sheetCell(grid,first);return `<p class="report-grid-selected-label">${positions.length} cells selected</p><p class="property-empty">Formatting changes apply to every selected cell. Ctrl-click cells, rows, or columns to adjust the selection.</p>${numberFormatHtml(cell?.format,'data-grid-property="format"','data-grid-custom-format',context.format)}<h4>Cell formatting</h4>${themeEditorHtml(style,context)}${formatToolbarHtml(style,`${positions.length} cells`,context)}${borderEditorHtml(style,context)}`;}
+  function renderProperties(container,tile,context) {
+    propertyContext=context;
+     let viewPanel=container.querySelector('#reportGridViewProperties');
+    if(!viewPanel){
+      viewPanel=document.createElement('details');viewPanel.id='reportGridViewProperties';viewPanel.open=true;
+      viewPanel.innerHTML='<summary>Grid view</summary><div data-report-grid-view-properties></div>';
+      viewPanel.addEventListener('change',event=>{const current=propertyContext.tile();if(!current?.reportGrid)return;const spacing=event.target.dataset.gridSpacing;if(spacing){current.reportGrid[spacing]=Math.max(0,Math.min(120,Number(event.target.value)||0));event.target.blur();propertyContext.change();return;}const key=event.target.dataset.gridViewOption;if(!key)return;setGridViewOption(current.reportGrid,key,event.target.checked);propertyContext.change();});
+      viewPanel.addEventListener('click',event=>{if(!event.target.closest('[data-grid-upgrade-sheet]'))return;const current=propertyContext.tile();if(current?.reportGrid&&upgradeSheet(current.reportGrid))propertyContext.change();});
+      container.prepend(viewPanel);
+    }
+     let controlsPanel=container.querySelector('#reportGridControls');
+     if(!controlsPanel){
+       controlsPanel=document.createElement('details');controlsPanel.id='reportGridControls';controlsPanel.open=true;
+       controlsPanel.innerHTML='<summary>Grid controls</summary><div data-report-grid-controls></div>';
+       controlsPanel.addEventListener('click',event=>{const current=propertyContext?.tile(),grid=current?.reportGrid,position=selectedCell;if(!grid||!validPosition(grid,position)||position.tileId!==current.id)return;const command=event.target.closest('[data-grid-command]')?.dataset.gridCommand;if(activeCells().length>1&&command!=='cut'&&command!=='paste')return;const auto=event.target.closest('[data-grid-auto]');if(auto){if(position.column<0&&auto.dataset.gridAuto==='column')delete grid.labelColumnWidth;else if(auto.dataset.gridAuto==='column')delete grid.columns[position.column].width;else if(position.row<0)delete grid.headerRowHeight;else delete grid.rows[position.row].height;propertyContext.change();return;}if(command&&gridCommand(grid,position,command)){if(['insert-row','insert-column','row-up','row-down','column-left','column-right'].includes(command))rememberGridAction({type:'command',command});if(command.startsWith('copy-')||command==='cut')renderProperties(controlsPanel.parentElement,current,propertyContext);else propertyContext.change();}});
+       controlsPanel.addEventListener('change',event=>{const input=event.target,current=propertyContext?.tile(),grid=current?.reportGrid,position=selectedCell;if(!input.dataset.gridDimension||!grid||!validPosition(grid,position)||position.tileId!==current.id||activeCells().length>1)return;const number=Number(input.value),value=input.value.trim()&&Number.isFinite(number)?Math.max(5,Math.min(input.dataset.gridDimension==='row'?600:1200,number)):null;if(input.dataset.gridDimension==='column'){if(position.column<0)grid.labelColumnWidth=value;else grid.columns[position.column].width=value;}else if(position.row<0)grid.headerRowHeight=value;else grid.rows[position.row].height=value;propertyContext.change();});
+       container.prepend(controlsPanel);
+     }
+     let panel=container.querySelector('#reportGridCellProperties');
+    if (!panel) {
+      panel=document.createElement('details'); panel.id='reportGridCellProperties';panel.open=true;
+      panel.innerHTML='<summary>Report grid cell</summary><div data-report-grid-properties></div>';
+      container.prepend(panel);
+       panel.addEventListener('focusin',event=>{if(event.target.dataset.gridProperty==='formula'){const grid=propertyContext?.tile()?.reportGrid,position=selectedCell,cell=grid&&validPosition(grid,position)?sheetCell(grid,position):null;formulaEditSnapshot=cell?{input:event.target,position:{...position},cell:structuredClone(cell),cornerCaption:grid.cornerCaption,rowCaption:grid.rows[position.row]?.caption,columnCaption:grid.columns[position.column]?.caption}:null;highlightFormulaReferences(event.target.value);document.querySelector(`.tile-reportGrid[data-id="${CSS.escape(selectedCell?.tileId||'')}"]`)?.classList.add('report-grid-reference-picking');}});
+       panel.addEventListener('focusout',event=>{if(event.target.dataset.gridProperty==='formula'){if(inlineFormulaEditor?.input===event.target)return;if(formulaEditSnapshot?.input===event.target)formulaEditSnapshot=null;restoreSelectedCellDraft();highlightFormulaReferences();document.querySelectorAll('.report-grid-reference-picking').forEach(node=>node.classList.remove('report-grid-reference-picking'));}});
+       panel.addEventListener('keydown',event=>{if(event.target.dataset.gridProperty!=='formula')return;if(event.key==='Escape'){event.preventDefault();event.stopPropagation();const snapshot=formulaEditSnapshot,grid=propertyContext?.tile()?.reportGrid;if(snapshot&&grid&&validPosition(grid,snapshot.position)){const cell=sheetCell(grid,snapshot.position);Object.keys(cell).forEach(key=>delete cell[key]);Object.assign(cell,snapshot.cell);grid.cornerCaption=snapshot.cornerCaption;if(snapshot.position.row>=0)grid.rows[snapshot.position.row].caption=snapshot.rowCaption;if(snapshot.position.column>=0)grid.columns[snapshot.position.column].caption=snapshot.columnCaption;}canceledFormulaInputs.add(event.target);formulaEditSnapshot=null;restoreSelectedCellDraft();highlightFormulaReferences();focusSelectedCell(true);renderProperties(panel.parentElement,propertyContext.tile(),propertyContext);return;}if(!['Enter','Tab'].includes(event.key))return;event.preventDefault();event.stopPropagation();const tile=propertyContext?.tile(),grid=tile?.reportGrid,position=selectedCell?{...selectedCell}:null,advance=event.key==='Tab'&&grid&&position?nextCellPosition(grid,position,event.shiftKey?'ArrowLeft':'ArrowRight'):null;event.target.dispatchEvent(new Event('change',{bubbles:true}));requestAnimationFrame(()=>{if(advance){selectCells([advance]);const properties=document.querySelector('#reportGridCellProperties');if(properties&&propertyContext)renderProperties(properties.parentElement,propertyContext.tile(),propertyContext);}focusSelectedCell(true);});});
+       panel.addEventListener('click',event=>{
+         const multiTile=propertyContext?.tile(),multiGrid=multiTile?.reportGrid,multi=multiGrid&&selectedFormatCells(multiGrid,multiTile);
+         if(multi?.length>1){const format=event.target.closest('[data-grid-format-toggle],[data-grid-format-align]'),preset=event.target.closest('[data-border-preset]');if(format){const key=format.dataset.gridFormatToggle,align=format.dataset.gridFormatAlign,checked=key?!effectiveStyle(multiGrid,multi[0])[key]:null;multi.forEach(position=>{const style=styleTarget(multiGrid,position);if(key)style[key]=checked;else style.align=align;});rememberGridAction({type:'style',key:key||'align',value:key?checked:align});propertyContext.change();}else if(preset){multi.forEach(position=>presetBorder(styleTarget(multiGrid,position),preset.dataset.borderPreset));rememberGridAction({type:'border-preset',preset:preset.dataset.borderPreset});propertyContext.change();}return;}
+         const modeButton=event.target.closest('[data-grid-input-mode]');
+        if(modeButton){const current=propertyContext.tile(),grid=current?.reportGrid;if(grid&&validPosition(grid,selectedCell)){sheetCell(grid,selectedCell).inputMode=modeButton.dataset.gridInputMode;propertyContext.change();}return;}
+        if(event.target.closest('[data-grid-upgrade-sheet]')){const current=propertyContext.tile(),grid=current?.reportGrid;if(grid&&upgradeSheet(grid))propertyContext.change();return;}
+        const auto=event.target.closest('[data-grid-auto]');
+        if(auto){const current=propertyContext.tile(),grid=current?.reportGrid,position=selectedCell;if(!grid||!validPosition(grid,position))return;if(auto.dataset.gridAuto==='column'){if(position.column<0)delete grid.labelColumnWidth;else delete grid.columns[position.column].width;}else if(position.row<0)delete grid.headerRowHeight;else delete grid.rows[position.row].height;propertyContext.change();return;}
+        const format=event.target.closest('[data-grid-format-toggle],[data-grid-format-align]');
+        if(format){
+          const current=propertyContext.tile(),grid=current?.reportGrid;
+          if(grid&&validPosition(grid,selectedCell)&&selectedCell.tileId===current.id){
+            const target=styleTarget(grid,selectedCell);
+            if(format.dataset.gridFormatToggle){const key=format.dataset.gridFormatToggle;target[key]=!effectiveStyle(grid,selectedCell)[key];rememberGridAction({type:'style',key,value:target[key]});}
+            else {target.align=format.dataset.gridFormatAlign;rememberGridAction({type:'style',key:'align',value:target.align});}
+            propertyContext.change();
+          }
+          return;
+        }
+        const preset=event.target.closest('[data-border-preset]');
+        if (preset) {
+          const current=propertyContext.tile(),grid=current?.reportGrid;
+          if (grid&&validPosition(grid,selectedCell)&&selectedCell.tileId===current.id&&presetBorder(styleTarget(grid,selectedCell),preset.dataset.borderPreset)){rememberGridAction({type:'border-preset',preset:preset.dataset.borderPreset});propertyContext.change();}
+          return;
+        }
+        const command=event.target.closest('[data-grid-command]')?.dataset.gridCommand;
+        if(!command)return;
+        const current=propertyContext.tile(),grid=current?.reportGrid;
+        if(!grid||!validPosition(grid,selectedCell)||selectedCell.tileId!==current.id)return;
+        if(gridCommand(grid,selectedCell,command)){
+          if(command.startsWith('copy-'))renderProperties(container,current,propertyContext);
+          else propertyContext.change();
+        }
+      });
+       panel.addEventListener('change',event=>{
+         const current=propertyContext.tile(),grid=current?.reportGrid,position=selectedCell,input=event.target;
+         if(canceledFormulaInputs.has(input)){canceledFormulaInputs.delete(input);return;}
+         const multi=grid&&selectedFormatCells(grid,current);
+         if(multi?.length>1){const key=input.dataset.gridPropertyStyle;if(input.dataset.gridProperty==='format'){multi.forEach(position=>{const cell=sheetCell(grid,position);if(cell)cell.format=input.value==='Custom'?(panel.querySelector('[data-grid-custom-format]')?.value||defaultCustomFormat):input.value;});}else if(input.hasAttribute('data-grid-custom-format')){multi.forEach(position=>{const cell=sheetCell(grid,position);if(cell)cell.format=input.value||defaultCustomFormat;});}else if(input.hasAttribute('data-grid-theme-toggle')){multi.forEach(position=>styleTarget(grid,position).themeColors=input.checked?{background:'surface',color:'text',borderColor:'grid'}:{background:null,color:null,borderColor:null});}else if(input.dataset.gridThemeRole){multi.forEach(position=>{const style=styleTarget(grid,position);style.themeColors||={};style.themeColors[input.dataset.gridThemeRole]=input.value;});}else if(input.dataset.borderSide){multi.forEach(position=>changeBorder(styleTarget(grid,position),input));}else if(key&&styleKeys.has(key)){const value=input.type==='checkbox'?input.checked:input.type==='number'?+input.value:input.value;multi.forEach(position=>styleTarget(grid,position)[key]=value);}else return;rememberGridPropertyChange(input,grid,multi[0]);propertyContext.change();return;}
+        if(grid&&input.dataset.gridViewOption){setGridViewOption(grid,input.dataset.gridViewOption,input.checked);propertyContext.change();return;}
+        if (!grid||!validPosition(grid,position)||position.tileId!==current.id) return;
+        if(input.dataset.gridDimension){const number=Number(input.value),value=input.value.trim()&&Number.isFinite(number)?Math.max(5,Math.min(input.dataset.gridDimension==='row'?600:1200,number)):null;if(input.dataset.gridDimension==='column'){if(position.column<0)grid.labelColumnWidth=value;else grid.columns[position.column].width=value;}else if(position.row<0)grid.headerRowHeight=value;else grid.rows[position.row].height=value;propertyContext.change();return;}
+        if(input.hasAttribute('data-grid-theme-toggle')){styleTarget(grid,position).themeColors=input.checked?{background:'surface',color:'text',borderColor:'grid'}:{background:null,color:null,borderColor:null};propertyContext.change();return;}
+        if(input.dataset.gridThemeRole){const style=styleTarget(grid,position);style.themeColors||={};style.themeColors[input.dataset.gridThemeRole]=input.value;propertyContext.change();return;}
+        if (input.dataset.borderSide) {if(changeBorder(styleTarget(grid,position),input)){rememberGridPropertyChange(input,grid,position);propertyContext.change();}return;}
+        const value=sheetCell(grid,position),key=input.dataset.gridPropertyStyle;
+        if(input.dataset.gridConditional){if(updateConditionalFormat(value,input))propertyContext.change();return;}
+        if(input.dataset.gridContextSource||input.dataset.gridContextField||input.dataset.gridContextValue||input.dataset.gridContextAdvanced){const owner=position.kind==='header'?grid.columns[position.column]:position.kind==='caption'?grid.rows[position.row]:null;if(!owner)return;if(input.dataset.gridContextSource)owner.sourceId=input.value;if(input.dataset.gridContextAdvanced)owner.crossFilter=input.value.trim()?{expression:input.value.trim()}:null;if(input.dataset.gridContextField){const previous=crossFilterParts(owner.crossFilter);owner.crossFilter=input.value?{field:input.value,value:previous.value}:null;}if(input.dataset.gridContextValue){const previous=crossFilterParts(owner.crossFilter);owner.crossFilter=previous.field?{field:previous.field,value:input.value}:null;}propertyContext.change();return;}
+        if (key&&styleKeys.has(key)) styleTarget(grid,position)[key]=input.type==='checkbox'?input.checked:input.type==='number'?+input.value:input.value;
+        else if (input.dataset.gridProperty==='source'&&value) {value.sourceId=input.value;const effective=input.value||grid.columns[position.column]?.sourceId||grid.rows[position.row]?.sourceId||current.sourceId||'main',names=new Set(propertyContext.measures(effective).map(metric=>metric.Name));if (!names.has(value.measure)) value.measure='';}
+        else if (input.dataset.gridProperty==='measure'&&value) value.measure=input.value;
+        else if (input.dataset.gridProperty==='format'&&value) value.format=input.value==='Custom'?(panel.querySelector('[data-grid-custom-format]')?.value||defaultCustomFormat):input.value;
+        else if (input.hasAttribute('data-grid-custom-format')&&value) value.format=input.value||defaultCustomFormat;
+        else if (input.dataset.gridProperty==='text'&&value) value.text=input.value;
+        else if (input.dataset.gridProperty==='formula'&&value) setCellEntry(grid,position,input.value);
+        else if (input.dataset.gridProperty==='spanColumns'&&value) {const count=Math.max(1,Math.min(grid.columns.length-position.column,Math.trunc(Number(input.value)||1)));if(count===1)delete value.spanColumns;else value.spanColumns=count;}
+        else if (input.dataset.gridProperty==='name'&&value) {if(!setCellName(grid,value,input))return;}
+        else if (input.dataset.gridProperty==='spanAllColumns'&&position.kind==='caption'&&grid.rows[position.row]?.kind==='heading') grid.rows[position.row].spanAllColumns=input.checked;
+        else if (input.dataset.gridProperty==='spacerHeight'&&position.kind==='caption'&&grid.rows[position.row]?.kind==='spacer') grid.rows[position.row].height=Math.max(4,Math.min(240,Number(input.value)||18));
+        else if (input.dataset.gridProperty==='caption'&&position.kind==='caption') {grid.rows[position.row].caption=input.value;if(grid.sheetMode)sheetCell(grid,position).text=input.value;}
+        else if (input.dataset.gridProperty==='caption'&&position.kind==='header') {grid.columns[position.column].caption=input.value;if(grid.sheetMode)sheetCell(grid,position).text=input.value;}
+        else if (input.dataset.gridProperty==='caption'&&position.kind==='corner') {grid.cornerCaption=input.value;if(grid.sheetMode)sheetCell(grid,position).text=input.value;}
+        else return;
+        rememberGridPropertyChange(input,grid,position);
+        propertyContext.change();
+      });
+      panel.addEventListener('input',event=>{
+        if(event.target.dataset.gridProperty==='formula'){const current=propertyContext.tile(),grid=current?.reportGrid;if(grid&&selectedCell?.tileId===current.id&&validPosition(grid,selectedCell)){setCellEntry(grid,selectedCell,event.target.value,false);if(!syncingInlineFormula)showSelectedCellDraft(event.target.value);}highlightFormulaReferences(event.target.value);return;}
+        if(!event.target.hasAttribute('data-grid-custom-format'))return;
+        const preview=panel.querySelector('[data-grid-format-preview]');
+        if(preview)preview.textContent=`Preview: ${propertyContext.format?.(1234567.89,event.target.value)||''}`;
+      });
+    }
+     viewPanel.classList.toggle('hidden',tile?.kind!=='reportGrid');
+     controlsPanel.classList.toggle('hidden',tile?.kind!=='reportGrid');
+     panel.classList.toggle('hidden',tile?.kind!=='reportGrid');
+    if (tile?.kind!=='reportGrid') return;
+    const grid=normalizeGrid(tile.reportGrid||defaults()),position=selectedCell;
+    viewPanel.querySelector('[data-report-grid-view-properties]').innerHTML=gridViewOptionsHtml(grid);
+     viewPanel.after(controlsPanel);
+     controlsPanel.after(panel);
+     if (!validPosition(grid,position)||position.tileId!==tile.id) {
+       controlsPanel.querySelector('[data-report-grid-controls]').innerHTML='<p class="property-empty">Select a grid cell to use these controls.</p>';
+       panel.querySelector('[data-report-grid-properties]').innerHTML=`<p class="property-empty">Click a label, heading, or value cell in the grid to format it here.</p>`;
+       return;
+     }
+     const multi=selectedFormatCells(grid,tile);
+    if(multi.length>1){controlsPanel.classList.remove('hidden');controlsPanel.querySelector('[data-report-grid-controls]').innerHTML=`<div class="report-grid-mini-toolbar" role="toolbar" aria-label="Selected grid actions"><div class="report-grid-tool-group" role="group" aria-label="Cut / paste"><span class="report-grid-tool-label">Cut / paste</span><div class="report-grid-tool-buttons"><button type="button" data-grid-command="cut" title="Cut selected ${selectionAxis||'cells'} (Ctrl+X)">✂ Cut</button><button type="button" data-grid-command="paste" title="Paste (Ctrl+V)" ${clipboard?'':'disabled'}>↧ Paste</button></div></div></div>`;panel.querySelector('summary').textContent='Selected cells';panel.querySelector('[data-report-grid-properties]').innerHTML=multiFormatHtml(grid,tile,context);return;}
+     controlsPanel.classList.remove('hidden');panel.querySelector('summary').textContent='Report grid cell';
+     const row=grid.rows[position.row],column=grid.columns[position.column],value=sheetCell(grid,position),style=effectiveStyle(grid,position),sources=context.sources();
+    const address=grid.sheetMode?`${columnAddress(position.column+1)}${position.row+2}`:position.kind==='value'?`${columnAddress(position.column)}${position.row+1}`:'';
+     const label=grid.sheetMode?'':position.kind==='corner'?'Corner heading':position.kind==='header'?`Column: ${column.caption}`:position.kind==='caption'?`Row label: ${row.caption}`:row.caption||'Untitled row';
+    const sourceId=value?.sourceId||column?.sourceId||row?.sourceId||tile.sourceId||sources[0]?.id||'main',measures=context.measures(sourceId);
+    const rendered=[...document.querySelectorAll(`.tile-reportGrid[data-id="${CSS.escape(tile.id)}"] [data-report-grid-cell]`)].find(cell=>cell.dataset.reportGridCell===position.kind&&Number(cell.dataset.gridRow??-1)===position.row&&Number(cell.dataset.gridColumn??-1)===position.column);
+    const previewText=rendered?.textContent?.trim()||'Cell preview';
+    const identityHtml=address?`<div class="report-grid-cell-identity"><strong>${escape(address)}</strong><input data-grid-property="name" value="${escape(value?.name||'')}" placeholder="Cell name" aria-label="Cell name"></div>`:'';
+    const selected=(actual,expected)=>actual===expected?'selected':'';
+    const spacerSelected=position.kind==='caption'&&row.kind==='spacer';
+    const conditionalOpen=panel.querySelector('.report-grid-conditional')?.open??false;
+    const formulaHelpOpen=panel.querySelector('.report-grid-formula-help')?.open??false;
+     controlsPanel.querySelector('[data-report-grid-controls]').innerHTML=gridToolbarHtml(grid,position)+gridDimensionsHtml(grid,position);
+     panel.querySelector('[data-report-grid-properties]').innerHTML=`${identityHtml}${label?`<p class="report-grid-selected-label">${escape(label)}</p>`:''}${['header','caption','corner'].includes(position.kind)&&!spacerSelected&&!grid.sheetMode?`<label>Text<input data-grid-property="caption" value="${escape(position.kind==='header'?column.caption:position.kind==='corner'?grid.cornerCaption||'':row.caption)}"></label>`:''}${position.kind==='caption'&&row.kind==='heading'?`<label class="check"><input type="checkbox" data-grid-property="spanAllColumns" ${row.spanAllColumns?'checked':''}> Span across all columns</label>`:''}${!grid.sheetMode&&value&&row?.kind==='heading'?`<label>Heading text<input data-grid-property="text" value="${escape(value.text||'')}"></label>`:''}${!grid.sheetMode&&value&&row?.kind==='measure'?sheetEditorHtml(grid,position,tile,context):''}${grid.sheetMode&&!spacerSelected?sheetEditorHtml(grid,position,tile,context):''}${position.kind==='header'?crossFilterHtml(column,column.sourceId||tile.sourceId||'main',context,'column'):position.kind==='caption'&&row.kind==='measure'?crossFilterHtml(row,row.sourceId||tile.sourceId||'main',context,'row'):''}${spacerSelected?'':`${conditionalFormatHtml(value,propertyContext,measures)}<h4>Cell formatting</h4>${themeEditorHtml(style,propertyContext)}${formatToolbarHtml(style,previewText,propertyContext)}${borderEditorHtml(style,propertyContext)}`}`;
+    if(conditionalOpen)panel.querySelector('.report-grid-conditional')?.setAttribute('open','');
+    if(formulaHelpOpen)panel.querySelector('.report-grid-formula-help')?.setAttribute('open','');
+  }
+  function gridCodeTableHtml(grid) {
+    const codeCell=(position,tag='td')=>{
+      const cell=sheetCell(grid,position),formula=String(cell?.formula||''),measure=String(cell?.measure||''),manual=String(cell?.text??'');
+      const fallback=position.kind==='corner'?grid.cornerCaption||'':position.kind==='header'?grid.columns[position.column]?.caption||'':position.kind==='caption'?grid.rows[position.row]?.caption||'':'';
+      const content=formula||measure||manual||fallback,kind=formula?'formula':measure?'measure':content?'text':'blank';
+      const address=`${columnAddress(position.column+1)}${position.row+2}`;
+      const owner=position.kind==='header'?grid.columns[position.column]:position.kind==='caption'?grid.rows[position.row]:null;
+      const filter=crossFilterParts(owner?.crossFilter),filterValue=filter.advanced||filter.field&&`${filter.field}=${filter.value}`,filterText=filterValue?` · Filter: ${filterValue}`:'';
+      const source=cell?.sourceId||owner?.sourceId||'';
+      const title=`${address}${source?` · Source: ${source}`:''}${filterText}${content?` · ${content}`:''}`;
+      return `<${tag} class="report-grid-code-cell report-grid-code-${kind}" title="${escape(title)}"><span>${escape(content)}</span>${filter.field?'<small class="report-grid-code-filter">⌄</small>':''}</${tag}>`;
+    };
+    const columns=grid.columns||[],rows=grid.rows||[];
+    const letters=`<thead><tr class="report-grid-code-letters"><th class="report-grid-code-axis"></th>${Array.from({length:columns.length+1},(_,index)=>{const filter=index>0?crossFilterParts(columns[index-1]?.crossFilter):{field:'',value:'',advanced:''},value=filter.advanced||filter.field&&`${filter.field}=${filter.value}`;return `<th class="report-grid-code-axis" title="${value?escape(`Filter: ${value}`):''}">${columnAddress(index)}${value?' <small class="report-grid-code-filter">⌄</small>':''}</th>`;}).join('')}</tr></thead>`;
+    const first=`<tr><th class="report-grid-code-axis">1</th>${codeCell({kind:'corner',row:-1,column:-1})}${columns.map((_,column)=>codeCell({kind:'header',row:-1,column})).join('')}</tr>`;
+    const body=rows.map((item,row)=>{const filter=crossFilterParts(item.crossFilter),value=filter.advanced||filter.field&&`${filter.field}=${filter.value}`;return `<tr><th class="report-grid-code-axis" title="${value?escape(`Filter: ${value}`):''}">${row+2}${value?' <small class="report-grid-code-filter">⌄</small>':''}</th>${codeCell({kind:'caption',row,column:-1})}${columns.map((_,column)=>codeCell({kind:'value',row,column})).join('')}</tr>`;}).join('');
+    return `<table class="report-grid-code-table">${letters}<tbody>${first}${body}</tbody></table>`;
+  }
+  function makeDialogMovable(dialog,handle) {
+    let drag=null;handle.addEventListener('mousedown',event=>{if(event.button!==0||event.target.closest('button,input,select,textarea,a'))return;const rect=dialog.getBoundingClientRect();dialog.style.position='fixed';dialog.style.left=`${rect.left}px`;dialog.style.top=`${rect.top}px`;dialog.style.margin='0';drag={startX:event.clientX,startY:event.clientY,left:rect.left,top:rect.top,width:rect.width,height:rect.height};dialog.classList.add('panel-moving');event.preventDefault();});window.addEventListener('mousemove',event=>{if(!drag)return;dialog.style.left=`${Math.max(8,Math.min(drag.left+event.clientX-drag.startX,innerWidth-drag.width-8))}px`;dialog.style.top=`${Math.max(8,Math.min(drag.top+event.clientY-drag.startY,innerHeight-drag.height-8))}px`;});window.addEventListener('mouseup',()=>{if(!drag)return;drag=null;dialog.classList.remove('panel-moving');});
+  }
+  function openDesigner(tile) {
+    document.querySelector('.report-grid-dialog')?.remove();
+    const grid=normalizeGrid(structuredClone(tile.reportGrid||defaults()));
+    const dialog=document.createElement('dialog');
+    dialog.className='report-grid-dialog report-grid-code-dialog';
+    dialog.innerHTML=`<div class="report-grid-dialog-head"><div><h2>View grid codes</h2><p>Read-only overview of cell text, formulas, measures, and row or column filters.</p></div><button type="button" data-close aria-label="Close">×</button></div><div class="report-grid-code-scroll">${gridCodeTableHtml(grid)}</div><div class="report-grid-code-footer">${grid.rows.length+1} rows · ${grid.columns.length+1} columns</div>`;
+    document.body.append(dialog);
+    dialog.addEventListener('click',event=>{if(event.target.closest('[data-close]'))dialog.close();});
+    dialog.addEventListener('close',()=>dialog.remove());
+    dialog.showModal();
+    makeDialogMovable(dialog,dialog.querySelector('.report-grid-dialog-head'));
+  }
+  window.CanvasReportGrid = { defaults, render, openDesigner, handleCanvasClick, renderProperties, clearSelection };
+})();

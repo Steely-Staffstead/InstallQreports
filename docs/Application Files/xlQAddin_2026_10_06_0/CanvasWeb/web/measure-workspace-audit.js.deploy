@@ -1,0 +1,68 @@
+(() => {
+  let originals=new WeakMap(),preparedNames=new WeakMap();
+  let allowConfirmedSave=false;
+  const confirmedRenames=new Set();
+  const renameList=()=>measures.map(metric=>({oldName:originals.get(metric)||metric.Name,newName:String(metric.Name||'').trim()})).filter(item=>item.oldName&&item.newName&&item.oldName.toLocaleLowerCase()!==item.newName.toLocaleLowerCase());
+  const renameKey=item=>`${item.oldName.toLocaleLowerCase()}\n${item.newName.toLocaleLowerCase()}`;
+  const duplicateNames=()=>{const seen=new Set(),duplicates=new Set();for(const metric of measures){const name=String(metric.Name||'').trim(),key=name.toLocaleLowerCase();if(!key)continue;if(seen.has(key))duplicates.add(name);seen.add(key);}return [...duplicates];};
+  function confirmDirectRenames(renames){
+    return new Promise(resolve=>{
+      const dialog=document.createElement('dialog');dialog.className='measure-rename-dialog';
+      const list=renames.map(item=>`<li><b>${esc(item.oldName)}</b> → <b>${esc(item.newName)}</b></li>`).join('');
+      dialog.innerHTML=`<form method="dialog"><h2>${renames.length===1?'Rename measure?':'Rename measures?'}</h2><p>The Name field was changed directly. Saving this as a rename will update references in other measures. Report tiles and visuals are updated when you choose <b>Return measures</b>.</p><ul>${list}</ul><footer><button value="cancel">Keep editing</button><button value="rename" class="primary">Rename and save</button></footer></form>`;
+      dialog.addEventListener('close',()=>{const accepted=dialog.returnValue==='rename';dialog.remove();resolve(accepted);},{once:true});
+      document.body.append(dialog);dialog.showModal();
+    });
+  }
+  async function renameSelected(){
+    saveDraft();
+    const metric=measures[selected];if(!metric)return toast('Select a measure first.');
+    const oldName=metric.Name,next=(await window.QReportsDialogs.prompt('Rename measure',oldName))?.trim();if(!next||next===oldName)return;
+    if(measures.some((item,index)=>index!==selected&&String(item.Name).toLocaleLowerCase()===next.toLocaleLowerCase()))return toast('A measure with that name already exists.');
+    metric.Name=next;$('name').value=next;confirmedRenames.add(renameKey({oldName:originals.get(metric)||oldName,newName:next}));prepareRename();renderMeasures();toast(`Rename prepared: ${oldName} → ${next}`);
+  }
+  function prepareRename(){
+    saveDraft();const renames=renameList(),formulaRenames=measures.map(metric=>({oldName:preparedNames.get(metric)||originals.get(metric)||metric.Name,newName:String(metric.Name||'').trim()})).filter(item=>item.oldName&&item.newName&&item.oldName.toLocaleLowerCase()!==item.newName.toLocaleLowerCase());
+    for(const metric of measures)metric.Expression=CanvasMeasureReferences.replaceFormula(metric.Expression,formulaRenames);
+    for(const zone of Object.keys(zones))zones[zone]=zones[zone].map(value=>formulaRenames.find(item=>item.oldName.toLocaleLowerCase()===String(value).toLocaleLowerCase())?.newName||value);
+    for(const metric of measures)preparedNames.set(metric,metric.Name);
+    return renames;
+  }
+  async function auditAll(){
+    saveDraft();
+    const dialog=$('measureAuditDialog'),results=$('measureAuditResults'),summary=$('measureAuditSummary'),progress=$('measureAuditProgressBar'),progressText=$('measureAuditProgressText'),total=measures.length,updateEvery=Math.max(1,Math.ceil(total/10));
+    const updateProgress=(current,force=false)=>{if(!force&&current%updateEvery&&current!==total)return false;const percent=total?Math.round(current/total*100):100;progress.max=Math.max(1,total);progress.value=total?current:1;progressText.textContent=`${current} / ${total} · ${percent}%`;summary.textContent=current<total?`Checking measure ${Math.min(current+1,total)} of ${total}…`:`Checked ${total} measure${total===1?'':'s'}.`;return true;};
+    results.className='measure-audit-results';results.innerHTML='<p>Validating every measure…</p>';summary.textContent=`Checking ${total} measures…`;updateProgress(0,true);dialog.showModal();$('status').textContent='Auditing…';
+    await new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+    const failures=CanvasMeasureReferences.audit(measures,data.columns||[]);
+    for(let index=0;index<measures.length;index++){
+      const metric=measures[index];
+      if(metric.Name&&metric.Expression)try{await call('daxValidate',{name:metric.Name,expression:metric.Expression,kind:+metric.Kind||0,metrics:measures,data,useFullQuery:false});}
+      catch(error){failures.push({name:metric.Name,message:error.message||'Formula validation failed.'});}
+      if(updateProgress(index+1))await new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+    }
+    const unique=[...new Map(failures.map(item=>[`${item.name}\n${item.message}`,item])).values()];
+    summary.textContent=unique.length?`${unique.length} issue${unique.length===1?'':'s'} found in ${measures.length} measure${measures.length===1?'':'s'}.`:`All ${measures.length} measures passed the audit.`;results.replaceChildren();
+    if(!unique.length){const row=document.createElement('div');row.className='measure-audit-item ok';row.innerHTML='<b>All measures</b><span>No invalid formulas or unresolved references were found.</span>';results.append(row);}
+    for(const issue of unique){const row=document.createElement('button'),name=document.createElement('b'),message=document.createElement('span');row.type='button';row.className='measure-audit-item';name.textContent=issue.name;message.textContent=issue.message;row.append(name,message);row.onclick=()=>{const index=measures.findIndex(metric=>String(metric.Name).toLocaleLowerCase()===String(issue.name).toLocaleLowerCase());if(index>=0){dialog.close();selectMeasure(index);$('expression').focus();}};results.append(row);}
+    $('status').textContent=unique.length?'Audit found issues':'Audit passed';
+  }
+  $('renameMeasure').addEventListener('click',renameSelected);
+  $('auditMeasures').addEventListener('click',()=>auditAll().catch(error=>{toast(error.message||String(error));$('status').textContent='Audit failed';}));
+  $('save').addEventListener('click',async event=>{
+    if(allowConfirmedSave){allowConfirmedSave=false;return;}
+    saveDraft();
+    const duplicates=duplicateNames();
+    if(duplicates.length){event.preventDefault();event.stopImmediatePropagation();toast(`Duplicate measure name: ${duplicates.join(', ')}`);$('name').focus();return;}
+    const renames=renameList(),unconfirmed=renames.filter(item=>!confirmedRenames.has(renameKey(item)));
+    if(!unconfirmed.length){if(renames.length)prepareRename();return;}
+    event.preventDefault();event.stopImmediatePropagation();
+    if(!await confirmDirectRenames(unconfirmed)){$('name').focus();return;}
+    prepareRename();unconfirmed.forEach(item=>confirmedRenames.add(renameKey(item)));allowConfirmedSave=true;$('save').click();
+  },true);
+  $('apply').addEventListener('click',event=>{event.preventDefault();event.stopImmediatePropagation();const renames=prepareRename();chrome.webview.postMessage({type:'measureApply',measures,renames});},true);
+  document.querySelector('.toolbar-tools')?.addEventListener('click',event=>{if(event.target.closest('button'))event.currentTarget.removeAttribute('open');});
+  document.addEventListener('pointerdown',event=>{const menu=document.querySelector('.toolbar-tools[open]');if(menu&&!menu.contains(event.target))menu.removeAttribute('open');});
+  document.addEventListener('contextmenu',event=>{if(!event.target.closest('[data-measure]'))return;setTimeout(()=>{const menu=$('fieldMenu');if(menu.querySelector('[data-rename-measure]'))return;const button=document.createElement('button');button.type='button';button.dataset.renameMeasure='';button.textContent='Rename measure…';button.onclick=()=>{menu.classList.add('hidden');renameSelected();};menu.querySelector('.section')?.after(button);});});
+  chrome.webview.addEventListener('message',event=>{if(event.data.type==='loadMeasureWorkspace')setTimeout(()=>{originals=new WeakMap(measures.map(metric=>[metric,metric.Name]));preparedNames=new WeakMap(measures.map(metric=>[metric,metric.Name]));confirmedRenames.clear();});});
+})();

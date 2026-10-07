@@ -1,0 +1,42 @@
+/* Shared themed scrollbars for application chrome. Report data and artwork keep
+   their own formatting; only the browser controls derive from semantic roles. */
+html[data-qreports-app-theme] {
+  --qreports-scrollbar-track: color-mix(in srgb, var(--qreports-surface) 82%, var(--qreports-header));
+  --qreports-scrollbar-thumb: color-mix(in srgb, var(--qreports-text) 42%, var(--qreports-scrollbar-track));
+  --qreports-scrollbar-thumb-hover: color-mix(in srgb, var(--qreports-accent) 78%, var(--qreports-text));
+  color-scheme: var(--qreports-color-scheme, light);
+  scrollbar-color: var(--qreports-scrollbar-thumb) var(--qreports-scrollbar-track);
+}
+
+html[data-qreports-app-theme] * {
+  scrollbar-color: var(--qreports-scrollbar-thumb) var(--qreports-scrollbar-track);
+}
+
+html[data-qreports-app-theme] ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+html[data-qreports-app-theme] ::-webkit-scrollbar-track,
+html[data-qreports-app-theme] ::-webkit-scrollbar-corner,
+html[data-qreports-app-theme] ::-webkit-scrollbar-button {
+  background: var(--qreports-scrollbar-track);
+}
+
+html[data-qreports-app-theme] ::-webkit-scrollbar-thumb {
+  background: var(--qreports-scrollbar-thumb);
+  border: 3px solid var(--qreports-scrollbar-track);
+  border-radius: 999px;
+}
+
+html[data-qreports-app-theme] ::-webkit-scrollbar-thumb:hover {
+  background: var(--qreports-scrollbar-thumb-hover);
+}
+
+/* Presentation profiles can override the application roles. Keep their
+   navigation, header, and filter-pane scrollbars in that selected palette. */
+body.presentation-mode {
+  --qreports-scrollbar-track: color-mix(in srgb, var(--presentation-surface, var(--qreports-surface)) 82%, var(--presentation-header, var(--qreports-header)));
+  --qreports-scrollbar-thumb: color-mix(in srgb, var(--presentation-text, var(--qreports-text)) 42%, var(--qreports-scrollbar-track));
+  --qreports-scrollbar-thumb-hover: color-mix(in srgb, var(--viewer-selected-bg, var(--qreports-accent)) 78%, var(--presentation-text, var(--qreports-text)));
+}

@@ -1,0 +1,76 @@
+(()=>{
+  const checkbox=$('testOnChanges'),button=$('testMatrix');
+  let timer=0,running=false,queued=false,revision=0,manualPending=false,dataLoad=null;
+
+  function needsFullQuery(){
+    const cached=data?.rows?.length||0,total=Number(query?.totalRows)||0,limit=Number(query?.previewLimit)||0;
+    return !!query?.queryText&&(total>cached||(total<=0&&(!data?.columns?.length||limit>0&&cached>=limit)));
+  }
+
+  async function ensureCompleteData(){
+    if(!needsFullQuery())return;
+    if(!dataLoad)dataLoad=(async()=>{
+      $('resultCount').textContent='Loading complete source data…';
+      const result=await call('daxLoad',{query:{...query,previewLimit:0},metrics:[]});
+      data=result.data;
+      query.data=data;
+      query.totalRows=result.totalRows??data.rows.length;
+      $('dataStatus').textContent=`${data.rows.length} of ${query.totalRows} rows loaded`;
+      renderFields();
+    })();
+    try{await dataLoad;}finally{dataLoad=null;}
+  }
+
+  if(typeof validateCurrent==='function'){
+    const originalValidate=validateCurrent;
+    validateCurrent=async()=>{await ensureCompleteData();return originalValidate();};
+  }
+
+  function schedule(manual=false){
+    if(!manual&&!checkbox.checked)return;
+    revision++;
+    manualPending ||= manual;
+    clearTimeout(timer);
+    timer=setTimeout(run,manual?0:500);
+  }
+
+  async function run(){
+    if(running){queued=true;return;}
+    running=true;
+    const runRevision=revision,manual=manualPending;
+    manualPending=false;
+    saveDraft();
+    $('resultCount').textContent='Testing…';
+    try{
+      await ensureCompleteData();
+      if(!data?.columns?.length)throw new Error('Load data to test the matrix.');
+      const payload={metrics:measures,data,...zones};
+      const result=await call('daxMatrix',payload);
+      if(runRevision===revision)renderResult(pivotResult(result.data));
+    }catch(error){
+      if(runRevision===revision){
+        $('resultCount').textContent=error.message;
+        if(manual)toast(error.message);
+      }
+    }finally{
+      running=false;
+      if(queued||runRevision!==revision){queued=false;run();}
+    }
+  }
+
+  checkbox.addEventListener('change',()=>{
+    if(checkbox.checked)schedule();
+    else{clearTimeout(timer);queued=false;}
+  });
+  button.onclick=()=>schedule(true);
+  $('name').addEventListener('input',()=>schedule());
+  $('expression').addEventListener('input',()=>schedule());
+  for(const id of ['rows','columns','values','measureList']){
+    new MutationObserver(()=>schedule()).observe($(id),{childList:true,subtree:true,characterData:true});
+  }
+  globalThis.chrome?.webview?.addEventListener('message',event=>{
+    if(event.data.type!=='loadMeasureWorkspace')return;
+    const count=data?.rows?.length||0,total=Number(query?.totalRows)||count;
+    $('dataStatus').textContent=count?`${count} of ${total} rows loaded`:'Data is not loaded. Measures remain editable.';
+  });
+})();
