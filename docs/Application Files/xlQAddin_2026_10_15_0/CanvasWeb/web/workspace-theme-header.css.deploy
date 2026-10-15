@@ -1,0 +1,158 @@
+/* The light-header presets must not inherit subtitle colors from the original dark header. */
+html[data-qreports-app-theme] body > header { background: var(--qreports-header); color: var(--qreports-header-text); }
+html[data-qreports-app-theme] body > header .brand strong {
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] body > header .brand small {
+  color: var(--qreports-header-text);
+  opacity: .85;
+}
+html[data-qreports-app-theme] body > header .brand > span {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+}
+
+/* API workspace surfaces use the same semantic roles as the application
+   header instead of retaining the original light-only palette. */
+html[data-qreports-app-theme] body:has(#library):has(#inspector) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(aside,.workspace,.request-panels,.response) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(aside,#inspector,.request-line,.tabs,details,th,td) {
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(button,input,select,textarea,.library-connection,.library-endpoint,.credential-card,.modal-card,.context-menu) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(label,.pane-title p,.request-line #status,.connection-chevron,.connection-toggle small) {
+  color: var(--qreports-text);
+  opacity: .82;
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.tabs button.active,.library-endpoint.active) {
+  color: var(--qreports-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.primary,.tabs button.active) {
+  background: color-mix(in srgb,var(--qreports-accent) 14%,var(--qreports-surface));
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.primary,.run,#testToken) {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) :is(.pane-resizer,.horizontal-resizer) {
+  background: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .response-head {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) th {
+  background: color-mix(in srgb,var(--qreports-header) 70%,var(--qreports-surface));
+  color: var(--qreports-header-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) #toast {
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+}
+
+/* API result column menus use application roles instead of their legacy
+   light-only hover colors. The alias editor is a form region, not a menu row. */
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu {
+  color-scheme: var(--qreports-color-scheme, light);
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--qreports-header) 38%, transparent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu :is(button,label) {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu :is(button,label):not(:has([data-alias])):hover {
+  background: color-mix(in srgb, var(--qreports-accent) 14%, var(--qreports-surface));
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu :is(button,input,select):focus-visible {
+  outline: 2px solid var(--qreports-accent);
+  outline-offset: 1px;
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu :is(input,select) {
+  color-scheme: var(--qreports-color-scheme, light);
+  background: color-mix(in srgb, var(--qreports-surface) 92%, var(--qreports-header-text));
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  caret-color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu label:has([data-alias]) {
+  margin-block: 6px;
+  border: 1px solid var(--qreports-grid);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--qreports-grid) 8%, var(--qreports-surface));
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu label:has([data-alias]):hover {
+  background: color-mix(in srgb, var(--qreports-grid) 8%, var(--qreports-surface));
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu [data-save-alias]:hover {
+  background: var(--qreports-accent);
+  color: var(--qreports-on-accent);
+  border-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu :is(.menu-title,hr) {
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu .menu-title {
+  color: color-mix(in srgb, var(--qreports-text) 68%, var(--qreports-surface));
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .context-menu input[type="checkbox"] {
+  accent-color: var(--qreports-accent);
+}
+
+/* API response actions are created independently from the column menu, but
+   should use the same application surfaces and interaction colors. */
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .api-output-menu {
+  color-scheme: var(--qreports-color-scheme, light);
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--qreports-header) 38%, transparent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .api-output-menu button {
+  background: var(--qreports-surface);
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .api-output-menu button:hover {
+  background: color-mix(in srgb, var(--qreports-accent) 14%, var(--qreports-surface));
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .api-output-menu button:focus-visible {
+  outline: 2px solid var(--qreports-accent);
+  outline-offset: 1px;
+}
+
+/* Authentication guidance is application chrome, not report content. Keep
+   the callouts and their code sample legible in both light and dark themes. */
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .api-info-box {
+  background: color-mix(in srgb, var(--qreports-accent) 7%, var(--qreports-surface));
+  color: var(--qreports-text);
+  border-color: var(--qreports-grid);
+  border-left-color: var(--qreports-accent);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .api-info-box :is(strong,summary,code) {
+  color: var(--qreports-text);
+}
+html[data-qreports-app-theme] body:has(#library):has(#inspector) .api-info-box pre {
+  color-scheme: var(--qreports-color-scheme, light);
+  background: var(--qreports-header);
+  color: var(--qreports-header-text);
+  border: 1px solid var(--qreports-grid);
+}
