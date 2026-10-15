@@ -3,22 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>QReports for Excel</title>
+  <title>Install Qvitr</title>
   <style>
-    body { max-width: 760px; margin: 5rem auto; padding: 0 1.5rem; font: 18px/1.6 system-ui, sans-serif; color: #172033; }
-    h1 { font-size: 2.5rem; margin-bottom: .5rem; }
-    .actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
-    .actions a { padding: .8rem 1.2rem; border-radius: .4rem; text-decoration: none; background: #4051b5; color: white; }
-    .actions a.secondary { background: #edf0f7; color: #172033; }
+    :root { color-scheme: light; --ink:#172033; --muted:#5c667a; --accent:#4051b5; --panel:#f5f7fb; --line:#dce2ec; }
+    * { box-sizing: border-box; }
+    body { max-width: 920px; margin: 4rem auto; padding: 0 1.5rem; font: 17px/1.55 system-ui, sans-serif; color: var(--ink); }
+    h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05; margin: 0 0 .7rem; }
+    .lead { max-width: 720px; color: var(--muted); font-size: 1.12rem; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; margin:2rem 0; }
+    .card { padding:1.4rem; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
+    .card h2 { margin:.1rem 0 .5rem; font-size:1.25rem; }
+    .card p { color:var(--muted); min-height:4.8rem; }
+    .button { display:inline-block; padding:.75rem 1rem; border-radius:.45rem; text-decoration:none; background:var(--accent); color:white; font-weight:650; }
+    .button.secondary { background:white; color:var(--ink); border:1px solid var(--line); }
+    .note { border-left:4px solid var(--accent); padding:.7rem 1rem; background:var(--panel); }
   </style>
 </head>
 <body>
-  <h1>QReports for Excel</h1>
-  <p>Query, transform, parameterize, and present data directly in Microsoft Excel.</p>
-  <div class="actions">
-    <a href="setup.exe">Install QReports</a>
-    <a class="secondary" href="manual/">Open documentation</a>
+  <h1>Install Qvitr</h1>
+  <p class="lead">Build data tools and visual reports with Qanvas, Excel, and PowerPoint. Choose the installation that fits your environment.</p>
+  <div class="cards">
+    <section class="card">
+      <h2>Qvitr Enterprise</h2>
+      <p>Recommended Windows installer. Includes Qanvas standalone plus optional Excel and PowerPoint integrations.</p>
+      <a class="button" href="https://github.com/Steely-Staffstead/InstallQreports/releases/latest/download/Qvitr-enterprise-setup.exe">Download Qvitr Enterprise</a>
+    </section>
+    <section class="card">
+      <h2>Excel ClickOnce</h2>
+      <p>Existing per-user Excel installation with automatic ClickOnce updates.</p>
+      <a class="button secondary" href="setup.exe">Install QReports for Excel</a>
+    </section>
   </div>
+  <p class="note"><strong>License:</strong> Qanvas requires a valid Qvitr license with Canvas Tool access. A Pro license unlocks all Qvitr tools, and the same key works in standalone Qanvas and the Office integrations.</p>
+  <p><a href="manual/">Open documentation</a></p>
 </body>
 </html>
-
