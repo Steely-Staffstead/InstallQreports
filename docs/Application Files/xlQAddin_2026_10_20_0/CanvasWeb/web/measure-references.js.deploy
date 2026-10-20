@@ -1,0 +1,116 @@
+(() => {
+  const nameOf=measure=>String(measure?.Name??measure?.name??measure?.OutputName??measure?.outputName??'');
+  const expressionKeys=new Set(['expression','customformula','formula','daxexpression','formulatext']);
+  const referenceKeys=new Set(['field','measure','measurename','comparemeasure','comparisonmeasure','thresholdmeasure','rankingmeasure','sortmeasure','comparisonfield','comparefield','targetfield','columnname','key','ycolumn','valuefield','imagevalue','metric','metricname','orderby','sortby','value','selected']);
+  const collectionKeys=new Set(['values','measures','valuefields','metrics']);
+  const jsonKeys=new Set(['chartsettingsjson','settingsjson']);
+  const escaped=value=>String(value).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  function replaceUnquoted(value,pattern,replacement){let output='',chunk='',quote='';const flush=()=>{output+=quote?chunk:chunk.replace(pattern,replacement);chunk='';};for(let at=0;at<value.length;at++){const char=value[at];if(!quote&&(char==='"'||char==="'")){flush();quote=char;chunk=char;}else if(quote&&char===quote&&value[at-1]!=='\\'){chunk+=char;flush();quote='';}else chunk+=char;}flush();return output;}
+  function replaceFormula(value,renames){
+    let result=String(value??'');
+    for(const {oldName,newName} of renames){
+      const oldEscaped=escaped(oldName);
+      if(/^[A-Za-z_][A-Za-z0-9_]*$/.test(oldName))result=replaceUnquoted(result,new RegExp(`\\b${oldEscaped}\\b`,'gi'),newName);
+      else{
+        result=result.replace(new RegExp(`\\[${oldEscaped}\\]`,'gi'),`[${newName}]`);
+        result=result.replace(new RegExp(`(\\{\\{\\s*measure\\s*:\\s*)${oldEscaped}(\\s*\\}\\})`,'gi'),`$1${newName}$2`);
+        result=result.replace(new RegExp(`(measure\\s*:\\s*)${oldEscaped}(?=\\s*[|}])`,'gi'),`$1${newName}`);
+      }
+    }
+    return result;
+  }
+  function exact(value,map){return typeof value==='string'?(map.get(value.toLocaleLowerCase())||value):value;}
+  function unquoted(value){let result='',quote='';for(let at=0;at<String(value??'').length;at++){const char=String(value??'')[at];if(quote){if(char===quote&&String(value??'')[at-1]!=='\\')quote='';result+=' ';}else if(char==='"'||char==="'"){quote=char;result+=' ';}else result+=char;}return result;}
+  function formulaReferences(value,names){
+    const source=unquoted(value),found=new Set();
+    for(const match of source.matchAll(/(?:'[^']+'\s*)?\[([^\]]+)\]/g)){const key=match[1].trim().toLocaleLowerCase();if(names.has(key))found.add(key);}
+    for(const [key,item] of names){const name=item.name;if(found.has(key)||!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name))continue;const pattern=new RegExp(`(^|[^A-Za-z0-9_])${escaped(name)}(?=$|[^A-Za-z0-9_])`,'i');if(pattern.test(source))found.add(key);}
+    return found;
+  }
+  function collectStringReferences(value,parentKey,names,used,sourceId){
+    const text=String(value??''),normalized=String(parentKey||'').toLocaleLowerCase(),exactName=names.get(text.trim().toLocaleLowerCase());
+    if(exactName&&(referenceKeys.has(normalized)||collectionKeys.has(normalized)))used.add(exactName.key);
+    if(expressionKeys.has(normalized))for(const key of formulaReferences(text,names))used.add(key);
+    for(const match of text.matchAll(/\{\{\s*measure\s*:\s*([^}|]+)(?:\|[^}]*)?\}\}/gi)){const item=names.get(match[1].trim().toLocaleLowerCase());if(item)used.add(item.key);}
+    for(const [key,item] of names)if(text.toLocaleLowerCase().includes(`${String(sourceId).toLocaleLowerCase()}::${item.name.toLocaleLowerCase()}`))used.add(key);
+    if(jsonKeys.has(normalized)&&text.trim().startsWith('{'))try{collectReferences(JSON.parse(text),'',names,used,sourceId);}catch{}
+  }
+  function collectReferences(value,parentKey,names,used,sourceId){
+    if(Array.isArray(value)){for(const item of value)typeof item==='string'?collectStringReferences(item,parentKey,names,used,sourceId):collectReferences(item,parentKey,names,used,sourceId);return;}
+    if(!value||typeof value!=='object')return;
+    for(const [property,current] of Object.entries(value))typeof current==='string'?collectStringReferences(current,property,names,used,sourceId):collectReferences(current,property,names,used,sourceId);
+  }
+  function collectLinkedReferences(value,names,used,sourceId){
+    if(Array.isArray(value)){for(const item of value)collectLinkedReferences(item,names,used,sourceId);return;}
+    if(!value||typeof value!=='object')return;
+    if(String(value.sourceId||value.SourceId||'').toLocaleLowerCase()===String(sourceId).toLocaleLowerCase()){collectReferences(value,'',names,used,sourceId);return;}
+    for(const current of Object.values(value)){
+      if(typeof current==='string'){const lowered=current.toLocaleLowerCase();for(const [key,item] of names)if(lowered.includes(`${String(sourceId).toLocaleLowerCase()}::${item.name.toLocaleLowerCase()}`))used.add(key);}
+      else collectLinkedReferences(current,names,used,sourceId);
+    }
+  }
+  function findUnusedMeasures(document,sourceId,measures){
+    const candidates=(measures||[]).map((measure,index)=>({measure,index,name:nameOf(measure).trim()})).filter(item=>item.name&&Number(item.measure?.Kind??item.measure?.kind??0)!==1);
+    const names=new Map(candidates.map(item=>[item.name.toLocaleLowerCase(),{key:item.name.toLocaleLowerCase(),name:item.name,index:item.index}])),formulaUsed=new Set(),reportUsed=new Set();
+    for(const [ownerIndex,measure] of (measures||[]).entries()){
+      const expression=String(measure?.Expression??measure?.expression??measure?.CustomFormula??measure?.customFormula??measure?.Formula??measure?.formula??'');
+      for(const key of formulaReferences(expression,names))if(names.get(key)?.index!==ownerIndex)formulaUsed.add(key);
+    }
+    if(document&&typeof document==='object'){
+      const source=(document.sources||[]).find(item=>(item.id||'main')===sourceId),query=source?.query||{};
+      collectReferences({filters:query.filters||[],sorts:query.sorts||[]},'',names,reportUsed,sourceId);
+      for(const page of document.pages||[])for(const object of [...(page.tiles||[]),...(page.graphics||[])]){
+        const objectSource=object.sourceId||'main';
+        if(objectSource===sourceId)collectReferences(object,'',names,reportUsed,sourceId);
+        else collectLinkedReferences(object,names,reportUsed,sourceId);
+      }
+      for(const component of document.components||[])collectReferences(component,'',names,reportUsed,sourceId);
+    }
+    return candidates.filter(item=>!formulaUsed.has(item.name.toLocaleLowerCase())&&!reportUsed.has(item.name.toLocaleLowerCase())).map(item=>({name:item.name,index:item.index,message:'Not referenced by another formula or by an object in this Qanvas document.'}));
+  }
+  function walk(value,map,renames,parentKey=''){
+    if(Array.isArray(value))return value.map(item=>typeof item==='string'&&collectionKeys.has(parentKey)?exact(item,map):walk(item,map,renames,parentKey));
+    if(!value||typeof value!=='object')return value;
+    for(const [property,current] of Object.entries(value)){
+      const normalized=property.toLocaleLowerCase();
+      if(typeof current==='string'){
+        if(referenceKeys.has(normalized))value[property]=exact(current,map);
+        else if(expressionKeys.has(normalized)||current.includes('{{measure:'))value[property]=replaceFormula(current,renames);
+        else if(jsonKeys.has(normalized)&&current.trim().startsWith('{')){try{const parsed=JSON.parse(current);walk(parsed,map,renames);value[property]=JSON.stringify(parsed);}catch{}}
+      }else value[property]=walk(current,map,renames,normalized);
+    }
+    return value;
+  }
+  function renameDocument(document,sourceId,changes){
+    const renames=(changes||[]).map(item=>({oldName:String(item.oldName||'').trim(),newName:String(item.newName||'').trim()})).filter(item=>item.oldName&&item.newName&&item.oldName.toLocaleLowerCase()!==item.newName.toLocaleLowerCase());
+    if(!renames.length)return{renamed:0,updatedObjects:0};
+    const map=new Map(renames.map(item=>[item.oldName.toLocaleLowerCase(),item.newName]));
+    const source=(document.sources||[]).find(item=>item.id===sourceId);
+    for(const measure of source?.query?.measures||[])for(const key of Object.keys(measure))if(expressionKeys.has(key.toLocaleLowerCase())&&typeof measure[key]==='string')measure[key]=replaceFormula(measure[key],renames);
+    if(source?.query?.measureValues){const next={};for(const [key,value] of Object.entries(source.query.measureValues))next[exact(key,map)]=value;source.query.measureValues=next;}
+    let updatedObjects=0;
+    for(const page of document.pages||[])for(const object of [...(page.tiles||[]),...(page.graphics||[])]){
+      if((object.sourceId||'main')!==sourceId)continue;
+      const before=JSON.stringify(object);walk(object,map,renames);
+      if(object.kind==='valueSelector'&&object.valueSelector){for(const choice of object.valueSelector.choices||[])if(choice&&typeof choice==='object')choice.value=exact(choice.value,map);object.valueSelector.selected=exact(object.valueSelector.selected,map);}
+      if(JSON.stringify(object)!==before)updatedObjects++;
+    }
+    for(const component of document.components||[]){const before=JSON.stringify(component);walk(component,map,renames);if(JSON.stringify(component)!==before)updatedObjects++;}
+    return{renamed:renames.length,updatedObjects};
+  }
+  function audit(measures,columns){
+    const issues=[],names=new Map(),nameCounts=new Map(),fields=new Set((columns||[]).map(value=>String(value?.name??value?.Name??value).toLocaleLowerCase()));
+    for(const measure of measures||[]){const name=nameOf(measure).trim();if(name){const key=name.toLocaleLowerCase();names.set(key,name);nameCounts.set(key,(nameCounts.get(key)||0)+1);}}
+    for(const [index,measure] of (measures||[]).entries()){
+      const name=nameOf(measure).trim(),where=name||`Measure ${index+1}`,formula=String(measure?.Expression??measure?.expression??measure?.CustomFormula??measure?.customFormula??measure?.Formula??measure?.formula??'').trim();
+      if(!name)issues.push({name:where,message:'Name is blank.'});
+      else if(nameCounts.get(name.toLocaleLowerCase())>1)issues.push({name,message:'Duplicate measure name.'});
+      if(!formula)issues.push({name:where,message:'Formula is blank.'});
+      let depth=0,quote='';for(let at=0;at<formula.length;at++){const char=formula[at];if(quote){if(char===quote&&formula[at-1]!=='\\')quote='';continue;}if(char==='"'||char==="'")quote=char;else if(char==='(')depth++;else if(char===')'){depth--;if(depth<0)break;}}
+      if(depth!==0||quote)issues.push({name:where,message:'Formula has unmatched parentheses or quotes.'});
+      for(const match of formula.matchAll(/(?:'[^']+'\s*)?\[([^\]]+)\]/g)){const reference=match[1].trim().toLocaleLowerCase();if(!fields.has(reference)&&!names.has(reference))issues.push({name:where,message:`Unknown field or measure reference: [${match[1].trim()}].`});}
+    }
+    return issues;
+  }
+  window.CanvasMeasureReferences={renameDocument,replaceFormula,audit,findUnusedMeasures};
+})();

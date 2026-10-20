@@ -1,0 +1,53 @@
+(function(){
+  "use strict";
+  const text=value=>String(value??"").trim();
+  const part=value=>value==null?"∅":typeof value==="string"?value.trim().toLocaleLowerCase():value instanceof Date?value.toISOString():String(value).trim().toLocaleLowerCase();
+  const key=values=>JSON.stringify(values.map(part));
+  const sourceId=source=>text(source?.id??source?.Id);
+  const fieldIndex=(data,field)=>(data?.columns||[]).findIndex(column=>String(column).toLowerCase()===String(field).toLowerCase());
+  function normalize(input,sources=[],makeId=()=>`relationship-${Math.random().toString(36).slice(2)}`){
+    const ids=new Set((sources||[]).map(sourceId));
+    return (Array.isArray(input)?input:[]).map(item=>{
+      const fromSourceId=text(item?.fromSourceId??item?.FromSourceId??item?.primarySourceId??item?.PrimarySourceId??item?.factSourceId??item?.FactSourceId),toSourceId=text(item?.toSourceId??item?.ToSourceId??item?.relatedSourceId??item?.RelatedSourceId??item?.dimensionSourceId??item?.DimensionSourceId),type=text(item?.type??item?.Type??"dimension").toLowerCase()==="lookup"?"lookup":"dimension",factSourceId=text(item?.factSourceId??item?.FactSourceId??fromSourceId),dimensionSourceId=text(item?.dimensionSourceId??item?.DimensionSourceId??toSourceId),enabled=item?.enabled!==false&&item?.Enabled!==false&&item?.active!==false&&item?.Active!==false;
+      return{id:text(item?.id??item?.Id)||makeId(),fromSourceId,toSourceId,type,factSourceId,dimensionSourceId,filterDirection:text(item?.filterDirection??item?.FilterDirection??"dimensionToFact")||"dimensionToFact",enabled,active:enabled,keys:(Array.isArray(item?.keys??item?.Keys)?item.keys??item.Keys:[]).map(mapping=>({fromField:text(mapping?.fromField??mapping?.FromField??mapping?.primaryField??mapping?.PrimaryField??mapping?.factField??mapping?.FactField),toField:text(mapping?.toField??mapping?.ToField??mapping?.relatedField??mapping?.RelatedField??mapping?.dimensionField??mapping?.DimensionField)})).filter(mapping=>mapping.fromField&&mapping.toField)};
+    }).filter(item=>item.fromSourceId!==item.toSourceId&&ids.has(item.fromSourceId)&&ids.has(item.toSourceId)&&item.keys.length);
+  }
+  function direct(relationships,primarySourceId,relatedSourceId){
+    for(const relationship of relationships||[]){
+      if(relationship.enabled===false||relationship.active===false)continue;
+      if(relationship.fromSourceId===primarySourceId&&relationship.toSourceId===relatedSourceId)return{relationship,keys:relationship.keys.map(mapping=>({primaryField:mapping.fromField,relatedField:mapping.toField}))};
+      if(relationship.toSourceId===primarySourceId&&relationship.fromSourceId===relatedSourceId)return{relationship,keys:relationship.keys.map(mapping=>({primaryField:mapping.toField,relatedField:mapping.fromField}))};
+    }
+    return null;
+  }
+  function dimensionLinks(relationships,primarySourceId){
+    return (relationships||[]).filter(relationship=>relationship.enabled!==false&&relationship.active!==false&&relationship.type!=="lookup"&&relationship.factSourceId===primarySourceId&&relationship.dimensionSourceId&&relationship.dimensionSourceId!==primarySourceId);
+  }
+  function cardinality(relationship,sources=[]){
+    const map=new Map((sources||[]).map(source=>[sourceId(source),source])),inspect=(id,fields)=>{const data=map.get(id)?.query?.data,indexes=fields.map(field=>fieldIndex(data,field));if(!data?.rows?.length||indexes.some(index=>index<0))return null;const counts=new Map(),displayByKey=new Map();for(const row of data.rows){const values=indexes.map(index=>row[index]),composite=key(values);counts.set(composite,(counts.get(composite)||0)+1);if(!displayByKey.has(composite))displayByKey.set(composite,values.map(value=>value==null||String(value).trim()===""?"(blank)":String(value).trim()).join(" + "));}return{duplicateRows:[...counts.values()].reduce((total,count)=>total+Math.max(0,count-1),0),unique:[...counts.values()].every(count=>count===1),counts,displayByKey};},left=inspect(relationship.fromSourceId,(relationship.keys||[]).map(mapping=>mapping.fromField)),right=inspect(relationship.toSourceId,(relationship.keys||[]).map(mapping=>mapping.toField));
+    if(!left||!right)return{label:"Cardinality unavailable",quality:"unknown",message:"Load both sources and complete the key mapping to check uniqueness."};
+    const label=left.unique?(right.unique?"1 : 1":"1 : many"):(right.unique?"many : 1":"many : many"),dimensionId=relationship.type!=="lookup"?(relationship.dimensionSourceId||relationship.toSourceId):"",factId=relationship.type!=="lookup"?(relationship.factSourceId||relationship.fromSourceId):"",dimensionSide=dimensionId?(dimensionId===relationship.fromSourceId?left:right):null,factSide=factId?(factId===relationship.fromSourceId?left:right):null,missingKeys=dimensionSide&&factSide?[...factSide.counts.keys()].filter(composite=>!dimensionSide.counts.has(composite)):[],missingRows=missingKeys.reduce((total,composite)=>total+(factSide.counts.get(composite)||0),0),coverage=dimensionSide&&factSide?{checked:true,factKeys:factSide.counts.size,missingKeys:missingKeys.length,missingRows,samples:missingKeys.slice(0,3).map(composite=>factSide.displayByKey.get(composite))}:{checked:false,factKeys:0,missingKeys:0,missingRows:0,samples:[]},quality=dimensionSide&&!dimensionSide.unique?"warning":dimensionSide&&coverage.missingKeys?"coverage-warning":!dimensionSide&&!left.unique&&!right.unique?"warning":"valid",duplicates=[];if(left.duplicateRows)duplicates.push(`${left.duplicateRows} duplicate row${left.duplicateRows===1?"":"s"} on the primary side`);if(right.duplicateRows)duplicates.push(`${right.duplicateRows} duplicate row${right.duplicateRows===1?"":"s"} on the related side`);
+    const uniquenessMessage=dimensionSide&&!dimensionSide.unique?`The Dimension source key is not unique. ${duplicates.join("; ")}. Dimension fields would be ambiguous.`:!dimensionSide&&quality==="warning"?`No unique side was found. ${duplicates.join("; ")}. Lookup fields may be ambiguous and measures can be double-counted.`:duplicates.length?`${duplicates.join("; ")}. The required ${dimensionSide?"Dimension":"lookup"} side is unique.`:"Both loaded key sets are unique.",coverageMessage=!dimensionSide?"":coverage.missingKeys?`${coverage.missingRows} fact row${coverage.missingRows===1?"":"s"} across ${coverage.missingKeys} distinct key${coverage.missingKeys===1?"":"s"} ${coverage.missingRows===1?"has":"have"} no Dimension match. Missing: ${coverage.samples.join(", ")}${coverage.missingKeys>coverage.samples.length?", …":""}.`:`All ${coverage.factKeys} distinct fact key${coverage.factKeys===1?"":"s"} have a Dimension match.`;
+    return{label,quality,message:[uniquenessMessage,coverageMessage].filter(Boolean).join(" "),coverage};
+  }
+  function createRuntime({primarySourceId,primaryData,relationships=[],sources=[],getRelatedData}){
+    const sourceMap=new Map((sources||[]).map(source=>[sourceId(source),source])),runtimes=new Map(),lookupCache=new Map();
+    const runtimeFor=relatedSourceId=>{
+      if(runtimes.has(relatedSourceId))return runtimes.get(relatedSourceId);
+      const link=direct(relationships,primarySourceId,relatedSourceId),source=sourceMap.get(relatedSourceId),relatedData=getRelatedData?.(relatedSourceId)??source?.query?.data;
+      if(!link||!source||!relatedData){runtimes.set(relatedSourceId,null);return null;}
+      const primaryIndexes=link.keys.map(mapping=>fieldIndex(primaryData,mapping.primaryField)),relatedIndexes=link.keys.map(mapping=>fieldIndex(relatedData,mapping.relatedField));
+      if(primaryIndexes.some(index=>index<0)||relatedIndexes.some(index=>index<0)){runtimes.set(relatedSourceId,null);return null;}
+      const index=new Map();for(const row of relatedData.rows||[]){const composite=key(relatedIndexes.map(column=>row[column]));if(!index.has(composite))index.set(composite,[]);index.get(composite).push(row);}
+      const runtime={link,source,data:relatedData,index,primaryIndexes};runtimes.set(relatedSourceId,runtime);return runtime;
+    };
+    const keysFor=(runtime,rows)=>[...new Set((rows||[]).map(row=>key(runtime.primaryIndexes.map(column=>row[column]))))].sort();
+    const rowsFor=(rows,relatedSourceId)=>{const runtime=runtimeFor(relatedSourceId);if(!runtime)return[];return keysFor(runtime,rows).flatMap(composite=>runtime.index.get(composite)||[]);};
+    const lookupField=(rows,relatedSourceId,field)=>{const runtime=runtimeFor(relatedSourceId);if(!runtime)return"";const keys=keysFor(runtime,rows),cacheKey=JSON.stringify([relatedSourceId,field,keys]);if(lookupCache.has(cacheKey))return lookupCache.get(cacheKey);const index=fieldIndex(runtime.data,field);if(index<0)return"";const distinct=[];for(const row of keys.flatMap(composite=>runtime.index.get(composite)||[]))if(!distinct.some(value=>part(value)===part(row[index])))distinct.push(row[index]);const result=distinct.length===1?distinct[0]:distinct.length?"(multiple)":"";lookupCache.set(cacheKey,result);return result;};
+    const materialize=bindings=>{const requested=(bindings||[]).filter(binding=>binding?.sourceId&&binding?.field&&binding?.token&&!primaryData.columns.includes(binding.token)),columns=[...primaryData.columns,...requested.map(binding=>binding.token)],types=[...(primaryData.types||[]),...requested.map(binding=>{const runtime=runtimeFor(binding.sourceId),index=fieldIndex(runtime?.data,binding.field);return runtime?.data?.types?.[index]||"String";})],rows=(primaryData.rows||[]).map(row=>[...row,...requested.map(binding=>lookupField([row],binding.sourceId,binding.field))]);return{...primaryData,columns,types,rows,rowIndexes:primaryData.rowIndexes?[...primaryData.rowIndexes]:primaryData.rowIndexes};};
+    const filterPrimary=relatedSourceId=>{const runtime=runtimeFor(relatedSourceId);if(!runtime)return primaryData;const rows=[],rowIndexes=[];for(let index=0;index<(primaryData.rows||[]).length;index++){const row=primaryData.rows[index],composite=key(runtime.primaryIndexes.map(column=>row[column]));if(!runtime.index.has(composite))continue;rows.push(row);if(primaryData.rowIndexes)rowIndexes.push(primaryData.rowIndexes[index]);}return{...primaryData,rows,rowIndexes:primaryData.rowIndexes?rowIndexes:primaryData.rowIndexes};};
+    const keySignature=(rows,relatedSourceId)=>{const runtime=runtimeFor(relatedSourceId);return runtime?JSON.stringify(keysFor(runtime,rows)):"[]";};
+    return{runtimeFor,rowsFor,lookupField,materialize,filterPrimary,keySignature};
+  }
+  window.CanvasSourceRelationships={normalize,direct,dimensionLinks,cardinality,createRuntime,key,part};
+})();
