@@ -9,6 +9,7 @@ $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $setupRoot = Join-Path $repositoryRoot 'xlQRep.Setup'
 $artifactRoot = Join-Path $setupRoot 'artifacts'
 $buildVersionFile = Join-Path $artifactRoot 'BUILD_VERSION.txt'
+$versionWasSpecified = $PSBoundParameters.ContainsKey('Version')
 
 if (-not $Version) {
     if (-not (Test-Path -LiteralPath $buildVersionFile -PathType Leaf)) {
@@ -25,10 +26,27 @@ $releaseRoot = Join-Path $artifactRoot (Join-Path 'release' "v$Version")
 $setup = Join-Path $releaseRoot 'Qvitr-enterprise-setup.exe'
 $msi = Join-Path $releaseRoot 'Qvitr-enterprise.msi'
 $validator = Join-Path $setupRoot 'github-distribution\upload-enterprise-release.ps1'
+$manifest = Join-Path $releaseRoot 'qvitr-update.json'
+$sourceProject = Join-Path $repositoryRoot 'CanvasWeb\CanvasWeb.csproj'
 
-foreach ($file in @($setup, $msi, $validator)) {
+$sourceFileVersion = $null
+if (Test-Path -LiteralPath $sourceProject -PathType Leaf) {
+    [xml] $projectXml = Get-Content -LiteralPath $sourceProject -Raw
+    $sourceFileVersion = [string] $projectXml.Project.PropertyGroup.FileVersion | Where-Object { $_ } | Select-Object -First 1
+}
+
+foreach ($file in @($setup, $msi, $validator, $manifest)) {
     if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
-        throw "Missing installer file: $file"
+        if (-not $versionWasSpecified) {
+            Write-Host ''
+            Write-Host 'Qvitr Enterprise installer'
+            Write-Host "Last build marker:   $Version"
+            if ($sourceFileVersion) { Write-Host "Qanvas source version: $sourceFileVersion" }
+            Write-Warning "The staged v$Version release uses the legacy layout or is incomplete. Missing: $file"
+            Write-Host 'Status:              REBUILD REQUIRED FOR THE NEW UPDATE MANIFEST'
+            return
+        }
+        throw "Missing installer release file: $file`nBuild and stage it with .\documentation\build_enterprise_installer.bat $Version"
     }
 }
 
@@ -74,6 +92,7 @@ if (-not $?) {
 Write-Host ''
 Write-Host 'Qvitr Enterprise installer'
 Write-Host "Version:           $Version"
+if ($sourceFileVersion) { Write-Host "Qanvas source version: $sourceFileVersion" }
 Write-Host "Setup file version: $setupVersion"
 Write-Host "MSI ProductVersion: $msiVersion"
 Write-Host "Release folder:     $releaseRoot"

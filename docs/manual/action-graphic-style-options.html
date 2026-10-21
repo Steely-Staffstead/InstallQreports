@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Qanvas action graphic style options</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #081827;
+      --canvas: #101f32;
+      --grid: rgba(148, 181, 211, .09);
+      --surface: #172b3e;
+      --surface-2: #203a50;
+      --text: #f3f7fb;
+      --muted: #adc0d1;
+      --border: #49667e;
+      --accent: #65b8f5;
+      --on-accent: #071827;
+      --shadow: 0 14px 30px rgba(0, 0, 0, .25);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--text); }
+    main { width: min(1440px, calc(100% - 40px)); margin: 0 auto; padding: 38px 0 60px; }
+    header { margin-bottom: 28px; }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 42px); font-weight: 650; letter-spacing: -.03em; }
+    header p { max-width: 780px; margin: 9px 0 0; color: var(--muted); font-size: 17px; }
+    .options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .option { min-width: 0; }
+    .preview {
+      min-height: 300px;
+      display: grid;
+      place-items: center;
+      padding: 34px;
+      overflow: hidden;
+      background-color: var(--canvas);
+      background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 26px 26px;
+      border: 1px solid #274056;
+      border-radius: 16px;
+    }
+    .sample { width: min(100%, 530px); color: var(--text); text-decoration: none; }
+    .name { margin: 11px 0 3px; font-size: 19px; font-weight: 650; }
+    .use { margin: 0; color: var(--muted); font-size: 14px; }
+    .kicker { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .title { margin: 5px 0 0; font-size: 24px; line-height: 1.16; font-weight: 650; }
+    .copy { margin: 10px 0 0; color: var(--muted); line-height: 1.45; }
+    .arrow { font-size: 28px; line-height: 1; }
+
+    .rail { display: grid; grid-template-columns: 1fr 76px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+    .rail-copy { padding: 24px 26px; }
+    .rail-go { display: grid; place-items: center; color: var(--on-accent); background: var(--accent); }
+
+    .split { display: grid; grid-template-columns: 1fr 145px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+    .split-copy { padding: 23px 25px; }
+    .split-command { display: grid; place-items: center; align-content: center; gap: 8px; padding: 18px; color: var(--accent); background: var(--surface-2); border-left: 1px solid var(--border); font-weight: 650; text-align: center; }
+    .split-symbol { font-size: 29px; }
+
+    .corner { position: relative; overflow: hidden; padding: 26px 86px 25px 27px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); }
+    .corner-go { position: absolute; right: 0; top: 0; width: 78px; height: 78px; display: grid; place-items: start end; padding: 12px 13px; color: var(--on-accent); background: var(--accent); clip-path: polygon(0 0, 100% 0, 100% 100%); font-size: 25px; }
+
+    .underline { padding: 24px 25px 0; background: var(--surface); border-radius: 12px; box-shadow: var(--shadow); }
+    .underline-action { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 13px 2px 14px; color: var(--accent); border-top: 3px solid var(--accent); font-weight: 650; }
+
+    .icon-card { width: min(100%, 330px); padding: 26px; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); }
+    .icon-disc { width: 68px; height: 68px; display: grid; place-items: center; margin: 0 auto 18px; color: var(--on-accent); background: var(--accent); border-radius: 18px; font-size: 31px; }
+    .icon-action { display: inline-flex; gap: 8px; align-items: center; margin-top: 18px; color: var(--accent); font-weight: 650; }
+
+    .ribbon { position: relative; padding: 27px 60px 27px 52px; background: var(--surface); border-radius: 8px 20px 20px 8px; box-shadow: var(--shadow); }
+    .ribbon-mark { position: absolute; left: 0; top: 0; bottom: 0; width: 25px; display: grid; place-items: center; color: var(--on-accent); background: var(--accent); font-size: 20px; }
+    .ribbon-mark::after { content: ""; position: absolute; right: -14px; top: calc(50% - 19px); border-top: 19px solid transparent; border-bottom: 19px solid transparent; border-left: 14px solid var(--accent); }
+    .ribbon-go { position: absolute; right: 23px; top: calc(50% - 15px); color: var(--accent); }
+
+    .step { position: relative; padding: 34px 27px 25px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
+    .step-tab { position: absolute; left: 22px; top: -20px; padding: 9px 15px; color: var(--on-accent); background: var(--accent); border-radius: 10px; font-weight: 700; }
+    .step-action { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; color: var(--accent); font-weight: 650; }
+
+    .strip { display: flex; align-items: center; gap: 18px; padding: 16px 18px; background: rgba(23, 43, 62, .92); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+    .strip-icon { flex: 0 0 50px; height: 50px; display: grid; place-items: center; color: var(--accent); background: var(--surface-2); border-radius: 12px; font-size: 25px; }
+    .strip-copy { flex: 1; min-width: 0; }
+    .strip .title { font-size: 19px; }
+    .strip-go { color: var(--accent); font-size: 27px; }
+
+    .direction { display: grid; grid-template-columns: 1fr 95px; filter: drop-shadow(0 12px 24px rgba(0, 0, 0, .25)); }
+    .direction-copy { padding: 24px 18px 24px 27px; background: var(--surface); border: 1px solid var(--border); border-right: 0; border-radius: 16px 0 0 16px; }
+    .direction-tip { display: grid; place-items: center; color: var(--on-accent); background: var(--accent); clip-path: polygon(0 0, 64% 0, 100% 50%, 64% 100%, 0 100%, 22% 50%); font-size: 31px; }
+
+    .editorial { padding: 8px 4px; }
+    .editorial-top { display: flex; align-items: center; gap: 12px; color: var(--accent); }
+    .editorial-line { flex: 1; height: 1px; background: var(--border); }
+    .editorial-symbol { font-size: 22px; }
+    .editorial .title { margin-top: 18px; font-size: 30px; }
+    .editorial-action { display: flex; align-items: center; gap: 9px; margin-top: 20px; color: var(--accent); font-weight: 650; }
+
+    .collection-title { grid-column: 1 / -1; margin: 20px 0 -4px; color: var(--muted); font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+
+    .chapter { display: grid; grid-template-columns: 112px 1fr; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+    .chapter-number { display: grid; place-items: center; color: var(--accent); background: var(--surface-2); border-right: 1px solid var(--border); font-size: 48px; font-weight: 300; letter-spacing: -.06em; }
+    .chapter-copy { position: relative; padding: 24px 70px 24px 25px; }
+    .chapter-go { position: absolute; right: 24px; top: calc(50% - 15px); color: var(--accent); }
+
+    .signal { overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 15px; box-shadow: var(--shadow); }
+    .signal-track { display: flex; align-items: center; gap: 11px; padding: 13px 22px; color: var(--accent); background: var(--surface-2); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .signal-dot { width: 12px; height: 12px; flex: 0 0 12px; background: var(--accent); border: 3px solid var(--surface); border-radius: 50%; box-shadow: 0 0 0 2px var(--accent); }
+    .signal-line { height: 1px; flex: 1; background: var(--border); }
+    .signal-content { padding: 22px 24px 24px; }
+    .signal-action { display: flex; justify-content: space-between; margin-top: 18px; color: var(--accent); font-weight: 650; }
+
+    .fold { position: relative; overflow: hidden; padding: 27px 88px 26px 27px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+    .fold-corner { position: absolute; right: 0; top: 0; width: 72px; height: 72px; color: var(--on-accent); background: linear-gradient(225deg, var(--canvas) 0 49%, var(--accent) 50% 100%); }
+    .fold-corner span { position: absolute; right: 13px; top: 42px; font-size: 19px; }
+    .fold-action { margin-top: 18px; color: var(--accent); font-weight: 650; }
+
+    .bracket { position: relative; padding: 24px 72px 24px 31px; }
+    .bracket::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 18px; border-top: 3px solid var(--accent); border-bottom: 3px solid var(--accent); border-left: 3px solid var(--accent); border-radius: 9px 0 0 9px; }
+    .bracket-go { position: absolute; right: 3px; top: calc(50% - 25px); width: 50px; height: 50px; display: grid; place-items: center; color: var(--on-accent); background: var(--accent); border-radius: 50%; font-size: 23px; }
+
+    .waypoint { position: relative; padding: 30px 25px 24px 58px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); }
+    .waypoint-line { position: absolute; left: 26px; top: -34px; bottom: -34px; width: 2px; background: var(--border); }
+    .waypoint-dot { position: absolute; left: 17px; top: 38px; width: 20px; height: 20px; background: var(--accent); border: 5px solid var(--surface); border-radius: 50%; box-shadow: 0 0 0 2px var(--accent); }
+    .waypoint-action { display: inline-flex; gap: 9px; margin-top: 18px; color: var(--accent); font-weight: 650; }
+
+    .metric-gateway { display: grid; grid-template-columns: 145px 1fr; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+    .metric-value { display: grid; place-items: center; align-content: center; gap: 5px; color: var(--on-accent); background: var(--accent); }
+    .metric-value strong { font-size: 38px; line-height: 1; }
+    .metric-value small { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .metric-copy { padding: 24px 25px; }
+    .metric-action { display: flex; justify-content: space-between; margin-top: 18px; color: var(--accent); font-weight: 650; }
+
+    .beam { position: relative; overflow: hidden; padding: 28px 100px 27px 28px; background: var(--surface); border-radius: 18px; box-shadow: var(--shadow); }
+    .beam::after { content: ""; position: absolute; right: -50px; top: -80px; width: 150px; height: 290px; background: var(--accent); opacity: .2; transform: rotate(24deg); }
+    .beam-go { position: absolute; z-index: 1; right: 27px; top: calc(50% - 25px); width: 50px; height: 50px; display: grid; place-items: center; color: var(--accent); border: 2px solid var(--accent); border-radius: 50%; font-size: 23px; }
+
+    .portal { position: relative; padding: 13px; border: 1px solid var(--border); border-radius: 24px; }
+    .portal-inner { position: relative; padding: 28px 76px 27px 27px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+    .portal-go { position: absolute; right: 24px; top: calc(50% - 24px); width: 48px; height: 48px; display: grid; place-items: center; color: var(--on-accent); background: var(--accent); border-radius: 14px; font-size: 22px; }
+    .portal-mark { position: absolute; left: 28px; right: 28px; bottom: -1px; height: 3px; background: var(--accent); border-radius: 3px 3px 0 0; }
+
+    .crumb-card { overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 15px; box-shadow: var(--shadow); }
+    .crumb-path { display: flex; align-items: center; gap: 8px; padding: 13px 22px; color: var(--muted); background: var(--surface-2); font-size: 12px; }
+    .crumb-path b { color: var(--accent); }
+    .crumb-body { padding: 22px 24px 24px; }
+    .crumb-action { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; color: var(--accent); font-weight: 650; }
+
+    .floating { position: relative; margin-right: 35px; padding: 27px 74px 27px 27px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+    .floating-go { position: absolute; right: -35px; top: calc(50% - 35px); width: 70px; height: 70px; display: grid; place-items: center; color: var(--on-accent); background: var(--accent); border: 8px solid var(--canvas); border-radius: 50%; font-size: 26px; }
+
+    @media (max-width: 900px) { .options { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) {
+      main { width: min(100% - 24px, 1440px); padding-top: 24px; }
+      .preview { min-height: 330px; padding: 26px 16px; }
+      .split { grid-template-columns: 1fr; }
+      .split-command { grid-auto-flow: column; justify-content: center; border-left: 0; border-top: 1px solid var(--border); }
+      .direction { grid-template-columns: 1fr 72px; }
+      .chapter { grid-template-columns: 82px 1fr; }
+      .chapter-number { font-size: 36px; }
+      .metric-gateway { grid-template-columns: 110px 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Qanvas action graphic concepts</h1>
+      <p>Twenty alternatives for page links, navigation actions and report workflows. The proposed style name appears beneath each example.</p>
+    </header>
+
+    <section class="options" aria-label="Action graphic style options">
+      <article class="option">
+        <div class="preview"><div class="sample rail"><div class="rail-copy"><div class="kicker">Next page</div><div class="title">Explore regional performance</div><p class="copy">Open the detailed view with trends and comparisons.</p></div><div class="rail-go"><span class="arrow">→</span></div></div></div>
+        <h2 class="name">Arrow rail</h2><p class="use">Strong destination cue for medium or large tiles.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample split"><div class="split-copy"><div class="kicker">Report section</div><div class="title">Operational overview</div><p class="copy">Review tasks, hours and delivery status.</p></div><div class="split-command"><span class="split-symbol">▦</span><span>Open page</span></div></div></div>
+        <h2 class="name">Split command</h2><p class="use">Separates descriptive content from the clickable action.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample corner"><span class="corner-go">↗</span><div class="kicker">Deep dive</div><div class="title">Customer analysis</div><p class="copy">Move from the summary into customer-level detail.</p></div></div>
+        <h2 class="name">Corner launch</h2><p class="use">Clean card with a compact launch marker.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample underline"><div class="kicker">Finance</div><div class="title">Monthly result</div><p class="copy">Revenue, cost and margin development.</p><div class="underline-action"><span>View report</span><span class="arrow">→</span></div></div></div>
+        <h2 class="name">Underline action</h2><p class="use">Low visual weight and suitable beside charts.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample icon-card"><div class="icon-disc">▣</div><div class="title">Schedule</div><p class="copy">Open the project timeline and milestones.</p><div class="icon-action"><span>Open</span><span>→</span></div></div></div>
+        <h2 class="name">Icon tile</h2><p class="use">Dashboard-friendly and recognizable at a glance.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample ribbon"><span class="ribbon-mark">›</span><span class="ribbon-go arrow">→</span><div class="kicker">Navigate</div><div class="title">Go to executive summary</div><p class="copy">Key figures and current priorities.</p></div></div>
+        <h2 class="name">Ribbon edge</h2><p class="use">Directional accent without a full highlighted border.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample step"><span class="step-tab">⚑ Stage 3</span><div class="title">Implementation</div><p class="copy">Open activities, responsibilities and progress for this stage.</p><div class="step-action"><span>View stage</span><span>→</span></div></div></div>
+        <h2 class="name">Step tab</h2><p class="use">Designed for processes, phases and project navigation.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample strip"><span class="strip-icon">♟</span><span class="strip-copy"><span class="kicker">People</span><span class="title">Resource overview</span></span><span class="strip-go">›</span></div></div>
+        <h2 class="name">Compact strip</h2><p class="use">Space-efficient row for menus and action lists.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample direction"><div class="direction-copy"><div class="kicker">Continue</div><div class="title">Forecast assumptions</div><p class="copy">Review drivers before opening the forecast.</p></div><div class="direction-tip">→</div></div></div>
+        <h2 class="name">Direction block</h2><p class="use">Presentation-oriented and clearly communicates movement.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample editorial"><div class="editorial-top"><span class="kicker">Further analysis</span><span class="editorial-line"></span><span class="editorial-symbol">⌁</span></div><div class="title">See what drives the variance</div><p class="copy">Open the supporting analysis with company and region breakdowns.</p><div class="editorial-action"><span>Explore analysis</span><span>↗</span></div></div></div>
+        <h2 class="name">Editorial link</h2><p class="use">Minimal report-style navigation without card chrome.</p>
+      </article>
+
+      <h2 class="collection-title">Ten additional concepts</h2>
+
+      <article class="option">
+        <div class="preview"><div class="sample chapter"><div class="chapter-number">04</div><div class="chapter-copy"><div class="kicker">Report chapter</div><div class="title">Commercial performance</div><p class="copy">Continue to sales, pipeline and customer development.</p><span class="chapter-go arrow">→</span></div></div></div>
+        <h2 class="name">Chapter marker</h2><p class="use">Strong numbered navigation for structured reports and board packs.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample signal"><div class="signal-track"><span class="signal-dot"></span><span>Live overview</span><span class="signal-line"></span><span>04</span></div><div class="signal-content"><div class="title">Operations control room</div><p class="copy">Open current delivery status, exceptions and actions.</p><div class="signal-action"><span>Open status</span><span>→</span></div></div></div></div>
+        <h2 class="name">Signal card</h2><p class="use">Useful for live, monitored or frequently refreshed report sections.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample fold"><div class="fold-corner"><span>↗</span></div><div class="kicker">Supporting detail</div><div class="title">Read the commentary</div><p class="copy">Open assumptions, notes and explanations behind the result.</p><div class="fold-action">Open notes</div></div></div>
+        <h2 class="name">Folded corner</h2><p class="use">Document-inspired navigation for notes, appendices and commentary.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample bracket"><div class="kicker">Focused view</div><div class="title">Investigate cost variance</div><p class="copy">Move directly to the selected analytical path.</p><span class="bracket-go">→</span></div></div>
+        <h2 class="name">Bracket callout</h2><p class="use">Open design that emphasizes content without enclosing the whole tile.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample waypoint"><span class="waypoint-line"></span><span class="waypoint-dot"></span><div class="kicker">Next checkpoint</div><div class="title">Management review</div><p class="copy">Continue along the reporting workflow to decisions and actions.</p><div class="waypoint-action"><span>Go to checkpoint</span><span>→</span></div></div></div>
+        <h2 class="name">Waypoint link</h2><p class="use">Fits timelines, guided stories and sequential presentation pages.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample metric-gateway"><div class="metric-value"><strong>72%</strong><small>Complete</small></div><div class="metric-copy"><div class="kicker">Delivery</div><div class="title">Project progress</div><p class="copy">Open milestones, delays and remaining work.</p><div class="metric-action"><span>View details</span><span>→</span></div></div></div></div>
+        <h2 class="name">Metric gateway</h2><p class="use">Combines one meaningful KPI with navigation to its detailed view.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample beam"><div class="kicker">Recommended next</div><div class="title">Review forecast changes</div><p class="copy">See updated drivers and their effect on the full-year outlook.</p><span class="beam-go">→</span></div></div>
+        <h2 class="name">Focus beam</h2><p class="use">Presentation-friendly emphasis without filling a full command panel.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample portal"><div class="portal-inner"><div class="kicker">Open workspace</div><div class="title">Planning dashboard</div><p class="copy">Enter the detailed planning and scenario view.</p><span class="portal-go">↗</span><span class="portal-mark"></span></div></div></div>
+        <h2 class="name">Portal frame</h2><p class="use">A framed entry point for major destinations or separate work areas.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample crumb-card"><div class="crumb-path"><span>Overview</span><span>›</span><span>Finance</span><span>›</span><b>Margin</b></div><div class="crumb-body"><div class="title">Margin development</div><p class="copy">Continue deeper while preserving the report hierarchy.</p><div class="crumb-action"><span>Open margin analysis</span><span>→</span></div></div></div></div>
+        <h2 class="name">Breadcrumb launch</h2><p class="use">Clarifies hierarchy when reports contain several drill-down levels.</p>
+      </article>
+
+      <article class="option">
+        <div class="preview"><div class="sample floating"><div class="kicker">Quick access</div><div class="title">Open task board</div><p class="copy">Jump to ownership, priorities and due dates.</p><span class="floating-go">→</span></div></div>
+        <h2 class="name">Floating command</h2><p class="use">Clear action affordance for dashboard tiles and touch-friendly pages.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

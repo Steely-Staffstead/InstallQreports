@@ -344,6 +344,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#qvitr-enterprise-installer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qvitr Enterprise installer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Qvitr Enterprise installer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-clickonce-excel-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy ClickOnce Excel installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1414,6 +1453,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#qvitr-enterprise-installer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qvitr Enterprise installer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Qvitr Enterprise installer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-clickonce-excel-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy ClickOnce Excel installation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1464,6 +1542,23 @@
 
 
 <h1 id="installation">Installation</h1>
+<h2 id="qvitr-enterprise-installer">Qvitr Enterprise installer</h2>
+<p>The recommended Windows package is <strong>Qvitr Enterprise</strong>. It installs Qanvas and, when selected, the Excel and PowerPoint integrations. The installer also supplies the required .NET 8 Desktop Runtime when it is missing.</p>
+<ol>
+<li>Close Qanvas, Excel and PowerPoint.</li>
+<li>Download <code>Qvitr-enterprise-setup.exe</code> from the latest <a href="https://github.com/Steely-Staffstead/InstallQreports/releases/latest">Qvitr GitHub release</a>.</li>
+<li>Run the setup as an administrator and select the required components.</li>
+<li>Open Qanvas or Office and verify the Qvitr commands are available.</li>
+</ol>
+<h3 id="manual-updates">Manual updates</h3>
+<p>Qvitr does not check for enterprise updates automatically. Choose <strong>Check for updates</strong> from:</p>
+<ul>
+<li>Qanvas: <strong>Help (?) &gt; Check for updates</strong>;</li>
+<li>Excel: <strong>QRep &gt; Settings &gt; Check for updates</strong>;</li>
+<li>PowerPoint: <strong>QReports &gt; Help &gt; Check for updates</strong>.</li>
+</ul>
+<p>Qvitr compares the installed Qanvas file version with the latest release manifest. When a newer release exists, it asks before downloading. The download is checked against its SHA-256 hash and must contain an Authenticode signature before Windows setup is opened. Close Qanvas, Excel and PowerPoint before confirming the installation so their installed files are not locked.</p>
+<h2 id="legacy-clickonce-excel-installation">Legacy ClickOnce Excel installation</h2>
 <h2 id="requirements">Requirements</h2>
 <ul>
 <li>Microsoft Excel for Windows</li>
@@ -1477,9 +1572,9 @@
 <li>Complete the installation prompts.</li>
 <li>Open Excel and confirm that the <strong>QReports</strong> ribbon is visible.</li>
 </ol>
-<p>QReports checks the installation site for published updates.</p>
+<p>The legacy ClickOnce Excel package checks its installation site for published updates. This is separate from the manual Qvitr Enterprise update command.</p>
 <h2 id="upgrade">Upgrade</h2>
-<p>Close and reopen Excel after a new release has been published. Follow the update prompt if one appears.</p>
+<p>For Qvitr Enterprise, use <strong>Check for updates</strong> manually. For the legacy ClickOnce installation, close and reopen Excel after a release and follow its ClickOnce prompt if one appears.</p>
 
 
 

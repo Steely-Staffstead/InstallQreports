@@ -1525,8 +1525,14 @@ navigation, zoom, filters, pointer, and temporary annotation tools available.</p
 </ul>
 <p>Presentation settings choose whether pages open at Fit screen or 100%, and
 whether focus transitions are animated. Moving to another page reapplies the
-chosen default view. Controls can auto-hide or remain pinned. The page counter
-and slide chooser help with larger reports.</p>
+chosen default view. Page tabs stay in the compact top row while space remains;
+additional pages move into the <strong>…</strong> menu instead of creating a scrollbar or a
+second toolbar row. Zoom and Annotations are collapsed menus, and their complete
+button surface opens the menu.</p>
+<p>Controls can auto-hide or remain pinned. Auto-hidden controls are an overlay, so
+showing or hiding them does not resize or move the report. Pinning the controls
+reserves toolbar space and resizes the presentation area deliberately. The page
+counter and slide chooser help with larger reports.</p>
 <h2 id="pointer-and-annotations">Pointer and annotations</h2>
 <p>The red pointer can remain active independently of drawing. Rectangle and oval
 annotations are stored separately for each page during the presentation. Use
@@ -1542,11 +1548,14 @@ screen, or tile focus as applicable. Once back at the normal page view, Escape
 asks before closing Presentation mode so the current position and annotations
 are not lost accidentally.</p>
 <h2 id="webpage-reports">Webpage reports</h2>
-<p>Web exports preserve page navigation, fit and zoom behavior, tile focus,
-optional presentation tools, filters, and report appearance settings. A folder
-export contains the complete website; a single-file export embeds supported
-code, data, and images in one HTML file. Neither format reconnects to live SQL or
-API data after export.</p>
+<p>Web exports preserve the same compact page overflow menu, collapsible zoom and
+annotation controls, auto-hide overlay behavior, fit and zoom behavior, tile
+focus, filters, and report appearance settings. A folder export contains the
+complete website; a single-file export embeds supported code, data, and images
+in one HTML file. Neither format reconnects to live SQL or API data after export.</p>
+<p>Exported Gantt tiles retain resource view, level collapse/expand, visible-column
+selection, and the read-only information popup. If the Gantt toolbar is saved as
+hidden, it also starts hidden in the exported report.</p>
 <p>Every exported row remains available to the recipient, including rows hidden by
 filters. Filters are not row-level security.</p>
 <h2 id="static-exports-and-office">Static exports and Office</h2>

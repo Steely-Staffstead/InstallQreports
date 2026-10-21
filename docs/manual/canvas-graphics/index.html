@@ -1469,13 +1469,21 @@ supports formatted text, lines, rectangles, ovals, connectors, images, and SVG
 content alongside normal tiles.</p>
 <h2 id="graphics">Graphics</h2>
 <ul>
-<li>Text graphics support the same rich-text concepts as Text tiles.</li>
+<li>Text graphics support the same rich-text concepts as Text tiles and Gantt
+  descriptions: headings, colors, bullets, checklists, links, editable tables,
+  code/diagram blocks, and compressed inline images.</li>
+<li>Selecting an inline image opens an image-only floating toolbar above or below
+  it. Set width, align left/center/right, compress, remove, or drag a corner
+  handle while preserving aspect ratio. Clicking text returns to text editing.</li>
 <li>Lines and shapes support color, thickness, solid/dotted/dashed styles,
   transparency, fill, rounding, movement, and resizing.</li>
 <li>Connectors attach to tile edges and follow the connected tiles when they move.</li>
 <li>Connector routing, endpoints, arrow size, line style, and layer order are
   configurable.</li>
 <li>Pictures and SVG graphics can be embedded so the report remains portable.</li>
+<li>Custom SVG created from source uses the <strong>Manual</strong> template. In document JSON,
+  keep the standalone element only in nested <code>svgGraphic.svgCode</code> and explicitly
+  set nested <code>svgGraphic.template</code> to lowercase <code>manual</code>.</li>
 </ul>
 <h2 id="arrange-a-page">Arrange a page</h2>
 <p>Use alignment guides for visual placement and the Properties pane for exact
@@ -1484,7 +1492,10 @@ copying, or deleting a group of objects. Hide design handles and type tags when
 reviewing the finished layout.</p>
 <p>Pages support preset or manual dimensions, including widescreen presentation
 and A4 portrait, plus page colors and background images. Tiles can use rounded
-corners, transparent surfaces, optional borders, and explicit layer ordering.</p>
+corners, transparent surfaces, optional borders, and explicit layer ordering.
+Text objects clip at the box edge by default for a clean canvas. Choose
+<strong>Scroll inside box</strong> for long, webpage-like content; editing follows the same
+scroll container.</p>
 <h2 id="themes">Themes</h2>
 <p>The Canvas theme controls page and visual roles such as surface, text, headers,
 grid lines, and data-series palettes. Individual visuals can inherit the theme

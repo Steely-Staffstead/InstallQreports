@@ -1283,10 +1283,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deployment-model" class="md-nav__link">
+  <a href="#qvitr-enterprise-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployment model
+        Qvitr Enterprise deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Qvitr Enterprise deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-and-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build and publish
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-clickonce-deployment-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy ClickOnce deployment model
       
     </span>
   </a>
@@ -1316,10 +1344,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#updates" class="md-nav__link">
+  <a href="#legacy-clickonce-updates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Updates
+        Legacy ClickOnce updates
       
     </span>
   </a>
@@ -1436,10 +1464,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deployment-model" class="md-nav__link">
+  <a href="#qvitr-enterprise-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployment model
+        Qvitr Enterprise deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Qvitr Enterprise deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-and-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build and publish
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-clickonce-deployment-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Legacy ClickOnce deployment model
       
     </span>
   </a>
@@ -1469,10 +1525,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#updates" class="md-nav__link">
+  <a href="#legacy-clickonce-updates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Updates
+        Legacy ClickOnce updates
       
     </span>
   </a>
@@ -1508,7 +1564,32 @@
 
 
 <h1 id="installation-and-updates">Installation and updates</h1>
-<h2 id="deployment-model">Deployment model</h2>
+<h2 id="qvitr-enterprise-deployment">Qvitr Enterprise deployment</h2>
+<p>Qvitr Enterprise is the current machine-wide WiX installation channel. Its bootstrapper contains the application MSI and installs the .NET 8 Desktop Runtime when required. The selectable components are Qanvas standalone, Excel integration and PowerPoint integration.</p>
+<p>Enterprise updates are deliberately manual. Qanvas, Excel and PowerPoint launch the same Qanvas update checker with <code>--check-updates</code>. It downloads <code>qvitr-update.json</code> from the latest GitHub release and compares its <code>applicationVersion</code> with the installed <code>QanvasWeb.exe</code> file version. It does not contact GitHub at application startup.</p>
+<p>The manifest keeps two versions separate:</p>
+<ul>
+<li><code>applicationVersion</code>: the four-part Qanvas file version used to decide whether an update is available;</li>
+<li><code>installerVersion</code>: the three-part WiX/MSI version used by Windows Installer. This must increase for every upgrade, even when the same signing certificate is used.</li>
+</ul>
+<p>After confirmation, setup is downloaded to the user's temporary Qvitr update directory, verified against the manifest SHA-256 value, checked for an Authenticode signature and started with elevation.</p>
+<h3 id="build-and-publish">Build and publish</h3>
+<p>The complete GitHub release flow can be run with one command:</p>
+<pre><code class="language-powershell">.\documentation\update_github_enterprise_release.bat 12.0.2
+</code></pre>
+<p>To build and validate without uploading:</p>
+<pre><code class="language-powershell">.\documentation\update_github_enterprise_release.bat 12.0.2 --validate-only
+</code></pre>
+<p>The script builds and signs the installer, stages <code>qvitr-update.json</code>, validates versions/signatures/hashes, and creates or updates GitHub release <code>v12.0.2</code>. Use <code>--skip-build</code> only to reuse artifacts already built with that exact version. GitHub CLI must be installed and authenticated with <code>gh auth login</code> for an upload.</p>
+<p>The GitHub release description is generated from the newest weekly section at the top of <code>documentation/changelog.md</code>, followed by the standard installation, publisher-trust and licensing information. Update that changelog section before publishing; rerunning publication for an existing tag replaces its GitHub description with the currently generated notes.</p>
+<p>The original individual commands remain supported:</p>
+<pre><code class="language-powershell">.\documentation\check_enterprise_installer_version.bat
+.\documentation\build_enterprise_installer.bat 12.0.2
+.\documentation\publish_enterprise_installer.bat 12.0.2 --validate-only
+.\documentation\publish_enterprise_installer.bat 12.0.2
+</code></pre>
+<p>Running the check without a version reports the latest local build. Passing a version performs strict release validation. A legacy staged release without <code>qvitr-update.json</code> is reported as requiring a rebuild.</p>
+<h2 id="legacy-clickonce-deployment-model">Legacy ClickOnce deployment model</h2>
 <p>QReports is published as a VSTO ClickOnce application. <code>setup.exe</code> checks prerequisites and registers the Excel add-in for the current user. The <code>.vsto</code> manifest identifies the application files and published version.</p>
 <p><img src="../assets/images/technical/clickonce-installation.png" alt="Placeholder for QReports ClickOnce installation" style="max-width: 760px; width: 100%;"></p>
 <h2 id="requirements">Requirements</h2>
@@ -1528,7 +1609,7 @@
 <li>Open Excel and verify that <strong>QRep</strong> appears.</li>
 <li>Open <strong>QRep &gt; Settings &gt; License Status</strong> to verify entitlement.</li>
 </ol>
-<h2 id="updates">Updates</h2>
+<h2 id="legacy-clickonce-updates">Legacy ClickOnce updates</h2>
 <p>ClickOnce updates are enabled and the GitHub Pages installation site is the configured source. Excel may check the deployment manifest when the add-in starts. Close all Excel processes before updating so no old assembly remains loaded.</p>
 <p>For managed environments, allow-list the publication URL and validate the release signing certificate. Test with the organization's Excel version, bitness, security baseline, and endpoint protection before broad deployment.</p>
 <h2 id="troubleshooting-deployment">Troubleshooting deployment</h2>

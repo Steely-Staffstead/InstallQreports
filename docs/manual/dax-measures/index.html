@@ -1743,11 +1743,16 @@
 <p>Mini DAX is QReports' focused expression engine for measures and calculated columns. The <strong>Measures</strong> ribbon command and the Canvas <strong>Measures</strong> command open the WebView Measure workspace. It is used by matrices, charts, Canvas visuals, and QReports table output. It is not the same thing as sending a full DAX query to the Excel Power Pivot model.</p>
 <p>The workspace places source Fields on the left, saved measures/calculated columns beside them, and the name, expandable expression editor, validation status, matrix wells, and result preview in the main area. The two list panes and matrix result can be resized or collapsed. <strong>Load data</strong> runs the source query with its current QReports parameters; measures remain editable before data is loaded.</p>
 <p>The expression editor provides syntax highlighting, autocomplete, keyboard indentation and a function helper, with a docked, searchable and resizable function reference. Choosing a helper function inserts its syntax at the cursor. Drag fields into Rows, at most one Columns field, and Values to test the calculation as a crosstab. Number formats and matrix visibility are saved with each measure. The workspace follows the selected QReports application theme.</p>
+<p>Use brackets around field or measure names containing spaces, periods, or other punctuation. Autocomplete adds the brackets automatically when needed:</p>
+<pre><code class="language-dax">YEAR([player.birthdate])
+DATEDIFF([Player birth date], TODAY(), YEAR)
+</code></pre>
 <p>When the Query Web connection is <code>model</code>, it can run normal model queries. The formulas on this page are the smaller Mini DAX formulas managed in Measure workspace.</p>
 <p><img src="../assets/images/mini-dax/mini-dax-editor.png" alt="Placeholder for the Mini DAX measure editor" style="max-width: 760px; width: 100%;"></p>
 <h2 id="manage-rename-and-audit-measures">Manage, rename, and audit measures</h2>
-<p>The header keeps the common actions visible: <strong>New</strong>, <strong>Rename</strong>, <strong>Functions</strong>, <strong>Validate</strong>, <strong>Save</strong>, <strong>Delete</strong>, and <strong>Return measures</strong>. Less-frequent commands—<strong>Duplicate</strong>, <strong>Audit all</strong>, and <strong>Load data</strong>—are grouped under <strong>Tools</strong>. Measures can be organized into folders and subfolders.</p>
+<p>The header keeps the common actions visible: <strong>New</strong>, <strong>Rename</strong>, <strong>Functions</strong>, <strong>Validate</strong>, <strong>Save</strong>, <strong>Delete</strong>, and <strong>Return measures</strong>. Less-frequent commands—<strong>Duplicate</strong>, <strong>Audit all</strong>, <strong>Find unused</strong>, and <strong>Load data</strong>—are grouped under <strong>Tools</strong>. Measures can be organized into folders and subfolders.</p>
 <p>Use <strong>Validate</strong> for the selected formula. Use <strong>Audit all</strong> to check every measure and calculated column for invalid syntax, missing fields, and references to missing or renamed measures. The audit shows its progress through the list and reports each item that needs attention.</p>
+<p>Use <strong>Find unused</strong> to mark cleanup candidates. A measure is marked only when no other formula references it and no object in the current Qanvas document uses it. This includes supported table, matrix, chart, card, Report Grid, rich-text/SVG, selector, filter, sort, and linked-source references. Click a result to open the measure, review it, and delete it manually if it is no longer needed. Calculated columns are excluded because they can also be consumed as ordinary source fields. The command requires the Measure workspace to be opened from Qanvas; without document context, it does not mark anything.</p>
 <p>Use <strong>Rename</strong> when changing an existing measure name. It updates references in other measure formulas and in supported Canvas objects. If the Name field is changed directly and <strong>Save</strong> is selected, the workspace asks whether the change should be treated as a rename so dependent references are not silently broken. When the workspace was opened from Canvas, <strong>Return measures</strong> sends the updated collection back so Canvas references can be reviewed and updated together.</p>
 <p>The reference checker is intentionally stricter than a single preview calculation: a formula can produce a value in one test context while still containing a reference that will fail elsewhere. Run <strong>Audit all</strong> before a release when measures have been renamed or removed.</p>
 <h2 id="measure-or-calculated-column">Measure or calculated column?</h2>
@@ -1987,11 +1992,14 @@ RETURN
 </tr>
 <tr>
 <td><code>CAST</code></td>
-<td><code>CAST(value, type)</code></td>
+<td><code>CAST(value, "type")</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>MID</code> uses a one-based start. The <code>&amp;</code> operator can also concatenate text.</p>
+<p><code>MID</code> uses a one-based start. The <code>&amp;</code> operator can also concatenate text.
+<code>CAST</code> target types are quoted strings: <code>"DATE"</code>, <code>"DATETIME"</code>, <code>"TEXT"</code>, <code>"INTEGER"</code>, <code>"NUMBER"</code>, or <code>"BOOLEAN"</code>.</p>
+<pre><code class="language-dax">CAST(_month, &quot;INTEGER&quot;)
+</code></pre>
 <pre><code class="language-dax">CONCATENATE(UPPER(Region), &quot; - &quot;, FORMAT(SUM(Sales), &quot;#,##0&quot;))
 </code></pre>
 <h2 id="date-functions">Date functions</h2>
@@ -2030,9 +2038,14 @@ RETURN
 <td>Current local date.</td>
 </tr>
 <tr>
+<td><code>DATEDIFF</code></td>
+<td><code>DATEDIFF(startDate, endDate, interval)</code></td>
+<td>Whole elapsed years, months, or days. Use <code>YEAR</code>, <code>MONTH</code>, or <code>DAY</code>; quoted interval names are also accepted.</td>
+</tr>
+<tr>
 <td><code>DATEPART</code></td>
-<td><code>DATEPART(part, date)</code></td>
-<td>Extract year, quarter, month, day, day-of-year, week, weekday, hour, minute, or second.</td>
+<td><code>DATEPART("part", date)</code></td>
+<td>Extract year, quarter, month, day, day-of-year, week, weekday, hour, minute, or second. Quote the part name.</td>
 </tr>
 <tr>
 <td><code>DATEFROMPARTS</code></td>
@@ -2047,9 +2060,15 @@ RETURN
 </tbody>
 </table>
 <p>Calculated-column examples:</p>
+<pre><code class="language-dax">DATEPART(&quot;week&quot;, &quot;2026-10-12&quot;)
+</code></pre>
+<p>The example above returns week <code>42</code>. Other valid part names include <code>"year"</code>, <code>"quarter"</code>, <code>"month"</code>, <code>"day"</code>, <code>"dayofyear"</code>, <code>"weekday"</code>, <code>"hour"</code>, <code>"minute"</code>, and <code>"second"</code>.</p>
 <pre><code class="language-dax">DATEFROMPARTS(YEAR(InvoiceDate), MONTH(InvoiceDate), 1)
 </code></pre>
 <pre><code class="language-dax">DATEOFFSET(InvoiceDate, -1, 0, 0, 0)
+</code></pre>
+<p>For completed age in years:</p>
+<pre><code class="language-dax">DATEDIFF([player.birthdate], TODAY(), YEAR)
 </code></pre>
 <h2 id="filter-context-with-calculate">Filter context with CALCULATE</h2>
 <p><code>CALCULATE</code> reevaluates a supported aggregate after changing simple column filters:</p>
@@ -2073,6 +2092,7 @@ RETURN
 )
 </code></pre>
 <p>Use a raw numeric parameter for <code>pyear</code>. For text comparisons, use DAX string parsing or provide quotes through the parameter definition.</p>
+<p>The Measures workspace shows canvas parameters in <strong>Functions</strong> and suggests them when <code>{{</code> is typed in the expression editor. Validation, matrix testing, chart rendering, presentation, and webpage rendering all resolve the current parameter value through the same formula path.</p>
 <h2 id="more-examples">More examples</h2>
 <h3 id="average-price">Average price</h3>
 <pre><code class="language-dax">VAR _amount = SUM(Amount)
@@ -2093,17 +2113,18 @@ RETURN DIVIDE(_amount, _quantity)
 <h2 id="differences-from-full-dax">Differences from full DAX</h2>
 <p>Mini DAX is intentionally smaller than Microsoft DAX:</p>
 <ul>
-<li>it evaluates QReports table/matrix data, not a semantic model with relationships;</li>
+<li>it evaluates QReports visual data, not a single canvas-wide semantic model; Qanvas tables, matrices, and charts can resolve a measure from a directly linked source, while dimension relationships expose linked fields to table groups, matrix axes, and chart categories/groups;</li>
 <li>it is an expression engine, not the DAX query language—<code>EVALUATE</code> and <code>DEFINE</code> belong to model mode;</li>
 <li>iterator and table functions such as <code>SUMX</code>, <code>FILTER</code>, <code>ADDCOLUMNS</code>, <code>SUMMARIZE</code>, and <code>RELATED</code> are not implemented;</li>
-<li>there is no full relationship propagation or Power Pivot storage engine;</li>
+<li>there is no transitive relationship propagation, general-purpose cross-source DAX, or Power Pivot storage engine;</li>
 <li><code>CALCULATE</code> supports focused column comparisons plus <code>ALL</code>/<code>REMOVEFILTERS</code>, not every DAX filter expression;</li>
 <li>time-intelligence functions such as <code>SAMEPERIODLASTYEAR</code>, <code>DATESYTD</code>, and DAX <code>DATEADD</code> are not included; use <code>DATEOFFSET</code> and explicit filters;</li>
 <li><code>RANK</code> is a QReports post-aggregation operation, not <code>RANKX</code>;</li>
 <li>blanks use an internal representation and may render as empty output;</li>
 <li>number, week, and date formatting can depend on the current Windows culture.</li>
 </ul>
-<p>If a formula requires model relationships, iterators, or advanced time intelligence, use a real Power Pivot measure instead. Query Tool's <strong>Power Pivot</strong> menu links to Excel's model tools.</p>
+<p>Use a Qanvas source relationship when a matrix only needs a prepared measure from another source at a shared grain such as Company + Period. If a formula requires arbitrary model relationships, iterators, or advanced time intelligence, use a real Power Pivot measure instead. Query Tool's <strong>Power Pivot</strong> menu links to Excel's model tools.</p>
+<p>Physical source columns retain their exact names, including underscores. Names such as <code>accounts_receivable</code>, <code>work_in_progress</code>, and <code>budget_revenue</code> are valid Mini DAX field references; only recognized terminal aggregate aliases such as <code>_avg</code>, <code>_min</code>, and <code>_max</code> are reduced to their base field by legacy matrix mapping.</p>
 <p>Return to the <a href="../query-tool/#dax-measures">Query Tool guide</a>.</p>
 
 
