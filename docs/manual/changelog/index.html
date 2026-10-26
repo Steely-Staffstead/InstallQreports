@@ -605,6 +605,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../canvas-presentation/" class="md-nav__link">
         
   
@@ -1354,24 +1382,56 @@
 
 <h1 id="changelog">Changelog</h1>
 <p>User-visible changes are grouped by calendar week. Dates identify the Monday-to-Sunday period in which the work was completed.</p>
+<div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>44</strong></div><div><p class="week-dates">26 October–1 November 2026</p><h2>List forms and smoother shared registration</h2></div></div>
+
+<ul>
+<li>Added <strong>List Form</strong>, a new List view that shows and edits one record at a time. It is useful for test cases, tasks, findings and other registrations with many fields.</li>
+<li>Made forms easy to arrange visually. Choose the number and width of columns, move fields in the preview, and let a field span several columns or rows. Long text, dates, choices, checkboxes, numbers, sliders and links use controls suited to their field type.</li>
+<li>Added compact field settings, read-only fields, default values and a selected-row highlight. A normal List can act as the selector while a Form view shows the selected record from the same source.</li>
+<li>Improved shared Lists so a linked List reuses the existing embedded source instead of creating an extra empty source. Lists and forms can therefore share one central register across pages.</li>
+<li>Fixed List filters and record selection in Presentation mode so they follow the same values and single-selection rules as Edit mode.</li>
+<li>Polished List and Form layout: headers and values align correctly, alternating row bands fill the full width, one-row and multi-row text boxes keep readable labels, and URL fields show their friendly screen tip instead of the stored address.</li>
+<li>New pages now show the nine page-layout choices first, making it easy to start with a useful structure before adding content.</li>
+</ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>43</strong></div><div><p class="week-dates">19–25 October 2026</p><h2>Reusable report content, richer editing and faster source workflows</h2></div></div>
 
 <ul>
 <li>Added Qanvas-to-Qanvas import for complete editable pages, page and tile filters, related sources and selected measures. Sources can also be imported without pages, with footprint matching and explicit choices to reuse, replace, skip or create a separate source when definitions collide.</li>
-<li>Added editable manual tables stored either inside a Qanvas file or as reusable local files. The grid supports row and column editing, column types, lookup values from other sources, column resizing/reordering, automatic row creation with Tab, and conversion between embedded and file storage.</li>
+<li>Added editable manual tables stored either inside a Qanvas file or as reusable local files. The grid supports row and column editing, column types, lookup values from other sources, a calendar lookup with optional time and ISO week numbers, column resizing/reordering, automatic row creation with Tab, and conversion between embedded and file storage.</li>
+<li>Added a dedicated editable <strong>List</strong> tile on top of the embedded manual-table model. New Lists offer Basic and Task presets with stable IDs, automatic line numbers and created/updated timestamps; typed custom fields, code/label choices, source lookups, and safe external/document-page URL fields; search, sorting, row move/duplicate/delete/complete actions; theme roles; and a live movable/resizable designer. Fields can be reordered by drag or compact move controls, columns can be resized directly, and new-row defaults support choices, booleans, Today and current date/time. Embedded Lists can be exposed as ordinary datasources, copied with independent owned data, and optionally edited in Presentation mode, while linked sources and web exports remain read-only.</li>
+<li>Expanded List appearance and interaction controls with optional title/search text, left/right search alignment, separate header, row, grid-line and column-separator colors, square or rounded headers, alternating rows, theme-aware URL hover surfaces, and calendar/dropdown controls that inherit row text and surface colors. URL screen tips now act as the readable link label and tooltip, internal page links navigate correctly, and Add row plus row action controls work in Presentation mode when editing is enabled.</li>
 <li>Added an instant in-Qanvas source-data viewer and consolidated source actions for viewing data, editing queries or measures, links, rename and delete without reloading an already cached preview.</li>
-<li>Expanded Report Grid copy, paste and repeat behavior. Cell aggregation, fields and measures now copy with the cell; one copied cell can fill a multi-cell selection; F4 repeats more cell changes; locale-formatted numeric selections calculate correctly; and empty filtered values behave as zero in arithmetic.</li>
+<li>Expanded Report Grid copy, paste and repeat behavior. Cell aggregation, fields and measures now copy with the cell; one copied cell can fill a multi-cell selection; and F4 repeats formatting, number formats, alignment, borders, dimensions, formulas, field/measure selections and row/column operations on a new selection. The right-click menu now groups Copy, Paste, Insert and Move commands into compact submenus while keeping their most common parent actions directly clickable. Locale-formatted numeric selections calculate correctly, and empty filtered values behave as zero in arithmetic.</li>
+<li>Improved Report Grid formula editing: F2 now enters edit mode for values, formulas, fields and measure-backed cells, showing a readable measure expression in the cell and formula bar; Enter commits and Escape restores the original binding. Colored formula references can be dragged to another range while preserving relative and absolute-reference semantics.</li>
 <li>Refined Report Grid sizing and selection with continuous explicit row heights, clipped single-line content by default, opt-in wrapping, vertical alignment, clearer row numbers around filter badges, and improved row/column filter editing.</li>
-<li>Improved formatted text with reliable pasted tables, code blocks and whitespace-sensitive diagrams, an Insert table command, scroll-inside-box overflow, and inline images with alignment, proportional resizing and the same compression workflow as image tiles.</li>
+<li>Improved formatted text with reliable pasted tables, code blocks and whitespace-sensitive diagrams, an Insert table command, scroll-inside-box overflow, and inline images with alignment, proportional resizing and the same compression workflow as image tiles. A new readable <code>datecountdown("date","future","today","past")</code> function inserts configurable future, today and completed text that recalculates automatically without a measure and remains easy to edit, copy, and paste.</li>
 <li>Improved Gantt task descriptions with page and external links, interactive checklists, preserved text when <code>-</code> or <code>--</code> is converted to a list item, and visible navigation when an internal page link is followed. Task priorities support Low, Normal and High with configurable icons and theme-aware colors.</li>
 <li>Added default Open, In progress and Completed Gantt statuses while retaining editable labels, and made embedded or local manual Gantt sources available through the normal table viewer.</li>
-<li>Improved charts with consistent tile/designer plot spacing, full-size treemap rendering, aligned value axes for multiples, and reorganized doughnut controls with independent center/category typography, line breaks and safer ring-label placement.</li>
+<li>Reworked the Gantt task inspector into a compact, saved-height bottom panel. Task and milestone, schedule/assignment, and status/progress/hours now use three dense rows; Task ID is a read-only reference and the multi-predecessor editor stays collapsed until requested. The inspector can be disabled for bar clicks, its spacing has been tightened further, and its surfaces, inputs, dropdowns, date controls and actions now follow the active Gantt theme. The predecessor editor is a normal button that opens a movable inspection dialog.</li>
+<li>Added a simplified Gantt project toolbar, schedule-health panel, zoom/navigation controls and dependency editor. The task context menu now follows the Gantt theme, and appearance controls that do not apply to the selected input style are disabled instead of implying that they will affect it.</li>
+<li>Improved charts with consistent tile/designer plot spacing, full-size treemap rendering, aligned value axes for multiples, reorganized doughnut controls with independent center/category typography, line breaks and safer ring-label placement, configurable rounded ends for bar and column charts, and an optional background-colored gap around line/scatter markers. Label spacing can always retain the first and/or last value, and markers can be limited to points that still have a visible label. Clicking a line or marker now opens Line &amp; markers instead of Data labels; the Properties pane also exposes editable chart titles and the most-used line, marker and bar-layout controls.</li>
+<li>Fixed direct chart-property refresh so <strong>Use canvas theme</strong>, background and gridline changes redraw immediately without reopening and reapplying the designer. Changing a line chart to a bar chart now preserves a visible plot, and duplicated charts retain independent, editable top positions instead of being constrained by stale geometry.</li>
+<li>Added an <strong>Executive indigo</strong> report theme inspired by dark financial dashboards, with deep navy surfaces, warm cream accents, lavender text, green/red status roles and a matching eight-color chart palette.</li>
 <li>Reorganized tile and graphic property groups, removed duplicate Content sections, kept Properties/Filters tabs visible while scrolling, and improved narrow-pane layouts and source action labels.</li>
+<li>Added compact property-group shortcuts above the preview in Chart, Table, Matrix, Gantt and SVG designers, matching the existing Visual filter and Multi-card navigation. The shortcuts open collapsed groups, scroll to them and place keyboard focus on the selected section.</li>
 <li>Recent Qanvas files are now deduplicated by path, and Settings controls how many entries are retained and shown, from 1 to 25 with a default of 10.</li>
 <li>AI workspaces are now connected per report instead of through one global last-used pointer. Renamed or newly opened reports no longer inherit an unrelated workspace, new workspace copies use <code>.qanvas</code>, and the AI panel shows the selected engine plus the full open-report, workspace and working-copy paths.</li>
 <li>Moved AI configuration to its own top-level Settings page and added Claude Code, Codex and GitHub Copilot guidance for current rich text, Gantt, local-table and Manual SVG authoring. Custom generated SVG now explicitly uses nested <code>svgGraphic.template: "manual"</code> on every provider turn, including resumed sessions.</li>
-<li>Presentation mode now starts on the page currently open in the editor instead of returning to the first page.</li>
+<li>Added a dedicated SVG designer with a collapsible reusable-template gallery, custom SVG analysis, editable text/typography/links and shape colors/borders, explicit category-slot bindings, and automatic Today/fixed/field/parameter date-marker placement on detected timeline axes. Clicking the preview selects the matching component control, and duplicating a detected date marker creates another independently configurable dynamic marker. Marker placement now moves only its own label, badge and line, including in existing duplicated SVGs, without shifting a containing background shape. Its live preview uses the same tile ratio and render path as the applied graphic. Text inputs now share the searchable token lookup for source fields, linked measures, parameters and functions, and preview selection no longer lets the fixed header or Apply/Cancel footer cover designer controls.</li>
+<li>Added a Multi-card tile and designer. One reusable card layout can repeat by a dimension, show configurable field or measure values in columns, aggregate raw columns with First, Sum, Average, Min, Max or Count, and inherit the canvas theme or use explicit card colors and borders. The designer is also available from the tile's right-click menu and provides independent typography for headings, supporting text, values and captions. Calculated text columns now evaluate row by row before visual aggregation, fixing date/week captions that previously displayed <code>NaN</code>.</li>
+<li>Multi-card value rows are now compact by default, with format, alignment, placement, cell display, data bars and conditional formatting under <strong>More</strong>. Conditional formatting can use a separate field/measure, repeated cards can show a conditional edge band, and caption/template inputs offer a right-click insert menu for fields, measures, parameters and text functions.</li>
+<li>Upgraded the single Card tile with the same value/caption typography, placement, alignment, comparison, conditional icon/arrow and number-format controls used by Multi-card. Custom positive/negative/zero formats can retain an explicit <code>+</code> sign for positive values, and positive and negative conditional arrows can be configured independently.</li>
+<li>Added visual filters on the canvas. Existing page filters and linked tile filters can be shown as responsive button groups, compact dropdowns, cards or multi-cards with live selected state, selectable canvas-theme roles or custom colors, optional images and multiple aggregated values. Filter multi-cards support 1–6 value columns, automatic/fixed/percent column widths and per-value column/row-span placement. Selection can be highlighted by background, border only, or both. Values support the multi-card renderers, data bars and conditional formatting; All/Clear can show totals and measures; and text fields have a right-click token menu. The same filter object drives editor, Presentation and exported webpages, the visual keeps non-selected choices available while filtering, and compact visual-filter tiles can be resized down to 30 pixels high.</li>
+<li>Improved visual-filter authoring with a movable/resizable designer, preview-to-property navigation and the common property-group shortcut strip. Column count is now a maximum so fewer choices use the full available width. Dropdowns remain selectable, avoid an unnecessary side scrollbar and provide search for long lists; the compact date-range picker now lays out days correctly. Multiple visuals bound to the same filter highlight together, and valid measures from related sources are available to card-style filter values.</li>
+<li>Fixed inherited presentation filters so separate filters on the same datasource column retain their stable identities and selection modes. Visual filters using <strong>Follow filter type</strong> now remain interactive and single-select for Dropdown filters in Presentation mode instead of becoming a combined multi-selection filter.</li>
+<li>Added a repeatable <strong>Copy formatting</strong> painter to the right-click menu for tiles and graphics. Compatible targets are outlined, page tabs show compatible target counts, and formatting can be applied to multiple same-family objects across pages without replacing their data bindings or content. The normal Ctrl+C/Ctrl+V object clipboard can also paste complete editable tiles and graphics onto another page and remains reusable for repeated pastes.</li>
+<li>Simplified object layer commands into <strong>Bring to front</strong> and <strong>Send to back</strong> submenus, with one-step forward/backward commands still available inside them. In edit mode, holding an action or hyperlink control selects its object without following the destination, making linked controls easier to move and format.</li>
+<li>Added a Measure-workspace color picker that previews and inserts theme roles or fixed hex colors, plus the field context-menu template <strong>fields_pickcolor</strong> for building a variable-based color <code>SWITCH</code> measure. Canvas palette swatches and the dedicated eyedropper now remain active until a report color is sampled or the operation is cancelled.</li>
+<li>Up and Down Arrow now scroll the active long text or Multi-card tile before falling back to the canvas viewport, so selected overflowing content can be read without using the scrollbar.</li>
+<li>Presentation mode now starts on the page currently open in the editor instead of returning to the first page, and F11 toggles full screen on or off.</li>
+<li>Pressing <strong>F</strong> now shows or hides the filter panel in Presentation mode and exported webpages without changing the saved filter values.</li>
 <li>Compressed the Presentation and webpage-export top bar: page tabs remain on the first row, excess pages move under <strong>…</strong>, Zoom and Annotations are easier-to-open collapsed menus, and auto-hidden controls overlay the report instead of resizing it.</li>
+<li>Presentation and web-export profiles now inherit the canvas editor's source and page filters by default, including their current values and page scope. Individual source, page and tile filters can be locked so they remain active as authored report constraints without appearing as viewer controls; the previous manual export-filter setup remains available when inheritance is disabled.</li>
 <li>Added complete Week labels and a Quarter scale to Gantt timelines. Exported Gantt views now retain resource view, level collapse, visible columns, read-only task information and the saved hidden-toolbar state.</li>
 <li>Improved Query workspace manual-table editing and resized the date picker into a compact, responsive calendar that remains usable in narrow windows.</li>
 <li>Fixed the enterprise updater's download-progress dialog and added direct release-note access before installation plus a release-note prompt the next time Qanvas opens after a successful upgrade.</li>

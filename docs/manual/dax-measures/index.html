@@ -593,6 +593,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../canvas-presentation/" class="md-nav__link">
         
   
@@ -1750,7 +1778,8 @@ DATEDIFF([Player birth date], TODAY(), YEAR)
 <p>When the Query Web connection is <code>model</code>, it can run normal model queries. The formulas on this page are the smaller Mini DAX formulas managed in Measure workspace.</p>
 <p><img src="../assets/images/mini-dax/mini-dax-editor.png" alt="Placeholder for the Mini DAX measure editor" style="max-width: 760px; width: 100%;"></p>
 <h2 id="manage-rename-and-audit-measures">Manage, rename, and audit measures</h2>
-<p>The header keeps the common actions visible: <strong>New</strong>, <strong>Rename</strong>, <strong>Functions</strong>, <strong>Validate</strong>, <strong>Save</strong>, <strong>Delete</strong>, and <strong>Return measures</strong>. Less-frequent commands—<strong>Duplicate</strong>, <strong>Audit all</strong>, <strong>Find unused</strong>, and <strong>Load data</strong>—are grouped under <strong>Tools</strong>. Measures can be organized into folders and subfolders.</p>
+<p>The header keeps the common actions visible: <strong>New</strong>, <strong>Rename</strong>, <strong>Functions</strong>, <strong>Validate</strong>, <strong>Save</strong>, <strong>Delete</strong>, and <strong>Return measures</strong>. Open <strong>New</strong> and choose <strong>Measure</strong> for a filter-context result or <strong>Calculated column</strong> for one result per source row. Less-frequent commands—<strong>Insert color value</strong>, <strong>Duplicate</strong>, <strong>Audit all</strong>, <strong>Find unused</strong>, and <strong>Load data</strong>—are grouped under <strong>Tools</strong>. Measures can be organized into folders and subfolders.</p>
+<p>Use <strong>Tools &gt; Insert color value</strong> to choose a theme role or a fixed manual color, preview it, and insert the quoted value at the current expression selection. Theme values such as <code>"theme:accent"</code> adapt with the Qanvas theme; a hex value such as <code>"#4f6ee8"</code> remains fixed. To create a reusable conditional-formatting color measure, right-click a source field and choose <strong>fields_pickcolor · Color switch</strong>. The generated text measure reads the field with <code>FIRST</code>, defines editable color variables, and returns the appropriate theme role or hex value through <code>SWITCH(TRUE(), ...)</code>.</p>
 <p>Use <strong>Validate</strong> for the selected formula. Use <strong>Audit all</strong> to check every measure and calculated column for invalid syntax, missing fields, and references to missing or renamed measures. The audit shows its progress through the list and reports each item that needs attention.</p>
 <p>Use <strong>Find unused</strong> to mark cleanup candidates. A measure is marked only when no other formula references it and no object in the current Qanvas document uses it. This includes supported table, matrix, chart, card, Report Grid, rich-text/SVG, selector, filter, sort, and linked-source references. Click a result to open the measure, review it, and delete it manually if it is no longer needed. Calculated columns are excluded because they can also be consumed as ordinary source fields. The command requires the Measure workspace to be opened from Qanvas; without document context, it does not mark anything.</p>
 <p>Use <strong>Rename</strong> when changing an existing measure name. It updates references in other measure formulas and in supported Canvas objects. If the Name field is changed directly and <strong>Save</strong> is selected, the workspace asks whether the change should be treated as a rename so dependent references are not silently broken. When the workspace was opened from Canvas, <strong>Return measures</strong> sends the updated collection back so Canvas references can be reviewed and updated together.</p>
@@ -1778,6 +1807,9 @@ DATEDIFF([Player birth date], TODAY(), YEAR)
 </tbody>
 </table>
 <p>Calculated columns cannot reference aggregate measures and cannot call aggregate or context functions such as <code>SUM</code>, <code>CALCULATE</code>, <code>ALL</code>, or <code>REMOVEFILTERS</code>.</p>
+<p>A measure deliberately does not turn a bare row-level field reference into an implicit <code>FIRST</code>. State the intended aggregation so the result remains predictable when the filter context contains more than one row. <code>FIRST</code> and <code>LAST</code> accept row-level expressions, so this is valid:</p>
+<pre><code class="language-dax">FIRST(DATEPART(&quot;day&quot;, dateevent))
+</code></pre>
 <h2 id="basic-syntax">Basic syntax</h2>
 <p>The editor stores the output name separately from the formula. For a measure named <code>Margin</code>, enter:</p>
 <pre><code class="language-dax">DIVIDE(SUM(Profit), SUM(Revenue))
@@ -1831,13 +1863,13 @@ RETURN
 </tr>
 <tr>
 <td><code>FIRST</code></td>
-<td><code>FIRST(column [, filter])</code></td>
-<td>First non-blank value in the current row order.</td>
+<td><code>FIRST(expression [, filter])</code></td>
+<td>Evaluate an expression for each row and return the first non-blank result.</td>
 </tr>
 <tr>
 <td><code>LAST</code></td>
-<td><code>LAST(column [, filter])</code></td>
-<td>Last non-blank value in the current row order.</td>
+<td><code>LAST(expression [, filter])</code></td>
+<td>Evaluate an expression for each row and return the last non-blank result.</td>
 </tr>
 <tr>
 <td><code>SELECTEDVALUE</code></td>
@@ -2030,7 +2062,7 @@ RETURN
 <tr>
 <td><code>WEEK</code></td>
 <td><code>WEEK(date)</code></td>
-<td>Culture-based week number.</td>
+<td>ISO-style week number: Monday-first, with the first four-day week as week 1.</td>
 </tr>
 <tr>
 <td><code>TODAY</code></td>
@@ -2062,7 +2094,7 @@ RETURN
 <p>Calculated-column examples:</p>
 <pre><code class="language-dax">DATEPART(&quot;week&quot;, &quot;2026-10-12&quot;)
 </code></pre>
-<p>The example above returns week <code>42</code>. Other valid part names include <code>"year"</code>, <code>"quarter"</code>, <code>"month"</code>, <code>"day"</code>, <code>"dayofyear"</code>, <code>"weekday"</code>, <code>"hour"</code>, <code>"minute"</code>, and <code>"second"</code>.</p>
+<p>The example above returns week <code>42</code>. <code>DATEPART("week", date)</code> uses the same week calculation as <code>WEEK(date)</code>. Other valid part names include <code>"year"</code>, <code>"quarter"</code>, <code>"month"</code>, <code>"day"</code>, <code>"dayofyear"</code>, <code>"weekday"</code>, <code>"hour"</code>, <code>"minute"</code>, and <code>"second"</code>.</p>
 <pre><code class="language-dax">DATEFROMPARTS(YEAR(InvoiceDate), MONTH(InvoiceDate), 1)
 </code></pre>
 <pre><code class="language-dax">DATEOFFSET(InvoiceDate, -1, 0, 0, 0)

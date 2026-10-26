@@ -697,6 +697,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../canvas-presentation/" class="md-nav__link">
         
   
@@ -1510,7 +1538,8 @@
 <h1 id="chart-tool">Chart tool</h1>
 <p>The Chart tool opens the chart designer with the current Query Tool result. It supports chart selection, series definitions, labels, formatting, filters, and returning chart definitions to Excel or Canvas.</p>
 <h2 id="chart-web-workflow">Chart Web workflow</h2>
-<p>Choose a chart type, select Values and Category, and configure its series. Chart Web supports Bar/column, Stacked, Line, Area, Scatter, Waterfall, Histogram, Boxplot, Treemap, Heatmap, Gauge, Pie and Doughnut. Data and options panes can be resized or collapsed; chart-type settings are collapsible groups. The designer chrome, loading surface and preview palette follow the selected Canvas/application theme unless a chart-specific override is selected.</p>
+<p>Choose a chart type, select Values and Category, and configure its series. Chart Web supports Bar/column, Stacked, Line, Area, Scatter, Waterfall, Histogram, Boxplot, Treemap, Heatmap, Gauge, Pie and Doughnut. Data and options panes can be resized or collapsed; chart-type settings are collapsible groups. The shortcut strip above the preview opens Data or any property group directly, including groups that are currently collapsed. The designer chrome, loading surface and preview palette follow the selected Canvas/application theme unless a chart-specific override is selected.</p>
+<p>The built-in <code>ExecutiveIndigo</code> palette matches the Executive indigo canvas preset: cream primary series, subdued lavender comparison series, and green/red supporting colors on dark financial-report surfaces.</p>
 <p>When opened from a Canvas tile, the preview uses the tile's source and local filters. The footer indicates row/series counts and global/local filter counts. Design changes are returned as an editable chart specification.</p>
 <h2 id="category-group-and-multiple">Category, Group and Multiple</h2>
 <ul>
@@ -1520,12 +1549,12 @@
 </ul>
 <p>Multiple settings include maximum panel count, shared value/category axes, automatic or explicit rows and columns, spacing, and panel-header alignment, size, color, bold, italic and underline. Review the filters and category settings when expected categories are missing.</p>
 <h2 id="labels-and-axes">Labels and axes</h2>
-<p>Category and value axes have visibility, text size/color, formatting and spacing controls. Category ordering supports natural, category ascending/descending and value ascending/descending. Data labels control visibility, category, value, series name, delimiter (including line breaks), placement, text size/color, format, angle and spacing. Group labels have separate content and typography controls.</p>
+<p>Category and value axes have visibility, text size/color, formatting and spacing controls. Category ordering supports natural, category ascending/descending and value ascending/descending. Data labels control visibility, category, value, series name, delimiter (including line breaks), placement, text size/color, format, angle and spacing. <strong>Always show first value</strong> and <strong>Always show last value</strong> preserve either endpoint when spacing hides intermediate labels; selecting only the last option anchors high spacing from the end. Group labels have separate content and typography controls.</p>
 <p>Date formatting supports <code>ddd</code> (short weekday), <code>dddd</code> (full weekday) and <code>ww</code> (week). Automatic spacing reduces label crowding; it is distinct from filtering the data. Series-sensitive groups offer All or individual-series settings for data labels, line/markers and scatter/plot settings.</p>
 <h2 id="chart-specific-controls">Chart-specific controls</h2>
 <ul>
-<li>Bar/column and Stacked: bar layout and spacing.</li>
-<li>Line and Area: line and marker settings.</li>
+<li>Bar/column and Stacked: orientation, bar width, spacing, shading, and <strong>End rounding %</strong>. Use <code>0</code> for square ends and increase the percentage for a softer rounded cap; <code>50</code> is fully rounded.</li>
+<li>Line and Area: line and marker settings. <strong>Background gap around markers</strong> paints a configurable outline in the chart background color behind each marker, visually separating it from the line without requiring a manually synchronized border color. <strong>Only show markers with visible labels</strong> hides intermediate markers suppressed by label spacing, which makes a clean last-value-only or endpoint-only line possible.</li>
 <li>Scatter: plot and marker settings.</li>
 <li>Waterfall: waterfall options, grouped shading and point tooltips.</li>
 <li>Histogram and Boxplot: distribution options.</li>
@@ -1538,7 +1567,7 @@
 <p>Treemap, Gauge, Pie and Doughnut have no normal axes: axis groups are hidden and category text is configured through Data labels. Theme colors control plotted shapes independently of label font colors. Plot geometry adapts to the available chart area when the editor or tile changes size; editor-only adjustment handles are omitted from the finished visual.</p>
 <p>For Scatter, <strong>Size by</strong> in Data is the chart-wide default. Select an individual series in <strong>Scatter / plot</strong> only when that series needs a different Size by field; choosing the default there keeps the global binding.</p>
 <h2 id="edit-from-canvas">Edit from Canvas</h2>
-<p>Select a chart tile and use <strong>Chart properties &gt; Property group</strong> for small changes without opening Chart Web. Chart settings, Title settings (including editable title text), Plot margins, axes, labels, legend and applicable chart groups are exposed here. Changes update the stored specification and tile directly.</p>
+<p>Select a chart tile and use <strong>Chart properties &gt; Property group</strong> for small changes without opening Chart Web. Chart settings, Title settings (including editable title text), Plot margins, axes, labels, legend and applicable chart groups are exposed here. <strong>Use canvas theme</strong>, chart background, gridlines and the other quick controls update the stored specification and redraw the tile immediately; reopening the designer is not required.</p>
 <p>Click a plotted bar/point to select Data labels, an x-axis to select Category axis, a y-axis to select Value axis, or the top plot border to select Plot margins. Right-click provides Chart options and available property groups. Open the full designer when changing the data configuration or needing the complete preview.</p>
 <p>Return to <a href="../query-tool/#statistics-and-charts">Statistics and charts in Query Tool</a>.</p>
 

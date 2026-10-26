@@ -579,6 +579,40 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data tiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#editable-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editable List
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Editable List">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-form-one-record-at-a-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List Form: one record at a time
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -655,6 +689,34 @@
     
   
     Graphics and layout
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
   
 
     
@@ -1422,6 +1484,40 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data tiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#editable-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editable List
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Editable List">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-form-one-record-at-a-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List Form: one record at a time
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1484,6 +1580,11 @@ independent of data.</p>
 <td>Table designer</td>
 </tr>
 <tr>
+<td>List</td>
+<td>Editable operational rows, task lists, choices, lookups, and dates</td>
+<td>List designer</td>
+</tr>
+<tr>
 <td>Matrix</td>
 <td>Grouped rows, hierarchies, subtotals, expand/collapse, and measures</td>
 <td>Matrix designer</td>
@@ -1504,16 +1605,88 @@ independent of data.</p>
 <td>Card properties</td>
 </tr>
 <tr>
+<td>Multi-card</td>
+<td>A reusable card layout repeated by a dimension, with multiple fields/measures per card</td>
+<td>Multi-card designer</td>
+</tr>
+<tr>
 <td>Report Grid</td>
 <td>Manually arranged statements, formulas, measures, ranges, and formatting</td>
 <td>In-tile grid editor</td>
 </tr>
 </tbody>
 </table>
-<p>Table, Matrix, Chart, Card, and Report Grid visuals can use source fields and
+<p>Designer windows place compact property-group shortcuts above their previews. Use these shortcuts to open and focus the corresponding settings section without searching or scrolling through the full options pane. Preview elements that already link to a specific setting continue to work alongside the group shortcuts.</p>
+<p>When you add a new page, Qanvas shows the nine page-layout choices directly
+on the empty canvas. Choose a starting layout there, or use the page menu later
+to change the layout.</p>
+<p>Table, List, Matrix, Chart, Card, Multi-card, and Report Grid visuals can use source fields and
 Mini DAX measures. Gantt can use a linked source or keep an editable embedded
 task database. An embedded Gantt can expose its tasks as a Qanvas datasource for
 other visuals.</p>
+<h3 id="editable-list">Editable List</h3>
+<p>Choose <strong>Add tile &gt; List</strong>, then start from <strong>Basic</strong> or <strong>Task</strong>. Basic creates
+an Item field plus managed <code>id</code>, <code>line_no</code>, <code>created_at</code>, and <code>updated_at</code>
+columns. Task adds title, description, status, priority, owner, due date, and
+completion date. The designer can add or remove optional fields and configure
+text, multiline, numeric, Boolean, date/date-time, choice, and lookup types.</p>
+<p>An embedded List owns one manual-table source; rows are not copied into a
+second tile-only store. <strong>Expose as datasource</strong> controls whether other visuals
+can choose that source. A List can instead show an existing linked source, but
+linked rows are read-only until a write-back provider exists. Embedded rows are
+editable on the canvas, while Presentation editing is off by default and web
+exports remain read-only. Tab from the final editable cell creates the next
+row. Row commands support move, duplicate, delete, and task completion.</p>
+<p>The movable, resizable List designer applies valid changes immediately. Its
+Data, Fields, Layout, Appearance, and Interaction shortcuts focus the matching
+property group, and clicking a preview heading or cell opens the corresponding
+field setup. Drag the field handle or use its compact move controls to change
+column order. Resize columns directly from the live List header; that column is
+stored as a fixed pixel width while untouched Auto/percent columns continue to
+share the remaining space. Duplicating or copying an embedded List creates an
+independent owned source with the same rows; linked Lists retain their source
+reference.</p>
+<p>Each editable field can define a value used when a new row is created. Choice
+fields use their stored code, Boolean fields can default checked or unchecked,
+and date fields support dynamic <strong>Today</strong> or <strong>Current date and time</strong> values.
+The Task preset starts Status at Open and Priority at Normal. Appearance keeps
+column-header background and text colors separate, supports theme roles or
+manual colors, and can render header cells with rounded or square corners. The
+compact toolbar can independently show an optional list title and an optional
+search control; both the search caption and placeholder text are configurable.
+Editable controls inherit the row surface so text, choice, and date cells read
+as one row, while action buttons remain visually distinct. Dropdown arrows and
+calendar icons follow the active text color. Alternating rows are optional and
+can use either a canvas-theme role or a manual color. Grid/row-divider color and
+column-separator color are independent and can each follow a theme role or use
+a manual color. URL hover background is also theme-aware or manually selectable.
+URL fields can contain safe web or email links and internal document-page links.
+Use <strong>Choose…</strong> for a field default, or the arrow button/right-click menu in an
+editable row, to select either a web address or a Qanvas page. External links
+open in a new window; document links navigate inside the current report. A
+configured screen tip is shown as the readable link label and as its tooltip
+instead of exposing the stored URL. In Presentation mode, <strong>Add row</strong> and the
+row action buttons remain available only when <strong>Allow editing in Present mode</strong>
+is enabled.</p>
+<h4 id="list-form-one-record-at-a-time">List Form: one record at a time</h4>
+<p>In the List designer, choose <strong>Layout &gt; View &gt; Form · one record</strong> when a wide
+row is easier to work with as a form. The Form view uses the same source and
+fields as the normal List; it does not create another copy of the data. This is
+especially useful for test-case registration, findings, tasks and other records
+with long descriptions.</p>
+<p>Choose 1–6 form columns and set each column to Auto, percent or a fixed pixel
+width. In the preview, select a field and use its visual controls to move it,
+change its column, or increase and decrease its column span and row span. A long
+text control fills the height of its row span. Automatic controls follow the
+field type, including date pickers, choice lists, checkboxes, URL controls,
+numeric inputs and multiline text. Individual fields can be read-only when they
+should remain visible without allowing the user to change them.</p>
+<p>The record navigator moves through the rows that remain after source, page and
+tile filters. Turn on <strong>Follow List selection</strong> to use a normal List as a record
+selector: clicking a row updates Form views that use the same source. A linked
+List or Form reuses the selected shared source instead of creating an extra
+empty source, so one central register can support registration and filtered
+views on several pages.</p>
 <p>See the full <a href="../canvas-tool/#tables-and-matrices">table and matrix</a>,
 <a href="../canvas-tool/#gantt-schedules">Gantt</a>, and
 <a href="../canvas-tool/#report-grid">Report Grid</a> reference.</p>
@@ -1521,7 +1694,9 @@ other visuals.</p>
 <ul>
 <li><strong>Text</strong> supports formatted headings, paragraphs, bullets, interactive
   checklists, links, editable tables, code/diagram blocks, compressed inline
-  pictures, parameter text, and source or measure values.</li>
+  pictures, parameter text, and source or measure values. Its safe formatted
+  HTML is suitable for one-off static flow diagrams, outlined boxes, arrows,
+  and code panels; use SVG for exact scalable or data-bound geometry.</li>
 <li><strong>Picture</strong> supports URLs and embedded local images with fit, fill-width, and
   fill-height sizing.</li>
 <li><strong>SVG</strong> content supports reusable graphics, bound text and values, and either
@@ -1535,9 +1710,28 @@ instructions, logos, illustrations, and navigation between report pages.</p>
 <ul>
 <li>Select one tile or drag around several tiles to move and align them together.</li>
 <li>Use handles or the Properties pane for exact size and position.</li>
-<li>Use layer ordering when tiles or graphics overlap.</li>
+<li>Use <strong>Bring to front</strong> or <strong>Send to back</strong> when tiles or graphics overlap;
+  their submenus also contain one-step Bring forward and Send backward actions.</li>
 <li>Double-click editable text to work directly on the page.</li>
+<li>Press and hold an action or hyperlink control in edit mode to select its object
+  without following the action.</li>
 <li>Use source, page, and tile filters at the appropriate scope.</li>
+<li>To reuse an object's appearance, right-click it and choose <strong>Copy formatting</strong>.
+  Compatible targets on the current page receive a green dashed outline, and
+  page tabs show how many compatible targets they contain. Click one or more
+  outlined objects, including on other pages, then choose <strong>Done</strong> or press
+  <strong>Escape</strong>. The painter stays active for repeated use and only accepts the
+  same visual family: chart-to-chart, card-to-card, table-to-table, and so on.
+  It copies theme bindings, typography, borders, fills, renderers, conditional
+  formats and other visual-specific appearance while preserving the target's
+  datasource, fields, measures, formulas, filter binding, text/content and
+  actions.</li>
+<li><strong>Ctrl+C</strong> copies the selected tile or graphic. You can change pages and press
+  <strong>Ctrl+V</strong> repeatedly to place independent copies on the destination page;
+  copied objects retain their data bindings and complete editable setup.</li>
+<li>When a long Text or Multi-card tile is active, use <strong>Up Arrow</strong> and <strong>Down Arrow</strong>
+  to scroll its overflowing content. At the tile boundary, the same keys scroll
+  the canvas viewport.</li>
 <li>In Presentation mode, double-click a tile to focus it and return to the prior
   view with another double-click, <strong>Escape</strong>, or <strong>Left Arrow</strong>.</li>
 </ul>

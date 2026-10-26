@@ -1,0 +1,1768 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitr Office integrations">
+      
+      
+      
+        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/list-tile-design/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/qanvas-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>List tile: design recommendation - Qvitr Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#list-tile-design-recommendation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Qvitr Documentation" class="md-header__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/qanvas-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Qvitr Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              List tile: design recommendation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Qvitr Documentation" class="md-nav__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/qanvas-logo.png" alt="logo">
+
+    </a>
+    Qvitr Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webview-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebView workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Qanvas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Canvas overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-tiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiles and visual types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chart-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Charts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-graphics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphics and layout
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentation and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queries and data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Queries and data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Query Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../local-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local queries and data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dax-measures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini DAX and measures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mini-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Excel add-in
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Excel add-in
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qrep-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qrep-excel-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Excel Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formula-helper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formula Helper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PowerPoint add-in
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PowerPoint add-in
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-addin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-shared/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared tool links
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical information
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical information
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IT overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation and updates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage and security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-removal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uninstall and cleanup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reuse-the-existing-data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reuse the existing data model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-task-list-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default task-list schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#form-view-and-inspector-reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Form view and inspector reuse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delivery-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Delivery plan
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="list-tile-design-recommendation">List tile: design recommendation</h1>
+<h2 id="decision">Decision</h2>
+<p>Add a separate <strong>List</strong> tile for operational, editable rows. Keep <strong>Table</strong> as a
+simple read-only detail view and <strong>Matrix</strong> as the analytical table. Do not
+remove or silently convert the current Table tile: existing reports depend on
+its saved shape, and editing introduces permissions, validation, row identity,
+and write-back semantics that a reporting table should not acquire implicitly.</p>
+<p>The three tiles then have clear jobs:</p>
+<table>
+<thead>
+<tr>
+<th>Tile</th>
+<th>Primary job</th>
+<th>Data behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Matrix</td>
+<td>Grouped analysis, pivots, subtotals, drill and hierarchy</td>
+<td>Read-only</td>
+</tr>
+<tr>
+<td>Table</td>
+<td>Fast flat detail and export</td>
+<td>Read-only</td>
+</tr>
+<tr>
+<td>List</td>
+<td>Task lists and small operational registers</td>
+<td>Editable when embedded; linked sources are read-only initially</td>
+</tr>
+</tbody>
+</table>
+<p>Table and Matrix should continue to share rendering, formatting, sorting and
+field-picking code where practical. A later release may present Table as a
+"Flat table" preset of the Matrix renderer, but the saved <code>kind: "table"</code>
+must remain supported. Conversion should be explicit: <strong>Convert to Matrix</strong> or
+<strong>Create editable List snapshot</strong>.</p>
+<h2 id="reuse-the-existing-data-model">Reuse the existing data model</h2>
+<p>Qanvas already has embedded/manual tables with typed columns, cell editing,
+lookups, calendar input, column resize/reorder, and automatic row creation.
+The List tile should be a focused view and workflow on top of that capability,
+not a second row database.</p>
+<p>Two modes are recommended:</p>
+<ul>
+<li><strong>Embedded list</strong> creates a private embedded manual source owned by the tile.
+  The source contains the canonical schema and rows. An <strong>Expose as datasource</strong>
+  option gives it a user-facing name and makes it available to cards, charts,
+  matrices, filters, and other pages. The data is not copied when it is exposed.</li>
+<li><strong>Linked source</strong> references an existing Qanvas source. SQL, API, workbook,
+  and generated rows remain read-only because they require a real write-back
+  contract. A linked view may opt into editing when its source is another
+  embedded List/manual table; every linked view then edits the same canonical
+  rows instead of a cached copy.</li>
+</ul>
+<p>This is slightly different from the Gantt tile's tile-owned task array and
+published <code>gantt:&lt;tile-id&gt;</code> proxy. For a generic List, source-first ownership is
+cleaner because its data is already ordinary rows. The tile stores view and
+editing preferences; the embedded source stores rows and schema.</p>
+<p>Suggested stable identity:</p>
+<pre><code class="language-json">{
+  &quot;kind&quot;: &quot;list&quot;,
+  &quot;sourceId&quot;: &quot;list:8ee41e2a&quot;,
+  &quot;list&quot;: {
+    &quot;storage&quot;: &quot;embedded&quot;,
+    &quot;exposeAsDatasource&quot;: true,
+    &quot;datasourceName&quot;: &quot;Project actions&quot;,
+    &quot;columns&quot;: [
+      { &quot;field&quot;: &quot;title&quot;, &quot;width&quot;: { &quot;mode&quot;: &quot;percent&quot;, &quot;value&quot;: 35 } },
+      { &quot;field&quot;: &quot;status&quot;, &quot;width&quot;: { &quot;mode&quot;: &quot;px&quot;, &quot;value&quot;: 140 } },
+      { &quot;field&quot;: &quot;due_at&quot;, &quot;width&quot;: { &quot;mode&quot;: &quot;auto&quot; } }
+    ],
+    &quot;allowPresentEditing&quot;: false
+  }
+}
+</code></pre>
+<p>The embedded source descriptor should carry <code>ownerTileId</code> and a stable source
+ID. Deleting or unpublishing it must warn about dependent visuals. A List must
+not consume its own published alias.</p>
+<h2 id="default-task-list-schema">Default task-list schema</h2>
+<p>Start with a useful but small template. Users can remove optional fields or add
+their own.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>UUID/text</td>
+<td>Immutable primary key; hidden by default</td>
+</tr>
+<tr>
+<td><code>line_no</code></td>
+<td>Integer</td>
+<td>Automatic display/order number</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Short text</td>
+<td>Required primary description</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Long text</td>
+<td>Optional multiline editor</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Choice</td>
+<td>Open, In progress, Completed</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>Choice</td>
+<td>Low, Normal, High</td>
+</tr>
+<tr>
+<td><code>owner</code></td>
+<td>Text or lookup</td>
+<td>Optional assignee</td>
+</tr>
+<tr>
+<td><code>due_at</code></td>
+<td>Date</td>
+<td>Shared date picker</td>
+</tr>
+<tr>
+<td><code>completed_at</code></td>
+<td>Date/time</td>
+<td>Optional; may be set when completed</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>Date/time</td>
+<td>Automatic, read-only</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>Date/time</td>
+<td>Automatic, read-only</td>
+</tr>
+</tbody>
+</table>
+<p><code>created_by</code> and <code>updated_by</code> should only appear when the host supplies a stable
+user identity. Otherwise they imply an audit trail that Qanvas cannot prove.</p>
+<p>Custom field types for version one:</p>
+<ul>
+<li>Short text and long/multiline text</li>
+<li>Integer, decimal, currency and percent</li>
+<li>Boolean</li>
+<li>Date and date/time, stored as ISO values</li>
+<li>Choice with separate stored code and displayed label</li>
+<li>Lookup with source, key field, display field, missing-value behavior and an
+  optional manual code/label list</li>
+</ul>
+<p>URL, email, attachments, formulas, cascading lookups and write-back adapters
+fit later phases. A lookup stores the code; it never stores the display text as
+the authoritative value. Date fields use the existing shared calendar.</p>
+<h2 id="list-workflow">List workflow</h2>
+<ul>
+<li><strong>Add row</strong> creates a row below the current row. Enter commits the cell; Tab
+  moves across fields and creates another row from the final editable cell.</li>
+<li>Choice and lookup cells use a searchable dropdown. Date cells use the shared
+  date picker. Long text can expand into a resizable editor while retaining an
+  inline preview.</li>
+<li>Required fields, numeric ranges, duplicate keys and missing lookup values are
+  validated at cell and row level. Invalid rows remain visible and explain the
+  error; they are not silently discarded.</li>
+<li>Row commands are Duplicate, Delete, Move, Mark complete and Open details.
+  Delete and schema/type conversions remain undoable or require confirmation.</li>
+<li>Search, sort, filters, frozen columns and compact/comfortable row density use
+  the same shared grid behavior as Table and embedded manual tables.</li>
+<li>Column width is <code>{ mode: "auto" | "px" | "percent", value? }</code>. Percent widths
+  share the available area, pixel widths remain fixed, and Auto consumes the
+  remainder with sensible minimums. Multiline rows can use Auto height or a
+  configurable fixed/clamped height.</li>
+</ul>
+<p>Editing is enabled in normal Edit mode. Presentation editing is a separate,
+off-by-default option, matching Gantt. Web export should remain read-only until
+there is an explicit persistence target.</p>
+<h2 id="designer">Designer</h2>
+<p>Use the established two-pane designer: properties on the left and a real live
+preview on the right. The dialog is movable and resizable. Compact group
+shortcuts remain visible above the property pane:</p>
+<ul>
+<li><strong>Data</strong> — Embedded/Linked mode, source, expose/name datasource</li>
+<li><strong>Fields</strong> — add/reorder fields, type, required/default value, lookup setup</li>
+<li><strong>Layout</strong> — widths, row height, density, multiline, frozen columns</li>
+<li><strong>Appearance</strong> — theme roles, header/cell typography, borders, badges</li>
+<li><strong>Interaction</strong> — add/delete/duplicate, Present editing, selection behavior</li>
+</ul>
+<p>Preview objects are navigation targets:</p>
+<ul>
+<li>Click a column heading to focus that field and its width settings.</li>
+<li>Click a value cell to focus that field's editor and formatting.</li>
+<li>Click the toolbar, row action area, empty state or list frame to focus
+  Interaction, Layout or Appearance respectively.</li>
+<li>Keyboard focus moves to the selected property section, and the active preview
+  target and shortcut use the same highlighted state.</li>
+</ul>
+<p>There is no Apply/Save button in the designer. Every valid change updates the
+tile/source model and preview immediately and participates in canvas Undo/Redo.
+Closing the designer only closes it. The document still uses the normal Qanvas
+Save command to persist the <code>.qanvas</code> file, so live designer updates do not
+pretend that the file has already been written to disk.</p>
+<h2 id="form-view-and-inspector-reuse">Form view and inspector reuse</h2>
+<p>The List tile also has a <strong>Form · one record</strong> view. This is a view of the same
+source and schema, not a second data store or a separate tile type. It is suited
+to test-case registration, issue intake, master-data maintenance, and any case
+where a wide row is easier to edit as a professional form.</p>
+<ul>
+<li>The form supports 1–6 columns. Each column can use Auto, relative percent, or
+  fixed pixel width. Row and column gaps and compact spacing are configurable.</li>
+<li>Every visible field has column, column span, and row span. Labels can be above
+  or to the left of controls.</li>
+<li>Automatic controls follow the field type: date/date-time picker, checkbox,
+  choice/lookup select, URL picker, numeric input, and multiline text.</li>
+<li>Numeric fields can opt into a slider with min/max/step. Choice, lookup, and
+  numeric values can opt into a badge when a display-only summary is preferred.</li>
+<li>A navigator moves through the records that remain after source, page, and
+  tile filters. Add, duplicate, and delete use the same permissions as the
+  normal List view.</li>
+<li><code>selectedRecordId</code> is stable when rows are sorted or filtered. With
+  <code>followSelection</code>, clicking a row in a table List updates Form views using the
+  same source, including a form on another page when that page is opened.</li>
+</ul>
+<p>An inspector should be a presentation shell around this same form schema. It
+may be docked to the side or bottom, floating and movable, or opened on demand,
+but should not own its own rows or duplicate field configuration. An optional
+future <strong>Use form as inspector</strong> action can select a Form-view List definition
+and choose its placement. This keeps ad-hoc layout power while avoiding a
+second implementation of typed editors, validation, theming, and persistence.</p>
+<h2 id="delivery-plan">Delivery plan</h2>
+<ol>
+<li>Add <code>kind: "list"</code>, the embedded-source owner metadata, the task-list
+   template, linked read-only mode, and datasource exposure.</li>
+<li>Reuse the manual-table cell editors for typed fields, lookup/manual lists,
+   date picker, multiline text, widths, validation and inline row creation.</li>
+<li>Add the movable/resizable designer, property shortcuts, clickable preview,
+   keyboard flow, Undo/Redo and Present-mode permission.</li>
+<li>Add search/filter/frozen-column polish, conversion commands and regression
+   coverage for save/load, published-source dependencies and exports.</li>
+<li>Only after migration coverage is complete, consider hiding <strong>Add Table</strong> in
+   favor of a Matrix flat-table preset. Continue rendering existing Table tiles.</li>
+</ol>
+<p>This approach has moderate implementation risk: most difficult primitives
+already exist, while the new work is ownership, UX composition, validation,
+conversion and lifecycle handling rather than another storage engine.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

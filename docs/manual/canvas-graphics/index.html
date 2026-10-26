@@ -16,7 +16,7 @@
         <link rel="prev" href="../chart-tool/">
       
       
-        <link rel="next" href="../canvas-presentation/">
+        <link rel="next" href="../canvas-visual-filter-spec/">
       
       
         
@@ -638,6 +638,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#multi-card-tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-card tiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#arrange-a-page" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -663,6 +674,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1425,6 +1464,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#multi-card-tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-card tiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#arrange-a-page" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1472,6 +1522,19 @@ content alongside normal tiles.</p>
 <li>Text graphics support the same rich-text concepts as Text tiles and Gantt
   descriptions: headings, colors, bullets, checklists, links, editable tables,
   code/diagram blocks, and compressed inline images.</li>
+<li>Use safe formatted HTML in a Text tile or Text graphic for a one-off, mostly
+  static composition such as outlined callouts, boxes with arrows, code panels,
+  or a simple flow diagram. Use SVG instead when geometry must scale precisely
+  or bind to data, separate canvas shapes and connectors when parts must remain
+  independently movable, and Multi-card for a repeated data-driven layout.</li>
+<li><strong>Insert &gt; Date countdown</strong> adds date-driven text without a datasource or
+  measure. Choose a target date and configure separate text for a future date,
+  the target day, and a passed date. Use <code>{days}</code> for the absolute number of
+  days or <code>{date}</code> for the formatted target date. While editing, it remains a
+  readable and copyable function such as
+  <code>datecountdown("2026-10-11", "Neste om {days}", "I dag", "Ferdig")</code>.
+  The dialog formats it as a subtle wrapping code chip. Normal, presentation,
+  and exported views show only the recalculated result.</li>
 <li>Selecting an inline image opens an image-only floating toolbar above or below
   it. Set width, align left/center/right, compress, remove, or drag a corner
   handle while preserving aspect ratio. Clicking text returns to text editing.</li>
@@ -1484,7 +1547,92 @@ content alongside normal tiles.</p>
 <li>Custom SVG created from source uses the <strong>Manual</strong> template. In document JSON,
   keep the standalone element only in nested <code>svgGraphic.svgCode</code> and explicitly
   set nested <code>svgGraphic.template</code> to lowercase <code>manual</code>.</li>
+<li><strong>Open SVG designer…</strong> shows a collapsible reusable-template gallery and a
+  full Custom SVG workspace. <strong>Analyze SVG</strong> discovers text components,
+  editable shapes, likely category labels and a horizontal date axis with a
+  Today/I dag marker. Detected text can be edited in place with font, size,
+  weight, color and link controls; named shapes expose fill, border, border
+  width, position and supported geometry. Paired horizontal rectangles are
+  recognized as a progress track and fill even without field metadata, so the
+  fill width can be changed directly in <strong>Progress fill &gt; Position and size</strong>.
+  Explicit <code>data-qanvas-field</code> and <code>data-qanvas-label</code> attributes remain the
+  most reliable choice for other editable shapes. <strong>Use as category slot</strong> is separate from editing: only checked slots
+  are filled, in order, with unique values from the selected source column.
+  The date marker can follow the current date, a fixed date, a source field or
+  a parameter between a configured start and end date. Click a detected item
+  in the preview to open, scroll to, and highlight its controlling component or
+  date-marker editor. <strong>Duplicate</strong> copies normal components, while <strong>Duplicate
+  marker</strong> copies the label, badge and line and adds an independently configured
+  dynamic marker rather than only cloning its text. The preview uses the
+  same tile frame and render path as the applied graphic, including the final
+  tile aspect ratio. Raw SVG source, component editing, colors and data
+  bindings all live in the designer rather than being duplicated in Properties.
+  Right-click an editable text or date-label input, or use its <strong>＋</strong> insert
+  button, to open the searchable field/measure/parameter token lookup. The
+  catalog includes related-source measures when relationships make them
+  available to the SVG tile.</li>
+<li><code>CanvasWeb/examples/manual-svg-timeline.svg</code> is a complete editable timeline
+  example with month/week labels, category lanes, a Today marker, theme colors
+  and named components.</li>
 </ul>
+<h2 id="multi-card-tiles">Multi-card tiles</h2>
+<p>Use <strong>Add tile &gt; Multi-card</strong> when the same small information layout should be
+repeated for countries, projects, milestones, customers, or another dimension.
+Open the designer and choose a <strong>Group by</strong> column. Add any number of source
+fields or measures to the Values well and arrange them in one to six columns.
+Raw source fields support First, Sum, Average, Min, Max, and Count; measures are
+evaluated in the filter context of each repeated card.</p>
+<p>Each value column can use <strong>Auto / remaining</strong>, <strong>Percent</strong>, or <strong>Fixed</strong> width.
+Auto columns share space that remains after fixed-pixel columns. Percentage
+values act as responsive proportions and are normalized with the Auto columns;
+for example, <code>15% + Auto + 25%</code> produces a <code>15 / 60 / 25</code> layout. Prefer
+percent/Auto for presentation layouts that must resize, and use fixed pixels
+only for compact columns such as dates, icons, or status labels.</p>
+<p>Each value also has a <strong>Placement</strong> section. Leave <strong>Column</strong> on <strong>Auto flow</strong>
+for the normal left-to-right layout, or pin an image, data bar, or other value
+to a numbered column. <strong>Height</strong> can occupy one to six rows or the <strong>Full
+column</strong>; the remaining values flow densely through the other available cells.
+For example, use two value columns, pin an image to column 1 with Full column
+height, and leave three text values on Auto flow to stack them in column 2.</p>
+<p>The value's <strong>Align</strong> setting applies to both its value and caption. Open
+<strong>Cell display</strong> on a value to render it as a number/text value, image, badge,
+icon, or data bar. Badge and icon colors can follow a theme role, indicate
+positive/negative status, or use a custom color. Each value also exposes the
+same <strong>Data bar / bullet graph</strong> and <strong>Conditional formatting</strong> controls used by
+table and matrix columns, including comparison fields/measures, value-strength
+colors, negative-value color, emphasis and threshold icons. <strong>Format using</strong>
+can point to a different numeric field or measure while the displayed value
+remains text; for example, show <code>date_diff</code> while colors are calculated from
+<code>date_diff_days</code>. A value can also drive a thin card <strong>Color band</strong> on the
+left, right, top, or bottom edge. The band can use the conditional result or a
+separate field/measure that returns a hex color or theme role.</p>
+<p>Heading and supporting-text templates support <code>{{group}}</code>,
+<code>{{field:Amount|Sum}}</code>, <code>{{measure:Sales}}</code>, and <code>{{parameter:Year}}</code>. Card
+captions support the same tokens. Right-click a heading, supporting-text, or
+caption input to insert a field, measure, parameter, group value, or the
+<code>upper</code>/<code>lower</code> text functions without typing the token. The menu also inserts
+an editable <code>datecountdown(...)</code> expression using today's date as a starting
+point. Each value initially
+shows only its field/measure, aggregation and caption; open <strong>More</strong> for format,
+alignment, placement, cell display, data bars and conditional formatting. Card
+placement uses CSS grid with either a fixed number of cards per row or an
+automatic minimum width. Use <strong>Show heading</strong> instead of an empty or whitespace
+heading when only supporting text is needed. In the designer preview, click a
+heading, supporting text, value, or value caption to scroll to and focus its
+corresponding setting. Text and number boxes update the preview when focus
+leaves the box, avoiding a full preview refresh for every typed character;
+selects, checkboxes, and color controls remain immediate. Colors and borders
+may inherit the Qanvas theme or be set explicitly. <strong>No background
+(transparent)</strong> removes the repeated cards' fill
+while retaining theme-based text and accent colors. <strong>Border sides</strong> can show
+all edges, only the top and vertical sides, only horizontal separators, or no
+inner card border. Border width supports fractional values such as <code>0.25</code> and
+<code>0.5</code> px for subtle dividers. Use a Multi-card rather than a rich-text table when rows must be
+generated dynamically from data; use a rich-text table for a small, manually
+authored piece of narrative content.</p>
+<p>When a Multi-card is selected on the canvas, <strong>Up Arrow</strong> and <strong>Down Arrow</strong>
+scroll its card body when it overflows. The same behavior applies to a long Text
+box configured for internal scrolling.</p>
 <h2 id="arrange-a-page">Arrange a page</h2>
 <p>Use alignment guides for visual placement and the Properties pane for exact
 coordinates and dimensions. Multi-selection is useful for moving, aligning,

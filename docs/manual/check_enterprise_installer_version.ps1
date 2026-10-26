@@ -62,6 +62,9 @@ $windowsInstaller = New-Object -ComObject WindowsInstaller.Installer
 $database = $null
 $view = $null
 $record = $null
+$fileView = $null
+$fileRecord = $null
+$legacyBridgeFiles = @{}
 try {
     $database = $windowsInstaller.OpenDatabase($msi, 0)
     $view = $database.OpenView("SELECT ``Value`` FROM ``Property`` WHERE ``Property``='ProductVersion'")
@@ -69,10 +72,23 @@ try {
     $record = $view.Fetch()
     if (-not $record) { throw 'The MSI does not contain a ProductVersion property.' }
     $msiVersion = ConvertTo-ThreePartVersion $record.StringData(1)
+
+    $fileView = $database.OpenView("SELECT ``FileName``, ``Version`` FROM ``File``")
+    $fileView.Execute()
+    while ($fileRecord = $fileView.Fetch()) {
+        $packedName = [string] $fileRecord.StringData(1)
+        $longName = ($packedName -split '\|')[-1]
+        if ($longName -in @('CanvasWeb.LegacyBridge.exe', 'CanvasWeb.LegacyBridge.exe.config', 'xlquerycode.dll', 'Newtonsoft.Json.dll', 'ClosedXML.dll')) {
+            $legacyBridgeFiles[$longName] = [string] $fileRecord.StringData(2)
+        }
+        [void] [Runtime.InteropServices.Marshal]::FinalReleaseComObject($fileRecord)
+        $fileRecord = $null
+    }
 }
 finally {
+    if ($fileView) { $fileView.Close() }
     if ($view) { $view.Close() }
-    foreach ($comObject in @($record, $view, $database, $windowsInstaller)) {
+    foreach ($comObject in @($fileRecord, $fileView, $record, $view, $database, $windowsInstaller)) {
         if ($comObject) { [void] [Runtime.InteropServices.Marshal]::FinalReleaseComObject($comObject) }
     }
 }
@@ -82,6 +98,16 @@ if ($setupVersion -ne $Version) {
 }
 if ($msiVersion -ne $Version) {
     throw "MSI ProductVersion is $msiVersion, but the expected version is $Version."
+}
+
+$requiredLegacyBridgeFiles = @('CanvasWeb.LegacyBridge.exe', 'CanvasWeb.LegacyBridge.exe.config', 'xlquerycode.dll', 'Newtonsoft.Json.dll', 'ClosedXML.dll')
+$missingLegacyBridgeFiles = @($requiredLegacyBridgeFiles | Where-Object { -not $legacyBridgeFiles.ContainsKey($_) })
+if ($missingLegacyBridgeFiles.Count -gt 0) {
+    throw "The MSI is missing required LegacyBridge payload files: $($missingLegacyBridgeFiles -join ', ')."
+}
+$legacyBridgeVersion = $legacyBridgeFiles['CanvasWeb.LegacyBridge.exe']
+if (-not $sourceFileVersion -or $legacyBridgeVersion -ne $sourceFileVersion) {
+    throw "LegacyBridge file version is $legacyBridgeVersion, but the Qanvas source version is $sourceFileVersion. A lower bridge version can be removed during a major upgrade."
 }
 
 & $validator -Version $Version -ArtifactDirectory $releaseRoot -ValidateOnly
@@ -95,5 +121,6 @@ Write-Host "Version:           $Version"
 if ($sourceFileVersion) { Write-Host "Qanvas source version: $sourceFileVersion" }
 Write-Host "Setup file version: $setupVersion"
 Write-Host "MSI ProductVersion: $msiVersion"
+Write-Host "LegacyBridge version: $legacyBridgeVersion"
 Write-Host "Release folder:     $releaseRoot"
 Write-Host 'Status:             READY FOR UPLOAD'

@@ -1,0 +1,1865 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitr Office integrations">
+      
+      
+      
+        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/canvas-visual-filter-spec/">
+      
+      
+        <link rel="prev" href="../canvas-graphics/">
+      
+      
+        <link rel="next" href="../canvas-presentation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/qanvas-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Visual filter proposal - Qvitr Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#visuelle-filtre-pa-canvas" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Qvitr Documentation" class="md-header__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/qanvas-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Qvitr Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Visual filter proposal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Qvitr Documentation" class="md-nav__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/qanvas-logo.png" alt="logo">
+
+    </a>
+    Qvitr Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webview-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebView workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Qanvas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Canvas overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-tiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiles and visual types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chart-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Charts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-graphics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphics and layout
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mål
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#brukerflyt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Brukerflyt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datamodell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datamodell
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visning-og-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visning og data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visning og data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#button-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Button group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cards-og-multi-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cards og multi-card
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interaksjon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interaksjon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avgrensning-og-anbefalt-lsning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avgrensning og anbefalt løsning
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentation and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queries and data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Queries and data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Query Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../local-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local queries and data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dax-measures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini DAX and measures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mini-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Excel add-in
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Excel add-in
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qrep-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qrep-excel-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Excel Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formula-helper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formula Helper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PowerPoint add-in
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PowerPoint add-in
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-addin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-shared/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared tool links
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical information
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical information
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IT overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation and updates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage and security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-removal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uninstall and cleanup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mål
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#brukerflyt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Brukerflyt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datamodell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datamodell
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visning-og-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visning og data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visning og data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#button-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Button group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dropdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dropdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cards-og-multi-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cards og multi-card
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interaksjon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interaksjon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avgrensning-og-anbefalt-lsning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Avgrensning og anbefalt løsning
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="visuelle-filtre-pa-canvas">Visuelle filtre på canvas</h1>
+<blockquote>
+<p>Første fungerende versjon er implementert. Den støtter page filters og linked
+tile filters i editor, presentasjon og web-eksport. Source filters er med
+hensikt ikke valgbare.</p>
+</blockquote>
+<h2 id="mal">Mål</h2>
+<p>En eksisterende side- eller tile-filterdefinisjon skal kunne vises som knapper, en enkel dropdown, kort eller et multi-card direkte på canvas. Et valg oppdaterer den samme filterdefinisjonen som filterpanelet bruker. Funksjonen er derfor en ny visning av dagens filter, ikke et nytt filtersystem.</p>
+<p>Første versjon bør støtte <strong>page filter</strong> og <strong>tile filter</strong>. Source filter holdes utenfor fordi et visuelt filter på én side ellers kan endre datagrunnlaget på andre sider uten at brukeren ser hvor endringen kommer fra.</p>
+<h2 id="brukerflyt">Brukerflyt</h2>
+<ol>
+<li>Brukeren oppretter filteret i filterpanelet som i dag.</li>
+<li>Velg <strong>Add visual…</strong> på filteret.</li>
+<li>Brukeren velger visning:</li>
+<li>Button group</li>
+<li>Dropdown</li>
+<li>Cards</li>
+<li>Multi-card</li>
+<li>Visualen plasseres på gjeldende side og er koblet til filteret.</li>
+<li>Klikk på et element setter eller fjerner filterverdien og bruker dagens filterpipeline til å tegne berørte visuals på nytt.</li>
+<li>Filteret kan fortsatt redigeres i filterpanelet. Endringer vises automatisk i den koblede visualen.</li>
+</ol>
+<p>Visualen kan også opprettes fra <strong>Graphics &gt; Visual filter</strong>. Designeren velger
+et eksisterende page/tile-filter. Hvis siden ikke har et slikt filter, opprettes
+et ordinært page-filter med første tilgjengelige kolonne som startpunkt.</p>
+<h2 id="datamodell">Datamodell</h2>
+<p>Alle page- og tile-filterdefinisjoner får en stabil <code>id</code>. Canvas-visualen lagrer
+bare en lett referanse, for eksempel:</p>
+<pre><code class="language-json">{
+  &quot;kind&quot;: &quot;visualFilter&quot;,
+  &quot;visualFilter&quot;: {
+    &quot;filterRef&quot;: {
+      &quot;scope&quot;: &quot;page&quot;,
+      &quot;filterId&quot;: &quot;filter-123&quot;
+    },
+    &quot;layout&quot;: &quot;cards&quot;,
+    &quot;heading&quot;: &quot;{{field:category}}&quot;,
+    &quot;supportingText&quot;: &quot;{{measure:item_count}}&quot;,
+    &quot;imageField&quot;: &quot;image_url&quot;,
+    &quot;columns&quot;: 3,
+    &quot;showAll&quot;: true
+  }
+}
+</code></pre>
+<p>For tile-scope peker <code>filterId</code> på den eksisterende delte tile-filterdefinisjonen (<code>sharedFilterId</code>) og beholder dagens target-liste. Visualen skal aldri kopiere filterverdien til en egen lokal tilstand; valgt verdi leses fra og skrives til filterobjektet.</p>
+<h2 id="visning-og-data">Visning og data</h2>
+<h3 id="button-group">Button group</h3>
+<ul>
+<li>Én knapp per unik dimensjonsverdi.</li>
+<li>Enkeltvalg eller flervalg følger filtertypen.</li>
+<li>Valgfri <strong>All / Clear</strong>-knapp. All kan vise de samme radtellingene,
+  feltene og measures som de øvrige valgene, aggregert over alle tilgjengelige
+  rader.</li>
+<li>Støtter tekst, bilde, flere value-felt og valgt/ikke-valgt formatering.</li>
+<li>Knappene fordeler tilgjengelig bredde og høyde i visualen. Når visualen
+  skaleres, skaleres derfor også knappene i stedet for å beholde en fast
+  innholdsbredde.</li>
+</ul>
+<h3 id="dropdown">Dropdown</h3>
+<ul>
+<li>Kompakt dropdown for filterfelt. Lange verdilister har søk øverst uten en
+  permanent scrollbar ved siden av den lukkede kontrollen.</li>
+<li>Bruker den samme page/tile-filtertilstanden som de øvrige layoutene.</li>
+<li><strong>All / Clear</strong> vises som første valg når den er aktivert. Uten All/Clear
+  vises en nøytral tomtilstand frem til brukeren velger en verdi.</li>
+</ul>
+<h3 id="cards-og-multi-card">Cards og multi-card</h3>
+<ul>
+<li>Én card per unik verdi i filterets dimensjon.</li>
+<li>Kan vise heading, supporting text, bilde og flere aggregerte felt/measures.</li>
+<li>Multi-card-layoutet har et eget value-grid med 1–6 kolonner. Hvert value-felt
+  kan bruke automatisk plassering, festes til en bestemt kolonne eller spenne
+  over flere rader/full kolonne. Kolonnene kan bruke automatisk, prosentvis
+  eller fast pikselbredde, på samme måte som den ordinære Multi-card-flisen.</li>
+<li>Hvert value-felt kan bruke Number, Image, Badge, Icon eller DataBar samt
+  databar/bullet graph og conditional formatting. Formateringen kan styres av
+  et annet felt eller measure enn verdien som vises.</li>
+<li>Heading og supporting text støtter <code>{{value}}</code>, <code>{{count}}</code>,
+  <code>{{field:name}}</code> og <code>{{measure:name|aggregation}}</code>.</li>
+<li>Hele cardet er klikkbart og viser tydelig valgt tilstand.</li>
+</ul>
+<p>Verdilisten beregnes fra filterets datasource etter andre aktive filtre. Filteret som visualen selv styrer må midlertidig utelates når tilgjengelige valg beregnes, ellers forsvinner ikke-valgte alternativer etter første klikk. Avhengige filtre følger dagens dependency-logikk.</p>
+<h2 id="interaksjon">Interaksjon</h2>
+<ul>
+<li>Presentasjon og web-eksport: vanlig klikk filtrerer.</li>
+<li>Edit mode: klikk på knapp/card filtrerer; klikk på tomt område eller ramme velger visualen for flytting og skalering. Høyreklikk åpner designer.</li>
+<li><code>Ctrl</code>/<code>Cmd</code> kan følge dagens multi-select-regler der filtertypen støtter flere verdier.</li>
+<li><code>Escape</code> endrer ikke filteret. En eksplisitt Clear/All-handling nullstiller det.</li>
+<li>Tastatur: Tab til valg, Space/Enter velger, <code>aria-pressed</code>/<code>aria-selected</code> viser tilstand.</li>
+</ul>
+<h2 id="designer">Designer</h2>
+<p>Designeren er flyttbar og kan endre størrelse. Den velger eksisterende
+page/tile-filter og dimensjon, samt layout, sortering, innhold, value-liste,
+bilde og utseende. Preview bruker den
+virkelige filtertilstanden. Høyreklikk på visualen og velg <strong>Edit in designer</strong>
+for å åpne den igjen. Høyreklikk i heading, supporting text eller en
+value-caption åpner innsetting av tekstfunksjon, felt, measure eller parameter.
+Enter i et vanlig editorfelt lagrer feltendringen uten å lukke dialogen. Klikk
+på heading, supporting text, value eller caption i preview for å hoppe til den
+tilhørende innstillingen. Snarveiene over preview åpner og fokuserer Layout,
+Card content, Values og Appearance.</p>
+<p>Foreslåtte innstillinger:</p>
+<ul>
+<li>Filter binding: page eller linked tile filter.</li>
+<li>Layout: buttons, dropdown, cards, multi-card.</li>
+<li>Dimensjon/verdi, sortering og maksimal antall valg.</li>
+<li>Heading, supporting text, values/measures, bilde eller ikon.</li>
+<li>Maksimalt antall kolonner, gap, padding, bakgrunn, kant og avrunding. Hvis
+  visualen har færre valg enn maksimum, fordeles de over hele tilgjengelig
+  bredde i stedet for å reservere tomme kolonner.</li>
+<li>Selected, unselected, hover og disabled appearance. Valgt tilstand kan vises
+  med bakgrunnsfarge, kun en kant som ellers er usynlig, eller både bakgrunn og
+  kant. Kantbredden kan konfigureres.</li>
+<li>Valgbare temaroller for tekst, bakgrunn og kant, separat for valgt og ikke
+  valgt tilstand. Egne farger kan fortsatt brukes når canvas-tema er slått av.</li>
+<li>Show All/Clear, single/multiple selection og tom-verdi-label.</li>
+<li>Optional conditional-formatting source, også fra et annet measure.</li>
+</ul>
+<h2 id="avgrensning-og-anbefalt-lsning">Avgrensning og anbefalt løsning</h2>
+<p>Løsningen bruker stabile filter-ID-er og én felles funksjon for å oppdatere et
+filter fra både filterpanelet og visualen. Valgt verdi lagres aldri i visualen.
+Når valglisten beregnes, brukes source-, page- og tile-filterpipeline som før,
+men visualens eget filter utelates slik at ikke-valgte alternativer ikke
+forsvinner.</p>
+<p>Levert i første versjon:</p>
+<ol>
+<li>Stabile ID-er på page/tile filters og felles oppdateringsfunksjon.</li>
+<li>Button group, Dropdown, Cards og Multi-card-layout.</li>
+<li>Page filters og linked tile filters med eksisterende target-liste.</li>
+<li>Valgbare temaroller eller egne selected/unselected-farger, kolonner, gap,
+   padding og avrunding.</li>
+<li>Heading, supporting text, bilde og aggregert felt/measure.</li>
+<li>Presentasjonsmodus, web-eksport, tastaturknapper og <code>aria-pressed</code>.</li>
+<li>Tester for page-filter, linked tile-filter, designer, bevarte valg og web-eksport.</li>
+<li>Responsive knapper og minimumshøyde på 30 piksler for kompakte filterfelt.</li>
+<li>Søk i lange dropdown-lister, kompakt datovelger og synkron valgt-markering
+   mellom flere visualer som peker til samme filter.</li>
+<li>Felt og measures fra direkte relaterte kilder når den lagrede
+    datasource-relasjonen gjør bindingen gyldig.</li>
+</ol>
+<p>Aktuelle utvidelser er ikonvelger og flere dropdown-varianter. Datamodellen er
+lagt slik at disse kan bygges videre uten et nytt filtersystem.</p>
+<p>Source filters kan vurderes senere, men bør da kreve en eksplisitt advarsel og en tydelig global indikator på alle sider.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

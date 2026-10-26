@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/canvas-presentation/">
       
       
-        <link rel="prev" href="../canvas-graphics/">
+        <link rel="prev" href="../canvas-visual-filter-spec/">
       
       
         <link rel="next" href="../query-tool/">
@@ -592,6 +592,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -681,6 +709,17 @@
     <span class="md-ellipsis">
       
         Exit safely
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inheriting-and-locking-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inheriting and locking filters
       
     </span>
   </a>
@@ -1469,6 +1508,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#inheriting-and-locking-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inheriting and locking filters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#webpage-reports" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1516,16 +1566,17 @@ navigation, zoom, filters, pointer, and temporary annotation tools available.</p
 <li>Double-click a tile to animate into a focused view.</li>
 <li>While a tile is focused, double-click it again, press <strong>Escape</strong>, or press
   <strong>Left Arrow</strong> to return to the exact prior zoom and scroll position.</li>
-<li>Use Fit screen, Fit width, or Fit height for the current window.</li>
+<li>Each page can open with Automatic, Fit screen, Fit width, Fit height, or 100% resizing. Automatic uses Fit screen for known slide presets and Fit width for manual, A4, and long web/report pages.</li>
 <li><code>Ctrl</code> + mouse wheel zooms the Qanvas page around the pointer. Drag to pan a
   zoomed page.</li>
-<li>Full screen hides the application title bar; it is entered only when the user
-  requests it.</li>
+<li>Full screen hides the application title bar. Press <strong>F11</strong> to enter full
+  screen and press <strong>F11</strong> again to leave it; the toolbar action and <strong>Escape</strong>
+  remain available as alternatives.</li>
 <li>Use <code>B</code> to enter or leave a black screen.</li>
 </ul>
-<p>Presentation settings choose whether pages open at Fit screen or 100%, and
-whether focus transitions are animated. Moving to another page reapplies the
-chosen default view. Page tabs stay in the compact top row while space remains;
+<p>Presentation settings retain the report-level viewer preferences and animation
+choice. Moving to another page reapplies that page's resize choice. Page tabs
+stay in the compact top row while space remains;
 additional pages move into the <strong>…</strong> menu instead of creating a scrollbar or a
 second toolbar row. Zoom and Annotations are collapsed menus, and their complete
 button surface opens the menu.</p>
@@ -1541,12 +1592,16 @@ annotation. All temporary annotations are discarded when Presentation mode
 closes.</p>
 <p>Right-click the presentation for slide navigation, full/black screen, pointer,
 fit options, annotations, slide chooser, and filters without first opening the
-top controls.</p>
+top controls. Press <strong>F</strong> to show or hide the filter panel; the shortcut is also
+available in an exported webpage when filters are enabled for its profile.</p>
 <h2 id="exit-safely">Exit safely</h2>
 <p><strong>Return to edit</strong> closes directly. <strong>Escape</strong> first leaves black screen, full
 screen, or tile focus as applicable. Once back at the normal page view, Escape
 asks before closing Presentation mode so the current position and annotations
 are not lost accidentally.</p>
+<h2 id="inheriting-and-locking-filters">Inheriting and locking filters</h2>
+<p>Presentation profiles and web exports use <strong>Inherit filters from editor</strong> by default. With this option enabled, configured source and page filters become viewer controls and open with the same values and filter type used in the canvas editor. Page filters retain their page scope instead of being promoted to report-wide filters. Separate filters that use the same datasource column retain their own stable IDs instead of being merged. This lets a visual filter configured to <strong>Follow filter type</strong> remain single-select when its linked filter is a Dropdown or another single-selection type. Changing a viewer control replaces that inherited value for the presentation session; returning to edit restores the saved editor value.</p>
+<p>Use <strong>Lock filter</strong> on a source, page, or tile filter when it is an authored report constraint. Locked filters remain active, but their columns are omitted from presentation and exported-web filter controls. Turn inheritance off to use the existing advanced manual filter-column setup for that profile instead.</p>
 <h2 id="webpage-reports">Webpage reports</h2>
 <p>Web exports preserve the same compact page overflow menu, collapsible zoom and
 annotation controls, auto-hide overlay behavior, fit and zoom behavior, tile
@@ -1554,8 +1609,9 @@ focus, filters, and report appearance settings. A folder export contains the
 complete website; a single-file export embeds supported code, data, and images
 in one HTML file. Neither format reconnects to live SQL or API data after export.</p>
 <p>Exported Gantt tiles retain resource view, level collapse/expand, visible-column
-selection, and the read-only information popup. If the Gantt toolbar is saved as
-hidden, it also starts hidden in the exported report.</p>
+selection, timeline navigation and zoom, schedule health, the read-only task
+inspector, and the information popup. If the Gantt toolbar is saved as hidden,
+it also starts hidden in the exported report.</p>
 <p>Every exported row remains available to the recipient, including rows hidden by
 filters. Filters are not row-level security.</p>
 <h2 id="static-exports-and-office">Static exports and Office</h2>
