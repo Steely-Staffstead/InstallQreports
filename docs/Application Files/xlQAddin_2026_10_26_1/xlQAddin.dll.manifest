@@ -1,0 +1,3761 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="xlQAddin.dll" version="2026.10.26.1" publicKeyToken="95aad63041073d78" language="neutral" processorArchitecture="msil" type="win32" />
+  <description xmlns="urn:schemas-microsoft-com:asm.v1">xlQAddin</description>
+  <application />
+  <entryPoint>
+    <co.v1:customHostSpecified />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Accessibility" version="4.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools.Common" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools.Excel" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Tools.v4.0.Framework" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.VisualBasic" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.VisualStudio.Tools.Applications.Runtime" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Core" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Data" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Data.DataSetExtensions" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Design" version="4.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Drawing" version="4.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.IO.Compression" version="4.2.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.IO.Compression.FileSystem" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Net.Http" version="4.2.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Numerics" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Runtime.Serialization" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Security" version="4.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Windows.Forms" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Windows.Forms.DataVisualization" version="4.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Xml" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Xml.Linq" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="stdole" version="7.0.3300.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" size="36896">
+      <assemblyIdentity name="Microsoft.Office.Tools.Common.v4.0.Utilities" version="10.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>YE6BPRkju6DsYlWxafWUP2UxXpHY8Gf2ew0vN+ztXpk=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="721320">
+      <assemblyIdentity name="Newtonsoft.Json" version="13.0.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>8MB68OhNTdTaS9eCO6RTW8BIGzv2I+1Atlm2gUemu3U=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Buffers.dll" size="23816">
+      <assemblyIdentity name="System.Buffers" version="4.0.5.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>LXjXcMnLmXGZFUrowBi58dHvvIZyn3Jk3ebbrSoSysM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Memory.dll" size="145200">
+      <assemblyIdentity name="System.Memory" version="4.0.5.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>1ejkhm+c+mb3dlZg+EshAZiJPlUzVIev5evaNCwOkT0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Numerics.Vectors.dll" size="110344">
+      <assemblyIdentity name="System.Numerics.Vectors" version="4.1.6.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>IML6gbjHDWUQmddilU8oX9T5QuY7LXIXwUXauNSy9Mk=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Runtime.CompilerServices.Unsafe.dll" size="19256">
+      <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" version="6.0.3.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>CMvXJ4tm8eaEJagtS5cYGkEw2T492RgxQHq6chLM2s8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XlQueryCanvasCore.dll" size="226304">
+      <assemblyIdentity name="XlQueryCanvasCore" version="1.0.0.0" publicKeyToken="836E97AF746DA7AD" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>imEPdSp064MxTQVEtF9kVBNf4NR0dO5/alhZuHwsd4A=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XlQueryCanvasUI.dll" size="591872">
+      <assemblyIdentity name="XlQueryCanvasUI" version="1.0.0.0" publicKeyToken="836E97AF746DA7AD" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>oKOOuEJXBYoCPvZ2FEqyctCOgwaE79uGTUV9I6NQTp4=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="xlQAddin.dll" size="386560">
+      <assemblyIdentity name="xlQAddin" version="1.0.0.0" publicKeyToken="836E97AF746DA7AD" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>l9A5fg7yAy8zKd4GU4NAqnnUvG5Lrfj/LnKURMDP/AA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="xlquerycode.dll" size="6801408">
+      <assemblyIdentity name="xlquerycode" version="1.0.0.0" publicKeyToken="65E230F911FD38E1" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>8GMB/DLLyrqgQjHwmEseFFB7MqIbbhZeSC6MNwpWL/I=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="CanvasWeb\Accessibility.dll" size="20816">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>fyL3uEQf+x5wQzLtCuBol+tfSW0KYfKoTkeWsrOGV4s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\ChartWeb.deps.json" size="37463">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IT88IEAljVg/m/mw+3wqWRAFJPZPx5YuidzijgeEQGU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\ChartWeb.dll" size="245760">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zTXYDlnwrGhV14QmLyQmrEHEm6Jh7DowzHxwrV6WGbk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\ChartWeb.exe" size="258560">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bzBL/msTwxOQlNJepJQCsfQUPx8HhPX8HcYqKJK5QAc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\ChartWeb.runtimeconfig.json" size="439">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Tjo3/gJEd/Bb6kD9kK8L9iwZcBNrH340ra8wI+X+9xg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\D3DCompiler_47_cor3.dll" size="4741488">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oF+Zc098SCL+/BKzZ68h/Ql27WYIdS+x4egLbs5+y7s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\DirectWriteForwarder.dll" size="526160">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kBCiWJrAT0S/X0v1AAxLQr34AMnYKS6t18+IHsHfvcU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\DocumentFormat.OpenXml.Framework.dll" size="471152">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3a4fNOeJcacxGT5FnDrtVDFPk6VNUcJFfhLMwWm/VmM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\DocumentFormat.OpenXml.dll" size="6349424">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WgwjenRn3ehbzkAtEkt6B3d1MWB4N+tZ7mKpp5kF/0M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\CanvasWeb.LegacyBridge.exe" size="106496">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>USjom8eTXf3Lf6tcNeSSVqQWLbBUB1UoxSKgBZHLPKc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\CanvasWeb.LegacyBridge.exe.config" size="1537">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+QyJ/AGyzJIrTiKp1JPJLlGNN7oixFppuHkBh/e2784=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\ClosedXML.Parser.dll" size="192000">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pydqEZwJpyAK3iaf/UpGN6gsQcNKVrAtcVvoQjX170E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\ClosedXML.dll" size="1700864">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CaRPJNmDrYOS8SVdvOSTqNwSS12oMxaHvqB81RIVjuw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\DocumentFormat.OpenXml.Framework.dll" size="476000">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0i7YBEyz9QtgjN9tKwtStHdSSofO3uPp/tMyxTHi6nk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\DocumentFormat.OpenXml.dll" size="6351712">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>u2qYjcyNwcc/PK7M/urGPUT6rAUdqKhJRmSkxp0XQgA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\ExcelNumberFormat.dll" size="30208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>A8zHGkKDMQLvVK6ezznZ1iwEkcFzWao30dLvDsc5fQQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\Microsoft.Bcl.HashCode.dll" size="23424">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>drEmDOdHoxfptRRDO4moGwOEEfyr3cb5x9ursHQti4E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\Newtonsoft.Json.dll" size="721320">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>8MB68OhNTdTaS9eCO6RTW8BIGzv2I+1Atlm2gUemu3U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\RBush.dll" size="58880">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>G9aIpeiG1LwHhalDqCx/d7jih5ngdJ2bJ+demJs5Rmw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\SixLabors.Fonts.dll" size="1142272">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>PYEdHDeh8OF/Nl8AYDAp61PiQFJlN+LNmf5CJ6q/Nqo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\System.Buffers.dll" size="20856">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rMzPvkXZ8I/+7ZkW43sz6YxlvgEs//bn+ntnIQzh/vs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\System.Memory.dll" size="142240">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>vz+4RmT0CX8aipvHGlHc+M8akF1AgKTSkNoXMIZuhW8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\System.Numerics.Vectors.dll" size="115856">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>HT74aYKB589zcdFVSv71hys5+Wwm2nciEKM9oEG6EYM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\System.Runtime.CompilerServices.Unsafe.dll" size="16968">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ktU13RZTJQ2mYsOluSlDyAMGURdsgaUJzXTitL7CbP8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\runtimes\win-arm64\native\msalruntime_arm64.dll" size="3151392">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>p63xwyV24jUKaSu+V1xuR9u8JSvH0/oiDXZjXggBeWY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\runtimes\win-x64\native\msalruntime.dll" size="2924472">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4n0/452h0BnDtBkinHB5jKsu9znC/1fQ8Bl+IDt90ME=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\runtimes\win-x86\native\msalruntime_x86.dll" size="2544672">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>I/gmv+AnujWu8GEPmlX+/quGjoMb7WWrKE6deoPF5/0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\xlquerycode.dll" size="6801408">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>8GMB/DLLyrqgQjHwmEseFFB7MqIbbhZeSC6MNwpWL/I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\LegacyBridge\xlquerycode.dll.config" size="937">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QANNBLCrNoSZNjAVHl5dz6djdDf5H/HEjhPybXmQq30=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.CSharp.dll" size="1005352">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+GlZhCh+kXrxqTmuWp8AFkooYa4KFvWBBclCwK9OyoM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.DiaSymReader.Native.amd64.dll" size="2377016">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cOS4mXjOV++Hso9JIfMUDDg7BKqW5/O9s8TruJj9inI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.VisualBasic.Core.dll" size="1247016">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QxPztADE/t2B2JIeAebeRCsMyedShceiwIkv4Un3mSA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.VisualBasic.Forms.dll" size="247592">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>8LSayC1NSu95vqYxI1Dv5NA3DukFLEfn70uxxYk4MIc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.VisualBasic.dll" size="18768">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bWSIlGCZ+P296+BsXquAbJhU+hjjio5Uf1pi4kij7o8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.Web.WebView2.Core.dll" size="698208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>lY79t/E6bR8weXVslpVsyWz3E65G+ghcix5/RDFqT34=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.Web.WebView2.WinForms.dll" size="39264">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uoI7PeeSlziamq1mLjidTSKb86agBW+e3k7mTMSdwZw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.Web.WebView2.Wpf.dll" size="84320">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zoMpacC1QJK/RuWXjLVZVRMKvaM6J8ZaZbP2r0gBvIA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.Win32.Primitives.dll" size="15184">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>f7D7uf8Ght/q95wHYZE1oc0W12OyNKQ8eJPFMWNz4/I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.Win32.Registry.AccessControl.dll" size="34600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>e/ATz816I75YeK5C0x6IjXg83Jy18SZ+xCFXaL6VI6s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.Win32.Registry.dll" size="120616">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4ehrfhBOELoWJevui33K4ndbsU8XDugxe+3dqZ1QUSU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\Microsoft.Win32.SystemEvents.dll" size="96040">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>dGoZ1/GJrzvMqt+2wjtpUyKLxBD1isLUcYfya+I/MyI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PenImc_cor3.dll" size="158032">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>iEkJEdGVdgO57gUutso3T4xIfNf3dpcp+5RYU6saopo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationCore.dll" size="8562472">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mF7Jb8zPU5Z3qUT9GzxNM+6n7MN8mbSm1LDQ6Wps/xk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework-SystemCore.dll" size="38736">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>hnZRLHoCcZz8Ky7/buwBmUW9Uq73ajiuj/ZDI7lyc4E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework-SystemData.dll" size="34600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wZT4ZpajXTIiGI6N1OxKeDxHIKVY35nz7/+IOB657xI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework-SystemDrawing.dll" size="34600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xxwK2fonuxy3ouVsdQOVXc3+Js5V9gXFHXbHk+yRSGw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework-SystemXml.dll" size="34600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kFNyFWKjzyh56h861xtP8JvBrAoT3H8sSSV5k6ErGak=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework-SystemXmlLinq.dll" size="30504">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mAp2ljS9Mfc5Zn2YLZbqm5E6PweyWUOhuIN1+6B7H8Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework.Aero.dll" size="444200">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WmAuPAKO9eVJCO56Rfhn9AkvPDP4Q/J2mOambBIT+lA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework.Aero2.dll" size="448336">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>k4KJNu1+Mk9ET6BmWJG7IaGr97QWzGtNSeq/u6ok16g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework.AeroLite.dll" size="239400">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rC0faQYQSZmBfsrslk7mG0kF8aI1f+XCbP0i4FuyTyY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework.Classic.dll" size="272168">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>vBy3o3JRxHato2Sxh19FBr6QXQ9N+pdxkamA9BWI+pI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework.Luna.dll" size="669480">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>yMuczXREp9C48T1AOP4sPntqpSf2zFQjQuRr1R+FabI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework.Royale.dll" size="333608">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LZwqp55+0SZbAuUMUDWARqrvCsigOboGALP88j+J5wo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationFramework.dll" size="16135976">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cAtptZcnhiTlgejv1NB5NiZK27+Y5wG6xuUOYb16zys=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationNative_cor3.dll" size="1234768">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>yd6VmNGufXuc/T6DxyAb8q0juXEhAAxHXeAahorC5hg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\PresentationUI.dll" size="1287976">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nssyYfRu9uk9Qu0svuT2DQ3MSn898sKebdEl4Roh+qU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\QanvasWeb.deps.json" size="38774">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>anATmT1+/zy/rErH0+/KPp61wBu/k9jXTqk4WNaSNt0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\QanvasWeb.dll" size="1472512">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tm6vya8PKBPGK4SgUnbqLrIKF9tvLaP7hdHjIkQUsd4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\QanvasWeb.exe" size="409600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Pm5xcTTwJcoGAWjE5iajYYtmRZFY2BWiLlatAUxd0YA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\QanvasWeb.runtimeconfig.json" size="439">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Tjo3/gJEd/Bb6kD9kK8L9iwZcBNrH340ra8wI+X+9xg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\ReachFramework.dll" size="1607464">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/rGvTrhXaNF/vCb8s9B8hcGqrOnaz1A4GbKFXdiGutU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.AppContext.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>t7HRFacHylrG6Bn5ae5Cgf6BP/HaKyGe3O+RXZSn0wI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Buffers.dll" size="15184">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0SIrhkLHUDnjQIvt3X8sp3U2g68aiU0RMiqJbKlL9Cg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.CodeDom.dll" size="489256">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>HHre57eCq8O1WuSD/iunYjGoAlP6VKbAFTT144oTCd0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Collections.Concurrent.dll" size="276264">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+ZZrbyB7mw/KeoA1AI9BStxeorqLr4PYR4kXgapGpp8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Collections.Immutable.dll" size="837456">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>29NLrt5KrbqHz9DU8LFAsFTKDfwZ4NiWe+kjqiICeUE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Collections.NonGeneric.dll" size="104232">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>H45GYhJQuqeCrFtMc18nIFm4BEXHt8SXWueKOx9Vri8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Collections.Specialized.dll" size="104272">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>lsBqut7aHvRbucnpysoP4eZGGtYb6rVkyGb3CGhcYhw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Collections.dll" size="259880">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pRFuytiZg6bJZw+u6tUt72JIv5AXrP+SZNSXLf25QGI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ComponentModel.Annotations.dll" size="198440">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>q0H4n2vq3VvdkxH21URCX0RR3K3Dkp4uWtghcYC0r+U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ComponentModel.DataAnnotations.dll" size="16720">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>O6F0qlIqDmxD6HtZcJ3ykZ0pt3VxqmLU4SHZIo8AuKY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ComponentModel.EventBasedAsync.dll" size="46888">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>qJ2ttAd5R6X2BB2tIjCNPlc84MBNw2cXzpm1EAUytkM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ComponentModel.Primitives.dll" size="79696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xzaPXU4y/zBgCrDvzRJygwyNgoUrguIehyyqJ+0gWWs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ComponentModel.TypeConverter.dll" size="747304">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MnbVTjsrPqAP7Mwxel+idra+2cCCFNU1cJGafc4vRtQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ComponentModel.dll" size="30544">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QFWbtyFRozjKm12nnm5ISupN7vfxzFkimWVCSA9FKv8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Configuration.ConfigurationManager.dll" size="1074984">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>dmQAJBgWYlG/7HvKYIyCSqIXIKaba43IwMQWwpL9soE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Configuration.dll" size="19240">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cJQ0JQm7Fpqf0ultEQ7rpJNQadoxcGGs0MNuOt0j4Oc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Console.dll" size="173904">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tqMEM/xK4pTYOksNE6X9IdHWTdrKvX18nNJuyAsW1Lg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Core.dll" size="23376">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ave/0E8p7QrLFEQ/SA6B9UPqbsWG6ZrU3f8Lsqpj5yo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Data.Common.dll" size="2860880">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>qO6VUN4GanK+kdm4ettBVSVsS5YdF4rieI2s4CKBGtI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Data.DataSetExtensions.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>c1xlQ6FvanAJA6Cde+qBW5FDufZ5r0oqES8FaDWx39k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Data.dll" size="24912">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9vvjgZOR+u4TqnMqwbsSb+gf+FsFPF7jFZoeycloDgA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Design.dll" size="21800">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GtYh1DK4Z0JU+Y4E9BWmoiNTasMpyIkARoV9HiRFu9E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.Contracts.dll" size="16208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CK+No437HdsY55fn/HE2PRWlkizqdShCueiUwAntPXU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.Debug.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9raGYRkGpu7K1U+a9QXz6uA8SmBKkVQ2HkrIzfE+klA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.DiagnosticSource.dll" size="415568">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>iqN6kXo3SGR/yYT3d9VuWjkwIkdP1m0J17uY/T62nF4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.EventLog.Messages.dll" size="800592">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0x+A5Ni9nuXw6xn4FptEwkGtl8ZIw3HCJ/6tPQJqf8M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.EventLog.dll" size="386896">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>swiZmVO76jx75xO/IT33cIzMkNdGjlWyPG1Q++vnP10=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.FileVersionInfo.dll" size="46928">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wyLC3KxpQMbiBnbNoHUrL24uUZTLUEOpV+V1ShaHAYU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.PerformanceCounter.dll" size="288552">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>7A4xlAdYq2sR+8Gtsu/u3mhEnw14VEHgPn1SZK2pe0E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.Process.dll" size="337744">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tTKnIPB99Y46SJHVfQMJ8+sX1lHe2MYd1VSID/1FDGU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.StackTrace.dll" size="46928">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>agMJMnkc7GXJMs1B7hr8PDH8LQzUk3XsvO6g5G8fH2k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.TextWriterTraceListener.dll" size="67368">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0yztG27FRCCkz5HU57AJq1Zzd3hHJGLjM3Hk+HDtBDM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.Tools.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uPnqeOrKaC0wgH4QXozCbWOsTscl/GEmfzYX4nNywfo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.TraceSource.dll" size="145232">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rV5gIU5D5Hkw4oLVLbwhwTfXgNap3lfKiB0VZmgsJH4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Diagnostics.Tracing.dll" size="16208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/f4CzZqfDpv0APhpspXAyfYtrI0LWp+un29yFMJ2Adc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.DirectoryServices.dll" size="1046312">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4vjZVvFIz5Iq3w1MQmEHEexmxQf5tvlU2xLDmcXxDAo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Drawing.Common.dll" size="1529640">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nMUfoKOz1qEFm11tZYZe66sAeLWqpF7L5D7sTwanKWQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Drawing.Design.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CGFVdsr2My+8Y4gmBaiPi7rDbFN1DqcK6reMFi1sMYo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Drawing.Primitives.dll" size="132904">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>n9WuiSeMjbD91YBKIQxpoaWYYq9h/cO3iBf5fSU75fs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Drawing.dll" size="21288">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EuY+p5foAeEfzyWvxq5IdZ9gdJ/IGLHN+8P5+MQMD1I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Dynamic.Runtime.dll" size="16168">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JRHlE/HzJgviPt7rH9Tw//NrjpQxepqzyuyssnvGGd4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Formats.Asn1.dll" size="243496">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>B7MWYhrUxgO44RxPyfMpwH1Ctk3YkRdgwUMsW3HAJdg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Formats.Tar.dll" size="292688">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EdH0BWMbpSvkAiQt8dn+TYdo0oiU5zpHP9aJ2SbJTg4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Globalization.Calendars.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KUMc/S3LsA3+tXQal4C/G028tWQIptO0EmyqkZGiZCo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Globalization.Extensions.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>P87ysC36HJy63CYFaVyznQ+ryAtpl1Hp/YNkfDMHhiU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Globalization.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>r55ziyOa4MUMltnYgFaOpHZUHwPmMnPzRdM/GKOt3V8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Compression.Brotli.dll" size="83752">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gm5CcsGCtzgJbGJawXLAjpiD5fQD+LwsJlxmwUi1mLc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Compression.FileSystem.dll" size="15184">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rlYggcGWZcSSZIEUGH6Z4rIIwAl/wayKaLDMLHowP/E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Compression.Native.dll" size="828200">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EfIKcfjl2Ee3/CbHXNjwzOcbrCQoN6diswy9ld7sbQE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Compression.ZipFile.dll" size="55080">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Iu6AVzAi55ej53aI9LZtUPtm/IRVv8tf1qU8gTRQ6ho=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Compression.dll" size="264016">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RzXqcyQ2nJYrMB/UOmIy7Sjrwvcm+bB5jPYqM4HUr1E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.FileSystem.AccessControl.dll" size="104232">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5XH7JDC0v2CFS1KmimRqXxlgXgW3uXqrC1N4eigTJck=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.FileSystem.DriveInfo.dll" size="55080">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>G86UTPrj4SQ4Cu9gFjmIwxWyMuQwndjwEgbBLvhPbu4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.FileSystem.Primitives.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kcKNRLGNA58xnVQzIp/ZADsk/gcZnOhhk1omUUguMdw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.FileSystem.Watcher.dll" size="87848">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5lruRqhDiGEfl/6N1hAL+3uj/jcRniVemz7xEXEGHFA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.FileSystem.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>A4i5NVeOQ0xADPKVE8/gRFrk5c5vFs70FRQFkHkxUJ4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.IsolatedStorage.dll" size="91984">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>yL/xM1mi0KFMZEqLYK7w6UASfMP4EKzYE7Uh4lEvmjo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.MemoryMappedFiles.dll" size="83752">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4p+Y6xW3zoqkr1slYOow9X/IlyM77YkgYoI9ZDqy9X4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Packaging.dll" size="292688">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JsmlSd0nZSUrOf7RVi2oWtG6jGfajA3h0j6qa9DPjnE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Pipes.AccessControl.dll" size="16168">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>NETYh7WJ+9xwnGTuaM0wGHqAIa5f2Qovqc7+fo8gENA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.Pipes.dll" size="165672">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pRju9YkjoFGWNb3tJbd2w5VRES+VI0cBMnGYJq/IDKw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.UnmanagedMemoryStream.dll" size="15184">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>t+Me72Li6B5C9vpZK7wDRO1ewp+4zVOegSHg36gBF4U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.IO.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wJ45qLOcjw1UkHqLt/CpXOOAqRKoCkLJCmH+dHnq8YU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Linq.Expressions.dll" size="3675984">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>L2aRHYu66CBCj9oqMrIOyHc+F8EDaUIH8XhYDi7Dl/o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Linq.Parallel.dll" size="804648">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wZnPkhcsVBIyeKL4Ox/9+udLrVKzSeeNEFUH0yiGC6o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Linq.Queryable.dll" size="173864">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RKtV0TBKfLW/QqwsVi5MYY+mstDjT7m7Dq3jNtpXy9M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Linq.dll" size="542504">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cQjjYnRPIfXRACzlndz6Le/9H6d4pPBHGzDLGflN0vQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Memory.dll" size="157480">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>jAw+JWHN+rqzUQ7Dpa8XT7Dsaq3ysC/iJoXjn4ooEo8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Http.Json.dll" size="128808">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JtcvIInlM9eNxD5NEH9sum/R3OzCwIcTQVfY2m9E7j8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Http.dll" size="1734440">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MrghafqAKUuGe4HJeMxsEjLjcG9QljPoR3qu+baRD0w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.HttpListener.dll" size="550736">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>eCPrQfFRfRSOzhoON57NgIBMV8EGOU1ZOvQc0oClV+M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Mail.dll" size="431912">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>c62GY3DOTip7fOOkMXoYA7FKTrDkZa/zQLoTzJ6lPl8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.NameResolution.dll" size="112464">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kf3mf+RuEbrgaoU6Pz251gdtYz+2FMGamBGCXjr10RE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.NetworkInformation.dll" size="157480">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Y/zpdOaJvv4QIu3ERvKB5SmqT4TMUx1g4hx/aNQ7Bbo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Ping.dll" size="96040">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KGQ/cxlNgD7+sHYBNTRgBhEs6THDU6oYzYBXP/yfbCE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Primitives.dll" size="231208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TkZM+IZmrm6a8z1mMFTvpIhfg1DiwApa7Bk/AitwQvk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Quic.dll" size="288552">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>SCU912SOI8ZdyIjHCdP/I0UqWbBOOuleg4wAoZmT6Cw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Requests.dll" size="345896">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>FDNytRb0fiAXprU8q647vwEApDwFB7222X4/IqBfQ5M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Security.dll" size="669480">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>fzc9jZXOX+gOjC+nYWk0nbSTasVs8gZ+p5p6Mph7CXs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.ServicePoint.dll" size="46888">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cZ4zQJfJNPq9+8izE8lD4nslUzpLgKlwjkQPXvvrnbw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.Sockets.dll" size="546600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1TbtIFKXY0lAiW9F+7DlBicM633kafsHZEgQMzi31TQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.WebClient.dll" size="169768">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>G4VYevVm8NAD5RBBgYP+eucmYtOmdY/lzyiAh50vFHo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.WebHeaderCollection.dll" size="67368">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TZkPEuO+ZH+eKsDHJtRZBwCK/3JZzZ+gFUSrlCjZ5o0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.WebProxy.dll" size="42792">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2gSS+2QA5FIGcg9YUYeDBGSXwZsGf0EiitXYxzZVg/w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.WebSockets.Client.dll" size="100136">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JgqlAOYzN1NyOpmhqvma6fnEUTotMONec1iJxkWWyo0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.WebSockets.dll" size="190248">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>DhYTqdD6wKdW++cGkhS8AeWvjCwxLdd7sf3tMAEd2No=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Net.dll" size="17192">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>koM6Rz5UCacyGbXaoQ+iFTAP4prET9/nR9keMGdWBMA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Numerics.Vectors.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>8xdl0G5SzZE2BBunPeArKHPJV2NJcu4Ys1lyl1PNjrY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Numerics.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>DcYuPO565HwGOAHLKg0FjLZM9+bhe0lNNR9lzxhW4l0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ObjectModel.dll" size="79656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ZUPfW4jXKtuRhJCMXzorCEdVlWskek9VnTzRcam9pL0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Printing.dll" size="980816">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>n7hFCmMENThxWWSO4bJGZSd4sT6NF0PBrdc9/wM3GCA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Private.CoreLib.dll" size="13174568">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>54FsWBQL+uB/KgRneccEkEjaqU/NBCzYZoSYZeXP8FQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Private.DataContractSerialization.dll" size="2082600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Wk+AQRfZgJtHXJCWDv+nMs2gjH3PI33Q2sinXjtDaME=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Private.Uri.dll" size="259880">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GMerGdy8a6SSfwy7alNqbdHZWDaeRADmH6/FyGXJLDQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Private.Xml.Linq.dll" size="403240">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3ePp6P9dxLWSJSNc0hS/Q4zehTTseBrJVkCq9BELqrA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Private.Xml.dll" size="7997224">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IS9s110nffKn1P99UPWHRacWnPOPwSepPsuJAnbLvK4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.DispatchProxy.dll" size="75600">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>HCm++a4LKk8Lp5y2rw6ilh1EbTrr3EKgzmAuqvK0NmI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.Emit.ILGeneration.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>u2Fd30XeFlg6L+cgXoFOyCCuJxnYjx33H8wFnA7ua6c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.Emit.Lightweight.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Hc1L1F+/Fs5XX7mwJyAB8xSkBkG9RFq7KFfr5Dk5Wsk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.Emit.dll" size="128848">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bIZBnAAmw7w9KduYTLxT6iCi0Vqv9/Qw2ov6dz1Sj+8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.Extensions.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gd57msDKRHPCyVHL5F3+hQJGjNn/RIiCLUrvz21AXks=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.Metadata.dll" size="1115944">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Emg1s7r2S/4UmWHmSbodvXRydrf2BZfNXJ9MWMwS5kQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.Primitives.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>U/4SUa91j/6fpm5ljMbCH6NxWY6NBcrp53kEiQhG+Lc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.TypeExtensions.dll" size="42792">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>36legQGdLhcm+Yr2QqYilsFBEX4tCHuIrbJIIpjmTZM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Reflection.dll" size="16168">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>q7vV8JVAPDtR/mcfYxXaqBU8LSd95Jf2VLeprE+0bz8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Resources.Extensions.dll" size="137000">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>7PA2C5uds4KL/G3wXhAqCHN31cwzMAgYpGpInr19FS4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Resources.Reader.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>DRRdmf+Uj7WjDmGT9ZPcVfy8K9Oup71eClFeu6AiNBA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Resources.ResourceManager.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wOTCwVUtjf5SoieH7vphLrS4RnnMLNbMNzL3rZjEc4s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Resources.Writer.dll" size="50984">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>eAPBU/4Nvx/gaBefJDusey350jd+ViuEkch2S9yFJ08=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.CompilerServices.Unsafe.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6hmFVy+ZbaRFx7jSNohviQ/2TKrAhR1ULG42a0z0deo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.CompilerServices.VisualC.dll" size="30544">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ehdYA2H5XigoYSqV4nyqsg8jUz3McH4hFfEK5szCQxk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Extensions.dll" size="17704">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Z7woF2m6CoHn1yXuAynSIfmCeygFmI5i6R5yzzLFVJw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Handles.dll" size="15184">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>siYNbzDNm9Eun7jC1DPSsEdJpnCCOiOmVJqzSC0Z29s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.InteropServices.JavaScript.dll" size="51024">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>y7tMcQUXX+f4Bjg3iVbCXVfpO81IbLmstjs3y0GNvjE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.InteropServices.RuntimeInformation.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CluABWbwDPnl8GO2JAFQ4kQdT1J0bbomAGiQEya/gwI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.InteropServices.dll" size="96040">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2yz8K16W/qXnnLuE8MTk5nBZLb2HXgTSpNHgUCRYEjE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Intrinsics.dll" size="16720">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>NEYf+nHfUSO4g8bfucPYufVvpxeNVlvx/SyAjJAPg9Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Loader.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>W1BhNG0ffhrbIIIH3V0agS2zmE4cmgEJ3IdbFxKBHpo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Numerics.dll" size="329512">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LRFdu0hF08O1vL3YrPVSocPmV5EKKEhQQNnPDV7INIk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Serialization.Formatters.dll" size="309032">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EjzixfDC9jrFbZ6RBddJ0UY58+3QvIzMVnw8Y34srfY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Serialization.Json.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>F1pXgzE2UawngJpsOXQLEg1ixj43GB3Q45rzo1Z+sHQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Serialization.Primitives.dll" size="38696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>aE8MKwmFHS+y7VFK5L2RPNwkjKMHlSny9/l0H8yVcrs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Serialization.Xml.dll" size="16680">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2XTvxsSOvfrvZ2oFh42M3Gm+Uh7n8lpfvYyTQlFBTLY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.Serialization.dll" size="16680">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wZU3UiQIqRzIIZXfrJWWAnX6tMy4Rcj09AWyuXCfj7I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Runtime.dll" size="43344">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4ETXyqC5A3lCRbWTrn6nk+4nA3Ti2qyzA1+hEDH3+1c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.AccessControl.dll" size="231208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IwRtv54moVTdgL1HBgcNdr9ARdVbvMaAlRpzGk7yIZU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Claims.dll" size="100136">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gLts7z3jmFLs335Rqg0yfiPamqwXHARpGTSYM05wcJo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.Algorithms.dll" size="17192">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JgaoQiRLVOnwVw5pCmTFbrK5vuoRZe+wqQXoeJP4k3E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.Cng.dll" size="16168">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>BYi52xMfdJ8LoPdmcUMgorQmYWz/cOtoi4X+GJSxa1w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.Csp.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>orF/RUYeKs2ZzxgWXPGetYgL06Lff0FuIwKUFhm8alA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.Encoding.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QvCDYSU8ETkWArs6NA1ally5rOSFEBEpl6tPMMYMfUc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.OpenSsl.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IcRs44BaxqMkTA0BPnf2uDU+44tpSk81fQee0sq3LNw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.Pkcs.dll" size="767784">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9KFU6xRyC5XKeG3yYKAjZfMEhyjQ702nQp62SkSJ5lc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.Primitives.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>F019KkvrHxk5rajEc2gDrOZipQL7himZ9I+ffA/BxAk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.ProtectedData.dll" size="55080">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KKUOizoIZ+n4KU7dZ/PCT+ozwmzcfWbzZwZld8v3S+I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.X509Certificates.dll" size="16680">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ToMMeYxRdmpawsW+/f7+i+xI10F7/4/PNZ07rQte2hg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.Xml.dll" size="489256">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>O9gssnh+Ko6hixTLXVk9B6L15+VbKFU5bSQ9CaqfD60=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Cryptography.dll" size="2049872">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3dydOTeBqhpdcppOsOxebEijfrXdqMh4tsDiJjRdYyQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Permissions.dll" size="186152">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JHSA4Wa5KnoiU0DYRF2QH59iNEAc4E4yHUNJnByb1ao=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Principal.Windows.dll" size="186192">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2REngjB1bwvXV1bpkifWxdQN12bCFT9ZQxw+d+dbj0c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.Principal.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Rv5A9fGVthSk6fWPBP/JdoN6TkZJ6xtRSxIJ9uD7jm4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.SecureString.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>77lKO193Tu/6vC+ys7O2QmLDkN/iZBzCJnFWq0jbpC0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Security.dll" size="18216">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gqAt1JI2b2820WIHg3SbXg9HHoX+HDSlxVR0HaxI/Ls=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ServiceModel.Web.dll" size="16680">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6OYrnuVQu8wycemDWBd90prDDpJYJCxeETU9XC96lAE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ServiceProcess.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WKWJp+YxZEmo9CkF0MYCcuiOxeWI5mTDHGBa6OtoF9w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Text.Encoding.CodePages.dll" size="861992">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>DyeXSasPcYdnCWFUN70p0Zt20pbKifGkJR9yGUntjy4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Text.Encoding.Extensions.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mScfs4v43qVskXcbkzqeRYyFzspOLMZOj7jIRjRVuS8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Text.Encoding.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xFwbWUWwADRA2RirAxQBmRhQ0PfDxHkhMlnrdW4ZBqU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Text.Encodings.Web.dll" size="132944">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>evNcw4SUeBXZiCKWw4tg/dQCxap+9/Qx9vsyxFosOEk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Text.Json.dll" size="1500968">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>V1KQNiXpzHgVaFiLD0DtbUXL+/JRP9FlgPdqMtBrkn0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Text.RegularExpressions.dll" size="1021736">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tWyRh8WNiQ0rdpddmvaiRZafWqT8WvqhenZ4OhBvIkE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.AccessControl.dll" size="83752">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>R9G2pg70oQ4arDa/3PKF3mu012kTIr/y1x71xN/MMPE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Channels.dll" size="132904">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3blW3+ABBiMM3Eev8dE8A0qKTMWaLogawW3kWOeXr2E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Overlapped.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ObnvcMudytAcCw4aD3tgbkw3CIy4a0bqaL5/WWu0uRI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Tasks.Dataflow.dll" size="489256">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>L6evEwgblABRv57IpeuRQc7EJ0CmlBNpN6UZu+6rBNk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Tasks.Extensions.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>fQPdRj+URrGZr54zExAE41lZ4JhbC7DfSB5rlVBkvAc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Tasks.Parallel.dll" size="132904">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4cdWX6UqL9Sh0qGsLw+xprgk0kenFe77mXe13SSvAdM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Tasks.dll" size="16680">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>dh/BXWmCJyv2kLJdY7RzAhu+bwDlVVYHfhusruk0BZE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Thread.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>broeQw5OogRVW1PIyws95iWWs0Lv54D8pJ8jHYyCfUc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.ThreadPool.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>T8SG7U9fSYoPqh5nrOAWZ0EJsQtBslT/kCEQesYQwDY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.Timer.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CKQ6xAqOTAEQaIIJ2f4DsdT+qUuKzmrVeXsyF22o8vM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Threading.dll" size="83752">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nbpTCptcOIP3ohz8L9ofF6EdyvzReSFZMihhrnypFOo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Transactions.Local.dll" size="661288">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QqXzCfAeODmMTytVpAu1A1D3QokWxYQOlghe9uLkqg8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Transactions.dll" size="16208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>lohKqdclw/8lzjSzR+CKJkLMYILaMeiSxt8brZCejlY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.ValueTuple.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oUSg6XgMgItr+CtPqRhd4u7bv2OObMbPjdGQSb/Jsmo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Web.HttpUtility.dll" size="59176">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>V5BODU6l844RDP942DJN0rg+iU8/NPGZDJPtgx5/qxE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Web.dll" size="15144">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>dg2NV6n8T4cB+tJSQ1W7cC6W7OpFusRfzWopg38FBlk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Controls.Ribbon.dll" size="1451816">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IxkEqR2F0w0bxr3i5K385DZU0ddtB9Tc04pKEqh+/YY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Extensions.dll" size="116520">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>z+EPuH2jpLh8NVzfCDyCpMLGqBRuiKUZbFOUM40a1Ik=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Forms.Design.Editors.dll" size="16208">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ucZdxOBqyA+XJ4YNFimz83nV5wIHFDPfM/VNXUXJUCs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Forms.Design.dll" size="5564200">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>I4yMxwC6A3xouYKex835/005J+K5jiGfzSb4PZG2vMc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Forms.Primitives.dll" size="3012392">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Tx6wHwiXjWqnN+yrkVGmOWSPymYW610jrpjBsOYdK1I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Forms.dll" size="13563728">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>hlzXCfZi5jZ2WeimBgri1AF7K+EPG7ahJuRdNh3YtXM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Input.Manipulations.dll" size="137000">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xEXJ7Lyq513iBlPoaZ71sgpCnrPURt/VROofHofZUqo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.Presentation.dll" size="30504">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4clC1fhhXsjPYgxda2umqevlf7ab1tS7rjvYNMf8CDk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Windows.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>NUoed6GAwHhbdOTDcnDpSAqhi5y/aldE4PmVSeY3MBM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xaml.dll" size="1427240">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>qVshb73Hg+YHOAdzNp4mH6bH5b152bypLQBSIALBsKg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.Linq.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JsRoaKWFh5bs4B1Wmqeo0iVRESdIDO39QuRjtQEW7yo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.ReaderWriter.dll" size="21840">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>sEQJFrtKIdZ/eHyCJ3rFFOmIau4o4sZTb/Er40TPWYE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.Serialization.dll" size="16168">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0uqZ9TDZQ5DXvhqXjvPHOt9M5qLozejkuiEaMv59RDU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.XDocument.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uX50Ba8pJXi5dhO6x7+YKxSzg5+gEiZ5LXL8M+8B+gA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.XPath.XDocument.dll" size="30504">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Ed8kdLforA1Xoxu2RlJd2Qcw+I86hDWP4XbSiOy0Ihc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.XPath.dll" size="15656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>VkGCVPWET8YqUITNnGX5jV9iDtUrN9zFCFsu+fEFCYY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.XmlDocument.dll" size="15696">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>PKUl6BFBE7xsgIq45o2uTjyWboHc2TDpzNVa4lcPHRo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.XmlSerializer.dll" size="17704">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>VNIfVxKL+trHDlKwfCbMsACzvWa197IsBu8Cdi53RPE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.Xml.dll" size="23376">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1yA4TA7qEYX2uO1ZXN06vpueHtSFhV31jMiW+DBhekw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\System.dll" size="49960">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>O0P4Ee0uPjypdRZwjmWaWNMaVptkHowcCfkoANgeWTM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\UIAutomationClient.dll" size="415528">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nW8lFKEPHOlOFtq269mmuOZfzEzJWfdkJSsFcV2oL38=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\UIAutomationClientSideProviders.dll" size="870224">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EfixASUNGSiPAZXokncGgFRctIN9wShxLPc6LnXZkzs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\UIAutomationProvider.dll" size="59176">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>n87XIgc0eBMJ4DCF76beAfuEtmGSv8SOYNLFXoRHSrE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\UIAutomationTypes.dll" size="313168">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>fCeRhVwDJbLit77f1quIYaIETRulQcTbqv2Qc3RZZu0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\WebView2Loader.dll" size="164704">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>qaCSMsJYBTI9TPs/yPVFoZCpyKmckyYuqZ0LiN+Z7JA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\WindowsBase.dll" size="2254672">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>PFGRii9Mk1GUoKDEQnHMSgIm+2UHjmffwLi4aBe2fc4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\WindowsFormsIntegration.dll" size="210728">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pb91JoLSVESj4dHkZo3tS16z2WnJM/ZXiwhZb65PW1M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\app.js" size="105252">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JdGm1wp4ZO7TTKKVoBdGihwAf9nI0KkK00mgdtoPG2E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\assets\qv-canvas-fire.png" size="5634">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cw78nh7nqjU5eXRQ/reWpAUcD/UG1LtA4Mf8FKuoQJk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\assets\qv-canvas-forest.png" size="5050">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tDiYvZOVSbghFeeHX9jydSwhUkteC5zmi5LoqNkRo/Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\assets\qv-canvas-frost.png" size="5799">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KajQNdyfr3/ABR8DXX+JqQKqK3hWHTFbSgLMaumFkdE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\assets\qv-canvas-midnight.png" size="4875">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EKOGHBjYIvRmwe7+b2r9Hf+DXm2EML9PLQYKCpt6rrI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\assets\qv-canvas-ocean.png" size="6012">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>sm4tmSirv25axpXNiyeFsLninEcExbGrY7I3eUsbrbk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\assets\qv-canvas-plum.png" size="4720">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tts0/ED/bnD+enywXFEexN2rFAjCD1zr4GMsOZcbYuk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\assets\qv-canvas.png" size="27325">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Eg1qao2q7ZJbIxkmHVFnd2EHB6vq1eJYo66vpG3ss8I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\chart-renderer.js" size="177835">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/2iQf/Uk5N6HFomwCGhED56K2Yv2roU+vJIy8ZW5q0o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\chartweb-theme.css" size="5013">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>X1SVc8TThIC8DwetTAMCj9aMMqWvoxHelMOaYiEuFxY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\index.html" size="30593">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/MWwUaJzOsY2/4evPtcAsWmL/qDf3Dqg/CzJrUJadhA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\measure-evaluator.js" size="23268">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TBfhPZeSGEYuegfhhmPdpKT4x3c68QIDa6qwZ+hshDE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\palette-model.js" size="1297">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>efPXSyf1LOkladjlFUWV1zosJiQFTO6NAElQT0c7N7g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\shared-settings.js" size="54048">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>o70lq6wJpt7elAqdThgdytV3vn5O4DR9uU+ZWidZJew=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\chartweb-web\styles.css" size="19779">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>VCyTb+wsCPnZCXWPRN0LYnzku7fNgtKs3FG+eISotEg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\clretwrc.dll" size="310608">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>trJ2a12Pzv2hMbzFnnx0D/XKese1RmYbfmVdxLbTsAQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\clrgc.dll" size="667944">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QWLY+KDv1eUt6zxfSL2ssltZ9i/+RLbrrEBA4bmkFKs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\clrjit.dll" size="1777960">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Y5j3GH3hOo5rEbd6uG1x0iEl6zn7vcmsC7RgbYXfVug=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\coreclr.dll" size="4995880">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>f8hFfxPsAImVQiUAaFt5l+/ugIePWUGbdu9QoOZzJ9k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\createdump.exe" size="71552">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MxCHeSYCDFUDhUOC8mTaesAWOnlCCZqWR0TkwBALFzQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\hostfxr.dll" size="366376">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1XnI0F3XRWvhVRqwzDqGvSmLXNVnWTYzLMTI5W5ZmE0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\hostpolicy.dll" size="406824">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Vf50E73ayrOzWDpAfCQl2mnWfkGJ2ME99ghHD8AxUQM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\mscordaccore.dll" size="1349000">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YphlDdWPU2I7ne6E/+k5pM98knrW7GHT9zTxh7TZ1NM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\mscordaccore_amd64_amd64_8.0.3226.50405.dll" size="1349000">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YphlDdWPU2I7ne6E/+k5pM98knrW7GHT9zTxh7TZ1NM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\mscordbi.dll" size="1233760">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>NWkkUm89US+S0Nfk4fYs7cRj/E/fI1R+C4ruwNgvuhQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\mscorlib.dll" size="59176">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3sGan6pcR4eYZWiHX2AiqVzlo3f+zkHQzSRE+9ov7IM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\mscorrc.dll" size="136488">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>b9iz527kcj8HwzttvJlpvtFB+ifSx2kZRgQhoRT4i1I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\msquic.dll" size="537400">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ezKjNrY4Vwv/ey9HguvcBbjHD6x2/bQS8+ijwYHDKmE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\netstandard.dll" size="100688">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xe20DHJqWmDbYBiWKCHoTsYLkRht9lZgoaDsu2fvbcQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\runtimes\win-x64\native\WebView2Loader.dll" size="164704">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>qaCSMsJYBTI9TPs/yPVFoZCpyKmckyYuqZ0LiN+Z7JA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\vcruntime140_cor3.dll" size="124544">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1eTZo+g1+meUUBRdan2U42VzpQkxcRGQTZs3EsMNkGY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-manual-json.js" size="782">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nWFl89Ev27rub5U1xjCXEd8QMGIUgzNNI5N0O8+te9I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-workspace-enhancements.css" size="1342">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kGxWI20Cei023s5aejJ41ayqXh5aK+6emffnwbiWZ4A=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-workspace-overrides.css" size="10159">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rcN2jHSi0Wp7GP4a3lp2GIhywsfFKXC+jEzyDPNjZEg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-workspace-query-integration.css" size="274">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>N9k2/HKAlSJYANBzjYVlg/rSGVFSgT5eHfA9c37AlzI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-workspace-query-integration.js" size="3963">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>hqWpndu9FMDpJw3jSFXCn0kbH4ruhL7Qi0PcgYiCEzo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-workspace.css" size="5647">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>dv4JaUueWRCNoIBgIhdBQi6EPiek3XW5wBnN/S5yy28=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-workspace.html" size="13796">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LzBT0sAbnj/P4QmxWf8DtMR62kyX7SEC8XSFpCnq0QA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\api-workspace.js" size="51909">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LZ+Tgy9UHsZjzE6N6bYJH1oxr5E8J564qBZ2HsgXWXw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\app.js" size="1339400">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cWij5GzXpX0aD7kin8sDE8WgF8Q9CtLo5XbNkOIN9M0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\experience\qvitr\runes.png" size="2515436">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>t483yM6l4QRAuIfFHy96arL6Orx8JJQwLjI9b0xDPtM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\experience\qvitr\tafla.png" size="2515416">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6z76wesSgO6Ty15V1at1KyCvs95i2vne6+Q0TnKhqR0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\experience\qvitr\vefr.png" size="2524721">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Edy18TcxxNCR3icA/+jotKd239UXjJTgcqa6Ev3KTC4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\experience\qvitr\vitr.png" size="2375139">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>AHuy/MXcxvAHaoml9AoLGVJVglEGyzJjP82wV20YBkA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\qv-canvas-fire.png" size="5634">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cw78nh7nqjU5eXRQ/reWpAUcD/UG1LtA4Mf8FKuoQJk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\qv-canvas-forest.png" size="5050">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tDiYvZOVSbghFeeHX9jydSwhUkteC5zmi5LoqNkRo/Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\qv-canvas-frost.png" size="5799">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KajQNdyfr3/ABR8DXX+JqQKqK3hWHTFbSgLMaumFkdE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\qv-canvas-midnight.png" size="4875">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EKOGHBjYIvRmwe7+b2r9Hf+DXm2EML9PLQYKCpt6rrI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\qv-canvas-ocean.png" size="6012">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>sm4tmSirv25axpXNiyeFsLninEcExbGrY7I3eUsbrbk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\qv-canvas-plum.png" size="4720">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tts0/ED/bnD+enywXFEexN2rFAjCD1zr4GMsOZcbYuk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\assets\qv-canvas.png" size="27325">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Eg1qao2q7ZJbIxkmHVFnd2EHB6vq1eJYo66vpG3ss8I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\canvas-filter.css" size="44460">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6FoOvxWVmv+J30NmVi1XREu7jINuG8iCsjaxzaItHtA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\canvas-palette-designer.css" size="909">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>XaJwEecTNPA0D/+YQ7Sn6QBZpQqX5Ral/D69mNxhHLQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\canvas-palette-designer.js" size="7086">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6OU2POBOda+LFZ2tHcuH4jSTK9diqE4faQXDM/Ts/2E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\canvas-picture-fixes.css" size="707">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0c3rE5xP8YCxEomW1O6lF6iyzP3ZcAgMs1dvBGlRM38=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\canvas-theme-controls.js" size="8505">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>D05I7c5aXMm7JVHAT78IFlPa8Cast8GF4G4TmiOIEmQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\canvas-theme.js" size="3805">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>M9KDKt21DbELwU+yEdMaHKVZNpYyEqpY6owb7mpMpbE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\chart-renderer.js" size="177835">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/2iQf/Uk5N6HFomwCGhED56K2Yv2roU+vJIy8ZW5q0o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\connections-overrides.css" size="2230">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mk3eUt5IetmKMl0abw2SJfAYhpyl2gSpAF1aJPko4w4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\connections-theme.css" size="6031">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4SiKcwIsdWCcpymEbq/fh0SLd5z49I/09PE0cVX3SjA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\connections.css" size="4753">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KRFTRR4kspIuB6QKYTw7zjuoUAMpyGJSGWScU2ejQZw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\connections.html" size="8741">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>insHNsL2YqQUcqmEI0bZi3B3CmOutoUTSOS6p4yWg0Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\connections.js" size="18425">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>AZR1Tx5ACXQ1+2uTfQlYPxUCEHHiZ5hc8ZEFnifXGMg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\designer.css" size="156764">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5p7cXDFse2q4o/zS5qWrWGybcabmrlJruIRCGtG+7d4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\experience-modes.json" size="1899">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1VRAm+D6Cwr+d7c5htoqI7LNY+kPDQIK8ivqueIl6PU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\export-filters.js" size="45997">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Zsl4rdkMEnJiaSQBB5SZnG90Q2FJ/5aSAtOB1ra60HI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\export-viewer.css" size="14479">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LFVowZGy2HsXiTV7sHSEdD9Bofy4pPvFfsYnTGPx3HY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\export-viewer.js" size="45475">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tDWBWZP9AS1ORCCLAhR5/fZe9DkVR1EwQuwJWJJtj8s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\gantt.css" size="55987">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bWG6VrePHAWJKPUyJrz4zGYMWjcc1xABqZcA+E6g1qs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\gantt.js" size="63778">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cm/UO4+Pa+L/CDCpbRx5i+1Qt5ZorHWrNcXhmbzNb4A=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\index.html" size="14669">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>t0BcAZMqM4wVonJvEv2dcJewJV9F+1zdkNJ3SKpqhGU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\list-tile.css" size="20831">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>giAkYyeaot7wXBDkeOPN7xwkNPaR0XcVLYLPvrCtzbo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\list-tile.js" size="25927">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>eIrLnoUw6liZwBjKNxuDP05gFRVCrPNQgf9rm8aT6oM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\local-table-tools.js" size="13892">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>f4ZVQ0RGzudpah3nErIAa4M9vKE1hBVGNw+GsdH1HFU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\log-workspace.css" size="3511">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uTrbXfPmzn2kAj9eLCr//7KeLE5ZujpZLKga7VHLDU8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\log-workspace.html" size="934">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>90wySKt1KhrdAsf057zfx3/1xwDzcH5fWC0j0/oGvoI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\log-workspace.js" size="1804">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JaJtjMaOtR73Ci2nJiyRGIkuxupvvaCCeHpiIYPDjg0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\matrix-value-groups.css" size="1306">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5TvRWqkQv+UNXcmFC2rx5zTUhPxUQNjYLGa5kDoAS0k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-evaluator.js" size="23268">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TBfhPZeSGEYuegfhhmPdpKT4x3c68QIDa6qwZ+hshDE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-references.js" size="10984">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>G/l+VixLU6A4A0RPIUQ5qIBHrTRLmtMH4ZlbMoKbhww=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-audit.js" size="10774">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JCoTwUSlHziu9dk8EywSKiQhTrAjpPfFVxURaaEZHrs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-editor.css" size="3041">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>w2P191x5xPCAGF0pNlm7BWTxCq2jnuD7xRMA+CTViMI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-editor.js" size="15799">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bV19KEWlLOaWNSlYcboRsV7kiFt7WGl+gV/Jr915aD8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-folders.css" size="1660">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>UpPuEodEmPLks4qACoyXrBEJhnA8b+LWWoL8C6tyY28=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-folders.js" size="10604">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5nRJjtvTips9PyX0kGhYkMjW0zBwVM+uloKFK9o5FgY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-live-test.css" size="310">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IiB4+ZrN7KC62PUIalbroktq+BeR076zNv6HF5hWV7M=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-live-test.js" size="2948">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GYFCntjCjRvVizwm27Yb+7fFN1xXULpCwGloJ+SwL9E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-menu.css" size="460">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zLRW62HLzXxHmjngs1n/ZbshoXtjRht7rrwqfmPrnak=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-theme.css" size="7578">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CdY6Smg70P+2aKGNWrGzJGR2dAIsj7tTrOkREAx0Qtw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace-zones.css" size="2179">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>AP9PN1DVYFs9v3RmyEGp3WEIu3vKTKtigH4k2fA9NXI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace.css" size="11460">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Qg/CFOqLfpMYuFW++3riA7raP5dPNYYxxzl3AN1HQxo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace.html" size="8858">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pkU816cGipW+Hhc8mCF5ugjeqUyofHmjFK6ckQC62FQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\measure-workspace.js" size="29799">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>yFIUSDzKrXZlDft5skAQwd26Tu7Q9qNFzTsHcmyhA4g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\palette-model.js" size="1297">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>efPXSyf1LOkladjlFUWV1zosJiQFTO6NAElQT0c7N7g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\parameter-editor-theme.css" size="5298">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>z5YJnw9hSpJ1d3o4E4Vq+dMIR1nbtkNz9IVT1TRcRBs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\parameter-editor.css" size="3580">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WuLROfbMdK/UWhiMapiNRk4ZuWb7Y7bazsNes4N9ToI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\parameter-editor.js" size="35863">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>OKTvp0kGbMg2BiZLvqIQfI3EBbMAahMPtbfFSEVhszo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\parameter-workspace.css" size="2323">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6q7E+/MyT1E+/+72rQ4UohieeRhKSwJKOonSfReFvMI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\parameter-workspace.html" size="1073">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JskXOK52ZYMMuqKTp/Fwu22Kmh93PB6GIYUV+hoHXlw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\parameter-workspace.js" size="2901">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YJCqQ44vg+f+UWbjMOZBoTPK1WMzgsm5ni27b05leik=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\powerpoint-import-layout.css" size="872">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uDnvpu0002PP3lN238dmynCDu11gLT0pEWCp7SWaESE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\powerpoint-import-progress.css" size="1204">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uLyY48RRt4hPT4+Umoi+golfMMVt7fRHu7d8rtml8Ow=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\powerpoint-import-selection.css" size="1282">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>l7jsYaCweAhFovfz7QrDC/aUf0pDj7rnJBd8WnUnb88=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\powerpoint-import-source-filter.css" size="1452">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>SnFcm2GDIoHxPak2JE88JdrdBUrUXFRHnK1/mwfSqWo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\powerpoint-import.css" size="7185">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pbNCflDUHmi1OfxCmj1j1YSVQmmj7sjh4cBi7Yvr1gA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\powerpoint-import.html" size="4440">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>jQaAZkFK8Kt4d/h6uDGF8lWzf+Ai/JAGM7xh5kAVPbw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\powerpoint-import.js" size="22486">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>SinyQ7j2IhXl7szAVInyfSBFO5poDDi0SOxfJ+JHRhI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\query-tabs.js" size="37795">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1A2xBecD2R6YhDxJrfGydDU80rR9u45wENVA+94RkwA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\query-workspace-theme.css" size="39099">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+y5mAa0IKllkes3tFn8REAZrOiiRln4RYKeTDs0HyKM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\query-workspace.css" size="40798">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TW6ZkDz8d8M6rJAgykQGB6bYVYFglJRsibR0YW5TCt4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\query-workspace.html" size="8657">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9JpMGyBVsx+y2vTDxCGuYCXetM05/g5n5s4sip2bLeQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\query-workspace.js" size="208013">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>vHFNtQ6rDfa65mTadcItBi5V2qbA2Ypy1mXGHT76U18=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\qv-brand.css" size="2211">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GqOibf8vif+zlsPdA7x+qBQhtemlNGrqlqrW9tj6/K8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\report-designer-theme.css" size="26714">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+Z7ICQh5yIZETOrj4FHFhWKv+mz6TQWbWusYtPxVMIY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\report-grid-filter.js" size="3819">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>U3egLNz1lZd7jOWkCcq76zLul6UvqfggL8F5Wya7IkI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\report-grid.css" size="37423">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gZb4KZT3KhybdjIuGx6zmUhS/JhVJ6Ud1mfgDrk0Eh0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\report-grid.js" size="177457">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9jhvMhfgiau3rJH/1zapFk6O7NGx4qp3cUOGwbs/0KQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\select-sheets.html" size="3033">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>r0VlooTi5OGzebP0weUitxLCRU5XBPtKm9dRw09/QnY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\settings.html" size="609">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>I7NSF7zqbep3mZdl3XoMnuP9D/RgKHr6NhLdTo+lrwM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\shared-settings.js" size="54048">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>o70lq6wJpt7elAqdThgdytV3vn5O4DR9uU+ZWidZJew=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\source-relationships.js" size="10551">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>hzk4pl2n+N4WitkMBfWYQtrvBtyDqgqwLPgKxMsw0xQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\styles.css" size="70131">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>fgwpT3Ean5CvUHLSKH2HK9Y4AJXI3BrhtH6kVVVKtBc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\svg-graphic.js" size="38426">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CHOCdv+SxFtjUwocIAI5/ywyCLgWtsLj4VIUxDXusyU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\theme-scrollbars.css" size="2021">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ftK9QNtwrhdtXuphTmzkDnWeHtOim8tycezDILqncTI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\web-export-settings.js" size="42979">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5v357F+C7KKPmxa0MSuzWy0sXKNL78kmY13xHWO6UQc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\web\workspace-theme-header.css" size="7525">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>83mRXE3WbMMPbmqWBzHBZdGmsV13LOswCFm0ebWh76k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CanvasWeb\wpfgfx_cor3.dll" size="1956136">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cXAFNRJP+az4lAktUQuAk4LollPEe4b46KOauH8rp1I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="xlQAddin.dll.config" size="2430">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pe2++PwdSLwaxX35QzR6H1hGq7F+jtN/uZ8esq3INME=</dsig:DigestValue>
+    </hash>
+  </file>
+  <vstav3:addIn xmlns:vstav3="urn:schemas-microsoft-com:vsta.v3">
+    <vstav3:entryPointsCollection>
+      <vstav3:entryPoints>
+        <vstav3:entryPoint class="xlQAddin.ThisAddIn">
+          <assemblyIdentity name="xlQAddin" version="1.0.0.0" publicKeyToken="836E97AF746DA7AD" language="neutral" processorArchitecture="msil" />
+        </vstav3:entryPoint>
+      </vstav3:entryPoints>
+    </vstav3:entryPointsCollection>
+    <vstav3:update enabled="true" />
+    <vstav3:application>
+      <vstov4:customizations xmlns:vstov4="urn:schemas-microsoft-com:vsto.v4">
+        <vstov4:customization>
+          <vstov4:appAddIn application="Excel" loadBehavior="3" keyName="xlQAddin">
+            <vstov4:friendlyName>qReports</vstov4:friendlyName>
+            <vstov4:description>xlQAddin</vstov4:description>
+            <vstov4.1:ribbonTypes xmlns:vstov4.1="urn:schemas-microsoft-com:vsto.v4.1" />
+          </vstov4:appAddIn>
+        </vstov4:customization>
+      </vstov4:customizations>
+    </vstav3:application>
+  </vstav3:addIn>
+<publisherIdentity name="CN=STEELPC\staal" issuerKeyHash="a5b29fd7d8a5eea5a6deed2c494d94de24f61324" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>7Z1mcJlzl+DENQ3z0Z1qw4rBu+y6BhUxsuvFvdWO6Ww=</DigestValue></Reference></SignedInfo><SignatureValue>ZLfpn+QMuNhITh+AbLiRejG3KXJebP/BgrccufCgu9FhjG3P27XwAAjLxxgI4TWz4H1pmEVMa8ib2gNZvt6rfiXnLhl4oLqTkTbFUvA3xKbuN0fuokcJdplLbAFlcP5mNr3RmuFMM86dYKvG1W9e4wJVO3qw8dQ/nrnaa1XDI9o=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>sXww84vB09TyMYdjfy0JRy2/P3mtDPzXVB/4yRmwm7oKjSxs+PDukItvhm8pRpjOu9qpow4hWvKLvEZV7RI+X1mlbkNVeHHq8EqwKdZ8HHftwdVinSpFhZ1H79WHHPS3zhMkFSaksikKNWjd/I0iXM9HL4JXqVcuZj+VYQyS0oE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="6ce98ed5bdc5ebb2311506baecbbc18ac36a9dd1f30d35c4e097739970669ded" Description="" Url=""><as:assemblyIdentity name="xlQAddin.dll" version="2026.10.26.1" publicKeyToken="95aad63041073d78" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=STEELPC\staal</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>xVKuYTwBPo7/7XnriQaQ8pYyP6m/7gHE0/mQSk/OJqE=</DigestValue></Reference></SignedInfo><SignatureValue>e70JkZMCXYJEaCWSIDLM/IwIk+VnEtSBCnWqBVcZSlqnosVlgHiaeXOAOjzaNgf0ItCQD07EuL75IzoESPatcbAepR6K86qiiR47whCpdGp5XjTrrs1n2kLoiRkVn+bBMSUD9aJswrfpMQC3RYMKh8b0oQVdmLHrTvaUQqgmmi8=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>sXww84vB09TyMYdjfy0JRy2/P3mtDPzXVB/4yRmwm7oKjSxs+PDukItvhm8pRpjOu9qpow4hWvKLvEZV7RI+X1mlbkNVeHHq8EqwKdZ8HHftwdVinSpFhZ1H79WHHPS3zhMkFSaksikKNWjd/I0iXM9HL4JXqVcuZj+VYQyS0oE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIBzTCCATagAwIBAgIQEVRCyDjRCpNBJD4NxC1DnjANBgkqhkiG9w0BAQsFADAlMSMwIQYDVQQDHhoAUwBUAEUARQBMAFAAQwBcAHMAdABhAGEAbDAeFw0yNjAxMDIxNTE2MjFaFw0yNzAxMDIyMTE2MjFaMCUxIzAhBgNVBAMeGgBTAFQARQBFAEwAUABDAFwAcwB0AGEAYQBsMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCxfDDzi8HT1PIxh2N/LQlHLb8/ea0M/NdUH/jJGbCbugqNLGz48O6Qi2+GbylGmM672qmjDiFa8ou8RlXtEj5fWaVuQ1V4cerwSrAp1nwcd+3B1WKdKkWFnUfv1Ycc9LfOEyQVJqSyKQo1aN38jSJcz0cvglepVy5mP5VhDJLSgQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBACI5OGxH6KM2wSVClSPyRYWtJ3xhbdY/4tAutP2L5BsDnOl9l8d2z35T1uIsv4ysRKvZqMjY0xVXzL3xNrYbhYdHzPmwTAAgrGLh9rwOfItvkXULu93FNT/sDK1PlBCjjklzcVQOuEEJtSqXNVPGM6hRULINbza0NgZUKdInOo/i</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
