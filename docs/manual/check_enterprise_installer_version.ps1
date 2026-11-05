@@ -106,7 +106,7 @@ if ($missingLegacyBridgeFiles.Count -gt 0) {
     throw "The MSI is missing required LegacyBridge payload files: $($missingLegacyBridgeFiles -join ', ')."
 }
 $legacyBridgeVersion = $legacyBridgeFiles['CanvasWeb.LegacyBridge.exe']
-if (-not $sourceFileVersion -or $legacyBridgeVersion -ne $sourceFileVersion) {
+if (-not $sourceFileVersion -or [Version] $legacyBridgeVersion -ne [Version] $sourceFileVersion) {
     throw "LegacyBridge file version is $legacyBridgeVersion, but the Qanvas source version is $sourceFileVersion. A lower bridge version can be removed during a major upgrade."
 }
 

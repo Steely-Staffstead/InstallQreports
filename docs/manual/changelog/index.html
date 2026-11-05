@@ -633,6 +633,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../qanvas-app-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas App proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../canvas-presentation/" class="md-nav__link">
         
   
@@ -1382,7 +1410,26 @@
 
 <h1 id="changelog">Changelog</h1>
 <p>User-visible changes are grouped by calendar week. Dates identify the Monday-to-Sunday period in which the work was completed.</p>
-<div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>44</strong></div><div><p class="week-dates">26 October–1 November 2026</p><h2>List forms and smoother shared registration</h2></div></div>
+<div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>45</strong></div><div><p class="week-dates">2–8 November 2026</p><h2>Interactive apps, data-bound HTML and a more capable Grid</h2></div></div>
+
+<ul>
+<li>Added <strong>App</strong> tiles for building interactive, theme-aware mini-apps inside a Qanvas file. Apps can use selected sources and measures, communicate through Canvas parameters, and—with explicit permission—add, edit or remove rows in embedded tables.</li>
+<li>Added a dedicated <strong>HTML document</strong> tile for responsive HTML, CSS, SVG and JavaScript visualizations. HTML can be uploaded or dropped into the editor, connected to Qanvas data and themes, and inspected directly from the preview.</li>
+<li>Expanded Report Grid with improved formula editing and cell references, freeze panes, range selection, automatic row and column growth, richer borders and conditional formatting, cell notes, and more consistent theme-aware formatting.</li>
+<li>Unified theme and color selection across charts, tables, matrices, cards, SVG graphics, filters and Grid cells. New objects now inherit the Canvas theme more reliably, while custom colors remain available when needed.</li>
+<li>Improved charts and visual design with responsive SVG components, richer label appearance, corrected category ordering, more consistent canvas properties, and better PowerPoint, PDF and webpage export fidelity.</li>
+<li>Expanded <strong>Ask AI</strong> for SQL and Measures with dockable chat, queued requests, improved source context, SQL script support and clearer progress. Qanvas AI can also guide App and HTML authoring with the current document context.</li>
+<li>Improved local and embedded data workflows, including Grid-linked sources, selective source import, refresh actions, reusable embedded tables and safer App access to Canvas data.</li>
+<li>Improved performance and stability for large reports, matrix measures, Grid rendering, source updates, presentation mode and exported webpages.</li>
+<li>Added live HTML and SVG design workspaces with adjustable previews, dockable or movable Code / AI panes, manual code editing when focused AI is unavailable, formatted source, copy/paste tools and element inspection that jumps from the preview to source.</li>
+<li>Refined HTML authoring with a draggable preview/code divider, collapsible guidance and safe source search that highlights the exact match and line without moving the editing caret while a search term is entered. HTML Designer now uses <strong>Apply design</strong> as its single save action.</li>
+<li>Improved App authoring with separate <code>index.html</code>, <code>styles.css</code> and <code>app.js</code> views, safer code formatting, internal code search, resizable preview/code panes, clearer CLI activity and a stronger app-specific AI contract that preserves existing behavior during small changes.</li>
+<li>Added explicit query-column type overrides with detected types, input formats and invalid-value handling. The resolved types now flow into table previews, Measures, calculated columns, relationships and visual field/value handling.</li>
+<li>Expanded calculated columns and MiniDAX with stored output types and fixed formats, stricter type-aware quick creation, date/week helpers, improved previous-year filter context and calculated columns as finished table fields in previews and relationships.</li>
+<li>Expanded chart reference lines and bands with consistent navigation, label typography and appearances, line-graph stroke styles, and a larger set of working band patterns and effects.</li>
+<li>Added Qvitr Viewer and Developer modes, saved-source policies, viewer-safe declared App actions, the optional Qvitr experience vocabulary, simplified theme-aware icons and the brighter Aurora Ring application icon.</li>
+</ul>
+<div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>44</strong></div><div><p class="week-dates">26 October–1 November 2026</p><h2>Better forms, data preparation and report design</h2></div></div>
 
 <ul>
 <li>Added <strong>List Form</strong>, a new List view that shows and edits one record at a time. It is useful for test cases, tasks, findings and other registrations with many fields.</li>
@@ -1391,9 +1438,26 @@
 <li>Improved shared Lists so a linked List reuses the existing embedded source instead of creating an extra empty source. Lists and forms can therefore share one central register across pages.</li>
 <li>Fixed List filters and record selection in Presentation mode so they follow the same values and single-selection rules as Edit mode.</li>
 <li>Polished List and Form layout: headers and values align correctly, alternating row bands fill the full width, one-row and multi-row text boxes keep readable labels, and URL fields show their friendly screen tip instead of the stored address.</li>
-<li>New pages now show nine distinct page layouts, including Overview + details, Dashboard, Project plan, Four tiles, and List + details. Layouts wait for you to choose when to add content.</li>
+<li>New pages now show nine distinct page layouts, including Overview + details, Dashboard, Project plan, Four tiles, and Web page. Web page starts as a scrolling page with a text area that grows with its content. Layouts wait for you to choose when to add content.</li>
+<li>Made the tile chooser wider, added Gantt, and kept tile names on one line so choices are easier to scan.</li>
 <li>Fixed the installer header so dialog titles and explanations no longer overlap the Qvitr branding.</li>
 <li>Improved Matrix subtotals. Bottom subtotals now use one clean total row by default, with the expand or collapse button on that row instead of repeating the group heading. The previous two-row style is still available, and the related settings are arranged in a clearer order.</li>
+<li>Improved Matrix and Table design with direct column resizing, ordering, renaming, automatic sizing and clearer right-click actions. Text columns now start left-aligned, while numeric values remain right-aligned.</li>
+<li>Improved the Measures workspace with separate lists for fields, calculated columns and measures, clearer drag-and-drop areas, quick measure creation, and matching results between the test matrix and Canvas visuals.</li>
+<li>Improved local Excel and text imports. Existing imports can be reimported with the same settings, keep their table name, and update the original local table. The source file and sheet/table are shown, filters can be reordered, and Equals filters can pick from existing values.</li>
+<li>Added a complete missing-key list to the relationship editor, making unmatched fact and dimension values easier to review.</li>
+<li>Improved pictures with reliable multiple-image import, working compression, optional compression during import, and cleaner defaults without a header or scrollbars.</li>
+<li>Made long formatted text easier to edit by keeping the current reading position and showing formatting controls near the active text instead of jumping to the top.</li>
+<li>Improved Qanvas AI with a compact, resizable docked pane that uses the application theme. Workspace paths can be copied, and completed workspace changes can be written back to the open local report.</li>
+<li>Added page-section navigation for Action objects. In Edit mode, links open with Ctrl+click so the object remains easy to select and format.</li>
+<li>Fixed filters and Gantt content in Presentation mode so the same page filters and task view are used in Edit and Present.</li>
+<li>Fixed Histogram, Box plot, Treemap, Gauge, Pie and Doughnut charts so measure-backed numeric values are accepted normally.</li>
+<li>Expanded Report Grid authoring with range border presets, theme-role color selectors with resolved-color swatches, Enter-to-move-down editing, optional editing in Present mode, and theme-aware cell notes with a movable editor and unclipped hover bubble.</li>
+<li>Added embedded sources created from Grid ranges, editable saved ranges and optional automatic updates only when linked Grid values change. Embedded calendars, lookup tables and other local tables can now be imported with their rows and metadata from another Qanvas file, while Update all sources includes the new source type.</li>
+<li>Added Action-object support for updating one selected source, optionally including underlying queries, and aligned Grid tile controls around one Format and formula bar visibility setting.</li>
+<li>Added live AI steering for Codex and Claude Code: Ctrl+Enter can add information to the active turn, and a queued request's Steer action can move the complete request into the running provider session.</li>
+<li>Improved chart consistency between the designer and canvas properties, including chart titles under Title settings, category-axis navigation, and <code>K1</code>/<code>M1</code> formatting in canvas-rendered charts and waterfalls.</li>
+<li>Kept page context menus inside the visible window after their final contents are added; short screens now use an internally scrollable menu so Delete and the remaining commands stay reachable.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>43</strong></div><div><p class="week-dates">19–25 October 2026</p><h2>Reusable report content, richer editing and faster source workflows</h2></div></div>
 

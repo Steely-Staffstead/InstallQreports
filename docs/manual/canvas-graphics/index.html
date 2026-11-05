@@ -714,6 +714,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../qanvas-app-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas App proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../canvas-presentation/" class="md-nav__link">
         
   
@@ -1522,12 +1550,48 @@ content alongside normal tiles.</p>
 <li>Text graphics support the same rich-text concepts as Text tiles and Gantt
   descriptions: headings, colors, bullets, checklists, links, editable tables,
   code/diagram blocks, and compressed inline images.</li>
-<li>Use safe formatted HTML in a Text tile or Text graphic for a one-off, mostly
-  static composition such as outlined callouts, boxes with arrows, code panels,
-  or a simple flow diagram. Use SVG instead when geometry must scale precisely
-  or bind to data, separate canvas shapes and connectors when parts must remain
-  independently movable, and Multi-card for a repeated data-driven layout.</li>
-<li><strong>Insert &gt; Date countdown</strong> adds date-driven text without a datasource or
+<li>Use <strong>Formatted content</strong> for normal rich text. Use a dedicated <strong>HTML
+  document</strong> tile for an advanced visualization made from inline HTML, CSS,
+  SVG/Canvas, and JavaScript—for example an interactive timeline, process
+  diagram, calculator, simulation, or animated infographic. The read-only data
+  contract can expose selected Qanvas sources, filters, parameters, canvas theme
+  roles, and pre-evaluated field/measure bindings through <code>qanvas.init(payload)</code>.
+  The sandbox keeps every dependency inline and cannot fetch network resources,
+  write parameters/tables, run actions, or access the parent window. Use an App
+  tile for dynamic MiniDAX, parameter communication, commands/actions, and
+  permissioned embedded-table persistence.
+  Use SVG instead when geometry must scale precisely or bind natively to data,
+  separate canvas shapes and connectors when parts must remain independently
+  movable, and Multi-card for a repeated data-driven layout.</li>
+<li>HTML documents can follow the canvas with <code>--qanvas-text</code>,
+  <code>--qanvas-accent</code>, <code>--qanvas-surface</code>, <code>--qanvas-grid</code>, semantic colors, and
+  palette variables <code>--qanvas-color-1</code> through <code>--qanvas-color-8</code>. <strong>Show all
+  content</strong> grows the tile from the rendered document height; Clip and Scroll
+  retain a fixed viewport. New HTML documents use <strong>Scroll inside tile</strong> by
+  default. Source can be pasted, uploaded from an <code>.html</code> or
+  <code>.htm</code> file, or dropped directly into the source editor.</li>
+<li>Configure multiple selected sources, row limits, filtered context, and named
+  bindings in the HTML tile's <strong>Data contract</strong>. JavaScript reads
+  <code>payload.sources</code>, <code>parameters</code>, <code>bindings</code>, <code>theme</code>, and <code>filters</code>; simple
+  markup can use tokens such as <code>{{binding:revenue}}</code>, <code>{{parameter:Year}}</code>, and
+  <code>{{theme:accent}}</code>.</li>
+<li>Open <strong>HTML designer</strong> from the tile's context menu for a sandboxed live
+  preview beside the complete document source. Drag the vertical divider to
+  give either preview or code more room, or float the Code / AI pane and move it
+  independently. The preview can use the current tile size, a temporary custom
+  width and height, or the measured content height.</li>
+<li>The source search at the top of the HTML document counts matches while you
+  type without moving the code caret. Press Enter or Tab, or use the arrow
+  buttons, to navigate; the matching text and its complete source line are
+  highlighted. <strong>Hide info</strong> collapses the AI guidance when more editing space
+  is needed. Source edits update the sandboxed preview as a draft. <strong>Apply
+  design</strong> is the single action that writes the document and preview dimensions
+  back to the tile; Cancel leaves the tile unchanged.</li>
+<li>Use <strong>Inspect preview</strong> in Properties to click an HTML element and jump to its
+  opening tag in the source editor. Add stable <code>data-qanvas-edit</code> names to major
+  regions for precise navigation; <code>id</code>, visible text, and tag order are used as
+  fallbacks.</li>
+<li><strong>Command Deck &gt; Insert &gt; Expressions &gt; Date countdown</strong> adds date-driven text without a datasource or
   measure. Choose a target date and configure separate text for a future date,
   the target day, and a passed date. Use <code>{days}</code> for the absolute number of
   days or <code>{date}</code> for the formatted target date. While editing, it remains a

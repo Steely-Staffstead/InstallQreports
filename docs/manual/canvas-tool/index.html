@@ -784,6 +784,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#qvitr-viewer-and-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qvitr Viewer and Developer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saved-source-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saved source data
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -892,6 +914,34 @@
     
   
     Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qanvas-app-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas App proposal
   
 
     
@@ -1892,6 +1942,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#qvitr-viewer-and-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qvitr Viewer and Developer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saved-source-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saved source data
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1924,22 +1996,31 @@
 <p>The <strong>Executive indigo</strong> preset provides a dark financial-report style with deep navy/indigo surfaces, warm cream highlights, muted lavender text, and separate green/red status colors. Select it under <strong>Settings &gt; Colors</strong> to apply the complete interface and report-color combination to new canvases. Its matching <code>ExecutiveIndigo</code> chart palette can also be selected independently in an existing canvas or chart.</p>
 <h2 id="select-and-arrange-objects">Select and arrange objects</h2>
 <p>Select one object or drag a selection rectangle around several objects. Selected objects can be moved with the mouse or arrow keys. Right-click an object to duplicate, remove, or change its layer order. The <strong>Handles</strong> command hides design handles, and <strong>Header tags</strong> hides the small Table, Matrix, Chart, or Text type labels without hiding the tile title.</p>
-<p>Text tiles and text graphics support formatted HTML content. Double-click their content to edit directly on the canvas; double-click a tile header to edit its title. Only one text editor is active at a time. The Properties pane shows a preview and offers <strong>Edit on canvas</strong> or <strong>Edit here</strong> when the side editor is more convenient.</p>
-<p>For a one-off, mostly static advanced composition, a Text tile is often the quickest option. Its safe formatted HTML can represent outlined callouts, boxes with arrows, code panels, and simple flow diagrams while remaining portable with the report. Prefer the SVG designer when exact scalable geometry or data-bound shapes matter, canvas shapes and connectors when each part must remain independently movable, and Multi-card when the same data-driven layout repeats for many records.</p>
-<p>The compact text toolbar applies font, size, color, bold, italic, underline, alignment, indentation and list formatting to the selection or current caret position. With no active selection, its values become the typing format; use the whole-text action when the intention is to restyle the complete object. Paragraph styles include Normal, Heading 1, Heading 2 and Quote. Less-common insertion commands are under <strong>More</strong> so the toolbar remains usable on narrow tiles.</p>
-<p>Use <strong>More &gt; Insert &gt; Date countdown</strong> for a deadline or milestone that should update automatically without a measure. Select the target date and provide configurable text for <strong>Before the date</strong>, <strong>On the date</strong>, and <strong>After the date</strong>. <code>{days}</code> is replaced by the absolute day difference and <code>{date}</code> by the formatted target date. The dialog inserts a subtle wrapping code chip such as <code>datecountdown("2026-10-11", "Neste om {days}", "I dag", "Ferdig")</code>, making the complete function easy to edit, copy, and paste into another text object. Normal canvas rendering, Present mode, and webpage exports display only its recalculated result.</p>
+<p>Text tiles and text graphics use sanitized formatted content. Advanced HTML is a separate HTML document tile. Double-click formatted content to edit directly on the canvas; double-click a tile header to edit its title. Only one text editor is active at a time. The Properties pane shows a preview and offers <strong>Edit on canvas</strong> or <strong>Edit here</strong> when the side editor is more convenient.</p>
+<p>For an advanced composition, add an <strong>HTML document</strong> tile and paste, upload, or drop an HTML file into its source editor. Inline HTML, CSS, SVG/Canvas, and JavaScript can build interactive timelines, diagrams, calculators, simulations, and animated infographics. Open <strong>HTML designer</strong> for a live sandboxed preview and complete-document editor. Its preview/code divider is draggable, the Code / AI pane can float, introductory guidance can be collapsed, and source search navigates only when Enter, Tab, Previous, or Next is used. Draft changes are visible immediately; <strong>Apply design</strong> is the one action that saves them to the tile. Its read-only data contract exposes selected sources, filters, parameters, theme roles, and named field/measure bindings through <code>qanvas.init(payload)</code> or simple <code>{{binding:key}}</code> tokens. The sandbox blocks network resources, storage, forms, parent-window access, commands, and writes. Use an App tile for dynamic MiniDAX evaluation, parameter writes, declared host actions, Canvas commands, or permissioned CRUD on embedded tables. Prefer the SVG designer when exact scalable geometry or native data-bound shapes matter, canvas shapes and connectors when each part must remain independently movable, and Multi-card when the same data-driven layout repeats for many records.</p>
+<p>The shared <strong>Command Deck</strong> for text tiles and text graphics groups paragraph style, emphasis, lists, type/color, and actions in one compact toolbar. It applies formatting to the selection or current caret position. With no active selection, its values become the typing format; use the whole-text action when the intention is to restyle the complete object. Paragraph styles include Normal, Heading 1, Heading 2 and Quote. <strong>Insert</strong> separates content commands (Link, Image, Table, and Frame) from expressions (Date countdown, Parameter, Measure, and Field), while less-common formatting remains under <strong>More</strong>.</p>
+<p>Use <strong>Insert &gt; Expressions &gt; Date countdown</strong> for a deadline or milestone that should update automatically without a measure. Select the target date and provide configurable text for <strong>Before the date</strong>, <strong>On the date</strong>, and <strong>After the date</strong>. <code>{days}</code> is replaced by the absolute day difference and <code>{date}</code> by the formatted target date. The dialog inserts a subtle wrapping code chip such as <code>datecountdown("2026-10-11", "Neste om {days}", "I dag", "Ferdig")</code>, making the complete function easy to edit, copy, and paste into another text object. Normal canvas rendering, Present mode, and webpage exports display only its recalculated result.</p>
 <h2 id="pages-data-sources-and-parameters">Pages, data sources, and parameters</h2>
 <p>Pages define layout, size, background, tiles, and graphics. Data sources are document-level, so the same loaded source can be reused on several pages. Every report has one protected <strong>Main source</strong>, normally created from the Excel source that opened Canvas. Add any number of <strong>Global sources</strong> when visuals need other connections or queries.</p>
 <p><img src="../assets/images/canvas/canvas-page-query.png" alt="Placeholder showing Canvas page query and output fields" style="max-width: 900px; width: 100%;"></p>
 <p>Each source owns its query and measures. Every data-bound tile initially uses Main source, but its source can be changed independently—for example, several tiles can share Global source 1 while other tiles continue to use Main source.</p>
 <p><img src="../assets/images/canvas/canvas-global-sources.png" alt="Placeholder showing Main and global Canvas data sources with per-tile source selection" style="max-width: 900px; width: 100%;"></p>
 <p>Use <strong>Edit query</strong> to open Query Web, <strong>Measures</strong> to manage Mini DAX measures, and <strong>Update</strong> to load or refresh the selected source. The available fields and measures follow the source of the selected tile.</p>
-<p>Use <strong>Links…</strong> under Data sources, or right-click a source and choose <strong>Source relationships…</strong>, to match two sources by one or more keys. Choose <strong>Dimension (many → one)</strong> when a compact master table supplies descriptive fields to a larger fact source, or <strong>Measure lookup</strong> when only prepared measures are needed from the related source. For example, link a detailed P&amp;L source to a Company master by <code>CompanyId</code>, and separately to a compact working-capital source by <code>Company + Period</code>.</p>
+<p>Use <strong>Links…</strong> under Data sources, or right-click a source and choose <strong>Source relationships…</strong>, to match two sources by one or more keys. Choose <strong>Dimension (many → one)</strong> when a compact master table supplies descriptive fields to a larger fact source, or <strong>Measure lookup</strong> when only prepared measures are needed from the related source. For example, link a detailed P&amp;L source to a Company master by <code>CompanyId</code>, and separately to a compact working-capital source by <code>Company + Period</code>. When rows have no Dimension match, choose <strong>Show all missing keys</strong> to inspect and copy the complete list instead of relying on the short preview in the warning.</p>
 <p>Dimension fields can be used as table groups, matrix row/column axes, and chart category/group fields. Linked measures can be used as table or matrix values and as chart values/series, including in the full Chart Designer. A Company Group stored once in a 50-row master table can therefore organize visuals driven by a 50,000-row accounting source without repeating the text on every accounting row. Linked items are labelled with their source in each designer. Existing denormalized and single-source canvases continue to work without relationships or changes.</p>
 <p>Relationships are indexed lookups, not physical row joins. Qanvas builds a shared relationship index for the loaded sources and materializes only linked fields used by a visual. The relationship editor checks the loaded rows and reports <code>1 : 1</code>, <code>1 : many</code>, or <code>many : 1</code>; a detected many-to-many relationship or non-unique Dimension key cannot be saved. A table lookup field displays <code>(multiple)</code> if the current row still resolves to more than one distinct value. Active source and page filters on a Dimension source propagate to every directly linked fact source using the saved dimension → fact direction. The same relationship metadata and filter propagation are included in folder and single-file webpage exports. Tile-local filters remain local to their tile.</p>
 <p>Right-click the protected Main source and choose <strong>Reset Main source</strong> when a design no longer needs the workbook/query data that originally opened it. This clears Main source data, measures and query details while keeping the required Main source entry and the visual design. Review dependent visuals after resetting because their former fields are no longer available.</p>
 <p>Parameters are global definitions shared by every source. A value such as period <code>202605</code> or region <code>Europe</code> can therefore be resolved consistently in Main source and all global sources. Excel <code>_control</code> values remain authoritative when Canvas is opened from a workbook.</p>
 <p><strong>Add source</strong> can also create an <strong>Embedded manual table</strong> or attach/create a <strong>Manual local table</strong>. Embedded tables store their JSONL rows only in the current <code>.qanvas</code> file. Manual local tables live on the current computer and can be reused by several reports. They share the same editor: type directly in cells, add rows, resize or reorder columns, configure types and lookups, and press Tab in the last field to create the next row. A lookup can use values from another source or turn a cell into the shared calendar picker, with optional time and ISO week numbers. Use <strong>Edit columns</strong> when schema, lookup, or delete controls are needed. The storage command converts an embedded table to a reusable local file, or takes a snapshot of a local table back into the report. <strong>View data</strong> opens cached source, embedded Gantt, and manual-table rows immediately, with search, copy, CSV export, and the appropriate Edit action.</p>
+<p>An <strong>App</strong> tile can use a selected embedded table as minimal persistent storage.
+In the App properties, expand <strong>Embedded table access</strong> and grant only the
+required Add, Edit, Upsert, or Delete operations. SQL, API, file, and other
+external sources remain read-only. App changes mark the document as changed and
+are stored with the embedded table when the <code>.qanvas</code> file is saved; exported
+standalone webpages cannot write back to the original document.</p>
+<p>Use <strong>Import from Qanvas</strong> when a page, source definition, measure set, calendar table or small lookup table already exists in another <code>.qanvas</code> file. Embedded local sources are copied with their columns, types, rows and local-table metadata; ordinary refreshable query sources are imported without cached result rows. Name or ID collisions provide explicit choices to reuse, replace, skip or create a separately named source. A Qanvas file can contribute sources even when no page is selected for import.</p>
+<p>A Report Grid selection can be saved as an embedded source. Keep the optional <strong>Refresh from Grid</strong> link to retain its page, Grid tile, range and first-row-header setting. <strong>Edit Grid link</strong> accepts an Excel-style range or lets you select the range directly in the Grid. Enable <strong>Update on manual Grid changes</strong> to update the embedded rows whenever values in that linked range actually change; selection, formatting and layout-only changes do not rewrite the source. Manual <strong>Refresh from Grid</strong> remains available. <strong>Update all sources</strong> includes embedded Grid-linked sources, and Action graphics can update one selected source with or without its underlying queries.</p>
+<p>Excel, CSV and text imports remember their file, worksheet/table and preparation steps. <strong>Reimport</strong> loads the file again with the current setup without changing an existing table name. Opening an existing local table for editing allows <strong>Save local table</strong> to update that same table. The current file and Excel worksheet/table are shown above the applied steps; choose <strong>Import Excel…</strong> or the matching text-file command to select a different file. Filter steps can be reordered, and Equals/Does not equal filters can choose from the unique values already in the imported data. The dialog keeps its main commands and Save button visible while the data area scrolls.</p>
 <h2 id="tile-types">Tile types</h2>
 <p><img src="../assets/images/canvas/canvas-tile-types.png" alt="Placeholder showing Canvas table, chart, matrix, card, text, picture, and parameter tiles" style="max-width: 920px; width: 100%;"></p>
 <table>
@@ -1999,7 +2080,7 @@
 <li>Save or return the Canvas to its host.</li>
 </ol>
 <h2 id="tables-and-matrices">Tables and matrices</h2>
-<p>Select a table or matrix and choose <strong>Design</strong> to open the web visual builder. Its layout is consistent for both visuals: available Fields on the left, selected objects and formatting in the middle, and the live preview on the right. Drag fields into the chosen columns, rows, or values and use Advanced ordering for multi-column ascending/descending order.</p>
+<p>Select a table or matrix and choose <strong>Design</strong> to open the web visual builder. Its layout is consistent for both visuals: available Fields on the left, selected objects and formatting in the middle, and the live preview on the right. Drag source fields and calculated columns into table columns or Matrix Rows/Columns; measures belong in Matrix Values. Valid drop areas are highlighted and invalid roles show a blocked pointer. In the preview, resize or reorder columns directly, double-click a heading to rename it, drag a heading out to remove it, or right-click for alignment, sorting, automatic sizing, display, data bars and conditional formatting. Text starts left-aligned and numeric values right-aligned.</p>
 <p>Matrix rows form an ordered hierarchy. <strong>Tabular</strong> layout keeps a separate column for each row level, while <strong>Outline</strong> uses one indented hierarchy column. Parent levels can show formatted subtotals at the top or bottom, optional blank lines, and expandable <code>+/-</code> controls. When bottom subtotals are used, <strong>Subtotal only</strong> is the default: the total row also acts as the group heading and expands or collapses the values above it. Choose <strong>Header + subtotal</strong> when a separate group heading is preferred. Global row and subtotal controls appear before the settings for an individual row level. The lowest row level remains detail and follows the normal Table/Matrix formatting. Value headers follow their value-column alignment.</p>
 <p><img src="../assets/images/canvas/canvas-matrix-outline-subtotals.png" alt="Placeholder showing an outline matrix with expandable groups and formatted subtotals" style="max-width: 900px; width: 100%;"></p>
 <h2 id="charts">Charts</h2>
@@ -2033,27 +2114,31 @@
 <p><img src="../assets/images/canvas/canvas-source-tile-filters.png" alt="Placeholder showing separate source and tile filters in Canvas Web" style="max-width: 760px; width: 100%;"></p>
 <p>Use the same <code>{{parameter}}</code> syntax in SQL, Mini SQL, text, and supported visual definitions.</p>
 <h2 id="graphics-and-connectors">Graphics and connectors</h2>
-<p>Canvas graphics include formatted text, action tiles, lines, rectangles, and connectors. Action tiles can open another page, refresh sources, or open parameters; their action also runs when clicked in edit mode, while right-click continues to open their design menu. To select a linked action without following it, press and hold the control. Formatted text and text tiles share headings, font styling, bullets, checklists, tables, code/diagram blocks, links, compressed inline pictures, and the <strong>Insert</strong> menu for Link, Image, Table, Date countdown, Parameter, Measure, and Field. Type <code>-</code> followed by Space for a bullet, or <code>--</code> followed by Space for a checkbox; existing text on that line is retained. New text boxes clip cleanly at their edge by default; choose <strong>Scroll inside box</strong> for longer page-like content. Lines and rectangles support color, thickness, solid/dotted/dashed styles, shading, transparent fill, rounding, movement, and resizing. Connectors attach to defined points on tile edges and follow tiles as they move. Their route, endpoints, arrow size, line style, and layer order can be configured. Layer commands use compact <strong>Bring to front</strong> and <strong>Send to back</strong> menus; open the submenu for a one-step forward or backward move.</p>
+<p>Canvas graphics include formatted text, action tiles, lines, rectangles, and connectors. Action tiles can open another page, refresh sources, or open parameters; their action also runs when clicked in edit mode, while right-click continues to open their design menu. To select a linked action without following it, press and hold the control. Formatted text and text tiles share headings, font styling, bullets, checklists, tables, frames, code/diagram blocks, links, compressed inline pictures, and the same Command Deck. Its <strong>Insert</strong> menu groups Link, Image, Table, and Frame under Content, with Date countdown, Parameter, Measure, and Field under Expressions. Type <code>-</code> followed by Space for a bullet, or <code>--</code> followed by Space for a checkbox; existing text on that line is retained. New text boxes clip cleanly at their edge by default; choose <strong>Scroll inside box</strong> for longer page-like content. Lines and rectangles support color, thickness, solid/dotted/dashed styles, shading, transparent fill, rounding, movement, and resizing. Connectors attach to defined points on tile edges and follow tiles as they move. Their route, endpoints, arrow size, line style, and layer order can be configured. Layer commands use compact <strong>Bring to front</strong> and <strong>Send to back</strong> menus; open the submenu for a one-step forward or backward move.</p>
 <p>Canvas resize handles are shown only on selected objects. Type <code>-</code> followed by Space on the active line to start an automatic bullet, or <code>--</code> followed by Space to start a checkbox list. Pasted HTML and plain text preserve their existing list structure and are not passed through the automatic typing shortcut. Page and linked tile filters can be placed on the canvas as button groups, cards, or multi-cards; see <a href="../canvas-visual-filter-spec/">Visual filters on canvas</a>.</p>
 <p><img src="../assets/images/canvas/canvas-graphics-connectors.png" alt="Placeholder showing Canvas text, rectangle, line, and attached connector graphics" style="max-width: 900px; width: 100%;"></p>
 <h2 id="report-grid">Report Grid</h2>
 <p>The Report Grid provides a spreadsheet-like layout for compact statements, KPI blocks and manually arranged report pages. A new grid starts with two rows and four blank columns. Every position is a normal A1 cell; there are no dedicated first-row column headers or first-column row labels. Cells support direct values, formulas, source fields/measures, ranges, keyboard editing, cut/paste and filters. Text is single-line by default so content cannot unexpectedly increase a row's height; <strong>Wrap text</strong> can be enabled per cell or selection. Cell formatting also supports top, middle (default), or bottom vertical alignment. Row and column filters are attached through the numbered and lettered axes.</p>
-<p>Press <strong>F2</strong> on any single cell to edit its current content. A measure-backed cell shows a readable measure expression in the cell and formula bar instead of only its calculated result; press Enter to commit or Escape to restore the original binding. While a formula is being edited, its colored cell/range references can be dragged to a new location. Relative references move with the selection and <code>$</code> absolute row or column markers remain fixed.</p>
+<p>Press <strong>F2</strong> on any single cell to edit its current content. A measure-backed cell shows a readable measure expression in the cell and formula bar instead of only its calculated result; press Enter to commit and move one cell down, or Escape to restore the original binding. Enter also moves down when no value was typed. While a formula is being edited, its colored cell/range references can be dragged to a new location. Relative references move with the selection and <code>$</code> absolute row or column markers remain fixed.</p>
 <p><strong>Ctrl+C</strong> or <strong>Copy all</strong> copies both cell content and formatting; right-click the destination to choose <strong>Paste all</strong>, <strong>Paste formulas / values</strong>, or <strong>Paste formats</strong>. <strong>Ctrl+V</strong> continues to paste everything. The compact right-click menu groups Copy, Paste, Insert row, Insert column and Move commands into submenus; clicking a Copy/Paste/Insert parent also runs its displayed default action. <strong>Repeat last action (F4)</strong> is shown in the same menu. F4 repeats the last cell or range action on the current selection, including theme or manual formatting, number formats, alignment, borders, conditional formatting, dimensions, clearing, field/measure selection, formulas, and supported row/column operations; repeated formulas adjust relative references for each destination. While editing a formula, F4 retains its spreadsheet convention of cycling relative and absolute references. Top and bottom spacing can be reduced for layouts that need the grid close to surrounding content.</p>
+<p>The compact toolbar can show or hide <strong>Format and formula bar</strong> as one unit. When a cell uses canvas-theme colors, the text and background controls become theme-role selectors with a circular preview of the resolved color. Border controls support None, Outline, Inside and individual outer/inner edges for a selected range. Theme color previews are also shown beside the Background and Text role selectors in Grid properties.</p>
+<p>Right-click a value cell and choose <strong>Add note</strong> or <strong>Edit note</strong> to store a short explanation with the cell. A theme-colored corner marker identifies noted cells. Hover or focus the cell to show a left-aligned, content-sized note bubble that is kept above the Grid so table or tile clipping cannot hide it. The movable editor follows the canvas theme and keeps <strong>Delete note</strong>, Cancel and Save note together in its footer.</p>
 <h2 id="layout-appearance-and-export">Layout, appearance, and export</h2>
 <p>Canvas supports preset or manual page sizes, including widescreen/presentation and A4 portrait layouts, plus <strong>Web page · fixed width / automatic height</strong> for long scrolling reports. In web-page mode, the chosen width stays fixed while the page grows downwards to include the lowest tile or graphic. Pages also support solid colors, background images, rounded tiles, transparent Card backgrounds, optional tile borders, and explicit layer ordering. Card tiles provide configurable value and caption templates, independent typography and alignment, captions below/left/right, comparisons, conditional arrows/icons and parameter tokens. Preset or custom positive/negative/zero number formats such as <code>+0.0;-0.0;0.0</code> can retain an explicit plus sign. Multi-card tiles repeat one compact card by a selected dimension and arrange field or measure values in a configurable grid. Open the Multi-card designer from Properties, F2, or the tile's right-click menu to choose the grouping field, aggregation and formatting for each value, fixed or responsive card columns, captions, text templates, borders, spacing and theme ownership. Heading, supporting text, values and value captions each have independent font, size, weight, style, alignment and color controls. Field tokens can resolve calculated text columns row by row, including date/week descriptions.</p>
-<p><strong>Present</strong> opens the canvas without design controls. Each page has its own <strong>Presentation resize</strong> choice: Automatic, Fit whole page, Fit width, Fit height, or Actual size (100%). Automatic fits known slide presets to the complete screen and fits manual, A4, and long web/report pages to the available width. Press <strong>F11</strong> to enter full screen and <strong>F11</strong> again to restore the normal window; the toolbar button provides the same toggle. Clicking a page or navigating with the arrow keys reapplies that page's configured view. The presentation toolbar provides manual zoom and fit actions. <strong>Ctrl+mouse-wheel</strong> changes this presentation zoom instead of WebView/browser zoom. Double-click a visual to smoothly enlarge and centre it; double-click it again or press <strong>Escape</strong> to return to the previous page view. Once visual focus has been restored, pressing <strong>Escape</strong> asks for confirmation before presentation mode closes, protecting the current page position and temporary annotations. <strong>Return to edit</strong> closes presentation mode directly without this confirmation. Interactive controls inside a visual do not trigger focus zoom. When space is constrained, excess page tabs move into the <strong>…</strong> menu without creating a second toolbar row. The toolbar also provides a red on-screen pointer and rectangle or oval annotations. Pointer is an independent toggle and can remain visible while either drawing tool is active. Annotations are kept separately for each page during the current presentation. Use <strong>Undo</strong> to remove the latest annotation, select the eraser icon and click a specific annotation to remove it, or use <strong>Clear page</strong> to remove all annotations from the current page. Presentation annotations are temporary and are discarded when returning to edit mode.</p>
+<p><strong>Present</strong> opens the canvas without design controls. Each page has its own <strong>Presentation resize</strong> choice: Automatic, Fit whole page, Fit width, Fit height, or Actual size (100%). Automatic fits known slide presets to the complete screen and fits manual, A4, and long web/report pages to the available width. Press <strong>F11</strong> to enter full screen and <strong>F11</strong> again to restore the normal window; the toolbar button provides the same toggle. Clicking a page or navigating with the arrow keys reapplies that page's configured view. The presentation toolbar provides manual zoom and fit actions. <strong>Ctrl+mouse-wheel</strong> changes this presentation zoom instead of WebView/browser zoom. Double-click a visual to smoothly enlarge and centre it; double-click it again or press <strong>Escape</strong> to return to the previous page view. Once visual focus has been restored, pressing <strong>Escape</strong> asks for confirmation before presentation mode closes, protecting the current page position and temporary annotations. <strong>Return to edit</strong> closes presentation mode directly without this confirmation. Interactive controls inside a visual do not trigger focus zoom. When space is constrained, excess page tabs move into the <strong>…</strong> menu without creating a second toolbar row. The toolbar also provides a red on-screen pointer and rectangle or oval annotations. Pointer is an independent toggle and can remain visible while either drawing tool is active. Annotations are kept separately for each page during the current presentation. Use <strong>Undo</strong> to remove the latest annotation, select the eraser icon and click a specific annotation to remove it, or use <strong>Clear page</strong> to remove all annotations from the current page. Presentation annotations are temporary and are discarded when returning to edit mode. Report Grids and embedded Lists can opt into editing while Present is active; leave that option off for a read-only presentation.</p>
 <p>Application Settings includes an optional experience mode. The default mode uses the normal QReports/Qanvas wording. <strong>Qvitr mode</strong> is off by default and replaces selected labels and icons with the alternate Qvitr vocabulary and artwork. Modes are read from the experience-mode configuration so additional modes can be added later without rewriting the report format.</p>
 <h2 id="ai-assisted-editing">AI-assisted editing</h2>
 <p>The Qanvas AI panel supports three workflows:</p>
 <ul>
-<li><strong>CLI</strong> creates or reconnects a managed workspace and sends queued requests to the configured Codex, Claude Code, or GitHub Copilot CLI provider. Qanvas verifies workspace write access before each turn, starts the CLI in that exact folder, and never enables unrestricted/bypass permission mode. Codex also receives its workspace-write policy; native Windows Claude Code has no sandbox isolation, so Qanvas uses <code>acceptEdits</code>, an explicit workspace-only instruction, and host-side validation.</li>
+<li><strong>CLI</strong> automatically creates and reuses a private document workspace for the open report and sends queued requests to the configured Codex, Claude Code, or GitHub Copilot CLI provider. There is no create-workspace step for ordinary document work. Explicit exported/external workspaces remain available for handoff and advanced workflows. Qanvas verifies workspace write access before each turn, starts the CLI in that exact folder, and never enables unrestricted/bypass permission mode. Codex also receives its workspace-write policy; native Windows Claude Code has no sandbox isolation, so Qanvas uses <code>acceptEdits</code>, an explicit workspace-only instruction, and host-side validation.</li>
 <li><strong>External workspace</strong> creates a folder that an external ChatGPT Work task can monitor. Requests and activity are exchanged through that workspace; keep the external task active while it is processing.</li>
 <li><strong>Manual upload</strong> creates a support pack for an AI chat when no automated CLI/workspace connection is used.</li>
 </ul>
-<p>Requests can include pasted screenshots and uploaded files. Attachments are copied into the AI workspace and referenced by the queued request. The conversation, request queue and live activity/status area are independently scrollable and resizable; automatic scrolling pauses when reviewing older messages.</p>
-<p>The header <strong>AI</strong> button is a toggle: select it to open the panel, then select it again to close the panel without reaching for the panel's × button.</p>
+<p>Requests can include pasted screenshots and uploaded files. Attachments are copied into the AI workspace and referenced by the queued request. The conversation, request queue and live activity/status area are independently scrollable and resizable; automatic scrolling pauses when reviewing older messages. The panel can float or dock as a real resizable side pane that reduces the available Canvas area instead of covering it. Its colors follow the application theme, independently of the theme stored in the open report.</p>
+<p>While Codex or Claude Code is processing a CLI request, press <strong>Ctrl+Enter</strong> to steer the active turn with new information. A queued request also has <strong>Steer</strong>, which moves that complete request into the running session immediately instead of waiting for the current turn to finish. Steering preserves the provider session and resumes the interrupted work before the remaining queue.</p>
+<p>The header <strong>AI</strong> button is a toggle: select it to open the panel, then select it again to close the panel without reaching for the panel's × button. Connection details stay compact and can be expanded when needed. Hover the open-report, working-copy or workspace path to copy its address. <strong>Update local file</strong> validates the completed working copy and writes it back to the originally opened report; use normal Save/backup practice before replacing important files.</p>
 <p>AI has its own top-level Settings page. It selects Codex, Claude Code, or GitHub Copilot, shows provider setup and feature-audit choices, and leaves room for future AI assistance in Query and Measures workspaces. The AI panel identifies the active engine, open report, workspace folder, and working copy. Workspace identity is stored per report, so opening or renaming a report does not silently reconnect an unrelated older workspace.</p>
+<p>Query Workspace and Measures now include <strong>Ask AI</strong>. These focused assistants use the current SQL or selected measure together with the available schema/fields, but do not create a document workspace. A suggestion is always shown before <strong>Replace SQL</strong>, <strong>Insert at cursor</strong>, or <strong>Use expression</strong> changes the editor. Shared reusable guidance is stored under <code>%LocalAppData%\QReports\CanvasWeb\AI\instructions</code> in separate general, canvas, SQL and measure files; use <strong>Shared instructions…</strong> in either focused assistant to open that folder.</p>
 <p>Qanvas validates the returned JSON before applying it. The exported AI guidance describes native tiles, Gantt, rich text, theme bindings, hyperlinks, embedded images and purpose-built SVGs. It explicitly checks that requested features exist in the document rather than accepting a written claim. A custom SVG created from scratch must be stored as <code>kind: "svgGraphic"</code> with lowercase nested <code>svgGraphic.template: "manual"</code>; the standalone element belongs only in nested <code>svgGraphic.svgCode</code>. This rule is sent to Codex, Claude, and Copilot on every turn, including resumed conversations. GitHub Copilot can run additional feature-audit/repair turns; disable <strong>Run automatic feature audit and repair turns</strong> in Settings for faster small edits while retaining the structural validation pass.</p>
 <p>AI-generated changes should still be reviewed visually. Validation proves the document is structurally usable, not that every image, layout choice or factual statement is correct.</p>
 <p><img src="../assets/images/canvas/canvas-card-caption-formatting.png" alt="Placeholder showing a transparent Card tile with formatted value and caption" style="max-width: 760px; width: 100%;"></p>
@@ -2067,10 +2152,10 @@
 <p>PowerPoint provides <strong>CanvasWeb</strong>, <strong>Get from CanvasWeb</strong>, <strong>Update canvases</strong>, and <strong>Parameters</strong>. See the <a href="../powerpoint-ribbon/">PowerPoint QRep Ribbon</a>.</p>
 <h2 id="direct-tile-properties-and-local-pictures">Direct tile properties and local pictures</h2>
 <p>Chart properties expose the shared chart settings directly in the Canvas pane; see <a href="../chart-tool/#edit-from-canvas">Chart tool</a>. Matrix Subtotals exposes the selected-row subtotal settings, pretext, expand/collapse and initial collapse, layout, repeated tabular labels, blank lines, outline row header and subtotal position. Header columns remain fixed during horizontal scrolling. Matrix designs support up to 2,000 displayed items; large matrices still affect rendering performance. Data bars place positive and negative values on opposite sides of a common zero baseline and can apply to groups and details.</p>
-<p>Picture tiles accept direct image URLs or <strong>Choose image</strong> local files. Local images are embedded in the saved report. Image settings includes the picker, URL, hidden scrollbars and a Wikimedia Commons reference. General settings holds sizing, background and transparency. Image sizing supports Fit to window (whole picture), Fill width and Fill height, with a minimum tile height of 30.</p>
+<p>Picture tiles accept direct image URLs or <strong>Choose image</strong> local files. Each chosen local image is embedded independently, so several Picture tiles can safely use different files. New Picture tiles hide their header and scrollbars by default. <strong>Compress image when importing</strong> reduces new local images automatically; <strong>Compress image…</strong> can reduce an already embedded image. Linked web URLs are not rewritten. General settings holds sizing, background and transparency. Image sizing supports Fit to window (whole picture), Fill width and Fill height, with a minimum tile height of 30.</p>
 <p>Card formatting, Target and variance, and Text sections are collapsible. Graphics have General settings for position/size and separate Rectangle, Line or Connector settings. Not all property sections currently use the same order: General settings may appear near Header settings; a consistent ordering review is still pending.</p>
 <h2 id="hyperlinks-in-text">Hyperlinks in text</h2>
-<p>In the formatted text editor, place the cursor or select text and choose <strong>Link…</strong>. Choose http (default), https or no prefix; enter display text and a screen tip. <strong>Place in this document</strong> links to another Canvas page. Links are underlined by default, with a no-underline option. Put the cursor inside an existing link and choose Link to edit it. Internal page links also navigate exported report tabs. External links still require network access.</p>
+<p>In the formatted text editor, place the cursor or select text and choose <strong>Link…</strong>. Choose http (default), https or no prefix; enter display text and a screen tip. <strong>Place in this document</strong> links to another Canvas page. Links are underlined by default, with a no-underline option. Put the cursor inside an existing link and choose Link to edit it. In Edit mode, use Ctrl+click to follow a link; a normal click keeps the object selectable. Action objects additionally support <strong>Section on a page</strong>, which opens the chosen page and scrolls to its named section. Internal links also navigate exported report tabs. External links still require network access.</p>
 <h2 id="portable-report-saves">Portable report saves</h2>
 <p>Saving a <code>.qanvas</code> file packages referenced local sources and embedded pictures with the editable report, so it can be copied to a shared file area. SQL/API credentials and external infrastructure are not made portable by this save; test reopening on another computer before distribution.</p>
 <h2 id="webpage-exports">Webpage exports</h2>
@@ -2114,6 +2199,29 @@ then returns to the page you were editing.</p>
 Canvas and export again. This export runs in QanvasWeb without the PowerPoint
 add-in or a separate PowerPoint installation; PowerPoint or another compatible
 viewer is needed to open the resulting file.</p>
+<h2 id="qvitr-viewer-and-developer">Qvitr Viewer and Developer</h2>
+<p>The same Qanvas application has two access modes. A valid licence containing
+<code>CanvasTool</code> opens <strong>Qvitr Developer</strong>, including data design, measures, AI,
+layout and save tools. Without that entitlement it opens as the free <strong>Qvitr
+Viewer</strong>. Viewer can open recent or local Qanvas files, navigate, filter and run
+interactive Apps, but it cannot change or refresh the Canvas definition. An
+opened file starts directly in presentation mode.</p>
+<p>App API and stored-procedure actions can be enabled individually with <strong>Allow
+this action in Qvitr Viewer</strong>. The native host accepts only actions declared in
+the opened Qanvas file and asks for confirmation before execution. The recipient
+must have the named saved connection on their own machine; passwords and tokens
+are never published in the Qanvas file. A centrally hosted execution gateway is
+required for zero-configuration distribution of authenticated actions.</p>
+<h2 id="saved-source-data">Saved source data</h2>
+<p>Each query source has a <strong>Saved data</strong> policy:</p>
+<ul>
+<li><strong>Preview only</strong> (default) stores the configured preview rows.</li>
+<li><strong>All loaded rows</strong> stores the complete result currently loaded in Developer.</li>
+<li><strong>No rows</strong> stores only the source definition and schema.</li>
+</ul>
+<p><code>Preview rows = 0</code> means all rows for Preview only. Embedded local tables are
+always stored completely. Viewer has no general source-refresh permission, so
+opening a shared file cannot replace its snapshot with an empty failed refresh.</p>
 
 
 

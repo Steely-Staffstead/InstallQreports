@@ -621,6 +621,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../qanvas-app-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas App proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../canvas-presentation/" class="md-nav__link">
         
   
@@ -1771,6 +1799,7 @@
 <p>Mini DAX is QReports' focused expression engine for measures and calculated columns. The <strong>Measures</strong> ribbon command and the Canvas <strong>Measures</strong> command open the WebView Measure workspace. It is used by matrices, charts, Canvas visuals, and QReports table output. It is not the same thing as sending a full DAX query to the Excel Power Pivot model.</p>
 <p>The workspace places source Fields on the left, saved measures/calculated columns beside them, and the name, expandable expression editor, validation status, matrix wells, and result preview in the main area. The two list panes and matrix result can be resized or collapsed. <strong>Load data</strong> runs the source query with its current QReports parameters; measures remain editable before data is loaded.</p>
 <p>The expression editor provides syntax highlighting, autocomplete, keyboard indentation and a function helper, with a docked, searchable and resizable function reference. Choosing a helper function inserts its syntax at the cursor. Drag fields into Rows, at most one Columns field, and Values to test the calculation as a crosstab. Number formats and matrix visibility are saved with each measure. The workspace follows the selected QReports application theme.</p>
+<p>The <strong>Code / AI</strong> workbench is grounded in the same MiniDAX function catalog shown by the editor rather than the larger Microsoft DAX language. It receives the selected item, typed source fields, existing measures and parameters, and generated drafts are checked by the native MiniDAX validator before they can be applied. The shared <code>measures.md</code> file remains available for organization-specific naming and business conventions; it does not replace the engine contract.</p>
 <p>Use brackets around field or measure names containing spaces, periods, or other punctuation. Autocomplete adds the brackets automatically when needed:</p>
 <pre><code class="language-dax">YEAR([player.birthdate])
 DATEDIFF([Player birth date], TODAY(), YEAR)

@@ -1,0 +1,3907 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitr Office integrations">
+      
+      
+      
+        <link rel="canonical" href="https://steely-staffstead.github.io/InstallQreports/manual/qanvas-app-spec/">
+      
+      
+        <link rel="prev" href="../canvas-visual-filter-spec/">
+      
+      
+        <link rel="next" href="../canvas-presentation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/qanvas-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Qanvas App proposal - Qvitr Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#qanvas-app-specification" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Qvitr Documentation" class="md-header__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/qanvas-logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Qvitr Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Qanvas App proposal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Qvitr Documentation" class="md-nav__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+      
+  <img src="../assets/images/qanvas-logo.png" alt="logo">
+
+    </a>
+    Qvitr Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webview-workspaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebView workspaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Qanvas
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Canvas overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-tiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tiles and visual types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chart-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Charts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-graphics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Graphics and layout
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-visual-filter-spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visual filter proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas App proposal
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qanvas App proposal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented MVP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#product-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product position
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-goals-for-the-first-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Non-goals for the first version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User experience
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User experience">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-an-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add an app
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App designer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-pane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties pane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-and-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status and errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Document model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logical-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-definition-and-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App definition and instances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-page-copy-and-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import, page copy, and components
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Runtime architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temporary-runtime-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temporary runtime files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#qanvas-app-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qanvas App API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Qanvas App API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#context-and-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context and theme
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#measures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters-and-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters and filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedded-source-writeback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embedded-source writeback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canvas-parameter-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canvas parameter bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-analysis-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard analysis set
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action workflows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI authoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI authoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#permission-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prohibited-runtime-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prohibited runtime capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document trust
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theme-and-accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Theme and accessibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-presentation-and-export-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit, Presentation, and export behavior
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Edit, Presentation, and export behavior">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#presentation-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Presentation mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offline-webpage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Offline webpage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pdf-and-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PDF and image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerPoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#versioning-and-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Versioning and compatibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagnostics-and-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostics and observability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation plan
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-schema-and-validator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0: schema and validator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-sandbox-and-read-only-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: sandbox and read-only apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-actions-and-deterministic-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: actions and deterministic analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-controlled-writeback-and-ai-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: controlled writeback and AI authoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-reusable-organization-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: reusable organization apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mvp-acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MVP acceptance criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Browser integration tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desktop-integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desktop integration tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended prototype
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../canvas-presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Presentation and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Queries and data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Queries and data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Query Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../local-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Local queries and data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dax-measures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini DAX and measures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mini-sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mini SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Excel add-in
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Excel add-in
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qrep-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../qrep-excel-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Excel Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formula-helper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formula Helper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PowerPoint add-in
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PowerPoint add-in
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-addin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-ribbon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    QRep Ribbon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../powerpoint-shared/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shared tool links
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Technical information
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Technical information
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IT overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation and updates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage and security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical-removal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uninstall and cleanup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implemented-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implemented MVP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#product-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product position
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-goals-for-the-first-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Non-goals for the first version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User experience
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User experience">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-an-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add an app
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-designer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App designer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-pane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties pane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-and-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status and errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Document model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logical-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logical files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app-definition-and-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App definition and instances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-page-copy-and-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import, page copy, and components
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Runtime architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runtime-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temporary-runtime-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temporary runtime files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#qanvas-app-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qanvas App API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Qanvas App API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#context-and-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context and theme
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#measures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measures
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters-and-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters and filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#embedded-source-writeback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embedded-source writeback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canvas-parameter-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canvas parameter bridge
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analysis capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analysis capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-analysis-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standard analysis set
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action workflows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI authoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI authoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#permission-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permission principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prohibited-runtime-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prohibited runtime capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document trust
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theme-and-accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Theme and accessibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-presentation-and-export-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit, Presentation, and export behavior
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Edit, Presentation, and export behavior">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#presentation-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Presentation mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offline-webpage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Offline webpage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pdf-and-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PDF and image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerPoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#versioning-and-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Versioning and compatibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagnostics-and-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnostics and observability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation plan
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-schema-and-validator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0: schema and validator
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-sandbox-and-read-only-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: sandbox and read-only apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-actions-and-deterministic-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: actions and deterministic analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-controlled-writeback-and-ai-authoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: controlled writeback and AI authoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-reusable-organization-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: reusable organization apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mvp-acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MVP acceptance criteria
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test strategy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser-integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Browser integration tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desktop-integration-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desktop integration tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended prototype
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="qanvas-app-specification">Qanvas App specification</h1>
+<blockquote>
+<p>Status: MVP in progress. The implemented first slice includes an Interactive
+app tile, document-level embedded app files, a script-only sandbox, filtered
+datasource input, semantic canvas theme roles, a built-in Source analysis
+app, the App designer with AI, and an allow-listed host action bridge. Direct
+network access and arbitrary SQL remain blocked. Export snapshots remain a
+later phase of this specification.</p>
+</blockquote>
+<h2 id="implemented-mvp">Implemented MVP</h2>
+<p>The current implementation provides a safe vertical slice of the architecture:</p>
+<ul>
+<li><strong>Interactive app</strong> is available from Add tile.</li>
+<li>App definitions are stored in the root <code>apps</code> collection of the <code>.qanvas</code>
+  document, while tile instances reference an <code>appId</code>.</li>
+<li>Each definition contains logical <code>index.html</code>, <code>styles.css</code>, and <code>app.js</code>
+  files; no sidecar workspace is required at runtime.</li>
+<li>Apps execute in an iframe with <code>sandbox="allow-scripts"</code> and a restrictive
+  content security policy. Network, parent DOM, filesystem, and persistent
+  storage access are unavailable.</li>
+<li>The App designer can declare named host actions for a saved API endpoint or a
+  SQL Server stored procedure. App JavaScript sees only the action ID and calls
+  <code>qanvas.actions.execute(id, parameters)</code>; connection strings and secrets never
+  enter the iframe.</li>
+<li>A canvas Action tile can target an App tile on the same page and send a named
+  command with a JSON parameter object. The app subscribes with
+  <code>qanvas.commands.on(name, handler)</code>; this does not grant extra host access.</li>
+<li>SQL actions accept only a one- or two-part stored-procedure name. Arbitrary
+  SQL, table-valued parameters and UDT parameters are rejected. Parameters are
+  derived by SQL Server and the result is capped by the configured row limit.</li>
+<li>API and SQL results may be returned to the app, replace a document-embedded
+  local table, or append to an embedded table with the same columns. The rows
+  are then saved inside the <code>.qanvas</code> file in the same format as other embedded
+  Manual tables.</li>
+<li>The host passes schema, bounded filtered rows, source metadata, parameter
+  context, filters, and resolved canvas theme roles to the app.</li>
+<li>The built-in Source analysis app summarizes rows, columns, numeric fields,
+  missing values, uniqueness, ranges, means, and coverage.</li>
+<li>App properties allow the row limit and filtered-context behavior to be
+  controlled. The selected Qanvas datasource uses the shared tile source
+  control.</li>
+<li>Embedded definitions and instances survive document serialization and reload.</li>
+<li>Each app stores a bounded <code>currentSpec</code> plus the six most recent short design
+  messages. Reopening the designer therefore restores the app's intent without
+  embedding an unbounded AI transcript in the document.</li>
+</ul>
+<h2 id="purpose">Purpose</h2>
+<p>Qanvas App adds small, interactive business applications to a Qanvas document.
+An app can combine a purpose-built user interface with the document's existing
+data sources, measures, parameters, filters, navigation, update actions, theme,
+and export pipeline.</p>
+<p>The extension must preserve the central Qanvas properties:</p>
+<ul>
+<li>one portable <code>.qanvas</code> file;</li>
+<li>deterministic analysis after the app has been authored;</li>
+<li>local and offline operation by default;</li>
+<li>controlled access to business data and document actions;</li>
+<li>consistent behavior in Edit, Presentation, and exported webpages;</li>
+<li>safe failure isolation so an app cannot stop the rest of the report.</li>
+</ul>
+<p>Qanvas App is not intended to turn Qanvas into a general web hosting service or
+a complete software-development environment. It is an advanced visual and
+workflow type for bounded business applications.</p>
+<h2 id="product-position">Product position</h2>
+<p>A Qanvas App is the interactive layer in a living analytical document. Native
+Qanvas objects remain the preferred tools for charts, matrices, grids, forms,
+Gantt plans, and reusable report layouts. An app is appropriate when the user
+needs guided input, custom interaction, analysis orchestration, or a specialized
+visual that cannot be expressed naturally with existing objects.</p>
+<p>Typical solutions include:</p>
+<ul>
+<li>budget and scenario simulators;</li>
+<li>monthly-close and reconciliation controls;</li>
+<li>source profiling and data-quality analysis;</li>
+<li>project intake and approval flows;</li>
+<li>pricing and quotation configurators;</li>
+<li>guided forms and decision trees;</li>
+<li>report portals and navigation hubs;</li>
+<li>specialized calendars and planning tools;</li>
+<li>variance investigation workflows;</li>
+<li>customer-specific analytical tools.</li>
+</ul>
+<h2 id="goals">Goals</h2>
+<ol>
+<li>Store the complete app with the Qanvas document without a required sidecar
+   folder.</li>
+<li>Allow apps to read explicitly permitted data, measures, parameters, and
+   filter context.</li>
+<li>Allow apps to invoke explicitly permitted Qanvas actions.</li>
+<li>Provide deterministic local analysis helpers for common statistical and
+   data-quality tasks.</li>
+<li>Apply the canvas theme and respond immediately when it changes.</li>
+<li>Support AI-assisted creation and editing without making AI a runtime
+   dependency.</li>
+<li>Keep apps interactive in Presentation and offline webpage export.</li>
+<li>Produce stable snapshots for PDF, image, and PowerPoint export.</li>
+<li>Maintain backward compatibility with documents that contain no apps.</li>
+<li>Expose clear permissions, diagnostics, and recovery behavior.</li>
+</ol>
+<h2 id="non-goals-for-the-first-version">Non-goals for the first version</h2>
+<ul>
+<li>npm, package installation, bundlers, or arbitrary build commands;</li>
+<li>server-side application code;</li>
+<li>unrestricted network access or API calls that do not use an explicitly saved
+  connection and endpoint;</li>
+<li>direct access to WebView, the host process, the file system, or the parent DOM;</li>
+<li>direct database credentials or connection strings inside app code;</li>
+<li>background execution after the Qanvas document is closed;</li>
+<li>replacing native charts, tables, matrices, grids, forms, or Gantt;</li>
+<li>a public application marketplace;</li>
+<li>multi-user concurrent editing or a hosted application database.</li>
+</ul>
+<h2 id="user-experience">User experience</h2>
+<h3 id="add-an-app">Add an app</h3>
+<p>The Add tile menu receives <strong>Interactive app</strong>. The first dialog offers:</p>
+<ul>
+<li>Blank app;</li>
+<li>Data analysis;</li>
+<li>Form and workflow;</li>
+<li>Simulator;</li>
+<li>Navigation hub;</li>
+<li>Create with AI;</li>
+<li>Import portable Qanvas App.</li>
+</ul>
+<p>The result is a normal canvas tile with move, resize, header, theme, filters,
+links, undo, duplicate, and delete behavior. A full-page app is initially a
+normal app tile sized to the page. A separate page type is not required for the
+MVP.</p>
+<h3 id="app-designer">App designer</h3>
+<p>The designer uses the application theme, while its preview uses the current
+canvas theme. Its primary workspace has two full-height resizable panes:</p>
+<ol>
+<li><strong>Design with AI</strong>: an editable, persistent Current spec; a bounded recent
+   change history; and a resizable change composer.</li>
+<li><strong>Live preview</strong>: the running sandbox using the current canvas theme and
+   source context.</li>
+</ol>
+<p>Logical files, source contract, theme API, bridge actions and permissions are
+available in a collapsed <strong>Advanced code, connections and permissions</strong> drawer.
+This keeps the common AI iteration workflow prominent while retaining direct
+code access for advanced users.</p>
+<p>The common workflow is:</p>
+<ol>
+<li>choose a template or describe the app to AI;</li>
+<li>grant only the required data and action permissions;</li>
+<li>bind sources, fields, measures, parameters, and actions;</li>
+<li>test in the sandbox preview;</li>
+<li>apply the app to the tile;</li>
+<li>verify Presentation and the required export formats.</li>
+</ol>
+<h3 id="properties-pane">Properties pane</h3>
+<p>The selected app tile exposes these groups:</p>
+<ul>
+<li>Header;</li>
+<li>App;</li>
+<li>Data bindings;</li>
+<li>Permissions;</li>
+<li>Theme and appearance;</li>
+<li>State;</li>
+<li>Filters;</li>
+<li>Interaction;</li>
+<li>Export;</li>
+<li>Diagnostics.</li>
+</ul>
+<p>The properties pane supports changing bindings and runtime settings. Source
+code and structural changes open the full designer.</p>
+<h3 id="status-and-errors">Status and errors</h3>
+<p>An app shows a themed status surface for Loading, Ready, No data, Permission
+required, Error, and Disabled. Errors remain inside the app tile. The user can
+open diagnostics, reset app state, reload the app, or restore the previous app
+version without reloading the complete Qanvas document.</p>
+<h2 id="document-model">Document model</h2>
+<p>The <code>.qanvas</code> file remains one UTF-8 JSON document. Apps are permanent document
+content stored in a new root <code>apps</code> collection. The named files are logical
+files, not required physical files beside the Qanvas document.</p>
+<pre><code class="language-json">{
+  &quot;version&quot;: 1,
+  &quot;apps&quot;: [
+    {
+      &quot;id&quot;: &quot;app-budget-simulator&quot;,
+      &quot;name&quot;: &quot;Budget simulator&quot;,
+      &quot;appVersion&quot;: 1,
+      &quot;runtime&quot;: &quot;qanvas-app-v1&quot;,
+      &quot;entry&quot;: &quot;index.html&quot;,
+      &quot;currentSpec&quot;: &quot;Compare budget scenarios by region and show the selected assumptions.&quot;,
+      &quot;designHistory&quot;: [
+        { &quot;role&quot;: &quot;user&quot;, &quot;text&quot;: &quot;Add a region selector.&quot; },
+        { &quot;role&quot;: &quot;assistant&quot;, &quot;text&quot;: &quot;Updated the app and refreshed the live preview.&quot; }
+      ],
+      &quot;files&quot;: [
+        {
+          &quot;path&quot;: &quot;index.html&quot;,
+          &quot;mediaType&quot;: &quot;text/html&quot;,
+          &quot;encoding&quot;: &quot;utf8&quot;,
+          &quot;content&quot;: &quot;&lt;main id=\&quot;app\&quot;&gt;&lt;/main&gt;&quot;,
+          &quot;sha256&quot;: &quot;...&quot;
+        },
+        {
+          &quot;path&quot;: &quot;styles.css&quot;,
+          &quot;mediaType&quot;: &quot;text/css&quot;,
+          &quot;encoding&quot;: &quot;utf8&quot;,
+          &quot;content&quot;: &quot;...&quot;,
+          &quot;sha256&quot;: &quot;...&quot;
+        },
+        {
+          &quot;path&quot;: &quot;app.js&quot;,
+          &quot;mediaType&quot;: &quot;text/javascript&quot;,
+          &quot;encoding&quot;: &quot;utf8&quot;,
+          &quot;content&quot;: &quot;...&quot;,
+          &quot;sha256&quot;: &quot;...&quot;
+        }
+      ],
+      &quot;permissions&quot;: {
+        &quot;sources&quot;: {
+          &quot;read&quot;: [&quot;finances&quot;],
+          &quot;write&quot;: []
+        },
+        &quot;measures&quot;: [&quot;Revenue&quot;, &quot;Cost&quot;],
+        &quot;parameters&quot;: {
+          &quot;read&quot;: [&quot;Year&quot;],
+          &quot;write&quot;: [&quot;Scenario&quot;]
+        },
+        &quot;filters&quot;: &quot;page&quot;,
+        &quot;navigation&quot;: true,
+        &quot;actions&quot;: [
+          {
+            &quot;id&quot;: &quot;refresh-finances&quot;,
+            &quot;kind&quot;: &quot;api&quot;,
+            &quot;connection&quot;: &quot;Finance API&quot;,
+            &quot;endpoint&quot;: &quot;Monthly figures&quot;,
+            &quot;outputMode&quot;: &quot;replace&quot;,
+            &quot;outputSource&quot;: &quot;Finance API cache&quot;,
+            &quot;confirm&quot;: true,
+            &quot;maxRows&quot;: 5000
+          },
+          {
+            &quot;id&quot;: &quot;run-forecast&quot;,
+            &quot;kind&quot;: &quot;sqlStoredProcedure&quot;,
+            &quot;connection&quot;: &quot;Reporting SQL&quot;,
+            &quot;procedure&quot;: &quot;reporting.RunForecast&quot;,
+            &quot;outputMode&quot;: &quot;replace&quot;,
+            &quot;outputSource&quot;: &quot;Forecast result&quot;,
+            &quot;confirm&quot;: true,
+            &quot;maxRows&quot;: 5000
+          }
+        ],
+        &quot;network&quot;: &quot;none&quot;
+      },
+      &quot;limits&quot;: {
+        &quot;maximumRowsPerRequest&quot;: 5000,
+        &quot;maximumTotalRows&quot;: 50000,
+        &quot;maximumStateBytes&quot;: 262144
+      }
+    }
+  ]
+}
+</code></pre>
+<p>An app tile stores only the app reference and instance-specific bindings and
+state:</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;tile-budget-simulator&quot;,
+  &quot;kind&quot;: &quot;app&quot;,
+  &quot;title&quot;: &quot;Budget simulator&quot;,
+  &quot;sourceId&quot;: &quot;finances&quot;,
+  &quot;app&quot;: {
+    &quot;appId&quot;: &quot;app-budget-simulator&quot;,
+    &quot;view&quot;: &quot;main&quot;,
+    &quot;bindings&quot;: {
+      &quot;amount&quot;: { &quot;type&quot;: &quot;measure&quot;, &quot;name&quot;: &quot;Revenue&quot; },
+      &quot;year&quot;: { &quot;type&quot;: &quot;parameter&quot;, &quot;name&quot;: &quot;Year&quot; }
+    },
+    &quot;settings&quot;: {},
+    &quot;state&quot;: {},
+    &quot;statePolicy&quot;: &quot;document&quot;
+  }
+}
+</code></pre>
+<h3 id="logical-files">Logical files</h3>
+<p>Supported MVP file types are:</p>
+<ul>
+<li>HTML;</li>
+<li>CSS;</li>
+<li>JavaScript;</li>
+<li>JSON;</li>
+<li>SVG;</li>
+<li>PNG, JPEG, WebP, and GIF.</li>
+</ul>
+<p>Text is stored as UTF-8. Binary assets use base64 encoding. Each entry stores a
+hash for validation and deduplication. File paths are normalized relative paths;
+absolute paths, parent traversal, device paths, and URL-shaped paths are
+rejected.</p>
+<p>The first version should recommend a maximum of 1 MB for HTML, CSS, JavaScript,
+and JSON combined and 10 MB for the complete app. The limits should be settings,
+not assumptions in the renderer. Larger applications should display a warning
+before they are embedded.</p>
+<h3 id="app-definition-and-instances">App definition and instances</h3>
+<p>One app definition can be used by multiple tiles. Each tile has independent
+bindings, settings, and instance state. Editing the shared definition updates
+all instances after confirmation. <strong>Duplicate as independent app</strong> creates a new
+definition and app ID.</p>
+<p>Unused definitions are retained until explicitly removed or until the user
+runs <strong>Clean unused apps</strong>. Save must never silently delete an app definition.</p>
+<h3 id="state-policies">State policies</h3>
+<p>An app instance supports:</p>
+<ul>
+<li><code>none</code>: state exists only until the tile reloads;</li>
+<li><code>session</code>: state lasts until the document closes and is not saved;</li>
+<li><code>document</code>: JSON state is saved in the tile;</li>
+<li><code>source</code>: durable records are stored in an explicitly permitted embedded
+  source rather than opaque app state.</li>
+</ul>
+<p>Business records should use <code>source</code>. <code>document</code> is intended for compact UI
+state such as a selected tab, collapsed sections, or saved simulator inputs.
+Secrets must never be stored in app state.</p>
+<h3 id="import-page-copy-and-components">Import, page copy, and components</h3>
+<p>Importing pages also imports app definitions referenced by the selected pages.
+ID collisions are resolved by content hash:</p>
+<ul>
+<li>identical hash: reuse the existing definition;</li>
+<li>different hash: create a new ID and remap imported tile references.</li>
+</ul>
+<p>Reusable components may reference an app definition. Exporting a component must
+include the referenced app and required assets, but not data the component does
+not already include.</p>
+<h2 id="runtime-architecture">Runtime architecture</h2>
+<p>Each app runs in its own sandboxed iframe. The proposed baseline is:</p>
+<pre><code class="language-html">&lt;iframe sandbox=&quot;allow-scripts&quot;&gt;&lt;/iframe&gt;
+</code></pre>
+<p>The app does not receive <code>allow-same-origin</code>, <code>allow-top-navigation</code>, forms,
+popups, downloads, or storage permissions in the MVP. The host builds the
+iframe document from the saved logical files and applies a restrictive Content
+Security Policy.</p>
+<p>The runtime uses <code>postMessage</code> with an unguessable per-instance channel token.
+Every message includes protocol version, app ID, tile ID, request ID, and
+channel token. The host validates origin context, message shape, permission,
+payload size, and current tile ownership before executing a request.</p>
+<p>Apps never receive references to host DOM objects, WebView host objects,
+connection strings, credentials, or unrestricted document JSON.</p>
+<h3 id="runtime-lifecycle">Runtime lifecycle</h3>
+<ol>
+<li>The tile creates a sandbox and sends <code>qanvas.initialize</code>.</li>
+<li>The app returns <code>qanvas.ready</code> with its protocol version.</li>
+<li>The host sends theme, bindings, locale, page, filter, and presentation state.</li>
+<li>The app requests permitted data or actions.</li>
+<li>The host publishes change events when relevant context changes.</li>
+<li>The app sends <code>qanvas.renderComplete</code> when stable for screen and export.</li>
+<li>The host disposes subscriptions, object URLs, workers, and temporary files
+   when the tile is removed or rerendered.</li>
+</ol>
+<p>A handshake timeout shows an app error with Reload and Diagnostics actions.</p>
+<h3 id="temporary-runtime-files">Temporary runtime files</h3>
+<p>The desktop host may extract logical files into a content-addressed cache under
+the application's local cache directory when WebView requires physical files.
+The cache is not authoritative and must be reproducible from the <code>.qanvas</code>
+document. Cache removal cannot damage the app. Cache content must not be placed
+beside the Qanvas document unless the user explicitly exports an app workspace.</p>
+<h2 id="qanvas-app-api">Qanvas App API</h2>
+<p>The public API is versioned. Apps request capabilities through the bridge rather
+than reading the parent application.</p>
+<pre><code class="language-javascript">const app = await qanvas.ready({ apiVersion: 1 });
+</code></pre>
+<h3 id="context-and-theme">Context and theme</h3>
+<pre><code class="language-javascript">await qanvas.context.get();
+await qanvas.theme.get();
+qanvas.events.on(&quot;themeChanged&quot;, theme =&gt; {});
+qanvas.events.on(&quot;contextChanged&quot;, context =&gt; {});
+</code></pre>
+<p>Context contains only non-secret values required by the app: tile ID, page ID,
+mode, locale, effective filters, dimensions, zoom, and presentation state.</p>
+<p>Theme returns resolved colors plus semantic roles, palette colors 1–8, fonts,
+spacing, and color scheme. The host also exposes the same values as CSS custom
+properties inside the sandbox.</p>
+<h3 id="data">Data</h3>
+<pre><code class="language-javascript">await qanvas.data.schema({ source: &quot;finances&quot; });
+await qanvas.data.rows({
+  source: &quot;finances&quot;,
+  offset: 0,
+  limit: 1000,
+  fields: [&quot;period&quot;, &quot;company&quot;, &quot;amount&quot;],
+  filterContext: &quot;effective&quot;
+});
+await qanvas.data.summary({ source: &quot;finances&quot; });
+</code></pre>
+<p>Data is paged and copied as structured values. The API does not expose the
+complete Qanvas document or source connection definition. Requests exceeding
+the granted row, field, source, or payload limits fail with a typed error.</p>
+<p>The app subscribes to data changes explicitly:</p>
+<pre><code class="language-javascript">qanvas.events.on(&quot;sourceChanged&quot;, event =&gt; {});
+qanvas.events.on(&quot;filtersChanged&quot;, event =&gt; {});
+</code></pre>
+<h3 id="measures">Measures</h3>
+<pre><code class="language-javascript">const revenueByCompany = await qanvas.measures.evaluate(&quot;Revenue&quot;, {
+  sourceId: &quot;finances&quot;,
+  groupBy: [&quot;company_id&quot;],
+  maxGroups: 5000
+});
+
+// {
+//   columns: [&quot;company_id&quot;, &quot;Revenue&quot;],
+//   rows: [[&quot;company-1&quot;, 1250000], ...],
+//   totalGroups: 42,
+//   truncated: false
+// }
+</code></pre>
+<p>The host evaluates measures through the existing Qanvas measure engine. Apps
+must not reimplement a business measure when the document already defines it.
+Only sources explicitly selected for the app can be evaluated. Source, page and
+tile filters are inherited automatically unless the app tile is configured to
+ignore filtered context. A measure binding can expose the same grouped result
+declaratively by using the <code>Table</code> value type and selecting an <code>Evaluate per</code>
+field in App designer.</p>
+<h3 id="parameters-and-filters">Parameters and filters</h3>
+<pre><code class="language-javascript">const year = qanvas.parameters.get(&quot;Year&quot;);
+await qanvas.parameters.set(&quot;Scenario&quot;, &quot;Best case&quot;);
+await qanvas.parameters.setMany({ Year: 2027, Scenario: &quot;Best case&quot; });
+await qanvas.filters.get({ scope: &quot;page&quot; });
+await qanvas.filters.apply({ filterId: &quot;filter-123&quot;, values: [&quot;Arendal&quot;] });
+</code></pre>
+<p>Writes use normal Qanvas undo, dirty-state, dependency, and rerender behavior.
+An app cannot create hidden global filtering side effects. Source-filter changes
+require a separate permission and visible confirmation.</p>
+<h3 id="navigation">Navigation</h3>
+<pre><code class="language-javascript">await qanvas.navigation.openPage({ pageId: &quot;page-details&quot; });
+await qanvas.navigation.focusTile({ tileId: &quot;tile-exceptions&quot; });
+</code></pre>
+<p>Navigation follows Presentation visibility and access rules. An app cannot open
+an external URL without an explicit link permission and normal Qanvas link
+handling.</p>
+<h3 id="actions">Actions</h3>
+<p>Apps call action IDs, not internal application functions:</p>
+<pre><code class="language-javascript">await qanvas.actions.execute(&quot;refresh-finances&quot;, { showProgress: true });
+</code></pre>
+<p>Canvas Action tiles can also send a one-way command to a specific App tile:</p>
+<pre><code class="language-javascript">const unsubscribe = qanvas.commands.on(&quot;zoomToRegion&quot;, parameters =&gt; {
+  zoomToRegion(parameters.region);
+});
+</code></pre>
+<p>Configure the Action tile with <strong>Send command to App</strong>, choose the App tile,
+enter the command name, and optionally provide a JSON object. Commands stay
+inside the existing app sandbox and are also supported by exported webpages.</p>
+<p>The action registry should normalize current navigation and source-update
+behavior and support future workflows. Initial action types are:</p>
+<ul>
+<li>navigate to page;</li>
+<li>focus tile;</li>
+<li>open parameters;</li>
+<li>refresh selected source;</li>
+<li>refresh all sources;</li>
+<li>refresh selected source and dependent queries;</li>
+<li>apply or clear a named filter;</li>
+<li>run a Qanvas App command.</li>
+</ul>
+<p>The host owns confirmations, progress, cancellation, error handling, dirty state,
+and permission checks. Apps receive structured progress events and final status.</p>
+<h3 id="embedded-source-writeback">Embedded-source writeback</h3>
+<p>Writeback is restricted to explicitly permitted embedded local sources. Query,
+API, generated, linked read-only, and external database sources are not writable
+through this API. In the App tile properties, select an embedded source and
+grant only the operations the app needs. Read access follows the normal selected
+source permission; Add, Edit, Upsert, and Delete are separate grants.</p>
+<pre><code class="language-javascript">const current = await qanvas.tables.read(&quot;tasks&quot;, { limit: 5000 });
+
+await qanvas.tables.insert(&quot;tasks&quot;, {
+  taskId: &quot;task-42&quot;,
+  title: &quot;Review exceptions&quot;,
+  completed: false
+});
+
+await qanvas.tables.update(
+  &quot;tasks&quot;,
+  { taskId: &quot;task-42&quot; },
+  { completed: true },
+  { expectedRevision: current.revision }
+);
+
+await qanvas.tables.upsert(
+  &quot;tasks&quot;,
+  { taskId: &quot;task-43&quot;, title: &quot;Publish result&quot;, completed: false },
+  { key: &quot;taskId&quot; }
+);
+
+await qanvas.tables.delete(&quot;tasks&quot;, { taskId: &quot;task-42&quot; });
+</code></pre>
+<p>The host validates source selection, storage type, operation permission, column
+names, scalar value types, and optional optimistic revision before changing a
+row. Successful mutations increment the table revision, synchronize the
+portable JSONL payload, mark the Qanvas document dirty, and rerender dependent
+objects. Changes work in edit and desktop presentation views and are persisted
+when the <code>.qanvas</code> document is saved. Standalone exported webpages remain
+read-only because they have no document host to save back to.</p>
+<h3 id="canvas-parameter-bridge">Canvas parameter bridge</h3>
+<p>Canvas parameters are the first shared communication channel between App tiles
+and the rest of a Qanvas document. Access is granted explicitly per parameter
+in the App tile properties. Read and Change are separate permissions; enabling
+Change also implies Read. Calculated parameters are always read-only.</p>
+<pre><code class="language-javascript">const department = qanvas.parameters.get(&quot;Department&quot;);
+await qanvas.parameters.set(&quot;Department&quot;, &quot;Sales&quot;);
+await qanvas.parameters.setMany({ Department: &quot;Sales&quot;, Year: 2027 });
+
+const unsubscribe = qanvas.parameters.subscribe(&quot;Department&quot;, (value, detail) =&gt; {
+  console.log(&quot;Department changed&quot;, value, detail.previous);
+});
+</code></pre>
+<p>The host validates parameter existence, type, range and write permission before
+updating the document. A successful change recalculates calculated parameters,
+updates parameter-dependent tiles and notifies every running App tile that has
+read permission for the changed parameter. Exported webpages remain read-only.</p>
+<h2 id="analysis-capabilities">Analysis capabilities</h2>
+<p>An app may analyze permitted loaded rows with deterministic JavaScript. Common
+and expensive operations should be provided by a host analysis service so apps
+do not repeatedly copy or recalculate the same data.</p>
+<pre><code class="language-javascript">await qanvas.analysis.profile({
+  source: &quot;finances&quot;,
+  fields: [&quot;period&quot;, &quot;company&quot;, &quot;amount&quot;],
+  checks: [
+    &quot;types&quot;,
+    &quot;missing&quot;,
+    &quot;distinct&quot;,
+    &quot;duplicates&quot;,
+    &quot;descriptiveStatistics&quot;,
+    &quot;outliers&quot;,
+    &quot;timeGaps&quot;
+  ]
+});
+</code></pre>
+<h3 id="standard-analysis-set">Standard analysis set</h3>
+<ul>
+<li>row and column counts;</li>
+<li>inferred and declared data types;</li>
+<li>missing, empty, invalid, and infinite values;</li>
+<li>distinct values and cardinality;</li>
+<li>duplicate rows or duplicate candidate keys;</li>
+<li>minimum, maximum, sum, mean, median, and percentiles;</li>
+<li>variance and standard deviation;</li>
+<li>interquartile-range and configurable z-score outliers;</li>
+<li>category distribution and concentration;</li>
+<li>period coverage and missing time periods;</li>
+<li>absolute, period-over-period, and year-over-year changes;</li>
+<li>configurable reconciliation and threshold rules;</li>
+<li>correlations for appropriate numeric fields;</li>
+<li>largest positive and negative contributors.</li>
+</ul>
+<p>Analysis results are structured data with rule IDs, severity, evidence, affected
+row references, and summary text. They can be displayed in the app, written to
+an embedded source, or consumed by native cards, matrices, tables, and charts.</p>
+<p>AI may author rules and explanatory templates, but normal refresh must execute
+the saved deterministic rules without requiring an AI call. Optional AI-written
+summaries must be a separate user action with clear data-sharing behavior.</p>
+<h3 id="performance-rules">Performance rules</h3>
+<ul>
+<li>Run analysis in a worker or host background task.</li>
+<li>Cache results by source revision, effective filter context, fields, and check
+  configuration.</li>
+<li>Reuse Qanvas measure caches rather than evaluating the same dependency per row.</li>
+<li>Use paging, column projection, and typed arrays for large numeric data.</li>
+<li>Use sampling only when requested or when the result clearly labels it.</li>
+<li>Recommend SQL-side analysis when the loaded result is incomplete or too large.</li>
+<li>Cancel obsolete analysis when source, filters, or app configuration changes.</li>
+</ul>
+<h2 id="action-workflows">Action workflows</h2>
+<p>An app may orchestrate several registered actions while the host remains in
+control. A workflow definition is declarative and saved in the app manifest or
+the document action registry.</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;monthly-close-check&quot;,
+  &quot;steps&quot;: [
+    { &quot;action&quot;: &quot;refreshSource&quot;, &quot;source&quot;: &quot;finances&quot; },
+    { &quot;action&quot;: &quot;runAnalysis&quot;, &quot;profile&quot;: &quot;monthly-close&quot; },
+    {
+      &quot;when&quot;: &quot;analysis.errorCount &gt; 0&quot;,
+      &quot;action&quot;: &quot;navigate&quot;,
+      &quot;pageId&quot;: &quot;page-exceptions&quot;
+    },
+    {
+      &quot;when&quot;: &quot;analysis.errorCount == 0&quot;,
+      &quot;action&quot;: &quot;navigate&quot;,
+      &quot;pageId&quot;: &quot;page-management-report&quot;
+    }
+  ]
+}
+</code></pre>
+<p>The workflow runner provides:</p>
+<ul>
+<li>visible current step and progress;</li>
+<li>cancellation between cancellable steps;</li>
+<li>confirmation before destructive or broad actions;</li>
+<li>typed outputs available to later steps;</li>
+<li>conditional branches;</li>
+<li>one final rerender where safe;</li>
+<li>a short audit entry containing time, action, result, and source revisions;</li>
+<li>recovery guidance after partial failure.</li>
+</ul>
+<p>Arbitrary JavaScript cannot bypass the action registry by sending invented host
+messages.</p>
+<h2 id="ai-authoring">AI authoring</h2>
+<p>AI creation is an authoring convenience, not part of the app runtime. Qanvas
+exports one app definition to an editable workspace:</p>
+<pre><code class="language-text">apps/app-budget-simulator/
+  manifest.json
+  index.html
+  styles.css
+  app.js
+  assets/
+QANVAS_APP_API.md
+APP_REQUEST.md
+validate-qanvas-app.cjs
+</code></pre>
+<p>These are temporary or user-selected workspace files. <strong>Apply app changes</strong>
+validates and packages them back into the root <code>apps</code> collection. The workspace
+can be deleted after applying without affecting the Qanvas file.</p>
+<p>The same workflow supports Codex, Claude Code, Copilot CLI, and an external AI
+workspace. Provider-specific files must not become runtime dependencies.</p>
+<h3 id="ai-context">AI context</h3>
+<p>The authoring package includes only:</p>
+<ul>
+<li>the selected app and its current bindings;</li>
+<li>the public Qanvas App API specification;</li>
+<li>schemas for permitted sources, not credentials;</li>
+<li>permitted measure and parameter names;</li>
+<li>current canvas theme tokens;</li>
+<li>screenshots explicitly attached by the user;</li>
+<li>the user's request and validation instructions.</li>
+</ul>
+<p>Row samples are opt-in and bounded. The UI states exactly which schemas and data
+samples are included before export or submission.</p>
+<h3 id="validation">Validation</h3>
+<p>The validator checks:</p>
+<ul>
+<li>manifest and protocol version;</li>
+<li>entry file and logical paths;</li>
+<li>content hashes and duplicate paths;</li>
+<li>file and total size limits;</li>
+<li>prohibited URLs, APIs, HTML, and permissions;</li>
+<li>declared versus used Qanvas capabilities;</li>
+<li>source, field, measure, parameter, filter, action, page, and tile references;</li>
+<li>theme variables and accessibility metadata;</li>
+<li>HTML parsing and JavaScript syntax;</li>
+<li>CSP compatibility;</li>
+<li>UTF-8 and mojibake markers;</li>
+<li>deterministic packaging order.</li>
+</ul>
+<h2 id="security-model">Security model</h2>
+<h3 id="permission-principles">Permission principles</h3>
+<ul>
+<li>Deny by default.</li>
+<li>Permissions are visible and editable before the app runs.</li>
+<li>Permissions are based on stable IDs where available, with names shown to users.</li>
+<li>Imported apps start disabled when they request unavailable or broader access.</li>
+<li>Permission expansion requires confirmation.</li>
+<li>A duplicated tile does not gain new permissions.</li>
+<li>Export never adds permissions that the document does not already grant.</li>
+</ul>
+<h3 id="prohibited-runtime-capabilities">Prohibited runtime capabilities</h3>
+<p>The MVP blocks:</p>
+<ul>
+<li><code>fetch</code>, WebSocket, EventSource, and external resource URLs;</li>
+<li>browser storage and service workers;</li>
+<li>clipboard, camera, microphone, geolocation, notifications, and screen capture;</li>
+<li>popups and top-level navigation;</li>
+<li>dynamic code loaded from outside the embedded definition;</li>
+<li>host objects, file paths, process execution, and shell commands;</li>
+<li>direct database or API connections;</li>
+<li>hidden credential fields and environment variables.</li>
+</ul>
+<h3 id="resource-controls">Resource controls</h3>
+<p>The host enforces limits for:</p>
+<ul>
+<li>app package size;</li>
+<li>bridge message and response size;</li>
+<li>rows and fields per request;</li>
+<li>total copied data per app session;</li>
+<li>analysis duration and memory;</li>
+<li>stored instance state;</li>
+<li>event and action frequency;</li>
+<li>render-complete timeout.</li>
+</ul>
+<p>Repeated violations disable the instance and show diagnostics without affecting
+the page.</p>
+<h3 id="document-trust">Document trust</h3>
+<p>Opening a document containing an app shows its trust state. Apps created in the
+current document are trusted after validation. Imported or externally modified
+apps are validated and may require <strong>Enable app</strong>. A future version may support
+signed organization apps, but signatures are not required for the MVP.</p>
+<h2 id="theme-and-accessibility">Theme and accessibility</h2>
+<p>Apps receive semantic roles and resolved values:</p>
+<ul>
+<li>text;</li>
+<li>accent and on-accent;</li>
+<li>surface;</li>
+<li>header background and header text;</li>
+<li>grid;</li>
+<li>positive and negative;</li>
+<li>colors 1–8;</li>
+<li>application and canvas font families;</li>
+<li>color scheme and preferred contrast.</li>
+</ul>
+<p>The runtime exposes these as <code>--qanvas-*</code> CSS variables. Apps should not copy
+resolved theme colors into permanent custom values unless the user explicitly
+chooses a custom color.</p>
+<p>Minimum accessibility requirements are:</p>
+<ul>
+<li>keyboard access to every interactive control;</li>
+<li>visible focus;</li>
+<li>semantic labels and button names;</li>
+<li>logical tab order;</li>
+<li>sufficient contrast;</li>
+<li>no color-only status indication;</li>
+<li>reduced-motion support;</li>
+<li>scalable layout at application and canvas zoom;</li>
+<li>an accessible app title and description in the manifest.</li>
+</ul>
+<h2 id="edit-presentation-and-export-behavior">Edit, Presentation, and export behavior</h2>
+<h3 id="edit-mode">Edit mode</h3>
+<p>Pointer mode selects and resizes the tile. An explicit <strong>Interact with app</strong>
+control or double-click enters app interaction. Escape returns to tile selection.
+This prevents an app from breaking normal canvas selection and drag behavior.</p>
+<h3 id="presentation-mode">Presentation mode</h3>
+<p>The app is interactive immediately. Only permissions appropriate to
+Presentation are active. Editing or writeback remains opt-in per app and per
+embedded source, following the same principle as editable List and Grid objects.</p>
+<h3 id="offline-webpage">Offline webpage</h3>
+<p>The export includes the validated runtime and referenced app definitions. The
+app remains interactive without Qanvas installed. Unsupported host actions are
+disabled with an explanatory message. Data included in the export follows the
+same presentation/export data rules as native tiles.</p>
+<h3 id="pdf-and-image">PDF and image</h3>
+<p>Qanvas waits for <code>qanvas.renderComplete</code>, fonts, images, and a short stability
+period before capture. Timeouts produce a diagnostic and a themed fallback
+instead of blocking the full export.</p>
+<h3 id="powerpoint">PowerPoint</h3>
+<p>The app is exported as a high-quality image with its canvas background rendered
+as a native PowerPoint shape where possible. The app is not editable as a live
+application in PowerPoint. An optional note can contain the app name and source
+Qanvas document reference.</p>
+<h2 id="versioning-and-compatibility">Versioning and compatibility</h2>
+<p>The app runtime protocol, app definition, and Qanvas document version are
+separate concepts:</p>
+<ul>
+<li><code>runtime: qanvas-app-v1</code> selects the bridge and sandbox contract;</li>
+<li><code>appVersion</code> tracks revisions of one app definition;</li>
+<li>the root document version tracks Qanvas schema migrations.</li>
+</ul>
+<p>Unknown root properties continue to be preserved. Older Qanvas versions that do
+not support app tiles should show an unsupported-object placeholder rather than
+discarding the object during save.</p>
+<p>App edits participate in the normal document dirty state and Undo/Redo. Before a
+shared definition is replaced, Qanvas stores the prior definition in the undo
+entry. Optional named versions may be added later without becoming a prerequisite
+for normal editing.</p>
+<h2 id="diagnostics-and-observability">Diagnostics and observability</h2>
+<p>The diagnostics panel shows:</p>
+<ul>
+<li>app and runtime version;</li>
+<li>granted permissions;</li>
+<li>package size and file hashes;</li>
+<li>current tile, page, source revisions, and filter-context hash;</li>
+<li>handshake and render status;</li>
+<li>recent bridge requests with duration and payload size;</li>
+<li>analysis cache hits and misses;</li>
+<li>action progress and last error;</li>
+<li>console messages truncated to safe single-line summaries.</li>
+</ul>
+<p>Diagnostics must not reveal credentials, connection strings, hidden data rows,
+or unrestricted host paths. A support export requires user confirmation and
+shows exactly which metadata, logs, schemas, and samples it includes.</p>
+<h2 id="implementation-plan">Implementation plan</h2>
+<h3 id="phase-0-schema-and-validator">Phase 0: schema and validator</h3>
+<ul>
+<li>Add the root <code>apps</code> collection and <code>kind: app</code> tile.</li>
+<li>Preserve apps in open, save, Save as, Undo, duplicate, page import, and
+  component import.</li>
+<li>Add deterministic packaging, hashes, size checks, and reference validation.</li>
+<li>Render a safe unsupported/loading/error placeholder.</li>
+<li>Extend the Qanvas AI format guide and validator.</li>
+</ul>
+<h3 id="phase-1-sandbox-and-read-only-apps">Phase 1: sandbox and read-only apps</h3>
+<ul>
+<li>Add sandbox iframe and versioned message bridge.</li>
+<li>Implement context, theme, schema, paged rows, measures, parameters read,
+  filter context, and navigation.</li>
+<li>Add blank, analysis, simulator, and navigation templates.</li>
+<li>Add designer preview and properties.</li>
+<li>Support Edit, Presentation, webpage, PDF, image, and PowerPoint snapshot.</li>
+</ul>
+<h3 id="phase-2-actions-and-deterministic-analysis">Phase 2: actions and deterministic analysis</h3>
+<ul>
+<li>Add normalized action registry and progress protocol.</li>
+<li>Support selected/all source updates and dependent-query updates.</li>
+<li>Add source profiling, descriptive statistics, duplicate/key checks, time gaps,
+  outliers, and saved validation profiles.</li>
+<li>Allow analysis results to populate an embedded source.</li>
+<li>Add workflow sequencing, conditions, cancellation, and audit entries.</li>
+</ul>
+<h3 id="phase-3-controlled-writeback-and-ai-authoring">Phase 3: controlled writeback and AI authoring</h3>
+<ul>
+<li>Add transactional embedded-source mutation.</li>
+<li>Add app workspace export, validation, Apply, recovery copy, and provider-neutral
+  AI instructions.</li>
+<li>Add Create with AI and Edit app with AI flows.</li>
+<li>Add app versions and restore.</li>
+</ul>
+<h3 id="phase-4-reusable-organization-apps">Phase 4: reusable organization apps</h3>
+<ul>
+<li>Add signed organization templates and a controlled catalog.</li>
+<li>Add organization permission policies and trusted publishers.</li>
+<li>Evaluate optional network connectors through host-managed actions rather than
+  direct iframe networking.</li>
+<li>Evaluate hosted collaboration separately from the portable file format.</li>
+</ul>
+<h2 id="mvp-acceptance-criteria">MVP acceptance criteria</h2>
+<p>The first releasable version is complete when:</p>
+<ol>
+<li>A user can create an app tile from a template and save it in one <code>.qanvas</code>
+   file.</li>
+<li>Reopening the file restores the app without a sidecar folder or AI service.</li>
+<li>The app follows canvas theme changes without saving resolved custom colors.</li>
+<li>The app reads only permitted source fields and measures using bounded paging.</li>
+<li>The app can read a parameter, change an explicitly writable parameter, apply
+   a permitted page filter, and navigate to a permitted page.</li>
+<li>Invalid or unresponsive app code cannot stop canvas rendering or saving.</li>
+<li>Presentation and offline webpage export keep the app interactive.</li>
+<li>PDF, image, and PowerPoint exports capture a stable app state.</li>
+<li>Page import and duplication preserve or remap app references correctly.</li>
+<li>The validator rejects path traversal, external resources, prohibited APIs,
+    undeclared capabilities, invalid references, and oversized packages.</li>
+<li>Keyboard navigation, focus, labels, and reduced motion pass the defined
+    accessibility checks.</li>
+<li>Automated tests cover bridge permissions, malformed messages, timeouts,
+    lifecycle cleanup, theme changes, data limits, import, save/reload, and all
+    supported export modes.</li>
+</ol>
+<h2 id="test-strategy">Test strategy</h2>
+<h3 id="unit-tests">Unit tests</h3>
+<ul>
+<li>manifest and schema validation;</li>
+<li>file normalization, hashing, deduplication, and limits;</li>
+<li>permission matching;</li>
+<li>message validation and capability dispatch;</li>
+<li>analysis functions and cache keys;</li>
+<li>workflow conditions and failure handling;</li>
+<li>import ID remapping;</li>
+<li>state-size and serialization behavior.</li>
+</ul>
+<h3 id="browser-integration-tests">Browser integration tests</h3>
+<ul>
+<li>app designer and preview;</li>
+<li>selection versus app-interaction mode;</li>
+<li>theme and zoom changes;</li>
+<li>parameter/filter/source events;</li>
+<li>app failure isolation;</li>
+<li>keyboard and accessibility behavior;</li>
+<li>Presentation behavior;</li>
+<li>offline webpage behavior.</li>
+</ul>
+<h3 id="desktop-integration-tests">Desktop integration tests</h3>
+<ul>
+<li>atomic save and reopen;</li>
+<li>temporary cache reconstruction and cleanup;</li>
+<li>AI workspace extraction and Apply;</li>
+<li>source refresh actions and cancellation;</li>
+<li>PDF, image, and PowerPoint capture;</li>
+<li>recovery after invalid externally modified app content.</li>
+</ul>
+<h3 id="performance-tests">Performance tests</h3>
+<ul>
+<li>documents with many lightweight app instances;</li>
+<li>one app with the maximum permitted package size;</li>
+<li>paged analysis of a heavy loaded source;</li>
+<li>repeated filter and parameter changes;</li>
+<li>app initialization and disposal while moving between pages;</li>
+<li>export of mixed native and app-based pages.</li>
+</ul>
+<h2 id="open-decisions">Open decisions</h2>
+<p>The following decisions should be resolved during prototype work:</p>
+<ol>
+<li>Final package and per-file size limits.</li>
+<li>Whether text files remain directly visible in document JSON or use a compact
+   encoded package representation.</li>
+<li>Whether session state should survive application restart.</li>
+<li>The first supported embedded-source mutation operations.</li>
+<li>The exact action registry format and stable action IDs.</li>
+<li>Whether app definitions can be shared across several open documents.</li>
+<li>Whether organization signing belongs in the first enterprise release.</li>
+<li>Whether external links are allowed independently of network access.</li>
+<li>The threshold where analysis should be moved to SQL or a host background
+   engine.</li>
+<li>Whether a future hosted Qanvas service should use the same app package
+    without changing the portable <code>.qanvas</code> contract.</li>
+</ol>
+<h2 id="recommended-prototype">Recommended prototype</h2>
+<p>The first prototype should be a <strong>Source analysis app</strong> because it exercises the
+most valuable integration without requiring writeback:</p>
+<ol>
+<li>Add the app tile and sandbox runtime.</li>
+<li>Grant read access to one loaded source.</li>
+<li>Read schema and bounded rows through the bridge.</li>
+<li>Calculate missing values, distinct counts, descriptive statistics,
+   duplicates, outliers, and time gaps in a worker.</li>
+<li>Show a themed interactive analysis with field selection and severity filters.</li>
+<li>Allow a finding to navigate to a native detail page and set its page filter.</li>
+<li>Export the same result to webpage, PDF, and PowerPoint snapshot.</li>
+</ol>
+<p>This prototype validates portability, data access, analysis, theming, actions,
+sandboxing, and export before Qanvas accepts persistent app writeback or broader
+AI-generated workflows.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
