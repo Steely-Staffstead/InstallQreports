@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "defaultMode": "standard",
+  "modes": [
+    {
+      "id": "standard",
+      "name": "Standard",
+      "description": "Use the familiar Qanvas names and standard interface icons.",
+      "terms": {}
+    },
+    {
+      "id": "qvitr",
+      "name": "Qvitr mode",
+      "description": "Nordlys Runer uses bright, compact symbols and a playful Nordic vocabulary for the Qvitr product journey. Functionality and file formats remain unchanged.",
+      "sagaTitle": "The Council of Qvitr",
+      "saga": "The tools of Qvitr assembled to build the perfect Qanvas. Qugin brought knowledge from the Sagas, and Muninn promised to remember it correctly this time. The Norner shaped the parameters while Qidunn kept everything young and freshly updated. Rún carved calculations into Rúnatal, Smia forged components sturdy enough for executive meetings, and Riss drew graphics with unnecessarily dramatic arrows. Tafla arranged the final composition. Kvase inspected their work, nodded wisely, and asked whether anyone had remembered to save the file.",
+      "terms": {
+        "canvasProduct": "Tafla",
+        "canvas": "Tafla",
+        "canvasTheme": "Tafla theme",
+        "canvasSize": "Tafla size",
+        "data": "Muninn",
+        "dataTitle": "See what Muninn has stored",
+        "query": "Qugin",
+        "queryWorkspace": "Qugin Workspace",
+        "queryTitle": "Prepare queries for Qugin",
+        "parameters": "Norner",
+        "parametersTitle": "Prepare parameters for the Norners",
+        "update": "Qidunn",
+        "updateTitle": "Ask Qidunn to refresh Sagas",
+        "updateBusy": "Qidunn is updating…",
+        "addGraphic": "+Riss",
+        "addGraphicTitle": "Riss graphics into the canvas",
+        "addTile": "+Tafla",
+        "addTileTitle": "Add a new Tafla to the canvas",
+        "components": "Smia",
+        "componentsTitle": "Forge my reusable component in Smia",
+        "connections": "Saga",
+        "connection": "Saga connection",
+        "sagaCreateTitle": "Create new global Saga",
+        "aiShort": "Kvase",
+        "aiAssistant": "Kvase AI",
+        "aiTool": "Kvase AI tool",
+        "aiTitle": "Ask the all-knowing Kvase",
+        "measures": "Rún",
+        "measuresTitle": "Edit my calculating runes",
+        "measureEditor": "Rúnatal"
+      },
+      "icons": {
+        "query": "assets/experience/qvitr/qugin.svg",
+        "connections": "assets/experience/qvitr/saga.svg",
+        "aiAssistant": "assets/experience/qvitr/kvase.svg",
+        "canvas": "assets/experience/qvitr/tafla.svg",
+        "measures": "assets/experience/qvitr/run.svg"
+      },
+      "concepts": [
+        {
+          "letter": "Q",
+          "name": "Qugin",
+          "tagline": "Retrieve the data.",
+          "icon": "assets/experience/qvitr/qugin.svg"
+        },
+        {
+          "letter": "S",
+          "name": "Saga",
+          "tagline": "Connect the data.",
+          "icon": "assets/experience/qvitr/saga.svg"
+        },
+        {
+          "letter": "K",
+          "name": "Kvase",
+          "tagline": "Understand the data.",
+          "icon": "assets/experience/qvitr/kvase.svg"
+        },
+        {
+          "letter": "T",
+          "name": "Tafla",
+          "tagline": "Arrange and communicate the data.",
+          "icon": "assets/experience/qvitr/tafla.svg"
+        },
+        {
+          "letter": "R",
+          "name": "Rún",
+          "tagline": "Define the logic.",
+          "icon": "assets/experience/qvitr/run.svg"
+        }
+      ]
+    }
+  ]
+}

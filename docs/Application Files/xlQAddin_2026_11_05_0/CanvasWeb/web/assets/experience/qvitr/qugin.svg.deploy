@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Qugin" style="--qv-icon-accent:color-mix(in srgb,var(--qreports-accent,#9EE4D5) 94%,var(--qreports-text,#182230) 6%);--qv-icon-surface:var(--qreports-surface,#ffffff);--qv-icon-core:var(--qreports-header,#182230);--qv-icon-text:var(--qreports-header-text,#f4f7fb)">
+  <circle cx="256" cy="256" r="226" fill="color-mix(in srgb,var(--qv-icon-accent) 18%,var(--qv-icon-surface))"/>
+  <circle cx="256" cy="256" r="218" fill="none" stroke="color-mix(in srgb,var(--qv-icon-accent) 38%,transparent)" stroke-width="18"/>
+  <circle cx="256" cy="256" r="192" fill="var(--qv-icon-core)" stroke="var(--qv-icon-accent)" stroke-width="42"/>
+  <text x="256" y="278" text-anchor="middle" dominant-baseline="middle" fill="var(--qv-icon-text)" font-family="Segoe UI,Arial,sans-serif" font-size="174" font-weight="800">Q</text>
+  <circle cx="424" cy="414" r="49" fill="var(--qv-icon-core)"/>
+  <circle cx="424" cy="414" r="33" fill="var(--qv-icon-surface)" stroke="var(--qv-icon-accent)" stroke-width="10"/>
+</svg>

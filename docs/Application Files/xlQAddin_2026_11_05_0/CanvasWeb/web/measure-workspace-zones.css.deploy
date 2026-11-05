@@ -1,0 +1,150 @@
+.matrix-builder {
+  grid-template-columns: minmax(220px, .8fr) minmax(360px, 1.6fr);
+  align-items: stretch;
+  gap: 8px 12px;
+  padding: 10px 0 8px;
+}
+.matrix-builder-head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.matrix-builder-head > div:first-child { display: grid; gap: 2px; }
+.matrix-builder-head small { color: var(--measure-muted, #69758e); font-size: 12px; }
+.matrix-zone { min-width: 0; }
+.matrix-zone-columns {
+  grid-column: 2;
+  grid-row: 2;
+  width: 280px;
+  max-width: 100%;
+  justify-self: start;
+}
+.matrix-zone-rows { grid-column: 1; grid-row: 3; }
+.matrix-zone-values { grid-column: 2; grid-row: 3; }
+.matrix-zone h3 { margin: 0 0 7px; }
+.matrix-builder .dropzone {
+  position: relative;
+  min-height: 48px;
+  align-content: flex-start;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px;
+}
+.matrix-builder .dropzone-valid {
+  border-color: var(--qreports-accent, #657fee);
+  border-style: solid;
+  background: color-mix(in srgb, var(--qreports-accent, #657fee) 9%, var(--qreports-surface, #fff));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--qreports-accent, #657fee) 18%, transparent);
+}
+.matrix-builder .dropzone-invalid {
+  cursor: not-allowed;
+  border-color: color-mix(in srgb, var(--qreports-negative, #b0443b) 65%, var(--measure-muted, #69758e));
+  background: color-mix(in srgb, var(--qreports-negative, #b0443b) 5%, var(--qreports-surface, #fff));
+  opacity: .72;
+}
+.matrix-builder .dropzone-invalid::after {
+  content: "⊘";
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--qreports-negative, #b0443b);
+  background: var(--qreports-surface, #fff);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 1px 5px color-mix(in srgb, var(--qreports-negative, #b0443b) 28%, transparent);
+  pointer-events: none;
+}
+.matrix-builder .dropzone-invalid-active {
+  border-style: solid;
+  border-color: var(--qreports-negative, #b0443b);
+  background: color-mix(in srgb, var(--qreports-negative, #b0443b) 11%, var(--qreports-surface, #fff));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--qreports-negative, #b0443b) 20%, transparent);
+  opacity: 1;
+}
+.matrix-zone-values .dropzone {
+  min-height: 48px;
+  max-height: 112px;
+  overflow-y: auto;
+}
+.matrix-zone-columns .dropzone {
+  min-height: 44px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+.matrix-builder .dropzone:empty::before {
+  content: attr(data-empty-label);
+  align-self: center;
+  padding: 8px;
+  color: var(--measure-muted, #69758e);
+  font-size: 13px;
+}
+.matrix-builder .dropzone-active {
+  border-color: var(--qreports-accent, #657fee);
+  background: color-mix(in srgb, var(--qreports-accent, #657fee) 8%, var(--qreports-surface, #fff));
+}
+.matrix-builder .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+  max-width: 100%;
+  padding: 3px 4px 3px 8px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  cursor: grab;
+  user-select: none;
+}
+.matrix-builder .chip:active { cursor: grabbing; }
+.matrix-builder .chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.matrix-builder .chip-handle { opacity: .65; font-size: 15px; letter-spacing: -3px; padding-right: 4px; }
+.matrix-builder .chip.drop-before {
+  border-left: 4px solid var(--qreports-accent, #657fee);
+  padding-left: 5px;
+}
+.matrix-builder .chip:focus-visible,
+.matrix-builder .chip-remove:focus-visible {
+  outline: 2px solid var(--qreports-accent, #657fee);
+  outline-offset: 2px;
+}
+.matrix-builder .chip-remove {
+  display: grid;
+  place-items: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.matrix-builder .chip-remove:hover {
+  background: color-mix(in srgb, var(--qreports-negative, #b0443b) 16%, transparent);
+  color: var(--qreports-negative, #b0443b);
+}
+.matrix-test-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 1050px) {
+  .matrix-builder { grid-template-columns: 1fr; }
+  .matrix-zone-columns,
+  .matrix-zone-rows,
+  .matrix-zone-values { grid-column: 1; grid-row: auto; width: 100%; }
+}

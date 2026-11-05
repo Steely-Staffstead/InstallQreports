@@ -1,0 +1,944 @@
+(() => {
+  "use strict";
+
+  const APP_VERSION = 1;
+  const frames = new Map();
+  const designerPaneSizes = { ai: 430, advanced: 360, code: 500 };
+  const bindingSources = new Set(["theme", "measure", "field", "parameter", "constant"]);
+  const bindingTypes = new Set(["text", "number", "color", "boolean", "table"]);
+  const tableOperations = new Set(["read", "insert", "update", "upsert", "delete"]);
+  const imageTypes = new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]);
+  const maxAssetBytes = 5 * 1024 * 1024;
+  const maxAssetTotalBytes = 20 * 1024 * 1024;
+  const maxAssetCount = 50;
+
+  const normalizeHost = value => {
+    let host = String(value || "").trim().toLowerCase();
+    if (!host) return "";
+    try { host = new URL(host.includes("://") ? host : `https://${host}`).hostname.toLowerCase(); }
+    catch { return ""; }
+    return /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(host) ? host : "";
+  };
+
+  const normalizeExternalPermissions = value => {
+    const source = value && typeof value === "object" ? value : {};
+    return {
+      openLinks: source.openLinks === true,
+      remoteImages: source.remoteImages === true,
+      linkHosts: [...new Set((Array.isArray(source.linkHosts) ? source.linkHosts : []).map(normalizeHost).filter(Boolean))].slice(0, 40),
+      imageHosts: [...new Set((Array.isArray(source.imageHosts) ? source.imageHosts : []).map(normalizeHost).filter(Boolean))].slice(0, 40)
+    };
+  };
+
+  const normalizeAssets = value => {
+    const used = new Set(), result = [];
+    let totalBytes = 0;
+    for (const [index, item] of (Array.isArray(value) ? value : []).entries()) {
+      if (result.length >= maxAssetCount) break;
+      let name = String(item?.name || `image-${index + 1}`).trim().replace(/[\\/:*?"<>|]/g, "-").slice(0, 120) || `image-${index + 1}`;
+      const base = name; let suffix = 2; while (used.has(name.toLowerCase())) name = `${base}-${suffix++}`; used.add(name.toLowerCase());
+      const type = imageTypes.has(String(item?.type || "").toLowerCase()) ? String(item.type).toLowerCase() : "";
+      const dataUrl = String(item?.dataUrl || "");
+      const prefix = `data:${type};base64,`;
+      if (!type || !dataUrl.startsWith(prefix)) continue;
+      const encoded = dataUrl.slice(prefix.length);
+      if (!/^[a-z0-9+/]*={0,2}$/i.test(encoded)) continue;
+      const padding = encoded.endsWith("==") ? 2 : encoded.endsWith("=") ? 1 : 0;
+      const bytes = Math.max(0, Math.floor(encoded.length * 3 / 4) - padding);
+      if (bytes > maxAssetBytes || totalBytes + bytes > maxAssetTotalBytes) continue;
+      totalBytes += bytes;
+      result.push({ name, type, dataUrl });
+    }
+    return result;
+  };
+
+  const normalizeParameterAccess = value => (Array.isArray(value) ? value : []).map(item => ({
+    name: String(item?.name || "").trim(),
+    read: item?.read !== false || item?.write === true,
+    write: item?.write === true
+  })).filter(item => item.name);
+
+  const normalizeTablePermissions = value => (Array.isArray(value) ? value : []).map(item => ({
+    sourceId: String(item?.sourceId || ""),
+    operations: [...new Set((Array.isArray(item?.operations) ? item.operations : ["read"]).map(String).filter(operation => tableOperations.has(operation)))],
+    key: String(item?.key || "")
+  })).filter(item => item.sourceId);
+
+  const normalizeBindings = value => {
+    const used = new Set();
+    return (Array.isArray(value) ? value : []).map((item, index) => {
+      let id = String(item?.id || `binding${index + 1}`).trim().replace(/[^a-zA-Z0-9_-]/g, "-").slice(0, 80) || `binding${index + 1}`;
+      const base = id; let suffix = 2; while (used.has(id)) id = `${base}-${suffix++}`; used.add(id);
+      const source = bindingSources.has(item?.source) ? item.source : "constant";
+      return { id, label: String(item?.label || id).slice(0, 120), valueType: bindingTypes.has(item?.valueType) ? item.valueType : "text", source, sourceId: String(item?.sourceId || ""), name: String(item?.name || ""), groupBy: String(item?.groupBy || ""), aggregation: String(item?.aggregation || (source === "field" ? "First" : "Sum")), value: item?.value ?? "", fallback: item?.fallback ?? "" };
+    });
+  };
+
+  const blankHtml = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Untitled app</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app"></main>
+  <script src="app.js"><\/script>
+</body>
+</html>`;
+  const blankCss = `:root {
+  --surface: #fff;
+  --text: #182230;
+  --accent: #4f6ee8;
+  --on-accent: #fff;
+  --grid: #d8dee8;
+  --positive: #16844a;
+  --negative: #c43d4b;
+  --muted: #667085;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--surface);
+  color: var(--text);
+}
+
+body { padding: 16px; }`;
+  const blankJs = `const applyTheme = theme => {
+  for (const [key, value] of Object.entries(theme || {})) {
+    const property = "--" + key.replace(/[A-Z]/g, match => "-" + match.toLowerCase());
+    document.documentElement.style.setProperty(property, value);
+  }
+};
+
+addEventListener("message", event => {
+  if (event.data?.type !== "qanvas.init") return;
+  applyTheme(event.data.payload?.theme);
+});
+
+parent.postMessage({ type: "qanvas.ready" }, "*");`;
+  const clientBridge = `(()=>{
+let sequence=0;const pending=new Map(),commandHandlers=new Map(),parameterHandlers=new Map(),parameterCache={},embeddedAssets=Object.freeze({...((window.__qanvasEmbeddedAssets&&typeof window.__qanvasEmbeddedAssets==='object')?window.__qanvasEmbeddedAssets:{})});
+const request=(type,payload,timeout=120000)=>new Promise((resolve,reject)=>{const requestId='app-'+Date.now()+'-'+(++sequence);pending.set(requestId,{resolve,reject,type});parent.postMessage({type,requestId,...payload},'*');setTimeout(()=>{if(pending.delete(requestId)){const label=type==='qanvas.measure'?'MiniDAX':type==='qanvas.table'?'embedded-table':type==='qanvas.parameter'?'parameter':'Qanvas action';reject(new Error('The '+label+' request timed out.'));}},timeout);});
+const removeHandler=(map,name,handler)=>{const key=String(name||'').trim(),handlers=map.get(key);if(!handlers)return false;const removed=handlers.delete(handler);if(!handlers.size)map.delete(key);return removed;};
+const notifyParameters=values=>{for(const [name,value] of Object.entries(values||{})){const previous=parameterCache[name];parameterCache[name]=value;if(Object.is(previous,value))continue;for(const handler of [...(parameterHandlers.get(name)||[]),...(parameterHandlers.get('*')||[])])try{handler(value,{name,previous,parameters:{...parameterCache}});}catch(error){console.error('Qanvas parameter subscriber failed',error);}}};
+addEventListener('message',event=>{const message=event.data;if(message?.type==='qanvas.init'){notifyParameters(message.payload?.context?.parameters||{});return;}if(message?.type==='qanvas.parameters.changed'){notifyParameters(message.values||{});return;}if(message?.type==='qanvas.command'){const name=String(message.command||'').trim(),parameters=message.parameters&&typeof message.parameters==='object'&&!Array.isArray(message.parameters)?message.parameters:{};for(const handler of [...(commandHandlers.get(name)||[]),...(commandHandlers.get('*')||[])])try{handler(parameters,{name,tileId:String(message.tileId||'')});}catch(error){console.error('Qanvas app command failed',error);}return;}if(!['qanvas.action.result','qanvas.measure.result','qanvas.table.result','qanvas.parameter.result','qanvas.navigation.result'].includes(message?.type))return;const pendingRequest=pending.get(message.requestId);if(!pendingRequest)return;pending.delete(message.requestId);if(message.ok){if(message.type==='qanvas.parameter.result')notifyParameters(message.result?.values||{});pendingRequest.resolve(message.result);}else pendingRequest.reject(new Error(message.error||'The Qanvas request failed.'));});
+const tableRequest=(operation,sourceId,payload={})=>request('qanvas.table',{operation,sourceId:String(sourceId||''),payload:payload&&typeof payload==='object'?payload:{}},60000);
+const setParameters=(values,options={})=>request('qanvas.parameter',{values:values&&typeof values==='object'&&!Array.isArray(values)?values:{},options:options&&typeof options==='object'?options:{}},30000);
+window.qanvas=Object.freeze({actions:Object.freeze({execute:(actionId,parameters={})=>request('qanvas.action',{actionId:String(actionId||''),parameters:parameters&&typeof parameters==='object'?parameters:{}})}),measures:Object.freeze({evaluate:(measure,options={})=>request('qanvas.measure',{measure:String(measure||''),options:options&&typeof options==='object'?options:{}},60000)}),tables:Object.freeze({read:(sourceId,options={})=>tableRequest('read',sourceId,{options}),insert:(sourceId,values,options={})=>tableRequest('insert',sourceId,{values,options}),update:(sourceId,selector,changes,options={})=>tableRequest('update',sourceId,{selector,changes,options}),upsert:(sourceId,values,options={})=>tableRequest('upsert',sourceId,{values,options}),delete:(sourceId,selector,options={})=>tableRequest('delete',sourceId,{selector,options})}),parameters:Object.freeze({get:name=>parameterCache[String(name||'').trim()],set:(name,value,options={})=>setParameters({[String(name||'').trim()]:value},options),setMany:setParameters,subscribe:(name,handler)=>{const key=String(name||'*').trim()||'*';if(typeof handler!=='function')throw new TypeError('A parameter subscriber must be a function.');const handlers=parameterHandlers.get(key)||new Set();handlers.add(handler);parameterHandlers.set(key,handlers);return()=>removeHandler(parameterHandlers,key,handler);}}),assets:Object.freeze({get:name=>embeddedAssets[String(name||'').trim()]||'',list:()=>Object.keys(embeddedAssets)}),navigation:Object.freeze({openExternal:url=>request('qanvas.navigation',{operation:'openExternal',url:String(url||'')},30000),openMap:address=>request('qanvas.navigation',{operation:'openMap',address:String(address||'')},30000)}),commands:Object.freeze({on:(name,handler)=>{const key=String(name||'').trim();if(!key||typeof handler!=='function')throw new TypeError('A command name and handler are required.');const handlers=commandHandlers.get(key)||new Set();handlers.add(handler);commandHandlers.set(key,handlers);return()=>removeHandler(commandHandlers,key,handler);},off:(name,handler)=>removeHandler(commandHandlers,name,handler)})});
+})();`;
+
+  const analysisHtml = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Source analysis</title><link rel="stylesheet" href="styles.css"></head><body><main id="app"><div class="loading"><span></span><p>Analyzing source…</p></div></main><script src="app.js"><\/script></body></html>`;
+  const analysisCss = `
+:root{color-scheme:light dark;--surface:#fff;--text:#182230;--accent:#4f6ee8;--on-accent:#fff;--grid:#d8dee8;--positive:#16844a;--negative:#c43d4b;--muted:#667085;font-family:Segoe UI,system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--surface);color:var(--text)}body{padding:14px}.loading{min-height:180px;display:grid;place-content:center;text-align:center;color:var(--muted)}.loading span{width:28px;height:28px;border:3px solid var(--grid);border-top-color:var(--accent);border-radius:50%;margin:auto;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}h1{font-size:clamp(16px,2vw,22px);margin:0}header p{margin:4px 0 0;color:var(--muted);font-size:12px}.badge{border:1px solid var(--grid);border-radius:999px;padding:5px 9px;font-size:11px;white-space:nowrap}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px;margin-bottom:12px}.metric{border:1px solid var(--grid);border-radius:10px;padding:10px;background:color-mix(in srgb,var(--surface) 92%,var(--accent) 8%)}.metric b{display:block;font-size:clamp(18px,3vw,27px);line-height:1.1}.metric span{font-size:11px;color:var(--muted)}
+.quality{display:flex;gap:8px;align-items:center;border-left:4px solid var(--positive);padding:8px 10px;margin:0 0 12px;background:color-mix(in srgb,var(--surface) 92%,var(--positive) 8%);font-size:12px}.quality.warn{border-color:var(--negative);background:color-mix(in srgb,var(--surface) 92%,var(--negative) 8%)}
+.table-wrap{overflow:auto;border:1px solid var(--grid);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:580px;font-size:12px}th,td{padding:8px 10px;border-bottom:1px solid var(--grid);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{position:sticky;top:0;background:color-mix(in srgb,var(--surface) 88%,var(--accent) 12%);font-weight:650}tr:last-child td{border-bottom:0}.type{color:var(--muted);font-size:10px}.bar{height:5px;width:88px;background:var(--grid);border-radius:99px;overflow:hidden;margin-left:auto}.bar i{display:block;height:100%;background:var(--accent);border-radius:inherit}.empty{padding:24px;text-align:center;color:var(--muted)}
+`;
+  const analysisJs = `
+const root=document.getElementById('app');
+const esc=value=>String(value??'').replace(/[&<>\"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[ch]));
+const number=value=>{if(value==null||value==='')return NaN;const parsed=typeof value==='number'?value:Number(String(value).replace(/\\s/g,'').replace(',','.'));return Number.isFinite(parsed)?parsed:NaN};
+const fmt=value=>Number.isFinite(value)?new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(value):'—';
+function applyTheme(theme){for(const [key,value] of Object.entries(theme||{})){const css='--'+key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase());document.documentElement.style.setProperty(css,value)}}
+function analyze(payload){applyTheme(payload.theme);const columns=payload.schema?.columns||[],types=payload.schema?.types||[],rows=payload.rows||[],total=payload.totalRows??rows.length;let missing=0;const stats=columns.map((name,index)=>{const values=rows.map(row=>row[index]),present=values.filter(value=>value!==null&&value!==undefined&&value!=='');missing+=values.length-present.length;const numeric=present.map(number).filter(Number.isFinite),unique=new Set(present.map(value=>typeof value==='object'?JSON.stringify(value):String(value))).size;return{name,type:types[index]||typeof present[0]||'unknown',present:present.length,missing:values.length-present.length,unique,numeric:numeric.length,min:numeric.length?Math.min(...numeric):NaN,max:numeric.length?Math.max(...numeric):NaN,mean:numeric.length?numeric.reduce((a,b)=>a+b,0)/numeric.length:NaN}});const cells=Math.max(1,rows.length*columns.length),quality=Math.max(0,100-Math.round(missing/cells*100)),numericCount=stats.filter(item=>item.numeric).length;
+root.innerHTML='<header><div><h1>'+esc(payload.title||'Source analysis')+'</h1><p>'+esc(payload.sourceName||'Data source')+' · filtered canvas context</p></div><span class="badge">Read only</span></header><section class="summary"><div class="metric"><b>'+fmt(total)+'</b><span>rows in source</span></div><div class="metric"><b>'+fmt(columns.length)+'</b><span>columns</span></div><div class="metric"><b>'+fmt(numericCount)+'</b><span>numeric fields</span></div><div class="metric"><b>'+quality+'%</b><span>populated cells</span></div></section><p class="quality '+(quality<90?'warn':'')+'">'+(missing?fmt(missing)+' empty values found in the analyzed rows.':'No empty values found in the analyzed rows.')+'</p>'+(columns.length?'<div class="table-wrap"><table><thead><tr><th>Field</th><th>Present</th><th>Missing</th><th>Unique</th><th>Minimum</th><th>Average</th><th>Maximum</th><th>Coverage</th></tr></thead><tbody>'+stats.map(item=>{const coverage=rows.length?Math.round(item.present/rows.length*100):0;return '<tr><td><b>'+esc(item.name)+'</b><br><span class="type">'+esc(item.type)+'</span></td><td>'+fmt(item.present)+'</td><td>'+fmt(item.missing)+'</td><td>'+fmt(item.unique)+'</td><td>'+fmt(item.min)+'</td><td>'+fmt(item.mean)+'</td><td>'+fmt(item.max)+'</td><td><div class="bar" title="'+coverage+'%"><i style="width:'+coverage+'%"></i></div></td></tr>'}).join('')+'</tbody></table></div>':'<div class="empty">Load or connect a data source to analyze it.</div>');}
+addEventListener('message',event=>{if(event.data?.type==='qanvas.init')analyze(event.data.payload||{})});parent.postMessage({type:'qanvas.ready'},'*');
+`;
+
+  const defaultDefinition = (id, name = "Untitled app") => ({
+    id,
+    name,
+    version: APP_VERSION,
+    runtime: "sandboxed-html",
+    template: "blank",
+    entry: "index.html",
+    permissions: { data: "read", measures: "read", parameters: "read", parameterAccess: [], filters: "read", navigation: "read", network: "none", storage: "none", external: normalizeExternalPermissions(), actions: [], tables: [] },
+    currentSpec: "",
+    designHistory: [],
+    bindings: [],
+    assets: [],
+    files: [
+      { path: "index.html", type: "text/html", content: blankHtml },
+      { path: "styles.css", type: "text/css", content: blankCss },
+      { path: "app.js", type: "text/javascript", content: blankJs }
+    ]
+  });
+
+  function normalizeDefinitions(value, createId) {
+    const result = Array.isArray(value) ? value.filter(item => item && typeof item === "object") : [];
+    for (const definition of result) {
+      definition.id ||= createId();
+      definition.name ||= "Qanvas App";
+      definition.version ||= APP_VERSION;
+      definition.runtime ||= "sandboxed-html";
+      definition.entry ||= "index.html";
+      definition.permissions ||= { data: "read", measures: "read", network: "none", storage: "none", actions: [] };
+      definition.permissions.measures ??= "read";
+      definition.permissions.actions = Array.isArray(definition.permissions.actions) ? definition.permissions.actions : [];
+      definition.permissions.tables = normalizeTablePermissions(definition.permissions.tables);
+      definition.permissions.parameterAccess = normalizeParameterAccess(definition.permissions.parameterAccess);
+      definition.permissions.external = normalizeExternalPermissions(definition.permissions.external);
+      definition.currentSpec = String(definition.currentSpec || "").slice(0, 1200);
+      definition.designHistory = Array.isArray(definition.designHistory) ? definition.designHistory.slice(-8).map(item => ({ role: item?.role === "assistant" ? "assistant" : "user", text: String(item?.text || "").slice(0, 2000) })) : [];
+      definition.bindings = normalizeBindings(definition.bindings);
+      definition.assets = normalizeAssets(definition.assets);
+      definition.files = Array.isArray(definition.files) ? definition.files : [];
+    }
+    return result;
+  }
+
+  function normalizeTile(tile, definitions, createId) {
+    tile.app ||= {};
+    let definition = definitions.find(item => item.id === tile.app.appId);
+    if (!definition) {
+      definition = defaultDefinition(createId());
+      definitions.push(definition);
+      tile.app.appId = definition.id;
+    }
+    tile.app.maxRows = Math.max(100, Math.min(20000, Number(tile.app.maxRows) || 5000));
+    tile.app.sourceId ||= tile.sourceId || "main";
+    tile.app.sourceIds = [...new Set((Array.isArray(tile.app.sourceIds) && tile.app.sourceIds.length ? tile.app.sourceIds : [tile.app.sourceId]).map(String).filter(Boolean))];
+    if (!tile.app.sourceIds.length) tile.app.sourceIds = ["main"];
+    tile.app.sourceId = tile.app.sourceIds[0];
+    tile.app.useFilteredContext ??= true;
+    tile.app.allowInteraction ??= true;
+    return definition;
+  }
+
+  function file(definition, path) {
+    return definition.files?.find(item => item.path === path)?.content || "";
+  }
+
+  function assemble(definition, initialPayload) {
+    const html = file(definition, definition.entry || "index.html") || blankHtml;
+    const css = file(definition, "styles.css");
+    const js = file(definition, "app.js");
+    const external = normalizeExternalPermissions(definition.permissions?.external);
+    const remoteImageSources = external.remoteImages ? external.imageHosts.map(host => `https://${host}`).join(" ") : "";
+    const policy = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data: blob:${remoteImageSources ? ` ${remoteImageSources}` : ""}; style-src 'unsafe-inline'; script-src 'unsafe-inline'; font-src data:; connect-src 'none'">`;
+    const assets = Object.fromEntries(normalizeAssets(definition.assets).map(asset => [asset.name, asset.dataUrl]));
+    const serializedAssets = JSON.stringify(assets).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
+    const assetBootstrap = `<script>window.__qanvasEmbeddedAssets=${serializedAssets};<\/script>`;
+    const serialized = initialPayload === undefined ? "" : JSON.stringify(initialPayload).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
+    const bootstrap = serialized ? `<script>dispatchEvent(new MessageEvent('message',{data:{type:'qanvas.init',payload:${serialized}}}));parent.postMessage({type:'qanvas.bootstrapped'},'*');<\/script>` : "";
+    const assembled = html
+      .replace(/<head([^>]*)>/i, `<head$1>${policy}`)
+      .replace(/<link[^>]+href=["']styles\.css["'][^>]*>/i, `<style>${css}</style>`)
+      .replace(/<script[^>]+src=["']app\.js["'][^>]*><\/script>/i, `${assetBootstrap}<script>${clientBridge}<\/script><script>${js}<\/script>`);
+    return bootstrap ? assembled.replace(/<\/body>/i, `${bootstrap}</body>`) : assembled;
+  }
+
+  function placeholder(tile, definition) {
+    const protectedInteraction = tile.app?.allowInteraction === false;
+    return `<div class="qanvas-app-host${protectedInteraction ? " is-protected" : ""}" data-qanvas-app-tile="${String(tile.id).replace(/["&<>]/g, "")}" data-qanvas-app-interaction="${protectedInteraction ? "protected" : "direct"}" aria-label="${String(definition?.name || "Qanvas App").replace(/["&<>]/g, "")}"><div class="qanvas-app-loading"><span></span><b>Loading ${definition?.name || "Qanvas App"}…</b></div><button type="button" data-qanvas-app-interact title="Enable interaction with this app">Interact</button></div>`;
+  }
+
+  function mountAll(options) {
+    for (const [source, entry] of frames) if (!entry.iframe?.isConnected) frames.delete(source);
+    document.querySelectorAll("[data-qanvas-app-tile]").forEach(host => {
+      const tileId = host.dataset.qanvasAppTile;
+      const directInteraction = host.dataset.qanvasAppInteraction !== "protected" &&
+        (!!window.QanvasReport || document.body.classList.contains("presentation-mode"));
+      if (directInteraction) host.classList.add("is-interacting");
+      if (host.dataset.qanvasAppMounted === "1") return;
+      const payload = options.resolve(tileId);
+      if (!payload?.definition) return;
+      host.dataset.qanvasAppMounted = "1";
+      const iframe = document.createElement("iframe");
+      iframe.className = "qanvas-app-frame";
+      iframe.title = payload.definition.name || "Qanvas App";
+      iframe.setAttribute("sandbox", "allow-scripts");
+      iframe.setAttribute("referrerpolicy", "no-referrer");
+      host.querySelector(".qanvas-app-loading")?.replaceWith(iframe);
+      // Editing keeps the activation affordance so the tile can still be
+      // selected and moved. Presentation and standalone webpages are directly
+      // interactive by default; an app tile can explicitly request protection.
+      host.classList.toggle("is-interacting", directInteraction);
+      const entry = {
+        iframe,
+        payload,
+        execute: options.execute,
+        evaluateMeasure: options.evaluateMeasure,
+        mutateTable: options.mutateTable,
+        updateParameters: options.updateParameters,
+        readySeen: false,
+        bootstrapped: false,
+        initTimer: 0,
+        initialize(reason = "ready") {
+          if (!this.iframe.contentWindow) return;
+          if (reason === "ready") {
+            if (this.readySeen) return;
+            this.readySeen = true;
+          } else if (this.readySeen) return;
+          clearTimeout(this.initTimer);
+          // Send on the next task. Posting back synchronously from the child's
+          // ready event can race Chromium's srcdoc navigation during a canvas
+          // rerender, even though the correct WindowProxy is already present.
+          this.initTimer = setTimeout(() => {
+            if (!this.iframe.isConnected || !this.iframe.contentWindow) return;
+            this.iframe.contentWindow.postMessage({ type: "qanvas.init", payload: this.payload.initial }, "*");
+          }, 0);
+        }
+      };
+      // Register the WindowProxy before srcdoc starts. Small embedded apps can
+      // announce qanvas.ready synchronously while their document is loading.
+      // Registering after srcdoc made source/sidebar renders intermittently lose
+      // the only init message, leaving both data and canvas theme unavailable.
+      frames.set(iframe.contentWindow, entry);
+      iframe.srcdoc = assemble(payload.definition, payload.initial);
+      // Keep the load fallback for every navigation. Chromium can emit an
+      // about:blank load before the real srcdoc load when a new iframe is
+      // inserted during a full canvas render.
+      iframe.addEventListener("load", () => entry.initialize("load"));
+    });
+  }
+
+  function dispatchCommand(tileId, command, parameters = {}) {
+    const targetId = String(tileId || ""), name = String(command || "").trim();
+    if (!targetId || !name) return 0;
+    const payload = parameters && typeof parameters === "object" && !Array.isArray(parameters) ? parameters : {};
+    let delivered = 0;
+    for (const entry of frames.values()) {
+      if (!entry.iframe?.isConnected || String(entry.payload?.initial?.context?.tileId || "") !== targetId) continue;
+      entry.iframe.contentWindow?.postMessage({ type: "qanvas.command", tileId: targetId, command: name, parameters: payload }, "*");
+      delivered++;
+    }
+    return delivered;
+  }
+
+  function notifyParameters(values, originTileId = "") {
+    const safeValues = values && typeof values === "object" && !Array.isArray(values) ? values : {};
+    let delivered = 0;
+    for (const entry of frames.values()) {
+      if (!entry.iframe?.isConnected) continue;
+      const allowed = entry.payload?.initial?.context?.parameters || {};
+      const visible = Object.fromEntries(Object.entries(safeValues).filter(([name]) => Object.prototype.hasOwnProperty.call(allowed, name)));
+      if (!Object.keys(visible).length) continue;
+      Object.assign(allowed, visible);
+      entry.iframe.contentWindow?.postMessage({ type: "qanvas.parameters.changed", values: visible, originTileId: String(originTileId || "") }, "*");
+      delivered++;
+    }
+    return delivered;
+  }
+
+  const permittedExternalUrl = (definition, rawUrl) => {
+    const external = normalizeExternalPermissions(definition?.permissions?.external);
+    if (!external.openLinks) throw new Error("External links are not enabled for this app.");
+    let url;
+    try { url = new URL(String(rawUrl || "")); }
+    catch { throw new Error("The app requested an invalid external address."); }
+    if (url.protocol !== "https:") throw new Error("Only HTTPS links can be opened from an app.");
+    if (!external.linkHosts.includes(url.hostname.toLowerCase())) throw new Error(`${url.hostname} is not in this app's approved link list.`);
+    return url.href;
+  };
+
+  addEventListener("message", async event => {
+    // Sandboxed srcdoc navigation can expose a fresh WindowProxy wrapper even
+    // though it still compares equal to iframe.contentWindow. Fall back to the
+    // live iframe lookup so a ready signal is never discarded after a rerender.
+    const entry = frames.get(event.source) || [...frames.values()].find(item => item.iframe?.contentWindow === event.source);
+    if (!entry) return;
+    if (event.data?.type === "qanvas.bootstrapped") {
+      entry.bootstrapped = true;
+      clearTimeout(entry.initTimer);
+      return;
+    }
+    if (event.data?.type === "qanvas.ready") {
+      if (entry.bootstrapped) return;
+      entry.initialize();
+      return;
+    }
+    if (event.data?.type === "qanvas.measure") {
+      const requestId = String(event.data.requestId || "");
+      if (!requestId || entry.payload.definition.permissions?.measures !== "read" || !entry.evaluateMeasure) {
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.measure.result", requestId, ok: false, error: "This app is not permitted to evaluate MiniDAX measures." }, "*");
+        return;
+      }
+      try {
+        const result = await entry.evaluateMeasure({ measure: String(event.data.measure || ""), ...(event.data.options || {}) }, entry.payload);
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.measure.result", requestId, ok: true, result }, "*");
+      } catch (error) {
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.measure.result", requestId, ok: false, error: error?.message || String(error) }, "*");
+      }
+      return;
+    }
+    if (event.data?.type === "qanvas.table") {
+      const requestId = String(event.data.requestId || "");
+      if (!requestId || !entry.mutateTable) {
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.table.result", requestId, ok: false, error: "Embedded-table access is unavailable in the current host." }, "*");
+        return;
+      }
+      try {
+        const result = await entry.mutateTable({ operation: String(event.data.operation || ""), sourceId: String(event.data.sourceId || ""), ...(event.data.payload || {}) }, entry.payload);
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.table.result", requestId, ok: true, result }, "*");
+      } catch (error) {
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.table.result", requestId, ok: false, error: error?.message || String(error) }, "*");
+      }
+      return;
+    }
+    if (event.data?.type === "qanvas.parameter") {
+      const requestId = String(event.data.requestId || "");
+      if (!requestId || !entry.updateParameters) {
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.parameter.result", requestId, ok: false, error: "Parameter changes are unavailable in the current host." }, "*");
+        return;
+      }
+      try {
+        const result = await entry.updateParameters({ values: event.data.values, options: event.data.options }, entry.payload);
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.parameter.result", requestId, ok: true, result }, "*");
+      } catch (error) {
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.parameter.result", requestId, ok: false, error: error?.message || String(error) }, "*");
+      }
+      return;
+    }
+    if (event.data?.type === "qanvas.navigation") {
+      const requestId = String(event.data.requestId || "");
+      try {
+        const operation = String(event.data.operation || "");
+        const requested = operation === "openMap"
+          ? `https://maps.google.com/?q=${encodeURIComponent(String(event.data.address || "").trim())}`
+          : String(event.data.url || "");
+        if (operation === "openMap" && !String(event.data.address || "").trim()) throw new Error("An address is required to open a map.");
+        const url = permittedExternalUrl(entry.payload.definition, requested);
+        const opened = window.open(url, "_blank");
+        if (!opened) throw new Error("The browser blocked the external window.");
+        try { opened.opener = null; } catch { /* The destination is still isolated by its own browsing context. */ }
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.navigation.result", requestId, ok: true, result: { opened: true, url } }, "*");
+      } catch (error) {
+        entry.iframe.contentWindow.postMessage({ type: "qanvas.navigation.result", requestId, ok: false, error: error?.message || String(error) }, "*");
+      }
+      return;
+    }
+    if (event.data?.type !== "qanvas.action") return;
+    const requestId = String(event.data.requestId || ""), actionId = String(event.data.actionId || ""), actions = entry.payload.definition.permissions?.actions || [], action = actions.find(item => item?.id === actionId);
+    if (!requestId || !action || !entry.execute) {
+      entry.iframe.contentWindow.postMessage({ type: "qanvas.action.result", requestId, ok: false, error: action ? "This app action is unavailable in the current host." : "The app is not permitted to run that action." }, "*");
+      return;
+    }
+    try {
+      const result = await entry.execute(action, event.data.parameters || {}, entry.payload);
+      entry.iframe.contentWindow.postMessage({ type: "qanvas.action.result", requestId, ok: true, result }, "*");
+    } catch (error) {
+      entry.iframe.contentWindow.postMessage({ type: "qanvas.action.result", requestId, ok: false, error: error?.message || String(error) }, "*");
+    }
+  });
+  const stopProtectedInteraction = except => {
+    document.querySelectorAll(".qanvas-app-host.is-protected.is-interacting").forEach(node => {
+      if (node !== except) node.classList.remove("is-interacting");
+    });
+  };
+  addEventListener("keydown", event => {
+    if (event.key === "Escape") stopProtectedInteraction();
+  });
+  addEventListener("click", event => {
+    const interact = event.target.closest?.("[data-qanvas-app-interact]");
+    if (!interact) return;
+    const host = interact.closest(".qanvas-app-host"), iframe = host?.querySelector("iframe.qanvas-app-frame");
+    if (!host || !iframe) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    stopProtectedInteraction(host);
+    host.classList.add("is-interacting");
+    iframe.focus();
+  }, true);
+  addEventListener("pointerdown", event => {
+    if (event.target.closest?.("[data-qanvas-app-interact]")) { event.stopImmediatePropagation(); return; }
+    if (!event.target.closest?.(".qanvas-app-host")) stopProtectedInteraction();
+  }, true);
+
+  const copy = value => typeof structuredClone === "function" ? structuredClone(value) : JSON.parse(JSON.stringify(value));
+  const html = value => String(value ?? "").replace(/[&<>\"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[character]);
+  const requiredFiles = ["index.html", "styles.css", "app.js"];
+
+  function formatMarkup(source) {
+    const protectedBlocks = [];
+    const protectedSource = String(source || "").replace(/<(script|style|svg|pre|textarea)\b[\s\S]*?<\/\1\s*>/gi, value => {
+      const token = `\uE000QANVAS_RAW_${protectedBlocks.length}\uE001`;
+      protectedBlocks.push(value);
+      return token;
+    });
+    const lines = protectedSource.replace(/>\s*</g, ">\n<").split(/\r?\n/), result = [];
+    let depth = 0;
+    for (const raw of lines) {
+      const line = raw.trim(); if (!line) continue;
+      const closes = /^<\//.test(line), standalone = /^<(?:!doctype|meta|link|img|input|br|hr)\b/i.test(line) || /\/>$/.test(line), inlinePair = /^<([\w:-]+)\b[^>]*>.*<\/\1>$/.test(line);
+      if (closes) depth = Math.max(0, depth - 1);
+      result.push(`${"  ".repeat(depth)}${line}`);
+      if (!closes && !standalone && !inlinePair && /^<[^!?/][^>]*>$/.test(line)) depth++;
+    }
+    return result.join("\n").replace(/\uE000QANVAS_RAW_(\d+)\uE001/g, (_, index) => protectedBlocks[+index] || "");
+  }
+
+  function formatCode(source) {
+    const text = String(source || ""); let output = "", indent = 0, parens = 0, quote = "", escaped = false, lineComment = false, blockComment = false;
+    const newline = () => { output = output.replace(/[ \t]+$/g, ""); if (!output.endsWith("\n")) output += "\n"; output += "  ".repeat(indent); };
+    for (let index = 0; index < text.length; index++) {
+      const char = text[index], next = text[index + 1] || "";
+      if (lineComment) { output += char; if (char === "\n") { lineComment = false; output += "  ".repeat(indent); } continue; }
+      if (blockComment) { output += char; if (char === "*" && next === "/") { output += next; index++; blockComment = false; } continue; }
+      if (quote) { output += char; if (escaped) escaped = false; else if (char === "\\") escaped = true; else if (char === quote) quote = ""; continue; }
+      if (char === "/" && next === "/") { output += char + next; index++; lineComment = true; continue; }
+      if (char === "/" && next === "*") { output += char + next; index++; blockComment = true; continue; }
+      if (char === "'" || char === '"' || char === "`") { quote = char; output += char; continue; }
+      if (char === "(") { parens++; output += char; continue; }
+      if (char === ")") { parens = Math.max(0, parens - 1); output += char; continue; }
+      if (char === "{") { output = output.trimEnd() + " {"; indent++; newline(); continue; }
+      if (char === "}") { indent = Math.max(0, indent - 1); output = output.trimEnd(); newline(); output += "}"; if (![";", ",", ")", "]"].includes(next)) newline(); continue; }
+      if (char === ";" && parens === 0) { output += char; newline(); continue; }
+      if (char === "\n" || char === "\r") { if (char === "\n" && output.trimEnd() && !output.endsWith("\n")) newline(); continue; }
+      output += char;
+    }
+    return output.replace(/\n[ \t]+\n/g, "\n\n").trim() + "\n";
+  }
+
+  function formatJavaScript(source) {
+    const original = String(source || "");
+    if (!original.trim()) return original;
+    const lines = original.replace(/\r\n?/g, "\n").split("\n"), result = [];
+    let indent = 0, quote = "", escaped = false, blockComment = false, templateExpressionDepth = 0;
+    for (const raw of lines) {
+      const trimmed = raw.trim();
+      if (!trimmed) { if (result.length && result[result.length - 1] !== "") result.push(""); continue; }
+      const protectedLineStart = Boolean(quote || blockComment);
+      let leadingClose = false, lineComment = false, regex = false, regexClass = false, previous = "";
+      for (let index = 0; index < trimmed.length; index++) {
+        const char = trimmed[index], next = trimmed[index + 1] || "";
+        if (lineComment) break;
+        if (blockComment) { if (char === "*" && next === "/") { blockComment = false; index++; } continue; }
+        if (regex) { if (escaped) escaped = false; else if (char === "\\") escaped = true; else if (char === "[") regexClass = true; else if (char === "]") regexClass = false; else if (char === "/" && !regexClass) regex = false; continue; }
+        if (quote) {
+          if (escaped) escaped = false;
+          else if (char === "\\") escaped = true;
+          else if (quote === "`" && char === "$" && next === "{") { templateExpressionDepth++; index++; }
+          else if (char === quote && !templateExpressionDepth) quote = "";
+          else if (quote === "`" && char === "}" && templateExpressionDepth) templateExpressionDepth--;
+          continue;
+        }
+        if (char === "/" && next === "*") { blockComment = true; index++; continue; }
+        if (char === "/" && next === "/") { lineComment = true; break; }
+        if (char === "'" || char === '"' || char === "`") { quote = char; continue; }
+        if (char === "/" && (!previous || /[({\[=,:;!?&|+\-*%^~<>]/.test(previous))) { regex = true; regexClass = false; continue; }
+        if (!/\s/.test(char)) previous = char;
+      }
+      leadingClose = !quote && !blockComment && /^[}\])]/.test(trimmed);
+      if (leadingClose) indent = Math.max(0, indent - 1);
+      result.push(protectedLineStart ? raw : `${"  ".repeat(indent)}${trimmed}`);
+      if (!quote && !blockComment) {
+        let opens = 0, closes = 0, localQuote = "", localEscaped = false, localComment = false;
+        for (let index = 0; index < trimmed.length; index++) {
+          const char = trimmed[index], next = trimmed[index + 1] || "";
+          if (localComment) break;
+          if (localQuote) { if (localEscaped) localEscaped = false; else if (char === "\\") localEscaped = true; else if (char === localQuote) localQuote = ""; continue; }
+          if (char === "/" && next === "/") { localComment = true; break; }
+          if (char === "'" || char === '"' || char === "`") { localQuote = char; continue; }
+          if (char === "{") opens++;
+          else if (char === "}") closes++;
+        }
+        indent = Math.max(0, indent + opens - closes + (leadingClose ? 1 : 0));
+      }
+    }
+    const formatted = result.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd() + "\n";
+    try { new Function(formatted); }
+    catch (error) { throw new Error(`Formatting was cancelled because it would make app.js invalid: ${error.message}`); }
+    return formatted;
+  }
+
+  function formatSource(path, source) {
+    const filePath = String(path || "").toLowerCase();
+    if (filePath.endsWith(".html")) return formatMarkup(source);
+    if (filePath.endsWith(".css")) return formatCode(source);
+    if (filePath.endsWith(".js")) return formatJavaScript(source);
+    return String(source || "");
+  }
+
+  const explicitWholeAppReplacement = prompt => /\b(?:replace|rebuild|redesign)\s+(?:the\s+)?(?:entire|whole)\s+app\b|\bstart\s+(?:the\s+app\s+)?over\b|\bfrom\s+scratch\b|\berstatt\s+hele\s+appen\b|\bbygg\s+hele\s+appen\s+p[åa]\s+nytt\b|\blag\s+en\s+helt\s+ny\s+app\b/i.test(String(prompt || ""));
+  const exactOccurrences = (source, search) => { let count = 0, index = 0; if (!search) return 0; while ((index = source.indexOf(search, index)) >= 0) { count++; index += search.length; } return count; };
+
+  function aiDefinition(text, current, prompt = "") {
+    let source = String(text || "").trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+    let value;
+    try { value = JSON.parse(source); }
+    catch {
+      const first = source.indexOf("{"), last = source.lastIndexOf("}");
+      if (first < 0 || last <= first) return { definition: copy(current), assistantMessage: source || "I could not produce a response.", changed: false };
+      value = JSON.parse(source.slice(first, last + 1));
+    }
+    const result = copy(current), before = JSON.stringify({ name: result.name, currentSpec: result.currentSpec, bindings: result.bindings, files: result.files }), incoming = Array.isArray(value.files)
+      ? value.files
+      : Object.entries(value.files || {}).map(([path, content]) => ({ path, content })), edits = Array.isArray(value.edits) ? value.edits : [];
+    if (incoming.length && edits.length) throw new Error("App AI returned both full files and exact edits. The draft was left unchanged.");
+    const allowed = new Set(requiredFiles), byPath = new Map(result.files.map(file => [file.path, file])), unsupported = [];
+    for (const edit of edits) {
+      const path = String(edit?.path || "").replace(/\\/g, "/"), currentFile = byPath.get(path), search = typeof edit?.search === "string" ? edit.search : "";
+      if (!allowed.has(path)) { unsupported.push(path || "(missing path)"); continue; }
+      if (!currentFile) throw new Error(`The current app does not contain ${path}.`);
+      if (!search) throw new Error(`App AI returned an empty search value for ${path}. The draft was left unchanged.`);
+      if (typeof edit?.replace !== "string") throw new Error(`App AI did not return replacement text for ${path}. The draft was left unchanged.`);
+      const matches = exactOccurrences(currentFile.content, search);
+      if (matches !== 1) throw new Error(`The App AI edit for ${path} matched ${matches} places instead of exactly one. The draft was left unchanged.`);
+      const content = currentFile.content.replace(search, edit.replace);
+      if (content.length > 750_000) throw new Error(`${path} is too large for an embedded app.`);
+      byPath.set(path, { ...currentFile, content });
+    }
+    for (const candidate of incoming) {
+      const path = String(candidate?.path || "").replace(/\\/g, "/");
+      if (!allowed.has(path)) { unsupported.push(path || "(missing path)"); continue; }
+      const content = String(candidate?.content ?? ""), previous = byPath.get(path)?.content ?? "";
+      if (content.length > 750_000) throw new Error(`${path} is too large for an embedded app.`);
+      if (!explicitWholeAppReplacement(prompt) && previous.length >= 4_000 && content !== previous)
+        throw new Error(`App AI tried to replace the complete ${path} during a targeted change. The draft was protected; use an exact edit instead.`);
+      byPath.set(path, { path, type: path.endsWith(".html") ? "text/html" : path.endsWith(".css") ? "text/css" : "text/javascript", content });
+    }
+    if (unsupported.length) throw new Error(`App AI returned unsupported file${unsupported.length === 1 ? "" : "s"}: ${unsupported.join(", ")}. Use only index.html, styles.css and app.js.`);
+    result.files = requiredFiles.map(path => byPath.get(path)).filter(Boolean);
+    if (result.files.length !== requiredFiles.length) throw new Error("The app must contain index.html, styles.css and app.js.");
+    const script = byPath.get("app.js")?.content || "";
+    if (!script.includes("qanvas.ready")) throw new Error("App AI removed the required qanvas.ready startup signal. The draft was left unchanged.");
+    try { new Function(script); }
+    catch (error) { throw new Error(`App AI returned invalid JavaScript: ${error.message}. The draft was left unchanged.`); }
+    result.name = String(value.name || result.name || "Qanvas App").trim().slice(0, 120) || "Qanvas App";
+    if (value.currentSpec != null) result.currentSpec = String(value.currentSpec).trim().slice(0, 1200);
+    if (Array.isArray(value.bindings)) result.bindings = normalizeBindings(value.bindings);
+    result.entry = "index.html";
+    const changed = before !== JSON.stringify({ name: result.name, currentSpec: result.currentSpec, bindings: result.bindings, files: result.files });
+    const assistantMessage = String(value.assistantMessage || value.message || (changed ? "I updated the app and refreshed the live preview. Review the result and tell me what you would like to adjust." : "I reviewed the app and did not make any changes.")).trim().slice(0, 4000);
+    return { definition: result, assistantMessage, changed };
+  }
+
+  function updateSpecFallback(current, prompt) {
+    const clean = String(prompt || "").replace(/\s+/g, " ").trim().slice(0, 300);
+    if (!clean) return String(current || "").slice(0, 1200);
+    const lines = String(current || "").split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+    const entry = `• ${clean}`;
+    if (!lines.some(line => line.toLowerCase() === entry.toLowerCase())) lines.push(entry);
+    return lines.slice(-6).join("\n").slice(0, 1200);
+  }
+
+  function openDesigner(options = {}) {
+    const original = options.definition;
+    if (!original) return null;
+    let draft = copy(original), activePath = draft.entry || "index.html", previewTimer = 0, previewFrameSource = null, aiRunning = false, activeRequirement = null, requirementSequence = 0;
+    const requirementQueue = [];
+    draft.currentSpec = String(draft.currentSpec || "").slice(0, 1200);
+    draft.designHistory = Array.isArray(draft.designHistory) ? draft.designHistory.slice(-6) : [];
+    draft.bindings = normalizeBindings(draft.bindings);
+    draft.assets = normalizeAssets(draft.assets);
+    draft.permissions ||= {};
+    draft.permissions.external = normalizeExternalPermissions(draft.permissions.external);
+    const dialog = document.createElement("dialog");
+    dialog.className = "qanvas-app-designer";
+    dialog.innerHTML = `<form method="dialog">
+      <header><div><h2>App designer</h2><p>Iterate on a sandboxed mini-app with AI and a live canvas-themed preview.</p></div><div class="qanvas-app-designer-header-actions"><span data-app-designer-save-state>Draft</span><button type="button" data-app-designer-preview-refresh title="Refresh preview" aria-label="Refresh preview">↻</button><button type="button" data-app-advanced-settings aria-expanded="false">Advanced settings</button><button value="cancel" aria-label="Close">×</button></div></header>
+      <div class="qanvas-app-designer-body">
+        <section class="qanvas-app-preview-panel"><div class="qanvas-app-designer-section-title"><b>Live preview</b><div class="qanvas-app-preview-actions"><small>Canvas theme · selected source context</small><button type="button" data-app-preview-mode="inspect" aria-pressed="false">Select</button><button type="button" data-app-preview-mode="interact" aria-pressed="true">Interact</button></div></div><iframe title="App preview" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></section>
+        <div class="qanvas-app-splitter" data-app-splitter="main" role="separator" aria-label="Resize preview and AI panes" aria-orientation="vertical" tabindex="0"></div>
+        <section class="qanvas-app-ai-panel">
+          <div class="qanvas-app-designer-section-title"><div><b>✦ Design with AI</b><small data-app-ai-provider>${html(options.provider || "Configured CLI")}</small></div></div>
+          <details class="qanvas-app-current-spec"><summary><span>Current scope</span><small>A brief, persistent summary of the app being built.</small></summary><textarea data-app-current-spec maxlength="1200" rows="4" placeholder="The main behavior, data and interactions of this app…"></textarea></details>
+          <div class="qanvas-app-ai-chat" data-app-ai-chat><p class="assistant">Enter changes to the app. AI can inspect the whole Qanvas document in a read-only designer context. The app itself remains limited to its selected sources and declared permissions.</p></div>
+          <div class="qanvas-app-splitter" data-app-splitter="chat" role="separator" aria-label="Resize chat history" aria-orientation="horizontal" tabindex="0"></div>
+          <label class="qanvas-app-ai-compose"><span>Describe changes to the app</span><textarea data-app-ai-question rows="5" placeholder="For example: Add a region selector and show revenue in the tooltip."></textarea></label>
+          <div class="qanvas-app-ai-attachment-tools"><input type="file" data-app-ai-attachment-input multiple hidden><button type="button" data-app-ai-attachment-add>＋ Attach files</button><small>Paste a screenshot here, or drag and drop images and files.</small></div>
+          <div class="qanvas-app-ai-attachments" data-app-ai-attachments hidden></div>
+          <details class="qanvas-app-ai-queue"><summary>Requirements queue <span data-app-ai-queue-count>0</span></summary><div data-app-ai-queue-list></div></details>
+          <div class="qanvas-app-ai-actions"><small data-app-ai-status>${options.requestAi ? "Ready" : "AI requires the desktop application and a configured CLI."}</small><button type="button" class="primary" data-app-ai-send ${options.requestAi ? "" : "disabled"}>Send</button></div>
+          <details class="qanvas-app-advanced"><summary hidden>Advanced settings</summary><div class="qanvas-app-advanced-body">
+            <aside class="qanvas-app-designer-files"><label>App name<input data-app-designer-name maxlength="120"></label><section><div class="qanvas-app-designer-section-title"><b>Files</b><small>Embedded in this Qanvas file</small></div><nav data-app-designer-files></nav></section><details open><summary>Data contract</summary><div class="qanvas-app-data-contract"><code>qanvas.init</code><span data-app-designer-source></span><span data-app-designer-schema></span><span>rows · theme · filters · parameters · bindings</span><code>qanvas.parameters</code><span>Permissioned get, set, setMany and subscribe</span><code>qanvas.measures.evaluate</code><span>MiniDAX · scalar or grouped rows</span><code>qanvas.tables</code><span>Permissioned CRUD for selected embedded tables</span><code>qanvas.assets</code><span>Images embedded in this Qanvas file</span><code>qanvas.navigation</code><span>Approved HTTPS links and map addresses</span></div></details><details open><summary>App bindings</summary><div class="qanvas-app-binding-list" data-app-binding-list></div><button type="button" data-app-binding-add>＋ Binding</button><small>Resolved values are available in <code>payload.bindings</code>. Measure bindings may return a grouped MiniDAX table.</small></details><details><summary>Theme API</summary><div class="qanvas-app-data-contract"><code>--surface</code><code>--text</code><code>--accent</code><code>--on-accent</code><code>--grid</code><code>--positive</code><code>--negative</code></div></details><details open><summary>App bridge actions</summary><div class="qanvas-app-action-list" data-app-action-list></div><div class="qanvas-app-action-buttons"><button type="button" data-app-action-add="api">＋ API</button><button type="button" data-app-action-add="sqlStoredProcedure">＋ SQL procedure</button></div><small>Only declared actions can run through the host bridge.</small></details><details open><summary>Embedded images</summary><div class="qanvas-app-asset-list" data-app-asset-list></div><input type="file" data-app-asset-input accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden><button type="button" data-app-asset-add>＋ Add images</button><small>PNG, JPEG, WebP or GIF. Use <code>qanvas.assets.get("filename")</code> as an image source.</small></details><details open><summary>External resources</summary><div class="qanvas-app-external-permissions"><label class="check"><input type="checkbox" data-app-open-links>Allow approved HTTPS links</label><label>Approved link hosts<textarea data-app-link-hosts rows="3" placeholder="maps.google.com"></textarea></label><button type="button" data-app-google-maps>＋ Google Maps</button><label class="check"><input type="checkbox" data-app-remote-images>Allow images from approved hosts</label><label>Approved image hosts<textarea data-app-image-hosts rows="3" placeholder="images.example.com"></textarea></label><small>Direct scripts, API calls and arbitrary network access remain blocked.</small></div></details><details><summary>Permissions</summary><div class="qanvas-app-data-contract"><span>Selected data and MiniDAX measures · read</span><span>Canvas parameters · explicit read/change per parameter</span><span>Embedded table writes · explicit per source and operation</span><span>External links and remote images · explicit host allowlist</span><span>SQL, API and arbitrary network · blocked except declared host actions</span><span>Declared host actions · allow-listed</span></div></details></aside>
+            <div class="qanvas-app-splitter" data-app-splitter="advanced" role="separator" aria-label="Resize advanced setup" aria-orientation="vertical" tabindex="0"></div>
+            <main class="qanvas-app-designer-code"><div class="qanvas-app-code-heading"><div class="qanvas-app-code-file"><select data-app-designer-file-picker aria-label="Code file"></select><b data-app-designer-file-title></b></div><div class="qanvas-app-code-actions"><small data-app-designer-code-status>Preview updates automatically</small><button type="button" data-app-format-code title="Format the current source file">Format code</button><button type="button" data-app-code-pane>Set as pane</button><button type="button" data-app-code-pane-hide hidden>Hide pane</button></div><div class="qanvas-app-code-search"><input type="search" data-app-code-search placeholder="Find in current file" aria-label="Find in current code file"><span data-app-code-search-count aria-live="polite">0 / 0</span><button type="button" data-app-code-search-previous title="Previous match (Shift+Enter)" aria-label="Previous match">↑</button><button type="button" data-app-code-search-next title="Next match (Enter)" aria-label="Next match">↓</button></div></div><textarea data-app-designer-editor spellcheck="false" aria-label="App source code" wrap="off"></textarea><div class="qanvas-app-code-highlight" data-app-code-highlight hidden aria-hidden="true"><span class="line"></span><span class="match"></span></div></main>
+          </div></details>
+        </section>
+      </div>
+      <footer><button value="cancel">Cancel</button><button type="button" class="primary" data-app-designer-apply>Apply design</button></footer>
+    </form>`;
+    if (Array.isArray(options.connections) && options.connections.length) {
+      const datalist = document.createElement("datalist");
+      datalist.id = `qanvas-app-connections-${Math.random().toString(36).slice(2)}`;
+      datalist.innerHTML = options.connections.map(item => `<option value="${html(item.name || item.Name || "")}">${html(item.kind || item.Kind || "")}</option>`).join("");
+      dialog.append(datalist); dialog.dataset.connectionList = datalist.id;
+    }
+    document.body.append(dialog);
+    options.applyApplicationTheme?.(dialog);
+    const editor = dialog.querySelector("[data-app-designer-editor]"), iframe = dialog.querySelector("iframe"), name = dialog.querySelector("[data-app-designer-name]"), state = dialog.querySelector("[data-app-designer-save-state]"), question = dialog.querySelector("[data-app-ai-question]"), spec = dialog.querySelector("[data-app-current-spec]"), specSection = dialog.querySelector(".qanvas-app-current-spec"), aiStatus = dialog.querySelector("[data-app-ai-status]"), aiSend = dialog.querySelector("[data-app-ai-send]"), chat = dialog.querySelector("[data-app-ai-chat]"), queueList = dialog.querySelector("[data-app-ai-queue-list]"), queueCount = dialog.querySelector("[data-app-ai-queue-count]"), attachmentInput = dialog.querySelector("[data-app-ai-attachment-input]"), attachmentList = dialog.querySelector("[data-app-ai-attachments]"), filePicker = dialog.querySelector("[data-app-designer-file-picker]"), codeSearch = dialog.querySelector("[data-app-code-search]"), codeSearchCount = dialog.querySelector("[data-app-code-search-count]"), codeHighlight = dialog.querySelector("[data-app-code-highlight]"), codeHighlightLine = dialog.querySelector("[data-app-code-highlight] .line"), codeHighlightMatch = dialog.querySelector("[data-app-code-highlight] .match");
+    specSection.open = matchMedia("(min-width:1100px) and (min-height:760px)").matches;
+    let pendingAttachments = [];
+    const payloadSources = Array.isArray(options.payload?.sources) && options.payload.sources.length ? options.payload.sources : [options.payload || {}];
+    const designerBody = dialog.querySelector(".qanvas-app-designer-body"), codePane = dialog.querySelector(".qanvas-app-designer-code"), advancedPanel = dialog.querySelector(".qanvas-app-advanced"), advancedButton = dialog.querySelector("[data-app-advanced-settings]"), advancedBody = dialog.querySelector(".qanvas-app-advanced-body"), advancedSplitter = dialog.querySelector('[data-app-splitter="advanced"]'), mainSplitter = dialog.querySelector('[data-app-splitter="main"]');
+    const codeSplitter = document.createElement("div"); codeSplitter.className = "qanvas-app-splitter"; codeSplitter.dataset.appSplitter = "code"; codeSplitter.setAttribute("role", "separator"); codeSplitter.setAttribute("aria-label", "Resize live preview and code panes"); codeSplitter.setAttribute("aria-orientation", "vertical"); codeSplitter.tabIndex = 0; codeSplitter.hidden = true; designerBody.insertBefore(codeSplitter, mainSplitter);
+    const aiPanel = dialog.querySelector(".qanvas-app-ai-panel");
+    const applyPaneSizes = () => { designerBody.style.setProperty("--app-ai-width", `${designerPaneSizes.ai}px`); designerBody.style.setProperty("--app-code-pane-width", `${designerPaneSizes.code}px`); dialog.querySelector(".qanvas-app-advanced-body")?.style.setProperty("--app-advanced-width", `${designerPaneSizes.advanced}px`); };
+    const resizePane = (kind, clientX, clientY) => { if (kind === "main") { const bounds = designerBody.getBoundingClientRect(); designerPaneSizes.ai = Math.round(Math.max(320, Math.min(bounds.width - 420, bounds.right - clientX))); } else if (kind === "code") { const bounds = designerBody.getBoundingClientRect(), codeRight = mainSplitter.getBoundingClientRect().left, maxCode = Math.max(300, codeRight - bounds.left - 337); designerPaneSizes.code = Math.round(Math.max(300, Math.min(maxCode, codeRight - clientX))); } else if (kind === "advanced") { const bounds = dialog.querySelector(".qanvas-app-advanced-body").getBoundingClientRect(); designerPaneSizes.advanced = Math.round(Math.max(190, Math.min(bounds.width - 300, clientX - bounds.left))); } else if (kind === "chat") { const bounds = aiPanel.getBoundingClientRect(); aiPanel.style.setProperty("--app-chat-height", `${Math.round(Math.max(90, Math.min(bounds.height - 260, clientY - chat.getBoundingClientRect().top)))}px`); } applyPaneSizes(); };
+    dialog.querySelectorAll("[data-app-splitter]").forEach(splitter => { splitter.addEventListener("pointerdown", event => { if (event.button !== 0) return; const kind = splitter.dataset.appSplitter; splitter.setPointerCapture?.(event.pointerId); splitter.classList.add("active"); dialog.classList.add("resizing"); const move = moveEvent => resizePane(kind, moveEvent.clientX, moveEvent.clientY); const finish = () => { splitter.classList.remove("active"); dialog.classList.remove("resizing"); splitter.removeEventListener("pointermove", move); splitter.removeEventListener("pointerup", finish); splitter.removeEventListener("pointercancel", finish); window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", finish); window.removeEventListener("pointercancel", finish); }; splitter.addEventListener("pointermove", move); splitter.addEventListener("pointerup", finish); splitter.addEventListener("pointercancel", finish); window.addEventListener("pointermove", move); window.addEventListener("pointerup", finish); window.addEventListener("pointercancel", finish); event.preventDefault(); }); });
+    const currentFile = () => draft.files.find(file => file.path === activePath);
+    const saveEditor = (dirty = true) => { const file = currentFile(); if (file) file.content = editor.value; if (dirty) state.textContent = "Unsaved changes"; };
+    let codeSearchMatch = -1, codeSearchLocation = null;
+    const codeMatches = () => {
+      const query = codeSearch.value, source = editor.value;
+      if (!query) return [];
+      const lowerSource = source.toLocaleLowerCase(), lowerQuery = query.toLocaleLowerCase(), matches = [];
+      let index = 0;
+      while ((index = lowerSource.indexOf(lowerQuery, index)) >= 0) { matches.push(index); index += Math.max(1, lowerQuery.length); }
+      return matches;
+    };
+    const renderCodeSearchHighlight = () => {
+      if (!codeSearchLocation || !codeSearch.value) { codeHighlight.hidden = true; return; }
+      const source = editor.value, start = codeSearchLocation.start, matchText = source.slice(start, start + codeSearchLocation.length).split("\n")[0];
+      if (!matchText) { codeHighlight.hidden = true; return; }
+      const before = source.slice(0, start), lineStart = before.lastIndexOf("\n") + 1, lineIndex = before.split("\n").length - 1, prefix = source.slice(lineStart, start).replace(/\t/g, "  ");
+      const style = getComputedStyle(editor), lineHeight = parseFloat(style.lineHeight) || 18.6, paddingTop = parseFloat(style.paddingTop) || 0, paddingLeft = parseFloat(style.paddingLeft) || 0;
+      const canvas = renderCodeSearchHighlight.canvas ||= document.createElement("canvas"), context = canvas.getContext("2d"); context.font = style.font;
+      const top = editor.offsetTop + paddingTop + lineIndex * lineHeight - editor.scrollTop, left = editor.offsetLeft + paddingLeft + context.measureText(prefix).width - editor.scrollLeft;
+      codeHighlightLine.style.cssText = `top:${top}px;left:${editor.offsetLeft}px;width:${editor.clientWidth}px;height:${lineHeight}px`;
+      codeHighlightMatch.style.cssText = `top:${top}px;left:${left}px;width:${Math.max(3, context.measureText(matchText).width)}px;height:${lineHeight}px`;
+      codeHighlight.hidden = false;
+    };
+    const resetCodeSearch = () => { codeSearchMatch = -1; codeSearchLocation = null; codeHighlight.hidden = true; codeSearchCount.textContent = `0 / ${codeMatches().length}`; };
+    const findCode = direction => {
+      const query = codeSearch.value;
+      if (!query) { resetCodeSearch(); return; }
+      const source = editor.value, matches = codeMatches();
+      if (!matches.length) { codeSearchMatch = -1; codeSearchCount.textContent = "0 / 0"; return; }
+      codeSearchMatch = direction < 0 ? (codeSearchMatch <= 0 ? matches.length - 1 : codeSearchMatch - 1) : (codeSearchMatch + 1) % matches.length;
+      const start = matches[codeSearchMatch];
+      editor.scrollTop = Math.max(0, source.slice(0, start).split("\n").length * 18 - editor.clientHeight / 3);
+      const lineStart = source.lastIndexOf("\n", start - 1) + 1, visualColumn = source.slice(lineStart, start).replace(/\t/g, "  ").length, approximateLeft = visualColumn * 7.3;
+      if (approximateLeft < editor.scrollLeft || approximateLeft > editor.scrollLeft + editor.clientWidth - 120) editor.scrollLeft = Math.max(0, approximateLeft - editor.clientWidth / 3);
+      codeSearchLocation = { start, length: query.length };
+      requestAnimationFrame(renderCodeSearchHighlight);
+      codeSearchCount.textContent = `${codeSearchMatch + 1} / ${matches.length}`;
+    };
+    const switchFile = path => { if (!draft.files.some(file => file.path === path) || path === activePath) return; saveEditor(); activePath = path; renderFiles(); renderEditor(); };
+    const renderFiles = () => {
+      const navigation = dialog.querySelector("[data-app-designer-files]");
+      navigation.replaceChildren(...draft.files.map(file => { const button = document.createElement("button"); button.type = "button"; button.dataset.path = file.path; button.classList.toggle("active", file.path === activePath); button.innerHTML = `<span>${file.path.endsWith(".html") ? "◇" : file.path.endsWith(".css") ? "#" : "JS"}</span><b>${html(file.path)}</b>`; button.onclick = () => switchFile(file.path); return button; }));
+      filePicker.innerHTML = draft.files.map(file => `<option value="${html(file.path)}">${html(file.path)}</option>`).join(""); filePicker.value = activePath;
+    };
+    const renderEditor = () => { const file = currentFile(); dialog.querySelector("[data-app-designer-file-title]").textContent = activePath; filePicker.value = activePath; editor.value = file?.content || ""; resetCodeSearch(); };
+    let previewMode = "interact";
+    const setPreviewMode = mode => { previewMode = mode === "inspect" ? "inspect" : "interact"; dialog.querySelectorAll("[data-app-preview-mode]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.appPreviewMode === previewMode))); iframe.contentWindow?.postMessage({ type: "qanvas.designer.mode", mode: previewMode }, "*"); };
+    const locatePreviewSource = detail => {
+      const candidates = [String(detail?.outer || ""), String(detail?.text || "")].filter(Boolean);
+      let match = null;
+      for (const candidate of candidates) for (const sourceFile of draft.files || []) { const index = String(sourceFile.content || "").indexOf(candidate); if (index >= 0 && (!match || candidate.length > match.candidate.length)) match = { file: sourceFile, index, candidate }; }
+      if (!match && detail?.tag) for (const sourceFile of draft.files || []) { const expression = new RegExp(`<${String(detail.tag).replace(/[^a-z0-9-]/gi, "")}(?:\\s|>)`, "i"), found = expression.exec(String(sourceFile.content || "")); if (found) { match = { file: sourceFile, index: found.index, candidate: found[0] }; break; } }
+      if (!match) { state.textContent = "The selected element could not be matched to embedded source"; return; }
+      saveEditor(false); activePath = match.file.path; renderFiles(); renderEditor(); editor.focus(); editor.setSelectionRange(match.index, match.index + match.candidate.length); editor.scrollTop = Math.max(0, editor.value.slice(0, match.index).split("\n").length * 18 - editor.clientHeight / 3); state.textContent = `Selected source in ${activePath}`;
+    };
+    const setAdvancedOpen = open => { advancedPanel.open = Boolean(open); advancedButton.setAttribute("aria-expanded", String(Boolean(open))); advancedButton.classList.toggle("active", Boolean(open)); };
+    const setCodePane = open => {
+      if (open) {
+        designerBody.insertBefore(codePane, mainSplitter); designerBody.insertBefore(codeSplitter, codePane); codeSplitter.hidden = false; designerBody.classList.add("code-pane-open"); dialog.querySelector("[data-app-code-pane]").hidden = true; dialog.querySelector("[data-app-code-pane-hide]").hidden = false; setAdvancedOpen(false); setPreviewMode("inspect"); applyPaneSizes(); requestAnimationFrame(renderCodeSearchHighlight);
+      } else {
+        codeSplitter.hidden = true; advancedBody.insertBefore(codePane, advancedSplitter.nextSibling); designerBody.classList.remove("code-pane-open"); dialog.querySelector("[data-app-code-pane]").hidden = false; dialog.querySelector("[data-app-code-pane-hide]").hidden = true; setPreviewMode("interact"); requestAnimationFrame(renderCodeSearchHighlight);
+      }
+    };
+    const renderActions = () => {
+      draft.permissions ||= {}; draft.permissions.actions = Array.isArray(draft.permissions.actions) ? draft.permissions.actions : [];
+      const list = dialog.querySelector("[data-app-action-list]");
+      const connectionList = dialog.dataset.connectionList ? ` list="${dialog.dataset.connectionList}"` : "";
+      list.innerHTML = draft.permissions.actions.length ? draft.permissions.actions.map((action, index) => `<article data-app-action-index="${index}"><div><b>${html(action.id || "action")}</b><button type="button" data-app-action-remove="${index}" title="Remove action">×</button></div><label>Action ID<input data-app-action-field="id" value="${html(action.id || "")}" maxlength="80"></label><label>Connection<input data-app-action-field="connection" value="${html(action.connection || "")}" maxlength="120"${connectionList}></label><label>${action.kind === "api" ? "Saved endpoint" : "Stored procedure"}<input data-app-action-field="${action.kind === "api" ? "endpoint" : "procedure"}" value="${html(action.kind === "api" ? action.endpoint || "" : action.procedure || "")}" maxlength="180"></label><label class="check"><input type="checkbox" data-app-action-field="allowViewer" ${action.allowViewer!==false?"checked":""}> Allow this action in Qvitr Viewer</label><label>Store result<select data-app-action-field="outputMode"><option value="none" ${action.outputMode === "none" ? "selected" : ""}>Return to app only</option><option value="replace" ${action.outputMode !== "append" && action.outputMode !== "none" ? "selected" : ""}>Replace embedded table</option><option value="append" ${action.outputMode === "append" ? "selected" : ""}>Append to embedded table</option></select></label><label class="${action.outputMode === "none" ? "hidden" : ""}">Embedded source<input data-app-action-field="outputSource" value="${html(action.outputSource || "App result")}" maxlength="80"></label><small>Viewer actions use a saved connection on the recipient's machine; credentials are never stored in the Qanvas file. Qanvas asks for confirmation every time the action runs.</small></article>`).join("") : `<p class="property-empty">No host actions. The app remains fully read-only.</p>`;
+      list.querySelectorAll("[data-app-action-index]").forEach(card => card.onchange = event => { const action = draft.permissions.actions[+card.dataset.appActionIndex], field = event.target.dataset.appActionField; if (!action || !field) return; action[field] = event.target.type === "checkbox" ? event.target.checked : event.target.value; state.textContent = "Unsaved changes"; if (field === "outputMode") renderActions(); });
+      list.querySelectorAll("[data-app-action-remove]").forEach(button => button.onclick = () => { draft.permissions.actions.splice(+button.dataset.appActionRemove, 1); state.textContent = "Unsaved changes"; renderActions(); });
+    };
+    const renderExternalPermissions = () => {
+      const external = draft.permissions.external = normalizeExternalPermissions(draft.permissions.external);
+      dialog.querySelector("[data-app-open-links]").checked = external.openLinks;
+      dialog.querySelector("[data-app-remote-images]").checked = external.remoteImages;
+      dialog.querySelector("[data-app-link-hosts]").value = external.linkHosts.join("\n");
+      dialog.querySelector("[data-app-image-hosts]").value = external.imageHosts.join("\n");
+    };
+    const renderAssets = () => {
+      draft.assets = normalizeAssets(draft.assets);
+      const list = dialog.querySelector("[data-app-asset-list]");
+      list.innerHTML = draft.assets.length ? draft.assets.map((asset, index) => `<article><img src="${html(asset.dataUrl)}" alt=""><div><b>${html(asset.name)}</b><small>${html(asset.type)}</small><code>qanvas.assets.get(${JSON.stringify(asset.name)})</code></div><button type="button" data-app-asset-copy="${index}" title="Copy code reference">⧉</button><button type="button" data-app-asset-remove="${index}" title="Remove image">×</button></article>`).join("") : `<p class="property-empty">No embedded images.</p>`;
+      list.querySelectorAll("[data-app-asset-copy]").forEach(button => button.onclick = async () => { const asset = draft.assets[+button.dataset.appAssetCopy]; if (!asset) return; const reference = `qanvas.assets.get(${JSON.stringify(asset.name)})`; try { await navigator.clipboard.writeText(reference); state.textContent = "Image reference copied"; } catch { state.textContent = reference; } });
+      list.querySelectorAll("[data-app-asset-remove]").forEach(button => button.onclick = () => { draft.assets.splice(+button.dataset.appAssetRemove, 1); state.textContent = "Unsaved changes"; renderAssets(); schedulePreview(); });
+    };
+    const optionList = (items, selected) => items.map(item => `<option value="${html(item.value)}" ${String(item.value) === String(selected) ? "selected" : ""}>${html(item.label)}</option>`).join("");
+    const bindingNames = binding => {
+      if (binding.source === "theme") return ["text", "surface", "accent", "onAccent", "grid", "positive", "negative", "muted", ...Array.from({ length: 8 }, (_, index) => `color${index + 1}`)];
+      if (binding.source === "parameter") return Object.keys(options.payload?.context?.parameters || {});
+      const source = payloadSources.find(item => item.sourceId === binding.sourceId) || payloadSources[0] || {};
+      return binding.source === "measure" ? (source.measures || []) : (source.schema?.columns || []);
+    };
+    const renderBindings = () => {
+      draft.bindings = normalizeBindings(draft.bindings);
+      const list = dialog.querySelector("[data-app-binding-list]");
+      list.innerHTML = draft.bindings.length ? draft.bindings.map((binding, index) => {
+        const names = bindingNames(binding), sources = payloadSources.map(item => ({ value: item.sourceId || "", label: item.sourceName || item.sourceId || "Source" }));
+        const nameOptions = names.some(name => name === binding.name) ? names : [binding.name, ...names].filter(Boolean);
+        const source = payloadSources.find(item => item.sourceId === binding.sourceId) || payloadSources[0] || {}, groupFields = source.schema?.columns || [];
+        return `<article data-app-binding-index="${index}"><div><b>${html(binding.label || binding.id)}</b><button type="button" data-app-binding-remove="${index}" title="Remove binding">×</button></div><label>Key<input data-app-binding-field="id" value="${html(binding.id)}" maxlength="80"></label><label>Label<input data-app-binding-field="label" value="${html(binding.label)}" maxlength="120"></label><label>Type<select data-app-binding-field="valueType">${optionList(["text","number","color","boolean","table"].map(value=>({value,label:value[0].toUpperCase()+value.slice(1)})),binding.valueType)}</select></label><label>Value source<select data-app-binding-field="source">${optionList(["theme","measure","field","parameter","constant"].map(value=>({value,label:value[0].toUpperCase()+value.slice(1)})),binding.source)}</select></label>${["measure","field"].includes(binding.source)?`<label>Data source<select data-app-binding-field="sourceId">${optionList(sources,binding.sourceId)}</select></label>`:""}${binding.source === "constant" ? `<label>Value<input data-app-binding-field="value" value="${html(binding.value)}"></label>` : `<label>${binding.source === "theme" ? "Theme role" : binding.source === "parameter" ? "Parameter" : binding.source === "measure" ? "Measure" : "Field"}<select data-app-binding-field="name">${optionList(nameOptions.map(value=>({value,label:value})),binding.name)}</select></label>`}${binding.source === "measure"?`<label>Evaluate per<select data-app-binding-field="groupBy"><option value="">All rows (one value)</option>${optionList(groupFields.map(value=>({value,label:value})),binding.groupBy)}</select></label>`:""}${["measure","field"].includes(binding.source)&&!binding.groupBy?`<label>Aggregation<select data-app-binding-field="aggregation">${optionList(["Sum","Average","Min","Max","First","Count"].map(value=>({value,label:value})),binding.aggregation)}</select></label>`:""}<label>Fallback<input data-app-binding-field="fallback" value="${html(binding.fallback)}"></label></article>`;
+      }).join("") : `<p class="property-empty">No bindings yet. Add one to expose a theme role, measure, field, parameter or constant as <code>payload.bindings</code>.</p>`;
+      list.querySelectorAll("[data-app-binding-index]").forEach(card => card.onchange = event => { const binding = draft.bindings[+card.dataset.appBindingIndex], field = event.target.dataset.appBindingField; if (!binding || !field) return; binding[field] = event.target.value; if(field === "groupBy" && binding.groupBy) binding.valueType = "table"; state.textContent = "Unsaved changes"; if (["source", "sourceId", "groupBy"].includes(field)) renderBindings(); schedulePreview(); });
+      list.querySelectorAll("[data-app-binding-index] input").forEach(input => input.oninput = () => { const binding = draft.bindings[+input.closest("[data-app-binding-index]").dataset.appBindingIndex], field = input.dataset.appBindingField; if (binding && field) { binding[field] = input.value; state.textContent = "Unsaved changes"; schedulePreview(); } });
+      list.querySelectorAll("[data-app-binding-remove]").forEach(button => button.onclick = () => { draft.bindings.splice(+button.dataset.appBindingRemove, 1); state.textContent = "Unsaved changes"; renderBindings(); schedulePreview(); });
+    };
+    const unregisterPreview = () => {
+      for (const [source, entry] of frames) if (entry.designerPreview && entry.iframe === iframe) frames.delete(source);
+      previewFrameSource = null;
+    };
+    const renderPreview = () => {
+      clearTimeout(previewTimer); saveEditor(false);
+      const previewPayload = options.resolvePayload?.(copy(draft)) || options.payload || {};
+      unregisterPreview();
+      previewFrameSource = iframe.contentWindow;
+      frames.set(previewFrameSource, { iframe, payload: { definition: draft, initial: previewPayload }, evaluateMeasure: options.evaluateMeasure, mutateTable: options.mutateTable, updateParameters: options.updateParameters, execute: null, designerPreview: true, readySeen: true, bootstrapped: false, initTimer: 0, initialize() {} });
+      const inspector = `<script>(()=>{let mode='interact';addEventListener('message',event=>{if(event.data?.type==='qanvas.designer.mode')mode=event.data.mode==='inspect'?'inspect':'interact';});addEventListener('click',event=>{if(mode!=='inspect')return;event.preventDefault();event.stopImmediatePropagation();const node=event.target?.closest?.('body *');if(!node)return;const text=String(node.textContent||'').trim().replace(/\\s+/g,' ').slice(0,180),outer=String(node.outerHTML||'').split('>')[0]+'>';parent.postMessage({type:'qanvas.designer.inspect',tag:node.tagName?.toLowerCase(),text,outer},'*');},true);parent.postMessage({type:'qanvas.designer.mode.ready'},'*');})();<\/script>`;
+      iframe.srcdoc = assemble(draft, previewPayload).replace(/<\/body>/i,`${inspector}</body>`);
+      dialog.querySelector("[data-app-designer-code-status]").textContent = "Preview refreshed";
+    };
+    const schedulePreview = () => { clearTimeout(previewTimer); previewTimer = setTimeout(renderPreview, 320); };
+    const appendChat = (role, text, attachments = []) => { const item = document.createElement("p"); item.className = role; item.textContent = text; if (attachments.length) { const files = document.createElement("small"); files.className = "qanvas-app-ai-chat-files"; files.textContent = `Attached: ${attachments.map(attachment => attachment.name).join(", ")}`; item.append(files); } chat.append(item); chat.scrollTop = chat.scrollHeight; };
+    const renderPendingAttachments = () => {
+      attachmentList.hidden = !pendingAttachments.length;
+      attachmentList.innerHTML = pendingAttachments.map((attachment, index) => `<article>${attachment.type?.startsWith("image/") ? `<img src="${html(attachment.dataUrl)}" alt="">` : `<span>FILE</span>`}<div><b>${html(attachment.name)}</b><small>${Math.max(1, Math.ceil((attachment.size || 0) / 1024))} KB</small></div><button type="button" data-app-ai-attachment-remove="${index}" title="Remove attachment">×</button></article>`).join("");
+      attachmentList.querySelectorAll("[data-app-ai-attachment-remove]").forEach(button => button.onclick = () => { pendingAttachments.splice(+button.dataset.appAiAttachmentRemove, 1); renderPendingAttachments(); });
+    };
+    const addAttachmentFiles = files => {
+      const allowed = /\.(png|jpe?g|webp|gif|svg|pdf|txt|md|csv|json|xml|html?|css|js|ts|sql|log|docx?|xlsx?|pptx?)$/i;
+      for (const file of [...files].slice(0, Math.max(0, 8 - pendingAttachments.length))) {
+        if (file.size > 16 * 1024 * 1024) { aiStatus.textContent = `${file.name || "File"} is larger than 16 MB.`; continue; }
+        if (!file.type?.startsWith("image/") && !allowed.test(file.name || "")) { aiStatus.textContent = `${file.name || "File"} is not a supported attachment.`; continue; }
+        const reader = new FileReader();
+        reader.onload = () => { pendingAttachments.push({ name: file.name || `pasted-image-${Date.now()}.png`, type: file.type || "application/octet-stream", size: file.size, dataUrl: String(reader.result || "") }); renderPendingAttachments(); aiStatus.textContent = "Attachment ready. Add a message and choose Send."; };
+        reader.onerror = () => { aiStatus.textContent = `Could not read ${file.name || "the attachment"}.`; };
+        reader.readAsDataURL(file);
+      }
+    };
+    const renderQueue = () => {
+      const count = requirementQueue.length + (activeRequirement ? 1 : 0); queueCount.textContent = String(count);
+      if (count) queueList.closest("details").open = true;
+      queueList.innerHTML = count ? `${activeRequirement ? `<article class="processing"><span>Processing${activeRequirement.attachments?.length ? ` · ${activeRequirement.attachments.length} file(s)` : ""}</span><textarea disabled>${html(activeRequirement.text)}</textarea></article>` : ""}${requirementQueue.map((item,index)=>`<article data-app-queue-index="${index}"><span>Waiting ${index+1}${item.attachments?.length ? ` · ${item.attachments.length} file(s)` : ""}</span><textarea data-app-queue-edit="${index}" rows="2">${html(item.text)}</textarea><button type="button" data-app-queue-remove="${index}" title="Delete queued requirement">×</button></article>`).join("")}` : `<p class="property-empty">No queued requirements.</p>`;
+      queueList.querySelectorAll("[data-app-queue-edit]").forEach(input => input.oninput = () => { requirementQueue[+input.dataset.appQueueEdit].text = input.value.slice(0, 4000); });
+      queueList.querySelectorAll("[data-app-queue-remove]").forEach(button => button.onclick = () => { requirementQueue.splice(+button.dataset.appQueueRemove, 1); renderQueue(); });
+      aiSend.textContent = aiRunning ? "Add to queue" : "Send";
+    };
+    const drainQueue = async () => {
+      if (aiRunning || !requirementQueue.length || !options.requestAi) return;
+      activeRequirement = requirementQueue.shift(); const prompt = activeRequirement.text.trim(); if (!prompt) { activeRequirement = null; renderQueue(); return drainQueue(); }
+      saveEditor(); draft.currentSpec = spec.value.trim().slice(0, 1200); draft.designHistory.push({ role: "user", text: prompt.slice(0, 2000) }); draft.designHistory = draft.designHistory.slice(-8); aiRunning = true; aiStatus.textContent = `Preparing app context…${requirementQueue.length ? ` · ${requirementQueue.length} queued` : ""}`; appendChat("user", prompt, activeRequirement.attachments || []); renderQueue();
+      try {
+        const response = await options.requestAi(prompt, copy(draft), text => { const progressText = `${text || "Building app…"}${requirementQueue.length ? ` · ${requirementQueue.length} queued` : ""}`; aiStatus.textContent = progressText; aiStatus.title = progressText; }, activeRequirement.attachments || []);
+        const previousSpec = draft.currentSpec, parsed = aiDefinition(response, draft, prompt), assistantMessage = parsed.assistantMessage; draft = parsed.definition; if (parsed.changed && (!draft.currentSpec || draft.currentSpec === previousSpec)) draft.currentSpec = updateSpecFallback(previousSpec, prompt); draft.designHistory ||= []; draft.designHistory.push({ role: "assistant", text: assistantMessage.slice(0, 2000) }); draft.designHistory = draft.designHistory.slice(-8); spec.value = draft.currentSpec; name.value = draft.name; activePath = draft.entry || "index.html"; renderFiles(); renderEditor(); renderBindings(); if (parsed.changed) renderPreview(); appendChat("assistant", assistantMessage); aiStatus.textContent = parsed.changed ? "AI changes are ready to review" : "AI replied · no app changes"; if (parsed.changed) state.textContent = "AI draft";
+      } catch (error) { appendChat("assistant", error.message || "The app could not be generated."); aiStatus.textContent = error.message || "Generation failed"; }
+      finally { aiRunning = false; activeRequirement = null; renderQueue(); question.focus(); if (requirementQueue.length) queueMicrotask(drainQueue); }
+    };
+    const enqueueRequirement = () => { const attachments = pendingAttachments.map(attachment => ({ ...attachment })), text = question.value.trim() || (attachments.length ? "Use the attached files as context for this app change." : ""); if (!text || !options.requestAi) return; requirementQueue.push({ id: ++requirementSequence, text: text.slice(0,4000), attachments }); question.value = ""; pendingAttachments = []; renderPendingAttachments(); renderQueue(); drainQueue(); };
+    name.value = draft.name || "Qanvas App";
+    spec.value = draft.currentSpec;
+    for (const item of draft.designHistory) appendChat(item.role, item.text);
+    name.oninput = () => { draft.name = name.value.trim() || "Qanvas App"; state.textContent = "Unsaved changes"; };
+    spec.oninput = () => { draft.currentSpec = spec.value.slice(0, 1200); state.textContent = "Unsaved changes"; };
+    editor.addEventListener("input", () => { saveEditor(); resetCodeSearch(); schedulePreview(); });
+    editor.addEventListener("scroll", renderCodeSearchHighlight, { passive: true });
+    const searchHighlightResizeObserver = new ResizeObserver(renderCodeSearchHighlight); searchHighlightResizeObserver.observe(editor);
+    editor.addEventListener("keydown", event => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") { event.preventDefault(); renderPreview(); }
+      else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f") { event.preventDefault(); codeSearch.focus(); codeSearch.select(); }
+    });
+    filePicker.onchange = () => switchFile(filePicker.value);
+    codeSearch.oninput = resetCodeSearch;
+    codeSearch.onkeydown = event => { if (event.key === "Enter" || event.key === "Tab") { event.preventDefault(); findCode(event.shiftKey ? -1 : 1); } else if (event.key === "Escape") { event.preventDefault(); codeSearch.value = ""; resetCodeSearch(); } };
+    dialog.querySelector("[data-app-code-search-previous]").onclick = () => findCode(-1);
+    dialog.querySelector("[data-app-code-search-next]").onclick = () => findCode(1);
+    dialog.querySelector("[data-app-format-code]").onclick = () => {
+      try {
+        const formatted = formatSource(activePath, editor.value);
+        if (formatted === editor.value) { state.textContent = "Code is already formatted"; return; }
+        editor.value = formatted; saveEditor(); resetCodeSearch(); schedulePreview(); state.textContent = `Formatted ${activePath} · unsaved changes`;
+      } catch (error) { state.textContent = error.message || "Formatting was cancelled"; }
+    };
+    dialog.querySelector("[data-app-code-pane]").onclick = () => setCodePane(true);
+    dialog.querySelector("[data-app-code-pane-hide]").onclick = () => setCodePane(false);
+    advancedButton.onclick = () => { const open = !advancedPanel.open; if (open && designerBody.classList.contains("code-pane-open")) setCodePane(false); setAdvancedOpen(open); };
+    dialog.querySelectorAll("[data-app-preview-mode]").forEach(button => button.onclick = () => setPreviewMode(button.dataset.appPreviewMode));
+    const inspectMessage = event => { if (event.source !== iframe.contentWindow) return; if (event.data?.type === "qanvas.designer.inspect") locatePreviewSource(event.data); else if (event.data?.type === "qanvas.designer.mode.ready") setPreviewMode(previewMode); };
+    window.addEventListener("message", inspectMessage);
+    dialog.querySelector("[data-app-designer-preview-refresh]").onclick = renderPreview;
+    dialog.querySelectorAll("[data-app-action-add]").forEach(button => button.onclick = () => { draft.permissions ||= {}; draft.permissions.actions ||= []; const kind = button.dataset.appActionAdd, base = kind === "api" ? "load-api" : "run-procedure"; let id = base, suffix = 2; while (draft.permissions.actions.some(item => item.id === id)) id = `${base}-${suffix++}`; draft.permissions.actions.push({ id, kind, connection: "", endpoint: "", procedure: "", allowViewer:true, outputMode: "replace", outputSource: "App result", maxRows: 5000 }); state.textContent = "Unsaved changes"; renderActions(); });
+    dialog.querySelector("[data-app-binding-add]").onclick = () => { draft.bindings ||= []; let id = "binding", suffix = 2; while (draft.bindings.some(item => item.id === id)) id = `binding${suffix++}`; draft.bindings.push({ id, label: "Binding", valueType: "text", source: "constant", sourceId: payloadSources[0]?.sourceId || "", name: "", groupBy: "", aggregation: "Sum", value: "", fallback: "" }); state.textContent = "Unsaved changes"; renderBindings(); schedulePreview(); };
+    const updateExternal = () => { draft.permissions.external = normalizeExternalPermissions({ openLinks: dialog.querySelector("[data-app-open-links]").checked, remoteImages: dialog.querySelector("[data-app-remote-images]").checked, linkHosts: dialog.querySelector("[data-app-link-hosts]").value.split(/[\s,;]+/), imageHosts: dialog.querySelector("[data-app-image-hosts]").value.split(/[\s,;]+/) }); state.textContent = "Unsaved changes"; renderExternalPermissions(); schedulePreview(); };
+    dialog.querySelectorAll("[data-app-open-links],[data-app-remote-images],[data-app-link-hosts],[data-app-image-hosts]").forEach(control => control.addEventListener("change", updateExternal));
+    dialog.querySelector("[data-app-google-maps]").onclick = () => { const hosts = new Set(draft.permissions.external.linkHosts); hosts.add("maps.google.com"); draft.permissions.external.openLinks = true; draft.permissions.external.linkHosts = [...hosts]; state.textContent = "Google Maps approved · unsaved changes"; renderExternalPermissions(); };
+    const assetInput = dialog.querySelector("[data-app-asset-input]");
+    dialog.querySelector("[data-app-asset-add]").onclick = () => assetInput.click();
+    assetInput.onchange = async () => { const selected = [...assetInput.files]; assetInput.value = ""; for (const selectedFile of selected) { if (!imageTypes.has(selectedFile.type)) { state.textContent = `${selectedFile.name}: unsupported image type`; continue; } if (selectedFile.size > maxAssetBytes) { state.textContent = `${selectedFile.name}: image exceeds 5 MB`; continue; } const currentBytes = draft.assets.reduce((total, asset) => total + Math.floor(String(asset.dataUrl || "").length * 3 / 4), 0); if (currentBytes + selectedFile.size > maxAssetTotalBytes) { state.textContent = "Embedded images exceed the 20 MB app limit"; break; } const dataUrl = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result || "")); reader.onerror = () => reject(reader.error || new Error("Could not read image")); reader.readAsDataURL(selectedFile); }); draft.assets.push({ name: selectedFile.name, type: selectedFile.type, dataUrl }); } draft.assets = normalizeAssets(draft.assets); state.textContent = "Images added · unsaved changes"; renderAssets(); schedulePreview(); };
+    dialog.querySelector("[data-app-ai-attachment-add]").onclick = () => attachmentInput.click();
+    attachmentInput.onchange = () => { addAttachmentFiles(attachmentInput.files || []); attachmentInput.value = ""; };
+    question.addEventListener("paste", event => { if (event.clipboardData?.files?.length) { event.preventDefault(); addAttachmentFiles(event.clipboardData.files); } });
+    aiPanel.addEventListener("dragover", event => { if (event.dataTransfer?.types?.includes("Files")) { event.preventDefault(); aiPanel.classList.add("is-dropping-files"); } });
+    aiPanel.addEventListener("dragleave", event => { if (!aiPanel.contains(event.relatedTarget)) aiPanel.classList.remove("is-dropping-files"); });
+    aiPanel.addEventListener("drop", event => { aiPanel.classList.remove("is-dropping-files"); if (event.dataTransfer?.files?.length) { event.preventDefault(); addAttachmentFiles(event.dataTransfer.files); } });
+    aiSend.onclick = enqueueRequirement;
+    question.addEventListener("keydown", event => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") { event.preventDefault(); enqueueRequirement(); } });
+    dialog.querySelector("[data-app-designer-source]").textContent = payloadSources.map(source => `${source.sourceName || "Source"} · ${source.totalRows || 0} rows`).join(" · ");
+    dialog.querySelector("[data-app-designer-schema]").textContent = `${payloadSources.length} source${payloadSources.length === 1 ? "" : "s"} · ${payloadSources.reduce((total, source) => total + (source.schema?.columns?.length || 0), 0)} fields available`;
+    dialog.querySelector("[data-app-designer-apply]").onclick = () => { saveEditor(); const actions=draft.permissions?.actions||[],ids=new Set(); for(const action of actions){action.id=String(action.id||"").trim();action.connection=String(action.connection||"").trim();const target=String(action.kind==="api"?action.endpoint||"":action.procedure||"").trim();if(!action.id||ids.has(action.id)||!action.connection||!target){state.textContent=!action.id?"Every action needs an ID":ids.has(action.id)?`Duplicate action ID: ${action.id}`:!action.connection?`Choose a connection for ${action.id}`:`Choose a target for ${action.id}`;return;}ids.add(action.id);} draft.name = name.value.trim() || "Qanvas App"; draft.currentSpec = spec.value.trim().slice(0,1200); draft.designHistory = (draft.designHistory||[]).slice(-8); options.onApply?.(copy(draft)); state.textContent = "Applied"; dialog.close("apply"); };
+    dialog.addEventListener("close", () => { clearTimeout(previewTimer); unregisterPreview(); searchHighlightResizeObserver.disconnect(); window.removeEventListener("message", inspectMessage); options.onClose?.(); dialog.remove(); }, { once: true });
+    applyPaneSizes(); renderFiles(); renderEditor(); renderActions(); renderBindings(); renderAssets(); renderExternalPermissions(); renderQueue(); renderPreview(); dialog.showModal(); question.focus();
+    return dialog;
+  }
+
+  const style = document.createElement("style");
+  style.textContent = `.qanvas-app-host{position:relative;width:100%;height:100%;overflow:hidden;background:var(--tile-background,#fff)}.qanvas-app-frame{display:block;width:100%;height:100%;border:0;background:transparent;pointer-events:none}.qanvas-app-host.is-interacting .qanvas-app-frame{pointer-events:auto}.qanvas-app-host [data-qanvas-app-interact]{position:absolute;right:8px;top:8px;z-index:2;padding:5px 9px;border-radius:999px;border:1px solid rgba(127,127,127,.35);background:rgba(255,255,255,.88);color:#182230;font:600 11px Segoe UI,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.12);opacity:0;transition:opacity .15s}.tile-app:hover [data-qanvas-app-interact],.qanvas-app-host:focus-within [data-qanvas-app-interact],.qanvas-app-host.is-protected [data-qanvas-app-interact]{opacity:1}.qanvas-app-host.is-interacting [data-qanvas-app-interact]{display:none}.qanvas-app-loading{display:grid;place-content:center;gap:8px;height:100%;text-align:center;color:var(--qreports-muted,#667085)}.qanvas-app-loading span{width:26px;height:26px;margin:auto;border:3px solid var(--qreports-grid,#d8dee8);border-top-color:var(--qreports-accent,#4f6ee8);border-radius:50%;animation:qanvas-app-spin .8s linear infinite}.qanvas-app-properties>[data-qanvas-app-properties-body]{display:grid;gap:10px;padding-top:8px}.qanvas-app-property-hero,.qanvas-app-dialog-preview{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:10px;background:var(--qreports-panel,var(--qreports-surface,#f4f7f5));color:var(--qreports-text,#182230)}.qanvas-app-property-hero>span,.qanvas-app-dialog-preview>span{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--qreports-accent,#4f6ee8);color:var(--qreports-on-accent,#fff);font-weight:700}.qanvas-app-property-hero div,.qanvas-app-dialog-preview div{display:grid;min-width:0}.qanvas-app-property-hero small,.qanvas-app-dialog-preview small{color:var(--qreports-muted,#667085)}.qanvas-app-permissions{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:9px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:9px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 28%,var(--qreports-surface,#fff));color:var(--qreports-text,#182230);font-size:11px}.qanvas-app-permissions b{grid-column:1/-1}.qanvas-app-dialog{box-sizing:border-box;width:min(620px,92vw);padding:0;overflow:hidden;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:14px;background:var(--qreports-surface,#fff);color:var(--qreports-text,#182230);color-scheme:var(--qreports-color-scheme,light);box-shadow:0 24px 70px color-mix(in srgb,var(--qreports-text,#182230) 38%,transparent)}.qanvas-app-dialog::backdrop{background:color-mix(in srgb,var(--qreports-header,#182230) 48%,transparent)}.qanvas-app-dialog form{margin:0;background:var(--qreports-surface,#fff);color:var(--qreports-text,#182230)}.qanvas-app-dialog form>header,.qanvas-app-dialog form>footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:var(--qreports-header,#eef3f9);color:var(--qreports-header-text,var(--qreports-text,#182230))}.qanvas-app-dialog form>header{border-bottom:1px solid var(--qreports-grid,#cbd5e1)}.qanvas-app-dialog form>footer{justify-content:flex-start;border-top:1px solid var(--qreports-grid,#cbd5e1)}.qanvas-app-dialog form>header h2,.qanvas-app-dialog form>header p{margin:0}.qanvas-app-dialog form>header p{color:var(--qreports-muted,#667085);font-size:12px}.qanvas-app-dialog :is(button,input,select,textarea){border-color:var(--qreports-grid,#cbd5e1);background:var(--qreports-control-background,var(--qreports-surface,#fff));color:var(--qreports-text,#182230)}.qanvas-app-dialog section{display:grid;gap:14px;padding:18px;background:var(--qreports-surface,#fff);color:var(--qreports-text,#182230)}.qanvas-app-dialog section>.property-empty{color:var(--qreports-muted,#667085)}.qanvas-app-dialog dl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}.qanvas-app-dialog dl div{padding:10px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:8px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 22%,var(--qreports-surface,#fff));color:var(--qreports-text,#182230)}.qanvas-app-dialog dt{font-size:11px;color:var(--qreports-muted,#667085)}.qanvas-app-dialog dd{margin:3px 0 0;font-weight:600}@keyframes qanvas-app-spin{to{transform:rotate(360deg)}}`;
+  style.textContent += `#tileProperties:has(#qanvasAppProperties:not(.hidden)) #tileSourceLabel{display:none!important}`;
+  style.textContent += `.qanvas-app-source-picker,.qanvas-app-table-access,.qanvas-app-parameter-access{display:grid;gap:7px;margin:0;padding:10px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:9px}.qanvas-app-source-picker legend,.qanvas-app-table-access legend,.qanvas-app-parameter-access legend{padding:0 4px;font-weight:650}.qanvas-app-parameter-access{font-size:12px}.qanvas-app-parameter-access legend{font-size:13px}.qanvas-app-parameter-access article b{font-size:12.5px}.qanvas-app-parameter-access>small,.qanvas-app-parameter-access article small{font-size:11px}.qanvas-app-source-picker label.check,.qanvas-app-table-access label.check,.qanvas-app-parameter-access label.check{display:flex;align-items:center;gap:6px;margin:0}.qanvas-app-source-picker label.check input,.qanvas-app-table-access label.check input,.qanvas-app-parameter-access label.check input{flex:none}.qanvas-app-source-picker small,.qanvas-app-table-access small,.qanvas-app-parameter-access small{margin-top:4px;color:var(--qreports-muted,#667085);line-height:1.35}.qanvas-app-source-picker code{color:var(--qreports-accent,#4f6ee8)}.qanvas-app-table-access article,.qanvas-app-parameter-access article{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:9px;border:1px solid color-mix(in srgb,var(--qreports-grid,#cbd5e1) 72%,transparent);border-radius:8px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 18%,var(--qreports-surface,#fff))}.qanvas-app-table-access article>div,.qanvas-app-table-access article>label:last-child,.qanvas-app-parameter-access article>div{grid-column:1/-1}.qanvas-app-table-access article>div,.qanvas-app-parameter-access article>div{display:grid}.qanvas-app-table-access article>div small,.qanvas-app-parameter-access article>div small{margin:0}.qanvas-app-table-access select{width:100%}`;
+  document.head.append(style);
+
+  const designerStyle = document.createElement("style");
+  designerStyle.textContent = `
+.qanvas-app-designer{box-sizing:border-box;width:min(1540px,98vw);height:min(920px,96vh);min-width:min(900px,96vw);min-height:600px;max-width:calc(100vw - 12px);max-height:calc(100vh - 12px);padding:0;overflow:hidden;resize:both;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:14px;background:var(--qreports-surface,#fff);color:var(--qreports-text,#182230);color-scheme:var(--qreports-color-scheme,light);box-shadow:0 28px 78px #0007}
+.qanvas-app-designer::backdrop{background:color-mix(in srgb,var(--qreports-header,#182230) 56%,transparent)}
+.qanvas-app-designer>form{display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100%;margin:0;background:var(--qreports-surface,#fff);color:var(--qreports-text,#182230)}
+.qanvas-app-designer>form>header,.qanvas-app-designer>form>footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-color:var(--qreports-grid,#cbd5e1);background:var(--qreports-header,#eef3f9);color:var(--qreports-header-text,var(--qreports-text,#182230))}
+.qanvas-app-designer>form>header{border-bottom:1px solid var(--qreports-grid,#cbd5e1)}.qanvas-app-designer>form>footer{justify-content:flex-end;border-top:1px solid var(--qreports-grid,#cbd5e1)}
+.qanvas-app-designer h2,.qanvas-app-designer header p{margin:0}.qanvas-app-designer h2{font-size:21px}.qanvas-app-designer header p{margin-top:2px;color:var(--qreports-muted,#667085);font-size:12px}
+.qanvas-app-designer-header-actions{display:flex;align-items:center;gap:7px}.qanvas-app-designer-header-actions>span{color:var(--qreports-muted,#667085);font-size:11px}.qanvas-app-designer-header-actions button{width:36px;height:34px;padding:0;font-size:19px}.qanvas-app-designer-header-actions [data-app-advanced-settings]{width:auto;padding:0 11px;font-size:11px;font-weight:650}.qanvas-app-designer-header-actions [data-app-advanced-settings].active{border-color:var(--qreports-accent,#4f6ee8);background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 14%,var(--qreports-header,#eef3f9));color:var(--qreports-header-text,var(--qreports-text,#182230))}
+.qanvas-app-designer :is(button,input,select,textarea){border-color:var(--qreports-grid,#cbd5e1);background:var(--qreports-control-background,var(--qreports-surface,#fff));color:var(--qreports-text,#182230)}.qanvas-app-designer button.primary{border-color:var(--qreports-accent,#4f6ee8);background:var(--qreports-accent,#4f6ee8);color:var(--qreports-on-accent,#fff)}
+.qanvas-app-designer-body{display:grid;container-type:size;grid-template-columns:var(--app-files-width,220px) 7px minmax(300px,var(--app-code-width,520px)) 7px minmax(330px,1fr);min-height:0;overflow:hidden;background:var(--qreports-surface,#fff)}
+.qanvas-app-designer-files,.qanvas-app-designer-code,.qanvas-app-designer-result{min-width:0;min-height:0}.qanvas-app-designer-result{border-right:0}.qanvas-app-splitter{position:relative;z-index:2;min-width:7px;height:100%;cursor:col-resize;touch-action:none;background:var(--qreports-grid,#cbd5e1)}.qanvas-app-splitter::after{content:"";position:absolute;inset:0 2px;background:color-mix(in srgb,var(--qreports-text,#182230) 18%,transparent)}.qanvas-app-splitter:hover,.qanvas-app-splitter:focus-visible,.qanvas-app-splitter.active{outline:0;background:var(--qreports-accent,#4f6ee8)}.qanvas-app-splitter:hover::after,.qanvas-app-splitter:focus-visible::after,.qanvas-app-splitter.active::after{background:var(--qreports-on-accent,#fff)}
+.qanvas-app-designer-files{overflow:auto;padding:14px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 32%,var(--qreports-surface,#fff))}.qanvas-app-designer-files label{margin:0 0 16px;color:var(--qreports-text,#182230);font-weight:650}.qanvas-app-designer-files input{box-sizing:border-box;width:100%}
+.qanvas-app-designer-section-title{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}.qanvas-app-designer-section-title>div{display:grid}.qanvas-app-designer-section-title small{color:var(--qreports-muted,#667085);font-size:10px}
+.qanvas-app-designer-files nav{display:grid;gap:5px}.qanvas-app-designer-files nav button{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:7px;width:100%;padding:8px;text-align:left}.qanvas-app-designer-files nav button span{display:grid;place-items:center;height:25px;border-radius:5px;background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 12%,transparent);color:var(--qreports-accent,#4f6ee8);font:700 10px Consolas,monospace}.qanvas-app-designer-files nav button.active{border-color:var(--qreports-accent,#4f6ee8);background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 12%,var(--qreports-surface,#fff));box-shadow:inset 3px 0 var(--qreports-accent,#4f6ee8)}
+.qanvas-app-designer-files details{margin-top:15px;padding-top:10px;border-top:1px solid var(--qreports-grid,#cbd5e1)}.qanvas-app-designer-files summary{color:var(--qreports-text,#182230)}.qanvas-app-data-contract{display:grid;gap:5px;margin-top:8px;color:var(--qreports-muted,#667085);font-size:10px}.qanvas-app-data-contract code{width:max-content;padding:2px 5px;border-radius:4px;background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 10%,transparent);color:var(--qreports-accent,#4f6ee8)}
+.qanvas-app-external-permissions{display:grid;gap:7px;margin-top:8px}.qanvas-app-external-permissions label{display:grid;gap:3px;margin:0;font-size:10px}.qanvas-app-external-permissions label.check{display:flex;align-items:center;gap:6px}.qanvas-app-external-permissions textarea{box-sizing:border-box;width:100%;min-height:46px;padding:6px;resize:vertical;font:10px/1.35 "Cascadia Mono",Consolas,monospace}.qanvas-app-external-permissions button,.qanvas-app-designer-files [data-app-asset-add]{width:100%;padding:6px;font-size:10px}.qanvas-app-external-permissions small{color:var(--qreports-muted,#667085);font-size:9px;line-height:1.35}
+.qanvas-app-asset-list{display:grid;gap:6px;margin:8px 0}.qanvas-app-asset-list article{display:grid;grid-template-columns:34px minmax(0,1fr) 24px 24px;align-items:center;gap:6px;padding:6px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:7px}.qanvas-app-asset-list img{width:34px;height:34px;object-fit:contain;border-radius:4px;background:color-mix(in srgb,var(--qreports-grid,#cbd5e1) 25%,transparent)}.qanvas-app-asset-list article>div{display:grid;min-width:0}.qanvas-app-asset-list b,.qanvas-app-asset-list small,.qanvas-app-asset-list code{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.qanvas-app-asset-list small{color:var(--qreports-muted,#667085);font-size:8px}.qanvas-app-asset-list code{font-size:8px}.qanvas-app-asset-list button{width:24px;height:24px;padding:0}
+.qanvas-app-action-list{display:grid;gap:8px;margin-top:9px}.qanvas-app-action-list article{display:grid;gap:6px;padding:8px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:8px;background:var(--qreports-surface,#fff)}.qanvas-app-action-list article>div{display:flex;align-items:center;justify-content:space-between;gap:6px}.qanvas-app-action-list article>div button{width:25px;height:25px;padding:0}.qanvas-app-action-list label{display:grid;gap:2px;margin:0;font-size:10px;font-weight:600}.qanvas-app-action-list label.check{display:flex;align-items:center;font-weight:400}.qanvas-app-action-list input:not([type=checkbox]),.qanvas-app-action-list select{box-sizing:border-box;width:100%;min-width:0;padding:5px;font-size:10px}.qanvas-app-action-buttons{display:flex;gap:5px;margin:8px 0}.qanvas-app-action-buttons button{min-width:0;padding:5px 7px;font-size:10px}.qanvas-app-designer-files details>small{display:block;color:var(--qreports-muted,#667085);font-size:9px;line-height:1.35}.qanvas-app-action-list .hidden{display:none}
+.qanvas-app-designer-code{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:42px minmax(0,1fr);height:100cqh;max-height:100cqh;overflow:hidden;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 18%,var(--qreports-surface,#fff))}.qanvas-app-code-heading{position:relative;z-index:3;display:grid;grid-template-columns:124px minmax(150px,1fr) auto;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--qreports-grid,#cbd5e1);background:color-mix(in srgb,var(--qreports-header,#eef3f9) 18%,var(--qreports-surface,#fff))}.qanvas-app-code-file,.qanvas-app-code-actions,.qanvas-app-code-search{display:flex;align-items:center;gap:5px;min-width:0}.qanvas-app-code-file{grid-column:1}.qanvas-app-code-file>b{display:none}.qanvas-app-code-file select{box-sizing:border-box;width:124px;min-width:0;padding:4px 24px 4px 7px;font:600 11px/1.2 "Segoe UI",sans-serif}.qanvas-app-code-actions{grid-column:3;justify-content:flex-end}.qanvas-app-code-heading small{display:none;overflow:hidden;color:var(--qreports-muted,#667085);text-overflow:ellipsis;white-space:nowrap}.qanvas-app-code-heading button{padding:4px 7px;font-size:10px}.qanvas-app-code-search{grid-column:2;grid-row:1}.qanvas-app-code-search input{box-sizing:border-box;flex:1;min-width:80px;padding:5px 7px;font:10px/1.2 "Cascadia Mono",Consolas,monospace}.qanvas-app-code-search span{min-width:36px;color:var(--qreports-muted,#667085);font-size:9px;text-align:center}.qanvas-app-code-search button{width:24px;height:25px;padding:0}.qanvas-app-designer .qanvas-app-designer-code>textarea{position:relative;z-index:1;display:block;box-sizing:border-box;width:100%;height:100%;min-width:100%;min-height:0;max-height:none;margin:0;padding:14px;resize:none;border:0;border-radius:0;outline:0;background:color-mix(in srgb,var(--qreports-surface,#fff) 94%,var(--qreports-header,#eef3f9));color:var(--qreports-text,#182230);caret-color:var(--qreports-accent,#4f6ee8);font:12px/1.55 "Cascadia Mono",Consolas,monospace;tab-size:2;white-space:pre;overflow:auto}.qanvas-app-code-highlight{position:absolute;z-index:2;inset:0;pointer-events:none;overflow:hidden}.qanvas-app-code-highlight .line,.qanvas-app-code-highlight .match{position:absolute;display:block;box-sizing:border-box}.qanvas-app-code-highlight .line{border-block:1px solid color-mix(in srgb,var(--qreports-accent,#4f6ee8) 35%,transparent);background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 13%,transparent)}.qanvas-app-code-highlight .match{border:1px solid var(--qreports-accent,#4f6ee8);border-radius:2px;background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 42%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--qreports-on-accent,#fff) 45%,transparent)}
+.qanvas-app-designer-result{display:grid;height:100cqh;max-height:100cqh;contain:size layout;grid-template-rows:minmax(160px,var(--app-preview-height,360px)) 7px minmax(190px,1fr);overflow:hidden}.qanvas-app-splitter[data-app-splitter="result"]{grid-column:1/-1;width:100%;min-width:0;height:7px;min-height:7px;cursor:row-resize}.qanvas-app-splitter[data-app-splitter="result"]::after{inset:2px 0}.qanvas-app-preview-panel,.qanvas-app-ai-panel{display:grid;min-height:0;padding:12px}.qanvas-app-preview-panel{grid-template-rows:auto minmax(0,1fr);background:color-mix(in srgb,var(--qreports-header,#eef3f9) 18%,var(--qreports-surface,#fff))}.qanvas-app-preview-panel iframe{display:block;width:100%;height:100%;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:9px;background:#fff}
+.qanvas-app-ai-panel{grid-template-rows:auto minmax(54px,1fr) auto auto;gap:8px;overflow:auto;border-top:1px solid var(--qreports-grid,#cbd5e1);background:var(--qreports-surface,#fff)}.qanvas-app-ai-chat{min-height:0;overflow:auto;padding:7px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:8px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 22%,var(--qreports-surface,#fff))}.qanvas-app-ai-chat p{width:fit-content;max-width:92%;margin:4px 0;padding:7px 9px;border-radius:8px;white-space:pre-wrap;font-size:11px;line-height:1.4}.qanvas-app-ai-chat p.assistant{background:var(--qreports-surface,#fff)}.qanvas-app-ai-chat p.user{margin-left:auto;background:var(--qreports-accent,#4f6ee8);color:var(--qreports-on-accent,#fff)}
+.qanvas-app-ai-compose{display:grid;gap:4px;margin:0;color:var(--qreports-text,#182230);font-size:10px;font-weight:650}.qanvas-app-ai-compose textarea{box-sizing:border-box;width:100%;min-height:54px;max-height:120px;margin:0;padding:8px;resize:vertical;font:12px/1.4 "Segoe UI",sans-serif}.qanvas-app-ai-actions{display:flex;align-items:center;justify-content:space-between;gap:8px}.qanvas-app-ai-actions small{overflow:hidden;color:var(--qreports-muted,#667085);font-size:10px;text-overflow:ellipsis;white-space:nowrap}.qanvas-app-ai-actions button{flex:none}
+@media(max-width:1080px){.qanvas-app-designer-body{grid-template-columns:minmax(170px,var(--app-files-width,190px)) 7px minmax(300px,var(--app-code-width,420px)) 7px minmax(300px,1fr)}}
+@media(max-width:820px){.qanvas-app-designer{min-width:0;resize:vertical}.qanvas-app-designer-body{display:grid;grid-template-columns:180px 7px minmax(0,1fr);grid-template-rows:minmax(330px,1fr) minmax(300px,1fr);overflow:auto}.qanvas-app-designer-body>[data-app-splitter="code"]{display:none}.qanvas-app-designer-result{grid-column:1/-1;grid-template-columns:1fr 1fr;grid-template-rows:minmax(250px,1fr);height:auto;max-height:none;border-top:1px solid var(--qreports-grid,#cbd5e1)}.qanvas-app-designer-result>[data-app-splitter="result"]{display:none}.qanvas-app-ai-panel{border-top:0;border-left:1px solid var(--qreports-grid,#cbd5e1)}}`;
+  designerStyle.textContent += `
+.qanvas-app-designer-body{position:relative;display:grid;grid-template-columns:minmax(420px,1fr) 7px minmax(320px,var(--app-ai-width,430px));container-type:size;min-height:0;overflow:hidden}
+.qanvas-app-ai-panel{display:grid;grid-template-rows:auto auto minmax(90px,var(--app-chat-height,1fr)) 7px auto auto auto auto;gap:9px;min-width:0;min-height:0;height:100cqh;padding:14px;overflow:hidden;border:0;background:var(--qreports-surface,#fff)}
+.qanvas-app-preview-panel{display:grid;grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;height:100cqh;padding:14px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 18%,var(--qreports-surface,#fff))}
+.qanvas-app-preview-panel iframe{display:block;width:100%;height:100%;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:10px;background:#fff}
+.qanvas-app-designer.resizing iframe{pointer-events:none}
+.qanvas-app-splitter[data-app-splitter="main"],.qanvas-app-splitter[data-app-splitter="code"],.qanvas-app-splitter[data-app-splitter="advanced"]{width:7px;min-width:7px;height:100%;cursor:col-resize}
+.qanvas-app-splitter[data-app-splitter="chat"]{width:100%;min-width:0;height:7px;min-height:7px;cursor:row-resize}.qanvas-app-splitter[data-app-splitter="chat"]::after{inset:2px 0}
+.qanvas-app-current-spec{display:grid;min-width:0;margin:0;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:8px;color:var(--qreports-text,#182230);font-size:11px;font-weight:650;overflow:hidden}.qanvas-app-current-spec>summary{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px;padding:7px 9px;cursor:pointer;list-style-position:inside;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 28%,var(--qreports-surface,#fff))}.qanvas-app-current-spec>summary small{overflow:hidden;color:var(--qreports-muted,#667085);font-size:9px;font-weight:400;text-overflow:ellipsis;white-space:nowrap}.qanvas-app-current-spec textarea{box-sizing:border-box;width:100%;min-height:66px;max-height:150px;padding:8px;resize:vertical;border:0;border-top:1px solid var(--qreports-grid,#cbd5e1);border-radius:0;font:11px/1.4 "Segoe UI",sans-serif}.qanvas-app-current-spec:not([open]) textarea{display:none}
+.qanvas-app-ai-chat{min-height:0;height:auto;overflow:auto;padding:8px}.qanvas-app-ai-compose textarea{min-height:72px;max-height:260px;resize:vertical}
+.qanvas-app-ai-attachment-tools{display:flex;align-items:center;gap:7px}.qanvas-app-ai-attachment-tools button{padding:5px 8px;font-size:10px}.qanvas-app-ai-attachment-tools small{color:var(--qreports-muted,#667085);font-size:9px}.qanvas-app-ai-attachments{display:flex;flex-wrap:wrap;gap:6px}.qanvas-app-ai-attachments article{display:grid;grid-template-columns:30px minmax(70px,150px) 22px;align-items:center;gap:6px;padding:5px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:7px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 24%,var(--qreports-surface,#fff))}.qanvas-app-ai-attachments img,.qanvas-app-ai-attachments article>span{display:grid;place-items:center;width:30px;height:30px;object-fit:cover;border-radius:5px;background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 12%,transparent);font-size:7px;font-weight:700}.qanvas-app-ai-attachments article>div{display:grid;min-width:0}.qanvas-app-ai-attachments b,.qanvas-app-ai-attachments small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}.qanvas-app-ai-attachments small{color:var(--qreports-muted,#667085)}.qanvas-app-ai-attachments button{width:22px;height:22px;padding:0}.qanvas-app-ai-panel.is-dropping-files{outline:2px dashed var(--qreports-accent,#4f6ee8);outline-offset:-5px}.qanvas-app-ai-chat-files{display:block;margin-top:5px;opacity:.8;font-size:9px}
+.qanvas-app-ai-queue{min-height:0;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:8px}.qanvas-app-ai-queue>summary{display:flex;justify-content:space-between;padding:6px 8px;cursor:pointer;font-size:10px;font-weight:650}.qanvas-app-ai-queue>summary span{display:grid;place-items:center;min-width:19px;height:19px;border-radius:99px;background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 14%,transparent);color:var(--qreports-accent,#4f6ee8)}.qanvas-app-ai-queue [data-app-ai-queue-list]{display:grid;gap:5px;max-height:150px;overflow:auto;padding:0 7px 7px}.qanvas-app-ai-queue article{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:6px;padding:6px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:7px;background:color-mix(in srgb,var(--qreports-header,#eef3f9) 22%,var(--qreports-surface,#fff))}.qanvas-app-ai-queue article>span{padding-top:5px;color:var(--qreports-muted,#667085);font-size:9px}.qanvas-app-ai-queue textarea{box-sizing:border-box;width:100%;min-height:42px;padding:5px;resize:vertical;font:10px/1.3 "Segoe UI",sans-serif}.qanvas-app-ai-queue article>button{width:24px;height:24px;padding:0}.qanvas-app-ai-queue article.processing{border-color:var(--qreports-accent,#4f6ee8)}.qanvas-app-ai-queue .property-empty{margin:2px;color:var(--qreports-muted,#667085);font-size:10px}
+.qanvas-app-binding-list{display:grid;gap:8px;margin:9px 0}.qanvas-app-binding-list article{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:8px;background:var(--qreports-surface,#fff)}.qanvas-app-binding-list article>div{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}.qanvas-app-binding-list article>div button{width:24px;height:24px;padding:0}.qanvas-app-binding-list label{display:grid;gap:2px;margin:0;font-size:9px;font-weight:600}.qanvas-app-binding-list :is(input,select){box-sizing:border-box;width:100%;min-width:0;padding:5px;font-size:10px}.qanvas-app-binding-list .property-empty{margin:0;color:var(--qreports-muted,#667085);font-size:10px}.qanvas-app-designer-files [data-app-binding-add]{width:100%;padding:6px;font-size:10px}
+.qanvas-app-advanced:not([open]){display:none}.qanvas-app-advanced[open]{position:absolute;z-index:8;inset:10px;display:grid;box-sizing:border-box;grid-template-rows:minmax(0,1fr);min-width:0;min-height:0;padding:12px;overflow:hidden;border:1px solid var(--qreports-grid,#cbd5e1);border-radius:11px;background:var(--qreports-surface,#fff);box-shadow:0 18px 48px #0005}
+.qanvas-app-advanced-body{display:grid;box-sizing:border-box;grid-template-columns:minmax(190px,var(--app-advanced-width,360px)) 7px minmax(300px,1fr);width:100%;height:100%;min-width:0;min-height:0;max-height:100%;overflow:hidden}.qanvas-app-advanced-body .qanvas-app-designer-files{height:100%;min-height:0;max-height:100%;padding:12px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}.qanvas-app-advanced-body .qanvas-app-designer-code{height:100%;max-height:100%;min-height:0}
+.qanvas-app-designer-body.code-pane-open{grid-template-columns:minmax(330px,1fr) 7px minmax(300px,var(--app-code-pane-width,500px)) 7px minmax(320px,var(--app-ai-width,430px))}.qanvas-app-designer-body.code-pane-open>.qanvas-app-designer-code{height:100cqh;max-height:100cqh}.qanvas-app-designer-body.code-pane-open>[data-app-splitter="code"]{display:block}
+.qanvas-app-preview-actions{display:flex!important;grid-auto-flow:column;align-items:center;gap:5px}.qanvas-app-preview-actions button{padding:4px 7px;font-size:10px}.qanvas-app-preview-actions button[aria-pressed="true"]{border-color:var(--qreports-accent,#4f6ee8);background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 14%,var(--qreports-surface,#fff));color:var(--qreports-text,#182230)}
+.qanvas-app-parameter-access{display:block!important;padding:0!important;overflow:hidden}.qanvas-app-parameter-access>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;cursor:pointer;font-size:12px;font-weight:650}.qanvas-app-parameter-access>summary span{display:grid;place-items:center;min-width:19px;height:19px;padding:0 4px;border-radius:99px;background:color-mix(in srgb,var(--qreports-accent,#4f6ee8) 14%,transparent);color:var(--qreports-accent,#4f6ee8);font-size:10px}.qanvas-app-parameter-access-body{display:grid;gap:7px;padding:0 10px 10px}.qanvas-app-parameter-access:not([open])>.qanvas-app-parameter-access-body{display:none}
+@media(max-width:820px){.qanvas-app-designer-body{grid-template-columns:1fr;grid-template-rows:minmax(320px,1fr) 7px minmax(520px,1.35fr);overflow:auto}.qanvas-app-splitter[data-app-splitter="main"]{width:100%;height:7px;cursor:row-resize}.qanvas-app-ai-panel{height:auto;min-height:520px}.qanvas-app-preview-panel{height:auto;min-height:320px}.qanvas-app-advanced-body{grid-template-columns:190px 7px minmax(300px,1fr);overflow:auto}}
+@media(max-height:760px){.qanvas-app-ai-panel{gap:6px;padding:10px}.qanvas-app-current-spec>summary{padding:5px 7px}.qanvas-app-ai-compose textarea{min-height:58px}.qanvas-app-ai-attachment-tools small{display:none}}
+`;
+  document.head.append(designerStyle);
+
+  window.QanvasAppRuntime = { APP_VERSION, defaultDefinition, normalizeDefinitions, normalizeTile, placeholder, mountAll, dispatchCommand, notifyParameters, assemble, formatSource, openDesigner };
+})();
