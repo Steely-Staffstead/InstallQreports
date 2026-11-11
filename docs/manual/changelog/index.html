@@ -1506,7 +1506,7 @@
 <li>Improved HTML authoring with built-in source-aware examples, optional sources, better action spacing, horizontal text padding and safer file-dialog handling.</li>
 <li>Fixed PowerPoint <strong>Get from Qanvas</strong> so page and tile previews render in an isolated background session and return images instead of opening the normal Qanvas editor.</li>
 <li>Fixed Excel Canvas refresh discovery for Visual Studio, VSTO shadow-copy and ClickOnce locations, and fixed the parallel Release rebuild race that could omit the Qanvas host or LegacyBridge interop files.</li>
-<li>Fixed manual update detection so Enterprise releases publish a newer Qanvas application version, and added a release preflight that blocks future uploads when clients would otherwise see the new installer as already up to date.</li>
+<li>Fixed manual update detection so Enterprise releases publish a newer Qanvas application version, bypass stale GitHub CDN manifests, and block future uploads when clients would otherwise see the new installer as already up to date.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>45</strong></div><div><p class="week-dates">2–8 November 2026</p><h2>Interactive apps, data-bound HTML and a more capable Grid</h2></div></div>
 

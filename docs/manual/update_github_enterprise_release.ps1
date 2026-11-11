@@ -42,7 +42,7 @@ if (-not $ValidateOnly) {
     }
     $sourceApplicationVersion = [Version] $sourceApplicationVersionText
 
-    $latestManifestUrl = 'https://github.com/Steely-Staffstead/InstallQreports/releases/latest/download/qvitr-update.json'
+    $latestManifestUrl = 'https://github.com/Steely-Staffstead/InstallQreports/releases/latest/download/qvitr-update.json?release-check=' + [Guid]::NewGuid().ToString('N')
     try {
         $latestManifest = Invoke-RestMethod -Uri $latestManifestUrl -Headers @{ 'User-Agent' = 'Qvitr enterprise release validation' }
     }
