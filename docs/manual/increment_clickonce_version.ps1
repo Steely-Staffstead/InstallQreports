@@ -92,7 +92,25 @@ $updates += [pscustomobject]@{
     Content = $canvasProjectContent
 }
 
-if ($PSCmdlet.ShouldProcess('ClickOnce project, QRep assemblies, and Qanvas file version', "Change version from $oldVersion to $newVersion")) {
+$legacyBridgeProjectPath = Join-Path $PSScriptRoot '..\CanvasWeb.LegacyBridge\CanvasWeb.LegacyBridge.vbproj'
+$resolvedLegacyBridgeProject = (Resolve-Path -LiteralPath $legacyBridgeProjectPath -ErrorAction Stop).Path
+$legacyBridgeProjectContent = [System.IO.File]::ReadAllText($resolvedLegacyBridgeProject)
+
+if ([regex]::Matches($legacyBridgeProjectContent, $canvasFileVersionPattern).Count -ne 1) {
+    throw "Expected exactly one four-part FileVersion in '$resolvedLegacyBridgeProject'."
+}
+
+$legacyBridgeProjectContent = [regex]::Replace(
+    $legacyBridgeProjectContent,
+    $canvasFileVersionPattern,
+    "<FileVersion>$newVersion</FileVersion>"
+)
+$updates += [pscustomobject]@{
+    Path = $resolvedLegacyBridgeProject
+    Content = $legacyBridgeProjectContent
+}
+
+if ($PSCmdlet.ShouldProcess('ClickOnce project, QRep assemblies, Qanvas, and LegacyBridge file versions', "Change version from $oldVersion to $newVersion")) {
     foreach ($update in $updates) {
         $originalBytes = [System.IO.File]::ReadAllBytes($update.Path)
         $hasUtf8Bom = $originalBytes.Length -ge 3 -and

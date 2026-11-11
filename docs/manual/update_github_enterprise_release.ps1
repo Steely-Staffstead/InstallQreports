@@ -31,6 +31,30 @@ if (-not $ValidateOnly) {
     if ($LASTEXITCODE -ne 0) {
         throw 'GitHub CLI is not authenticated. Run gh auth login, then retry.'
     }
+
+    $sourceProject = Join-Path $repositoryRoot 'CanvasWeb\CanvasWeb.csproj'
+    [xml] $sourceProjectXml = Get-Content -LiteralPath $sourceProject -Raw
+    $sourceApplicationVersionText = [string] $sourceProjectXml.Project.PropertyGroup.FileVersion |
+        Where-Object { $_ } |
+        Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($sourceApplicationVersionText)) {
+        throw "CanvasWeb FileVersion was not found in $sourceProject."
+    }
+    $sourceApplicationVersion = [Version] $sourceApplicationVersionText
+
+    $latestManifestUrl = 'https://github.com/Steely-Staffstead/InstallQreports/releases/latest/download/qvitr-update.json'
+    try {
+        $latestManifest = Invoke-RestMethod -Uri $latestManifestUrl -Headers @{ 'User-Agent' = 'Qvitr enterprise release validation' }
+    }
+    catch {
+        throw "Could not validate the source application version against the current GitHub release manifest: $($_.Exception.Message)"
+    }
+
+    $latestApplicationVersion = [Version] ([string] $latestManifest.applicationVersion)
+    $latestInstallerVersion = [string] $latestManifest.installerVersion
+    if ($latestInstallerVersion -ne $Version -and $sourceApplicationVersion -le $latestApplicationVersion) {
+        throw "CanvasWeb FileVersion $sourceApplicationVersion is not newer than the published application version $latestApplicationVersion. Run documentation\increment_clickonce_version.ps1 before publishing Enterprise $Version."
+    }
 }
 
 Write-Host '===================================='
