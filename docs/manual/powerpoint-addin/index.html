@@ -1179,6 +1179,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#import-pages-and-tiles-as-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import pages and tiles as images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1481,6 +1492,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#import-pages-and-tiles-as-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import pages and tiles as images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#shared-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1527,8 +1549,11 @@
 <p><img src="../assets/images/powerpoint/powerpoint-canvas.png" alt="Placeholder showing a QReports Canvas report in PowerPoint" style="max-width: 900px; width: 100%;"></p>
 <h2 id="how-powerpoint-links-a-canvas">How PowerPoint links a Canvas</h2>
 <p>By default, PowerPoint embeds one compressed Qanvas definition in the presentation and stores only its source ID, page or tile ID, and import filters with each rendered picture. The same definition is shared by every picture imported from that source, so recipients can update the pictures without the original <code>.qanvas</code> file. Clear <strong>Embed definition in this presentation</strong> during import if you specifically want a local-file link; that file must remain accessible when the presentation is shared.</p>
-<p>PowerPoint also embeds each rendered image, so slides remain viewable without QanvasWeb. To edit an embedded definition, use <strong>CanvasWeb &gt; Edit selected</strong>. Saving in QanvasWeb automatically saves the edited definition back into the presentation; choose <strong>Update canvases</strong> to refresh its linked pictures. <strong>Update embedded copy…</strong> remains available when you intentionally want to replace the embedded definition with another file.</p>
-<p>For pictures previously linked to a local file, use <strong>CanvasWeb &gt; Embed file…</strong> and choose that file. Existing pictures linked to it are switched to the shared embedded definition.</p>
+<p>PowerPoint also embeds each rendered image, so slides remain viewable without Qanvas. To edit an embedded definition, use <strong>Qanvas &gt; Edit selected</strong>. Saving in Qanvas automatically saves the edited definition back into the presentation; choose <strong>Update canvases</strong> to refresh its linked pictures. <strong>Update embedded copy…</strong> remains available when you intentionally want to replace the embedded definition with another file.</p>
+<p>For pictures previously linked to a local file, add or select that file in the Qanvas source manager and choose <strong>Embed in this presentation</strong>. Existing pictures linked to it are switched to the shared embedded definition.</p>
+<h2 id="import-pages-and-tiles-as-images">Import pages and tiles as images</h2>
+<p><strong>Get from Qanvas</strong> is an image-import workspace, not an editor. Select one or more pages or supported tiles, review their previews, add optional copy-specific filters, and import them into the current slide. Qanvas renders each selection in an isolated background session and returns a PNG to PowerPoint. The normal Qanvas editor should not open during this render step.</p>
+<p>Text tiles are excluded by default. Enable <strong>Text tiles</strong> when the imported slide should include them as separate image selections. Imported pictures retain their source, page/tile identity and filters so <strong>Update canvases</strong> can render them again later.</p>
 <h2 id="shared-documentation">Shared documentation</h2>
 <p>PowerPoint does not use a second implementation of the report language. These guides also apply:</p>
 <ul>
@@ -1544,8 +1569,8 @@
 <h2 id="first-report">First report</h2>
 <ol>
 <li>Open a presentation and select the target slide.</li>
-<li>Choose <strong>QReports &gt; CanvasWeb &gt; New</strong> and save the report as a <code>.qanvas</code> file, or choose <strong>Embed file…</strong>.</li>
-<li>Choose <strong>QReports &gt; Get from CanvasWeb</strong>. Expand a file to see its pages and page thumbnails; expand a page to select one tile.</li>
+<li>Choose <strong>QReports &gt; Qanvas &gt; New</strong> and save the report as a <code>.qanvas</code> file, or choose <strong>Add file…</strong> to register an existing report.</li>
+<li>Choose <strong>QReports &gt; Get from Qanvas</strong>. Expand a file to see its pages and page thumbnails; expand a page to select one tile.</li>
 <li>Add optional import filters, such as <code>Region equals North</code>. Leave <strong>Embed definition in this presentation</strong> selected and import the page or tile.</li>
 <li>Edit and replace the embedded definition when necessary, then choose <strong>Update canvases</strong> to refresh selected or all linked pictures.</li>
 </ol>

@@ -929,6 +929,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Connection and request">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#email-code-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email code sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microsoft-entra-sso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microsoft Entra SSO
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -972,6 +1000,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Flattening and postfilter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-tables-from-one-api-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple tables from one API source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structured-json-companion-for-app-and-html-tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured JSON companion for App and HTML tiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1594,6 +1650,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Connection and request">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#email-code-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email code sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microsoft-entra-sso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microsoft Entra SSO
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1637,6 +1721,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Flattening and postfilter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-tables-from-one-api-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple tables from one API source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structured-json-companion-for-app-and-html-tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured JSON companion for App and HTML tiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1781,8 +1893,20 @@
 </tr>
 </tbody>
 </table>
-<p>Supported authentication choices include <strong>None</strong>, <strong>API Key</strong>, <strong>Bearer Token</strong>, <strong>Authorization Token Workflow</strong>, <strong>Azure Function Key</strong>, and <strong>Basic Auth</strong>. The fields displayed below AUTH change with the selected method.</p>
-<p>Do not include real tokens, passwords, or production URLs in screenshots or shared example workbooks. Use the connection and authentication settings approved by your organization.</p>
+<p>Supported authentication choices include <strong>None</strong>, <strong>API Key</strong>, <strong>Bearer Token</strong>, <strong>Authorization Token Workflow</strong>, <strong>Azure Function Key</strong>, <strong>Basic Auth</strong>, <strong>Email code session</strong>, and <strong>Microsoft Entra SSO</strong>. The fields displayed below AUTH change with the selected method.</p>
+<h3 id="email-code-sessions">Email code sessions</h3>
+<p>Use <strong>Email code session</strong> for an API that first accepts an email address, then verifies a one-time code and returns a bearer token. Configure the request-code and verify-code paths, the response paths for <code>token</code> and <code>expiresAt</code>, and a stable authentication profile ID. The default contract is compatible with:</p>
+<pre><code class="language-text">POST request-login-code  { &quot;email&quot;: &quot;user@example.com&quot; }
+POST verify-login-code   { &quot;email&quot;: &quot;user@example.com&quot;, &quot;code&quot;: &quot;123456&quot; }
+</code></pre>
+<p>The verify response must contain a token and expiry, for example <code>{ "token": "...", "expiresAt": "2026-11-08T10:00:00Z" }</code>. Qvitr reuses the session until shortly before that expiry. A new code is needed after expiry, explicit sign-out, or when the API rejects the session with HTTP 401. The token is not stored in the connection or Qanvas document; it is encrypted with Windows DPAPI for the current Windows user. <strong>Sign out</strong> removes that private session.</p>
+<p>Allowed origins are stored with the connection. They restrict both login endpoints and authenticated API requests, including pagination next-links. If the field is left blank when the connection is created, Qvitr pins it to the BaseURL origin. Use HTTPS in production; plain HTTP is accepted only for localhost testing.</p>
+<h3 id="microsoft-entra-sso">Microsoft Entra SSO</h3>
+<p>Use <strong>Microsoft Entra SSO</strong> for users in the organization's Microsoft tenant. Configure the tenant ID (or an explicit authority), the public desktop application's client ID, and one or more delegated API scopes such as <code>api://&lt;api-app-id&gt;/access_as_user</code>. Do not configure or distribute a client secret in Qvitr; an installed desktop application is a public client.</p>
+<p>Qvitr uses <a href="https://learn.microsoft.com/en-us/entra/msal/dotnet/">Microsoft Authentication Library (MSAL) for .NET</a>. MSAL is Microsoft's supported OAuth/OpenID Connect library. It obtains API access tokens, handles expiry, and attempts silent renewal from its protected user cache before opening the system browser for interactive sign-in. Qvitr encrypts the serialized MSAL cache with Windows DPAPI for the current Windows user and sends the returned access token using the configured header and prefix, normally <code>Authorization: Bearer</code>.</p>
+<p>The Reportportal/API must still be configured separately. It must expose a delegated API scope, validate the token signature, issuer, tenant, audience and scopes, map the Entra identity (<code>oid</code> or <code>preferred_username</code>) to an application user, and apply the same row-level access rules used by email-code sessions. Qvitr's allowed-origin setting prevents the desktop client from forwarding a token to an unexpected host; it does not replace server-side validation.</p>
+<p>For the first version, select either <strong>Email code session</strong> or <strong>Microsoft Entra SSO</strong> on a connection. Email remains the general/default method. A second SSO-configured connection can point at the same API for frequent same-tenant users. Once the server accepts both token issuers, a later hybrid profile can attempt silent SSO first and offer email code when no tenant session exists. It must not change identity after an authorization failure such as HTTP 403.</p>
+<p>Do not include real tokens, passwords, or production URLs in screenshots or shared example workbooks. Use the connection and authentication settings approved by your organization. Submitted-request previews mask authorization, key, token, secret and cookie headers.</p>
 <h2 id="request-tabs">Request tabs</h2>
 <p><img src="../assets/images/api/api-request-tabs.png" alt="Placeholder showing headers, query, body, settings, pagination, and loop tabs" style="max-width: 860px; width: 100%;"></p>
 <table>
@@ -1878,6 +2002,14 @@
 <li>request timeout.</li>
 </ul>
 <p>Always verify the Raw response when expected fields are missing from Grid. The API may have changed its wrapper or nesting even though the request itself succeeded.</p>
+<h3 id="multiple-tables-from-one-api-source">Multiple tables from one API source</h3>
+<p>Use <strong>Projected tables</strong> under <strong>Response shape</strong> when one response contains data that should remain in separate related tables. Send the request once, then choose <strong>Set up from response</strong>. The workbench lists the arrays found in the JSON response, recommends a primary table, and lets you make any candidate primary or add it as another grouped table.</p>
+<p>For a nested child array, the workbench detects its parent and uses a likely <code>id</code> or key field to keep the tables related. Review the generated table card if the API uses a different key. Manual JSON paths, parent/child paths, key names and optional column lists remain available under <strong>Edit name, path and columns</strong> for unusual response shapes.</p>
+<p>Canvas shows the resulting tables beneath the same API source. The parent owns the connection, authentication, parameters and request. All output tables are generated from the same response and are updated as one transaction; if the request or a projection fails, the previous snapshots remain available. Tiles, measures and relationships bind to an individual output table, while editing and updating are performed on the parent API source.</p>
+<h3 id="structured-json-companion-for-app-and-html-tiles">Structured JSON companion for App and HTML tiles</h3>
+<p>For hierarchical APIs, enable <strong>Preserve structured JSON for App and HTML tiles</strong> under <strong>Response shape</strong>. The normal flattened table is still created and remains the source used by tables, matrices, relationships, measures and filters. The structured response is an additional read-only document available only to App and HTML tiles as <code>source.structured</code> (or on each entry in <code>sources</code>).</p>
+<p>An optional JSONPath can select a useful subtree, for example <code>$.financialOverview</code>, instead of retaining the complete response. Structured responses are capped at 5 MB. The companion document follows the source's saved-data policy: <strong>Preview only</strong> and <strong>All data</strong> retain it, while <strong>No saved data</strong> removes it from the saved Qanvas file.</p>
+<p>HTML tiles with structured data show a <strong>JSON reader</strong> action in their Data contract. It installs a theme-aware, no-AI reader with searchable tree and raw JSON views. App and HTML AI receive a bounded structural sample so AI can help design a renderer without placing the complete large response in every prompt. After the design is saved, refreshes reuse the configured endpoint, JSONPath and deterministic tile code; AI is not required at runtime.</p>
 <h2 id="pagination">Pagination</h2>
 <p>Enable pagination when one request returns only part of the available data.</p>
 <table>

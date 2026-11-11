@@ -2972,7 +2972,9 @@ later phase of this specification.</p>
   are then saved inside the <code>.qanvas</code> file in the same format as other embedded
   Manual tables.</li>
 <li>The host passes schema, bounded filtered rows, source metadata, parameter
-  context, filters, and resolved canvas theme roles to the app.</li>
+  context, filters, and resolved canvas theme roles to the app. API sources can
+  also opt in to a read-only structured JSON companion for hierarchical
+  renderers while retaining their normal flattened table.</li>
 <li>The built-in Source analysis app summarizes rows, columns, numeric fields,
   missing values, uniqueness, ranges, means, and coverage.</li>
 <li>App properties allow the row limit and filtered-context behavior to be
@@ -3323,6 +3325,11 @@ await qanvas.data.summary({ source: &quot;finances&quot; });
 <p>Data is paged and copied as structured values. The API does not expose the
 complete Qanvas document or source connection definition. Requests exceeding
 the granted row, field, source, or payload limits fail with a typed error.</p>
+<p>When an API source explicitly preserves its structured response, the app's
+initial source payload also contains <code>structured</code>, with <code>value</code>, <code>rootPath</code>,
+<code>sizeBytes</code>, availability and refresh metadata. This is a read-only companion
+to <code>rows</code>; it does not change the source schema or table behavior. Each selected
+source in <code>sources</code> has its own optional <code>structured</code> member.</p>
 <p>The app subscribes to data changes explicitly:</p>
 <pre><code class="language-javascript">qanvas.events.on(&quot;sourceChanged&quot;, event =&gt; {});
 qanvas.events.on(&quot;filtersChanged&quot;, event =&gt; {});

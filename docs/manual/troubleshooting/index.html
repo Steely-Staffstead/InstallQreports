@@ -450,6 +450,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#excel-says-qanvas-has-not-been-built-or-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Excel says Qanvas has not been built or installed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-from-qanvas-opens-the-editor-instead-of-importing-an-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get from Qanvas opens the editor instead of importing an image
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-support" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1492,6 +1514,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#excel-says-qanvas-has-not-been-built-or-installed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Excel says Qanvas has not been built or installed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-from-qanvas-opens-the-editor-instead-of-importing-an-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get from Qanvas opens the editor instead of importing an image
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-support" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1529,6 +1573,11 @@
 </ol>
 <h2 id="an-update-does-not-load">An update does not load</h2>
 <p>Close every Excel process before retrying. A running Excel process can retain an older add-in assembly.</p>
+<h2 id="excel-says-qanvas-has-not-been-built-or-installed">Excel says Qanvas has not been built or installed</h2>
+<p>The worksheet data may update successfully even when the following Canvas image refresh cannot locate <code>QanvasWeb.exe</code>. For an Enterprise installation, close Excel and repair or reinstall Qvitr Enterprise so the shared Qanvas component is installed beside the Office integrations.</p>
+<p>For a Visual Studio build, use the full Visual Studio MSBuild and rebuild the solution configuration used to start Excel. Confirm that <code>xlQAddin\bin\&lt;Configuration&gt;\CanvasWeb\QanvasWeb.exe</code> exists, then close every Excel process before starting the add-in again. <code>CANVASWEB_PATH</code> can temporarily point to a specific <code>QanvasWeb.exe</code> during development.</p>
+<h2 id="get-from-qanvas-opens-the-editor-instead-of-importing-an-image">Get from Qanvas opens the editor instead of importing an image</h2>
+<p>Close PowerPoint and every Qanvas window, then reopen the newly built or installed add-in. <strong>Get from Qanvas</strong> should render selected pages and tiles in an isolated background session. If a normal editor appears, verify that PowerPoint and Qanvas come from the same release and repair the Enterprise installation if necessary.</p>
 <h2 id="getting-support">Getting support</h2>
 <p>When reporting a problem, include the QReports version, Excel version, error message, and the steps required to reproduce it.</p>
 

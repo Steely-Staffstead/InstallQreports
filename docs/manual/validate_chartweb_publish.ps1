@@ -27,7 +27,10 @@ foreach ($file in $manifest.SelectNodes('//*[local-name()="file"]')) {
 
 $payload = Join-Path $latest.FullName 'CanvasWeb'
 $web = Join-Path $payload 'chartweb-web'
-$required = @('ChartWeb.exe', 'ChartWeb.dll', 'ChartWeb.deps.json', 'ChartWeb.runtimeconfig.json')
+$required = @('QanvasWeb.exe', 'QanvasWeb.dll', 'QanvasWeb.deps.json', 'QanvasWeb.runtimeconfig.json',
+    'web\index.html', 'web\app.js', 'web\styles.css', 'web\powerpoint-import.html',
+    'web\powerpoint-import.js', 'web\powerpoint-import.css')
+$required += @('ChartWeb.exe', 'ChartWeb.dll', 'ChartWeb.deps.json', 'ChartWeb.runtimeconfig.json')
 $required += @('app.js', 'index.html', 'styles.css', 'chartweb-theme.css',
     'shared-settings.js', 'palette-model.js', 'chart-renderer.js', 'measure-evaluator.js') |
     ForEach-Object { "chartweb-web\$_" }
@@ -58,6 +61,14 @@ foreach ($reference in $references) {
 
 if ($SourceRoot) {
     $sourceMap = @{
+        'QanvasWeb.exe' = 'CanvasWeb\publish\win-x64\QanvasWeb.exe'
+        'QanvasWeb.dll' = 'CanvasWeb\publish\win-x64\QanvasWeb.dll'
+        'web\index.html' = 'CanvasWeb\web\index.html'
+        'web\app.js' = 'CanvasWeb\web\app.js'
+        'web\styles.css' = 'CanvasWeb\web\styles.css'
+        'web\powerpoint-import.html' = 'CanvasWeb\web\powerpoint-import.html'
+        'web\powerpoint-import.js' = 'CanvasWeb\web\powerpoint-import.js'
+        'web\powerpoint-import.css' = 'CanvasWeb\web\powerpoint-import.css'
         'ChartWeb.exe' = 'ChartWeb\bin\Release\net8.0-windows\ChartWeb.exe'
         'chartweb-web\app.js' = 'ChartWeb\web\app.js'
         'chartweb-web\index.html' = 'ChartWeb\web\index.html'
@@ -75,8 +86,8 @@ if ($SourceRoot) {
         if (-not (Test-Path -LiteralPath $source)) { throw "Missing build source: $source" }
         $expected = Get-FileSha256 $source
         $actual = Get-FileSha256 $published
-        if ($actual -ne $expected) { throw "Stale ChartWeb payload: $relative differs from $source" }
+        if ($actual -ne $expected) { throw "Stale QanvasWeb/ChartWeb payload: $relative differs from $source" }
     }
 }
 
-Write-Host "ChartWeb ClickOnce assets and manifest verified: $($latest.Name)"
+Write-Host "QanvasWeb and ChartWeb ClickOnce assets and manifest verified: $($latest.Name)"

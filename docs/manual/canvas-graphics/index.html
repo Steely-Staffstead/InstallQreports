@@ -1572,9 +1572,16 @@ content alongside normal tiles.</p>
   <code>.htm</code> file, or dropped directly into the source editor.</li>
 <li>Configure multiple selected sources, row limits, filtered context, and named
   bindings in the HTML tile's <strong>Data contract</strong>. JavaScript reads
-  <code>payload.sources</code>, <code>parameters</code>, <code>bindings</code>, <code>theme</code>, and <code>filters</code>; simple
+  the keyed <code>payload.sources</code> collection or the ordered <code>payload.sourceList</code>,
+  plus <code>parameters</code>, <code>bindings</code>, <code>theme</code>, and <code>filters</code>; simple
   markup can use tokens such as <code>{{binding:revenue}}</code>, <code>{{parameter:Year}}</code>, and
   <code>{{theme:accent}}</code>.</li>
+<li>The Data contract includes built-in, no-AI examples. <strong>Source profile</strong> shows
+  source and connection metadata, nulls, completeness, distinct values,
+  average, low/high, median, mode and a selectable distribution. <strong>Record
+  explorer</strong> provides a searchable table, while <strong>KPI snapshot</strong> creates a
+  compact numeric and categorical overview. Structured API sources can also
+  install the searchable <strong>Structured JSON reader</strong>.</li>
 <li>Open <strong>HTML designer</strong> from the tile's context menu for a sandboxed live
   preview beside the complete document source. Drag the vertical divider to
   give either preview or code more room, or float the Code / AI pane and move it
