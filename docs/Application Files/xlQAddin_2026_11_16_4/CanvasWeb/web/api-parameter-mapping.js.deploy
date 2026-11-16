@@ -1,0 +1,237 @@
+(() => {
+  let parameterMappings = [];
+  const clone = value => structuredClone(value || []);
+  const read = (object, name, fallback = "") => object?.[name] ?? object?.[name[0].toLowerCase() + name.slice(1)] ?? fallback;
+  const parameterName = parameter => String(read(parameter, "Name", "")).trim();
+  const sameName = (left, right) => String(left || "").trim().toLowerCase() === String(right || "").trim().toLowerCase();
+  const mappingValue = (mapping, name, fallback = "") => read(mapping, name, fallback);
+
+  function selectedValue(parameter, property = "Value") {
+    if (!parameter) return "";
+    const display = sameName(property, "Display");
+    const noneSelected = read(parameter, "NoneSelected", false) === true;
+    if (noneSelected) return String(display ? read(parameter, "NoneCaption", "(None)") : read(parameter, "NoneValue", ""));
+    const values = read(parameter, display ? "CurrentDisplayValues" : "CurrentValues", []);
+    if (Array.isArray(values) && values.length > 1) {
+      const separator = String(read(parameter, "MultiValueSeparator", ","));
+      const prefix = String(read(parameter, "MultiValuePrefix", ""));
+      const suffix = String(read(parameter, "MultiValueSuffix", ""));
+      return values.map(value => `${prefix}${value}${suffix}`).join(separator);
+    }
+    const current = String(read(parameter, display ? "CurrentDisplayValue" : "CurrentValue", ""));
+    return current || String(read(parameter, "DefaultValue", ""));
+  }
+
+  function convertedPreview(value, conversion) {
+    const text = String(value ?? "").trim(), mode = String(conversion || "Auto").toLowerCase();
+    if (!text || mode === "auto" || mode === "text") return { value:text, valid:true };
+    if (mode === "integer") return /^[-+]?\d+$/.test(text) ? { value:String(Number.parseInt(text, 10)), valid:true } : { value:text, valid:false };
+    if (mode === "number") {
+      const number = Number(text.replace(",", "."));
+      return Number.isFinite(number) ? { value:String(number), valid:true } : { value:text, valid:false };
+    }
+    if (mode === "date") {
+      const date = new Date(text);
+      return Number.isNaN(date.valueOf()) ? { value:text, valid:false } : { value:date.toISOString().slice(0, 10), valid:true };
+    }
+    if (mode === "boolean") {
+      if (/^(true|1|yes)$/i.test(text)) return { value:"true", valid:true };
+      if (/^(false|0|no)$/i.test(text)) return { value:"false", valid:true };
+      return { value:text, valid:false };
+    }
+    return { value:text, valid:true };
+  }
+
+  function requestTokenUsages() {
+    const result = new Map();
+    const scan = (location, value) => {
+      const pattern = /\{\{\s*([^{}]+?)\s*\}\}/g;
+      for (const match of String(value || "").matchAll(pattern)) {
+        const name = match[1].split(".")[0].trim();
+        if (!name) continue;
+        const key = name.toLowerCase();
+        if (!result.has(key)) result.set(key, { name, locations:new Set() });
+        result.get(key).locations.add(location);
+      }
+    };
+    scan("Connection", $("connection")?.value);
+    scan("Connection", $("baseUrl")?.value);
+    scan("Path", $("path")?.value);
+    for (const [id, location] of [["queryRows", "Query"], ["headerRows", "Header"], ["formRows", "Form"]]) {
+      for (const row of readRows(id)) { scan(location, row.Key); scan(location, row.Value); }
+    }
+    for (const [id, location] of [
+      ["bodyText", "Body"], ["contentType", "Body"], ["graphql", "GraphQL"], ["variables", "GraphQL"],
+      ["flattenPath", "Response"], ["postFilter", "Response"], ["dataProperty", "Pagination"],
+      ["nextLink", "Pagination"], ["offsetParam", "Pagination"], ["limitParam", "Pagination"],
+      ["loopConnection", "Loop"], ["loopQuery", "Loop"], ["loopColumn", "Loop"], ["loopToken", "Loop"]
+    ]) scan(location, $(id)?.value);
+    return result;
+  }
+
+  function findParameter(list, name) {
+    return (list || []).find(parameter => sameName(parameterName(parameter), name));
+  }
+
+  function effectiveValue(target, source, property, conversion) {
+    const direct = findParameter(apiContextParameters, target);
+    let parameter = direct, origin = direct ? `Canvas · ${parameterName(direct)} (direct)` : "";
+    if (!parameter && source) {
+      parameter = findParameter(apiContextParameters, source);
+      if (parameter) origin = `Canvas · ${parameterName(parameter)} → ${target}`;
+    }
+    if (!parameter) {
+      parameter = findParameter(localParameters, target);
+      if (parameter) origin = "API-local fallback";
+    }
+    if (!parameter) {
+      parameter = findParameter(connectionParameters, target);
+      if (parameter) origin = "Connection fallback";
+    }
+    if (!parameter) return { value:"Not resolved", origin:"No matching value", valid:false, missing:true };
+    const preview = convertedPreview(selectedValue(parameter, direct ? "Value" : property), conversion);
+    return { ...preview, origin };
+  }
+
+  function updateMappingButton() {
+    const button = $("parameterMapping");
+    if (!button) return;
+    const tokenCount = requestTokenUsages().size;
+    button.textContent = parameterMappings.length ? `Parameter mapping (${parameterMappings.length})` : "Parameter mapping";
+    button.title = `${tokenCount} request token(s) detected. Canvas values override API-local and connection defaults.`;
+  }
+
+  function validateRequestParameters() {
+    const usages=requestTokenUsages(),mappings=new Map(parameterMappings.map(mapping=>[String(mappingValue(mapping,"TargetName","")).trim().toLowerCase(),mapping])),issues=[],loopToken=$('loopEnabled')?.checked?String($('loopToken')?.value||'value').trim():'';
+    for(const usage of usages.values()){
+      if(/^secret\s*:/i.test(usage.name)||sameName(usage.name,loopToken))continue;
+      const mapping=mappings.get(usage.name.toLowerCase()),source=String(mappingValue(mapping,"SourceName","")),property=String(mappingValue(mapping,"ValueProperty","Value"))||"Value",conversion=String(mappingValue(mapping,"Conversion","Auto"))||"Auto",resolved=effectiveValue(usage.name,source,property,conversion);
+      if(resolved.missing)issues.push({name:usage.name,reason:"is not defined in the current Canvas, API or connection parameters",locations:[...usage.locations]});
+      else if(!resolved.valid)issues.push({name:usage.name,reason:"has a value that cannot be converted",locations:[...usage.locations]});
+      else if(!String(resolved.value||"").trim())issues.push({name:usage.name,reason:"has no selected or default value",locations:[...usage.locations]});
+    }
+    return issues;
+  }
+
+  function openMappingInspector() {
+    const usages = requestTokenUsages(), byTarget = new Map();
+    for (const mapping of parameterMappings) {
+      const target = String(mappingValue(mapping, "TargetName", "")).trim();
+      if (target) byTarget.set(target.toLowerCase(), {
+        target,
+        source:String(mappingValue(mapping, "SourceName", "")),
+        property:String(mappingValue(mapping, "ValueProperty", "Value")) || "Value",
+        conversion:String(mappingValue(mapping, "Conversion", "Auto")) || "Auto",
+        detected:usages.has(target.toLowerCase())
+      });
+    }
+    for (const [key, usage] of usages) if (!byTarget.has(key)) byTarget.set(key, { target:usage.name, source:"", property:"Value", conversion:"Auto", detected:true });
+    const items = [...byTarget.values()];
+    const overlay = document.createElement("div");
+    overlay.className = "api-map-overlay";
+    overlay.innerHTML = `<section class="api-map-dialog" role="dialog" aria-modal="true" aria-labelledby="apiMapTitle">
+      <header><div><h2 id="apiMapTitle">Parameter mapping inspector</h2><p>Canvas values have highest priority. API-local and connection values remain fallbacks.</p></div><button type="button" data-map-close aria-label="Close">×</button></header>
+      <div class="api-map-precedence"><strong>Value used at run time</strong><ol><li>Canvas/runtime mapping</li><li>API-local value</li><li>Connection default</li><li>Blank or validation error</li></ol><p>The first available value wins. The resolved preview below shows the winner before you run the request.</p></div>
+      <div class="api-map-legend"><span><i class="canvas"></i>Canvas/runtime</span><b>›</b><span><i class="api"></i>API token</span><b>›</b><span><i class="fallback"></i>Local fallback</span></div>
+      <div class="api-map-columns"><span>API token and usage</span><span>Canvas source</span><span>Value</span><span>Conversion</span><span>Resolved preview</span><span></span></div>
+      <div class="api-map-list"></div>
+      <footer><button type="button" data-map-add>＋ Add mapping</button><span class="api-map-error" aria-live="polite"></span><span class="spacer"></span><button type="button" data-map-close>Cancel</button><button type="button" class="primary" data-map-apply>Apply mapping</button></footer>
+    </section>`;
+    document.body.append(overlay);
+    const list = overlay.querySelector(".api-map-list"), error = overlay.querySelector(".api-map-error");
+    const close = () => overlay.remove();
+
+    function render() {
+      const contextNames = [...new Set(apiContextParameters.map(parameterName).filter(Boolean))].sort((a,b)=>a.localeCompare(b, undefined, { sensitivity:"base" }));
+      list.innerHTML = items.length ? items.map((item, index) => {
+        const usage = usages.get(item.target.toLowerCase()), locations = usage ? [...usage.locations] : [];
+        const missingSource = item.source && !contextNames.some(name => sameName(name, item.source));
+        const sourceOptions = `${item.source && missingSource ? `<option value="${esc(item.source)}" selected>${esc(item.source)} · unavailable</option>` : ""}${contextNames.map(name=>`<option value="${esc(name)}" ${sameName(name,item.source)?"selected":""}>${esc(name)}</option>`).join("")}`;
+        return `<article class="api-map-row" data-map-index="${index}">
+          <div class="api-map-target"><input data-map-target value="${esc(item.target)}" aria-label="API token"><div class="api-map-usage">${locations.length ? locations.map(location=>`<span>${esc(location)}</span>`).join("") : "<em>Not currently used</em>"}</div></div>
+          <select data-map-source aria-label="Canvas source"><option value="">Automatic · same name</option>${sourceOptions}</select>
+          <select data-map-property aria-label="Value property"><option ${sameName(item.property,"Value")?"selected":""}>Value</option><option ${sameName(item.property,"Display")?"selected":""}>Display</option></select>
+          <select data-map-conversion aria-label="Conversion">${["Auto","Text","Integer","Number","Date","Boolean"].map(mode=>`<option ${sameName(mode,item.conversion)?"selected":""}>${mode}</option>`).join("")}</select>
+          <div class="api-map-preview"><strong></strong><small></small><em></em></div>
+          <button type="button" class="api-map-remove" data-map-remove title="Remove this mapping">×</button>
+        </article>`;
+      }).join("") : `<div class="api-map-empty"><strong>No parameter tokens detected</strong><p>Add tokens such as <code>{{Year}}</code> to the request, or create a mapping manually.</p></div>`;
+      list.querySelectorAll(".api-map-row").forEach(row => {
+        const index = Number(row.dataset.mapIndex), item = items[index];
+        const refresh = () => {
+          item.target = row.querySelector("[data-map-target]").value.trim();
+          item.source = row.querySelector("[data-map-source]").value;
+          item.property = row.querySelector("[data-map-property]").value;
+          item.conversion = row.querySelector("[data-map-conversion]").value;
+          const local = findParameter(localParameters, item.target), connection = findParameter(connectionParameters, item.target);
+          const resolved = effectiveValue(item.target, item.source, item.property, item.conversion), preview = row.querySelector(".api-map-preview");
+          preview.querySelector("strong").textContent = resolved.value || "Blank";
+          preview.querySelector("small").textContent = resolved.origin;
+          preview.querySelector("em").textContent = local ? `API fallback: ${selectedValue(local) || "blank"}` : connection ? `Connection fallback: ${selectedValue(connection) || "blank"}` : "No stored fallback";
+          preview.classList.toggle("invalid", !resolved.valid);
+        };
+        row.querySelectorAll("input,select").forEach(control => control.addEventListener("input", refresh));
+        row.querySelector("[data-map-remove]").onclick = () => {
+          if (item.detected) { item.source=""; item.property="Value"; item.conversion="Auto"; render(); }
+          else { items.splice(index,1); render(); }
+        };
+        refresh();
+      });
+    }
+
+    overlay.querySelectorAll("[data-map-close]").forEach(button => button.onclick = close);
+    overlay.addEventListener("mousedown", event => { if (event.target === overlay) close(); });
+    overlay.querySelector("[data-map-add]").onclick = () => { items.push({ target:"", source:"", property:"Value", conversion:"Auto", detected:false }); render(); list.lastElementChild?.querySelector("[data-map-target]")?.focus(); };
+    overlay.querySelector("[data-map-apply]").onclick = () => {
+      const rows = [...list.querySelectorAll(".api-map-row")], next = [], names = new Set();
+      for (const row of rows) {
+        const target = row.querySelector("[data-map-target]").value.trim(), source = row.querySelector("[data-map-source]").value.trim(), valueProperty = row.querySelector("[data-map-property]").value, conversion = row.querySelector("[data-map-conversion]").value;
+        if (!target) { error.textContent = "Every mapping needs an API token name."; return; }
+        const key = target.toLowerCase();
+        if (names.has(key)) { error.textContent = `Duplicate mapping for ${target}.`; return; }
+        names.add(key);
+        if (source || valueProperty !== "Value" || conversion !== "Auto") next.push({ TargetName:target, SourceName:source, ValueProperty:valueProperty, Conversion:conversion });
+      }
+      parameterMappings = next;
+      updateMappingButton();
+      window.ApiWorkspaceApplyState?.update();
+      close();
+    };
+    render();
+  }
+
+  const baseSelectEndpoint = selectEndpoint;
+  selectEndpoint = endpoint => {
+    baseSelectEndpoint(endpoint);
+    parameterMappings = clone(read(endpoint, "ParameterMappings", []));
+    updateMappingButton();
+  };
+  const baseNewRequest = newRequest;
+  newRequest = () => { parameterMappings=[]; baseNewRequest(); updateMappingButton(); };
+  const baseEndpointObject = endpointObject;
+  endpointObject = () => ({ ...baseEndpointObject(), ParameterMappings:clone(parameterMappings) });
+  const baseSpec = spec;
+  spec = () => ({ ...baseSpec(), ParameterMappings:clone(parameterMappings) });
+
+  chrome.webview.addEventListener("message", event => {
+    if (event.data?.type !== "apiWorkspaceContext") return;
+    const source = event.data.spec;
+    if (source && (Object.prototype.hasOwnProperty.call(source, "ParameterMappings") || Object.prototype.hasOwnProperty.call(source, "parameterMappings"))) {
+      parameterMappings = clone(read(source, "ParameterMappings", []));
+    }
+    requestAnimationFrame(updateMappingButton);
+  });
+  window.addEventListener("DOMContentLoaded", () => {
+    const parameterButton = $("apiParameters"), button = document.createElement("button");
+    button.id = "parameterMapping";
+    button.type = "button";
+    button.className = "scope-action";
+    button.textContent = "Parameter mapping";
+    button.onclick = openMappingInspector;
+    parameterButton.after(button);
+    const structured=$("preserveStructuredJson")?.closest("label");
+    if(structured&&!document.querySelector(".api-output-contract"))structured.insertAdjacentHTML("beforebegin",`<section class="api-output-contract"><header><strong>Two outputs from the same response</strong><span>Choose consumers, not a competing format.</span></header><div><article><b>Flattened table</b><p>Rows and columns for tables, matrices, charts, relationships, measures and filters.</p></article><article><b>Structured JSON companion</b><p>A read-only object for Interactive app and HTML experience tiles. It does not replace the flattened table.</p></article></div></section>`);
+    updateMappingButton();
+  });
+  window.ApiParameterMapping={validateRequestParameters,open:openMappingInspector};
+})();

@@ -1,0 +1,50 @@
+(() => {
+  const esc=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+  const sourceConfigured=source=>{
+    const query=source?.query||{},data=query.data||{};
+    return !!(source?.localTable||source?.kind==="gantt"||query.connectionName||query.queryText||source?.webApi?.url||(data.columns||[]).length||(data.rows||[]).length);
+  };
+  const sourceFreshness=model=>(model.sources||[]).some(source=>!!(source.query?.lastRefreshUtc||source.localTable?.updatedUtc));
+  const realObjects=model=>(model.pages||[]).flatMap(page=>[...(page.tiles||[]),...(page.graphics||[])]).filter(item=>item.kind!=="layoutPlaceholder"&&!['<p>Click to add title</p>','<p>Click to add text</p>'].includes(String(item.html||'')));
+  function progress(model){
+    const publication=model?.publication||{},compatibility=publication.viewerCompatibility||{},hasSource=(model?.sources||[]).some(sourceConfigured),objects=realObjects(model||{}),hasContent=objects.length>0,hasFreshness=!!publication.dataFreshnessUtc||sourceFreshness(model||{}),hasPublisher=!!String(publication.publisherName||"").trim();
+    const steps=[
+      {id:"data",title:"Connect data",detail:hasSource?"A source is configured.":"Choose or create the data the report will use.",done:hasSource,action:"Open data setup"},
+      {id:"content",title:"Build the experience",detail:hasContent?`${objects.length} report object${objects.length===1?"":"s"} ready.`:"Choose a layout and add the first real tile or graphic.",done:hasContent,action:"Add content"},
+      {id:"viewer",title:"Test the recipient view",detail:compatibility.testedUtc?`Viewer tested ${new Date(compatibility.testedUtc).toLocaleDateString()}.`:"Check interaction, scrolling and locked design controls.",done:!!compatibility.testedUtc,action:"Open publish checks"},
+      {id:"publish",title:"Identify the publication",detail:hasPublisher&&hasFreshness?"Publisher and data freshness are recorded.":"Add the owner and data freshness recipients should see.",done:hasPublisher&&hasFreshness,action:"Add publication details"}
+    ];
+    return{steps,done:steps.filter(step=>step.done).length,total:steps.length,next:steps.find(step=>!step.done)||null};
+  }
+  function loadStyles(){
+    if(document.querySelector('link[href*="creator-start.css"]'))return;
+    const link=document.createElement("link"),script=document.currentScript?.src||"";link.rel="stylesheet";link.href=`${script.includes("/app/")?"app/":""}creator-start.css?v=20261109-2`;document.head.append(link);
+  }
+  loadStyles();
+  window.QvitrCreatorStart={progress,install(ctx){
+    const model=()=>ctx.model(),empty=document.querySelector("#emptyState"),layoutDialog=empty?.querySelector("[data-creator-layout-dialog]");let dialog=null;
+    const fileActions=document.querySelector(".file-actions"),help=document.querySelector(".help-menu-wrap");
+    let launch=fileActions?.querySelector('[data-action="creatorGuide"]');
+    if(!launch&&fileActions){launch=document.createElement("button");launch.type="button";launch.className="creator-guide-launch";launch.dataset.action="creatorGuide";launch.innerHTML='<span aria-hidden="true">✓</span><span data-guide-label>Guide</span><small data-guide-count>0/4</small>';launch.title="Open the report setup and publish guide";fileActions.insertBefore(launch,help||null);}
+    function stepHtml(step){return `<article class="creator-guide-step ${step.done?"complete":"pending"}" data-guide-step="${step.id}"><span class="creator-guide-check" aria-hidden="true">${step.done?"✓":esc(step.id.slice(0,1))}</span><div><h3>${esc(step.title)}</h3><p>${esc(step.detail)}</p></div><button type="button" data-guide-action="${step.id}">${esc(step.done?"Review":step.action)}</button></article>`;}
+    function ensureDialog(){
+      if(dialog)return dialog;
+      dialog=document.createElement("dialog");dialog.className="creator-guide-dialog";dialog.innerHTML='<div class="creator-guide-shell"><header><div><p>Creator workflow</p><h2>Report guide</h2><span data-guide-summary></span></div><button type="button" data-guide-close aria-label="Close report guide">×</button></header><div class="creator-guide-progress" aria-hidden="true"><i data-guide-progress></i></div><section data-guide-steps></section><footer><span>The checks follow the Qanvas document and update automatically.</span><button type="button" data-guide-close>Close</button></footer></div>';document.body.append(dialog);
+      dialog.querySelectorAll("[data-guide-close]").forEach(button=>button.onclick=()=>dialog.close());
+      dialog.addEventListener("click",event=>{const action=event.target.closest("[data-guide-action]")?.dataset.guideAction;if(!action)return;dialog.close();if(action==="data")ctx.openData?.();else if(action==="content")ctx.openContent?.();else ctx.openPublish?.();});
+      return dialog;
+    }
+    function update(){
+      const state=progress(model());
+      if(launch){launch.hidden=ctx.canEdit&&!ctx.canEdit();launch.querySelector("[data-guide-count]").textContent=`${state.done}/${state.total}`;launch.classList.toggle("complete",state.done===state.total);launch.title=state.next?`Next: ${state.next.title}`:"Report setup is complete";}
+      const compact=empty?.querySelector("[data-creator-progress]");if(compact){compact.innerHTML=`<span><b>${state.done}/${state.total}</b> ready</span><span>${esc(state.next?`Next: ${state.next.title}`:"Ready to publish")}</span>`;compact.classList.toggle("complete",state.done===state.total);}
+      if(dialog){dialog.querySelector("[data-guide-summary]").textContent=state.done===state.total?"Ready to share with confidence":`${state.done} of ${state.total} checks complete`;dialog.querySelector("[data-guide-progress]").style.width=`${state.done/state.total*100}%`;dialog.querySelector("[data-guide-steps]").innerHTML=state.steps.map(stepHtml).join("");}
+      return state;
+    }
+    function open(){if(ctx.canEdit&&!ctx.canEdit())return;ensureDialog();update();dialog.showModal();}
+    launch?.addEventListener("click",event=>{event.preventDefault();open();});
+    empty?.addEventListener("click",event=>{if(event.target.closest("[data-empty-page-layout]")){layoutDialog?.close();return;}const layoutOpen=event.target.closest('[data-action="toggleCreatorLayouts"]');if(layoutOpen){event.preventDefault();layoutDialog?.showModal();return;}if(event.target.closest("[data-creator-layout-close]")){event.preventDefault();layoutDialog?.close();return;}const guide=event.target.closest('[data-action="creatorGuide"]');if(guide){event.preventDefault();open();return;}const start=event.target.closest("[data-creator-start]");if(!start)return;event.preventDefault();ctx.startJourney?.(start.dataset.creatorStart,start.dataset.creatorLayout);});
+    update();
+    return{open,update,progress:()=>progress(model())};
+  }};
+})();

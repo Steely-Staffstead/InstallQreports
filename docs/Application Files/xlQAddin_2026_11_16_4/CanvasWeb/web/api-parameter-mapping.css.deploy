@@ -1,0 +1,129 @@
+.api-map-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10020;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--qreports-header, #17213c) 64%, transparent);
+}
+
+.api-map-dialog {
+  width: min(1420px, 96vw);
+  max-height: min(880px, 92vh);
+  display: grid;
+  grid-template-rows: auto auto auto auto minmax(160px, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid var(--qreports-grid, #d6deeb);
+  border-radius: 16px;
+  background: var(--qreports-surface, #fff);
+  color: var(--qreports-text, #17213c);
+  box-shadow: 0 24px 80px #08122666;
+}
+
+.api-map-dialog > header,
+.api-map-dialog > footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.api-map-dialog > header {
+  justify-content: space-between;
+  background: var(--qreports-header, #28345d);
+  color: var(--qreports-header-text, #fff);
+}
+
+.api-map-dialog h2,
+.api-map-dialog p { margin: 0; }
+.api-map-dialog header p { margin-top: 4px; opacity: .78; }
+.api-map-dialog header button { background: transparent; color: inherit; border-color: color-mix(in srgb, currentColor 35%, transparent); }
+.api-map-precedence{display:flex;align-items:center;gap:14px;padding:11px 20px;border-bottom:1px solid var(--qreports-grid,#d6deeb);background:color-mix(in srgb,var(--qreports-accent,#6686ee) 7%,var(--qreports-surface,#fff));font-size:12px}.api-map-precedence ol{display:flex;gap:18px;margin:0;padding-left:22px;font-weight:650}.api-map-precedence p{margin-left:auto;max-width:420px;color:color-mix(in srgb,var(--qreports-text,#17213c) 70%,transparent)}
+.api-output-contract{grid-column:1/-1;margin:4px 0 12px;padding:12px;border:1px solid var(--qreports-grid,#d6deeb);border-radius:10px;background:color-mix(in srgb,var(--qreports-accent,#6686ee) 6%,var(--qreports-surface,#fff))}.api-output-contract header{display:flex;justify-content:space-between;gap:12px}.api-output-contract header span,.api-output-contract p{color:color-mix(in srgb,var(--qreports-text,#17213c) 68%,transparent)}.api-output-contract>div{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.api-output-contract p{margin:3px 0 0;font-size:12px;line-height:1.4}
+
+.api-map-legend {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--qreports-grid, #d6deeb);
+  background: color-mix(in srgb, var(--qreports-surface, #fff) 90%, var(--qreports-header, #28345d));
+  font-size: 13px;
+}
+.api-map-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.api-map-legend i { width: 9px; height: 9px; border-radius: 50%; background: var(--qreports-grid, #9ca8bc); }
+.api-map-legend i.canvas { background: var(--qreports-accent, #6686ee); }
+.api-map-legend i.api { background: var(--qreports-positive, #398d55); }
+.api-map-legend i.fallback { background: var(--qreports-color4, #d1a84d); }
+
+.api-map-columns,
+.api-map-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.35fr) minmax(170px, 1.15fr) 112px 120px minmax(220px, 1.5fr) 38px;
+  gap: 9px;
+  align-items: center;
+}
+.api-map-columns {
+  padding: 9px 20px;
+  border-bottom: 1px solid var(--qreports-grid, #d6deeb);
+  color: color-mix(in srgb, var(--qreports-text, #17213c) 68%, transparent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+.api-map-list { overflow: auto; padding: 12px 20px 18px; }
+.api-map-row {
+  margin-bottom: 9px;
+  padding: 11px;
+  border: 1px solid var(--qreports-grid, #d6deeb);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--qreports-surface, #fff) 94%, var(--qreports-header, #28345d));
+}
+.api-map-row input,
+.api-map-row select {
+  min-width: 0;
+  width: 100%;
+  padding: 8px 9px;
+  border: 1px solid var(--qreports-grid, #cbd5e5);
+  border-radius: 8px;
+  background: var(--qreports-surface, #fff);
+  color: var(--qreports-text, #17213c);
+}
+.api-map-target { min-width: 0; }
+.api-map-target input { font-family: Consolas, monospace; font-weight: 700; }
+.api-map-usage { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.api-map-usage span,
+.api-map-usage em {
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--qreports-accent, #6686ee) 13%, var(--qreports-surface, #fff));
+  color: color-mix(in srgb, var(--qreports-text, #17213c) 72%, transparent);
+  font-size: 10px;
+  font-style: normal;
+}
+.api-map-preview { min-width: 0; padding: 4px 7px; border-left: 3px solid var(--qreports-positive, #398d55); }
+.api-map-preview strong,
+.api-map-preview small,
+.api-map-preview em { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.api-map-preview small,
+.api-map-preview em { margin-top: 2px; color: color-mix(in srgb, var(--qreports-text, #17213c) 66%, transparent); font-size: 11px; font-style: normal; }
+.api-map-preview.invalid { border-color: var(--qreports-negative, #a33b31); }
+.api-map-preview.invalid strong { color: var(--qreports-negative, #a33b31); }
+.api-map-remove { width: 34px; height: 34px; padding: 0; color: var(--qreports-negative, #a33b31); }
+.api-map-empty { padding: 40px; text-align: center; color: color-mix(in srgb, var(--qreports-text, #17213c) 72%, transparent); }
+.api-map-empty p { margin-top: 8px; }
+.api-map-dialog > footer { border-top: 1px solid var(--qreports-grid, #d6deeb); }
+.api-map-dialog .spacer { flex: 1; }
+.api-map-error { color: var(--qreports-negative, #a33b31); font-size: 12px; font-weight: 600; }
+.scope-action.parameter-attention{border-color:var(--qreports-negative,#a33b31);color:var(--qreports-negative,#a33b31);box-shadow:0 0 0 2px color-mix(in srgb,var(--qreports-negative,#a33b31) 18%,transparent)}
+
+@media (max-width: 980px) {
+  .api-map-precedence{align-items:flex-start;flex-direction:column}.api-map-precedence ol{flex-wrap:wrap}.api-map-precedence p{margin-left:0}
+  .api-map-columns { display: none; }
+  .api-map-row { grid-template-columns: 1fr 1fr; }
+  .api-map-target,
+  .api-map-preview { grid-column: 1 / -1; }
+  .api-map-remove { justify-self: end; }
+}

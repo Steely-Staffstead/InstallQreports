@@ -1,0 +1,94 @@
+// Tracks the working API definition separately from the reusable API library.
+let apiApplyStateReady = false;
+
+function apiApplySnapshot() {
+  return spec();
+}
+
+const apiCompletionState = QReportsCompletion.create({
+  snapshot: apiApplySnapshot,
+  status: "#apiApplyStatus",
+  dirtyTitle: "The current API draft differs from the definition supplied by the caller.",
+  cleanTitle: "The current API draft matches the definition supplied by the caller.",
+  discardMessage: "Discard unapplied API changes? Changes saved to the API library remain saved.",
+  confirm: message => window.QReportsDialogs.confirm(message)
+});
+
+function apiHasUnappliedChanges() {
+  return apiApplyStateReady && apiCompletionState.isDirty();
+}
+
+function updateApiApplyStatus() {
+  apiCompletionState.update();
+}
+
+function captureApiApplyBaseline() {
+  if (!apiApplySnapshot()) return false;
+  apiApplyStateReady = true;
+  apiCompletionState.capture();
+  return true;
+}
+
+function scheduleApiApplyBaselineCapture(attempt = 0) {
+  setTimeout(() => {
+    if (typeof apiBootstrapLoaded !== "undefined" && apiBootstrapLoaded &&
+        typeof pendingQueryApiSpec !== "undefined" && !pendingQueryApiSpec &&
+        captureApiApplyBaseline()) return;
+    if (attempt < 20) scheduleApiApplyBaselineCapture(attempt + 1);
+  }, attempt ? 50 : 0);
+}
+
+async function confirmDiscardApiWorkspace() {
+  if (!apiApplyStateReady) return true;
+  return apiCompletionState.confirmDiscard();
+}
+
+document.addEventListener("input", event => {
+  if (event.target.closest("#search,#emailLoginCode,#emailLoginAddress")) return;
+  queueMicrotask(updateApiApplyStatus);
+}, true);
+document.addEventListener("change", event => {
+  if (event.target.closest("#emailLoginCode,#emailLoginAddress")) return;
+  queueMicrotask(updateApiApplyStatus);
+}, true);
+document.addEventListener("click", event => {
+  if (event.target.closest("#run,#returnExcel,#close,#saveEndpoint,#saveConnection,#reload,#requestTabs,#responseTabs")) return;
+  setTimeout(updateApiApplyStatus, 0);
+}, true);
+
+chrome.webview.addEventListener("message", event => {
+  if (event.data?.type === "apiWorkspaceContext") scheduleApiApplyBaselineCapture();
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const save = document.getElementById("saveEndpoint");
+  if (save) save.onclick = async () => {
+    try {
+      await post("apiSaveEndpoint", { endpoint:endpointObject() });
+      toast(apiCompletionState.receipt({action:"Saved",item:"API definition",destination:"the API library",refreshed:false,detail:"Apply updates the active source"}));
+      await load();
+      updateApiApplyStatus();
+    } catch (error) { toast(error.message); }
+  };
+  const close = document.getElementById("close");
+  if (close) close.onclick = async () => {
+    if (await confirmDiscardApiWorkspace()) chrome.webview.postMessage({ type:"closeWindow" });
+  };
+  const create = document.getElementById("newRequest");
+  if (create) create.onclick = async () => {
+    if (!await confirmDiscardApiWorkspace()) return;
+    newRequest();
+    apiApplyStateReady = false;
+    scheduleApiApplyBaselineCapture();
+  };
+  scheduleApiApplyBaselineCapture();
+  apiCompletionState.bindKeyboard({save:()=>save?.click(),apply:()=>document.getElementById("returnExcel")?.click(),applyAndUpdate:()=>document.getElementById("returnExcelAndUpdate")?.click(),cancel:()=>close?.click(),ignore:event=>!!event.target.closest(".modal:not(.hidden),dialog[open]")});
+});
+
+window.ApiWorkspaceApplyState = {
+  capture: captureApiApplyBaseline,
+  update: updateApiApplyStatus,
+  isDirty: apiHasUnappliedChanges,
+  confirmDiscard: confirmDiscardApiWorkspace,
+  receipt: values => apiCompletionState.publishReceipt("#apiApplyStatus", values)
+};

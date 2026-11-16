@@ -1,0 +1,21 @@
+(() => {
+  const labels=Object.freeze({save:"Save",apply:"Apply",applyAndUpdate:"Apply & update",cancel:"Cancel",close:"Close",return:"Return"});
+  const stable=value=>{try{const normalize=item=>Array.isArray(item)?item.map(normalize):item&&typeof item==="object"?Object.fromEntries(Object.keys(item).sort().map(key=>[key,normalize(item[key])])):item;return JSON.stringify(normalize(value))}catch{return""}};
+  function create(options={}){
+    const snapshot=typeof options.snapshot==="function"?options.snapshot:()=>null;
+    const status=typeof options.status==="string"&&typeof document!=="undefined"?document.querySelector(options.status):options.status;
+    let baseline="",ready=false;
+    const read=()=>stable(snapshot());
+    const capture=()=>{baseline=read();ready=true;update();return baseline};
+    const isDirty=()=>ready&&read()!==baseline;
+    const update=()=>{const dirty=isDirty();if(status){status.textContent=dirty?(options.dirtyText||"Unapplied changes"):(options.cleanText||"No unapplied changes");status.classList.toggle("dirty",dirty);status.dataset.completionState=dirty?"dirty":"clean";status.title=dirty?(options.dirtyTitle||"Changes have not been applied."):(options.cleanTitle||"The workspace matches the applied version.");}return dirty};
+    const confirmDiscard=async(message=options.discardMessage||"Discard unapplied changes?",force=false)=>!force&&!isDirty()||await (options.confirm||globalThis.QReportsDialogs?.confirm||globalThis.confirm)(message);
+    const receipt=({action="Applied",item="changes",destination="the current document",refreshed=false,detail=""}={})=>`${action} ${item} · saved in ${destination} · data ${refreshed?"refreshed":"not refreshed"}${detail?` · ${detail}`:""}`;
+    const publishReceipt=(target,values)=>{const message=receipt(values),node=typeof target==="string"?document.querySelector(target):target;if(node)node.textContent=message;options.onReceipt?.(message,values);return message};
+    const complete=async({mode="apply",apply,update:refresh,item="changes",destination="the current document",target,detail=""}={})=>{const applied=await apply?.();if(applied===false)return{ok:false,applied:false,refreshed:false};let refreshed=false;if(mode==="applyAndUpdate"){const result=await refresh?.();if(result===false)return{ok:false,applied:true,refreshed:false};refreshed=true;}capture();const values={action:mode==="save"?"Saved":"Applied",item,destination,refreshed,detail},message=publishReceipt(target,values);return{ok:true,applied:true,refreshed,message}};
+    const bindKeyboard=({save,apply,applyAndUpdate,cancel,scope=document,ignore}={})=>{const handler=async event=>{if(event.defaultPrevented||event.isComposing||ignore?.(event))return;const command=event.ctrlKey||event.metaKey,key=String(event.key||"").toLowerCase();let action=null;if(command&&key==="s"&&!event.altKey)action=save;else if(command&&event.key==="Enter"&&!event.altKey)action=event.shiftKey&&applyAndUpdate?applyAndUpdate:apply;else if(event.key==="Escape"&&!command&&!event.altKey&&!event.shiftKey)action=cancel;if(!action)return;event.preventDefault();event.stopPropagation();await action(event);};scope.addEventListener("keydown",handler);return()=>scope.removeEventListener("keydown",handler)};
+    return{capture,isDirty,update,confirmDiscard,receipt,publishReceipt,complete,bindKeyboard,labels};
+  }
+  globalThis.QReportsCompletion={labels,create,receipt:options=>create().receipt(options)};
+  if(typeof module!=="undefined"&&module.exports)module.exports=globalThis.QReportsCompletion;
+})();

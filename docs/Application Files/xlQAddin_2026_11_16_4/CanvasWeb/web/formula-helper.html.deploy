@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Formula Helper</title>
+  <link rel="stylesheet" href="formula-helper.css">
+  <link rel="stylesheet" href="formula-helper-extensions.css">
+  <script src="shared-settings.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-mark">Q</div>
+    <div class="title-block"><span>QREPORTS BUILDER</span><h1>Formula Helper</h1><p>Build readable report formulas without memorising the syntax.</p></div>
+    <div class="header-actions"><span class="save-state"><i></i> Ready to build</span><button class="ghost" id="fieldPaneToggle" aria-pressed="false">☰ Fields</button><button class="ghost" id="previewPaneToggle" aria-pressed="false">▤ Preview</button><button class="ghost" id="languageReference">Reference</button><button class="ghost" id="close">Close</button><button class="primary" id="insert">Insert into Excel</button></div>
+  </header>
+  <main>
+    <aside class="library">
+      <div class="library-sticky">
+        <div class="aside-head"><div><span class="eyebrow">AVAILABLE ITEMS</span><h2>Fields</h2></div><button id="reload" class="icon" title="Reload">↻</button></div>
+        <label class="search"><span>⌕</span><input id="search" placeholder="Search fields, measures or parameters"></label>
+        <nav class="library-tabs" aria-label="Field types"><button class="active" data-kind="all">All</button><button data-kind="field">Fields</button><button data-kind="measure">Measures</button><button data-kind="parameter">Parameters</button></nav>
+      </div>
+      <div id="items" class="items"></div>
+      <div class="drag-tip"><b>Tip</b><span>Click an item to add it to the currently open section.</span></div>
+    </aside>
+    <section class="builder">
+      <div class="builder-intro"><div><span class="eyebrow">1 · CHOOSE AN OUTPUT</span><h2>What do you want to create?</h2></div><span id="summary" class="summary">Table · 0 optional settings</span></div>
+      <div class="choice-grid" id="modeChoices">
+        <button class="choice active" data-mode="report"><span class="choice-icon">▦</span><span><b>Report output</b><small>Table, dynamic table, pivot, summary or subtotal.</small></span><i>✓</i></button>
+        <button class="choice" data-mode="companion"><span class="choice-icon">ƒx</span><span><b>Companion row</b><small>Column, measure, parameter or crossfilter row.</small></span><i>✓</i></button>
+        <button class="choice" data-mode="control"><span class="choice-icon">◇</span><span><b>Control setup</b><small>Parameter, report-template or sheet protection setup.</small></span><i>✓</i></button>
+      </div>
+      <div class="type-row"><label><span>Command</span><select id="type"></select></label><div class="type-help"><b id="typeTitle">Table output</b><span id="typeHelp">Creates a standard report table. Add only the options you need below.</span></div></div>
+      <div class="section-title"><div><span class="eyebrow">2 · OPTIONAL SETTINGS</span><h2>Shape the result</h2></div><p>Closed sections are not included in the formula.</p></div>
+      <div id="options" class="options"></div>
+    </section>
+    <aside class="preview-pane">
+      <div class="preview-head"><div><span class="eyebrow">LIVE PREVIEW</span><h2>QRep code</h2></div><button id="copy" class="icon" title="Copy code">⧉</button></div>
+      <pre id="preview"></pre>
+      <div class="explain"><span>What this does</span><p id="explain">Creates a report table from the selected fields.</p></div>
+      <div class="active-list"><span>Included in this formula</span><div id="activeList"></div></div>
+      <button class="primary wide" id="insertBottom">Insert into active cell</button><button class="secondary wide" id="loadCell">Load from active cell</button>
+      <p class="footnote">Nothing is written to Excel until you choose Insert.</p>
+    </aside>
+  </main>
+  <dialog id="referenceDialog"><div class="dialog-head"><div><span class="eyebrow">XLQUERY LANGUAGE</span><h2>Legal commands and functions</h2></div><button class="icon" id="closeReference" aria-label="Close">×</button></div><label class="search"><span>⌕</span><input id="referenceSearch" placeholder="Search commands, functions and directives"></label><div id="referenceList" class="reference-list"></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="formula-helper.js"></script>
+</body>
+</html>

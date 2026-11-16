@@ -1,0 +1,50 @@
+let apiReturnOverwritesDefinition=false;
+function renderApiWorkspaceBreadcrumb(message){
+  const breadcrumb=$('apiWorkspaceBreadcrumb');if(!breadcrumb)return;
+  const context=message.sourceContext||{},target=message.returnTarget||'excel';
+  const origin=context.origin|| (target==='canvas'?'Qanvas':target==='query'?'Query Workspace':'API library');
+  const sourceName=context.sourceName||message.spec?.Name||message.spec?.name||'New request';
+  const returnLabel=target==='canvas'?'Returns to Qanvas':target==='query'?'Returns to Query Workspace':target==='parameter'?'Returns to Parameter manager':target==='api'?'Returns to API Designer':'Returns to Excel';
+  const add=(tag,text,className)=>{const node=document.createElement(tag);node.textContent=text;if(className)node.className=className;breadcrumb.append(node);};
+  breadcrumb.replaceChildren();add('span',origin);add('i','›');add('b',sourceName);add('em',returnLabel);
+  breadcrumb.title=[origin,sourceName,context.connectionName].filter(Boolean).join(' · ');
+}
+chrome.webview.addEventListener('message',event=>{
+  const message=event.data;
+  if(message.type==='apiWorkspaceContext'){const target=message.returnTarget||'excel',button=$('returnExcel'),destination=target==='query'?'Query Workspace':target==='canvas'?'the active Qanvas source':target==='parameter'?'Parameter manager':'Excel';button.textContent='Apply';button.title=`Apply this API draft to ${destination} and close the workspace. Data is not refreshed.`;let update=$('returnExcelAndUpdate');if(target==='canvas'&&!update){update=document.createElement('button');update.id='returnExcelAndUpdate';update.className='primary';update.textContent=QReportsCompletion.labels.applyAndUpdate;update.title='Apply this API definition, update the active Qanvas source and close the workspace.';button.after(update);update.onclick=()=>returnApiWorkspace(true);}else if(update)update.hidden=target!=='canvas';apiReturnOverwritesDefinition=target==='excel'&&message.hasExistingDefinition===true;renderApiWorkspaceBreadcrumb(message);}
+});
+async function returnApiWorkspace(refresh=false){if(typeof apiReturnOverwritesDefinition!=='undefined'&&apiReturnOverwritesDefinition&&!await window.QReportsDialogs.confirm('The active Excel report definition will be overwritten. Continue?'))return;window.ApiWorkspaceApplyState?.receipt({action:'Applied',item:'API definition',destination:'the calling workspace',refreshed:refresh});chrome.webview.postMessage({type:'apiReturnExcel',spec:spec(),refresh});}
+const bindSharedApiReturn=()=>{const button=$('returnExcel');if(button)button.onclick=()=>returnApiWorkspace(false);};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindSharedApiReturn);else bindSharedApiReturn();
+let loopConnectionNames=[];
+function syncLoopConnection(){
+  if(($('pagingEnabled').checked||$('loopEnabled').checked)&&!$('loopConnection').value.trim())$('loopConnection').value=loopConnectionNames[0]||$('connection').value;
+}
+$('pagingEnabled').addEventListener('change',syncLoopConnection);
+$('loopEnabled').addEventListener('change',syncLoopConnection);
+$('connection').addEventListener('change',syncLoopConnection);
+$('designLoopQuery').addEventListener('click',async()=>{
+  try{
+    const result=await post('apiDesignLoopQuery',{query:{connectionName:$('loopConnection').value||$('connection').value,queryText:$('loopQuery').value,previewLimit:1000,measures:[],parameters:[],data:{columns:[],rows:[]}}});
+    if(result.query){$('loopConnection').value=result.query.connectionName||$('loopConnection').value;$('loopQuery').value=result.query.queryText||'';}
+  }catch(error){if(!/cancel/i.test(error.message))toast(error.message);}
+});
+const loopList=document.createElement('datalist');loopList.id='loopConnections';document.body.append(loopList);$('loopConnection').setAttribute('list',loopList.id);
+post('queryConnections').then(result=>{
+  loopConnectionNames=(result.connections||[]).filter(item=>String(item.kind||'').toLowerCase()!=='api').map(item=>item.name);
+  loopList.innerHTML=loopConnectionNames.map(name=>`<option value="${esc(name)}"></option>`).join('');syncLoopConnection();
+}).catch(()=>{});
+let pendingQueryApiSpec=null,pendingApiPanel='',queryApiSpecBase=null,apiBootstrapLoaded=false;
+const loadQueryApiBase=load;
+load=async function(){await loadQueryApiBase();apiBootstrapLoaded=true;applyQueryApiSpec();applyInitialApiPanel();};
+function applyInitialApiPanel(){if(!apiBootstrapLoaded||!pendingApiPanel)return;const button=document.querySelector(`#requestTabs button[data-panel="${pendingApiPanel}"]`);pendingApiPanel='';button?.click();}
+function applyQueryApiSpec(){
+ if(!apiBootstrapLoaded||!pendingQueryApiSpec)return;const s=pendingQueryApiSpec;pendingQueryApiSpec=null;queryApiSpecBase=structuredClone(s);
+ const rows=value=>Array.isArray(value)?value:Object.entries(value||{}).map(([Key,Value])=>({Enabled:true,Key,Value:String(Value??'')}));
+ const saved=endpoints.find(e=>e.ConnectionName===s.Connection&&e.Name===s.Name)||{};
+ selectEndpoint({...saved,ConnectionName:s.Connection||saved.ConnectionName||$('connection').value,Name:s.Name||saved.Name||'Request',Method:s.Method||saved.Method||'GET',RelativePath:s.Path??saved.RelativePath??'',Headers:rows(s.Headers??saved.Headers),Query:rows(s.Query??saved.Query),FormFields:rows(s.FormFields??saved.FormFields),BodyText:s.Body??saved.BodyText??'',ContentType:s.ContentType??saved.ContentType,BodyMode:s.BodyMode??saved.BodyMode,RawFormat:s.RawFormat??saved.RawFormat,GraphQLQuery:s.GraphQLQuery??saved.GraphQLQuery,GraphQLVariables:typeof s.GraphQLVariables==='object'?JSON.stringify(s.GraphQLVariables):s.GraphQLVariables??saved.GraphQLVariables,Flatten:s.Flatten??saved.Flatten,PreserveStructuredJson:s.PreserveStructuredJson??saved.PreserveStructuredJson,StructuredJsonPath:s.StructuredJsonPath??saved.StructuredJsonPath,TableProjections:s.TableProjections??saved.TableProjections,ColumnAliases:s.ColumnAliases??saved.ColumnAliases,ExcludedColumns:s.ExcludedColumns??saved.ExcludedColumns,PostFilterText:s.PostFilterText??saved.PostFilterText,Pagination:s.Pagination??saved.Pagination,LoopSpec:s.LoopSpec??saved.LoopSpec,Parameters:s.Parameters??s.parameters??saved.Parameters??saved.parameters??[]});
+ if(s.BaseUrl){$('baseUrl').value=s.BaseUrl;$('connectionName').value=s.Connection||'Inline API request';}
+}
+chrome.webview.addEventListener('message',event=>{if(event.data.type==='apiWorkspaceContext'){pendingApiPanel=event.data.initialPanel||pendingApiPanel;if(event.data.spec)pendingQueryApiSpec=event.data.spec;applyQueryApiSpec();applyInitialApiPanel();}});
+const queryApiReturnSpecBase=spec;
+spec=()=>{const generated=queryApiReturnSpecBase(),result={...queryApiSpecBase,...generated};if(!generated.Pagination)delete result.Pagination;if(!generated.LoopSpec)delete result.LoopSpec;return result};
