@@ -1,0 +1,219 @@
+{
+  "version": 2,
+  "packageVersion": 1,
+  "name": "Tender Pipeline Starter",
+  "localSources": [],
+  "pages": [
+    {
+      "id": "tender-board",
+      "name": "Pipeline",
+      "hidden": false,
+      "background": {
+        "color": "#f4f8f2",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "tender-board-tile",
+          "kind": "html",
+          "title": "Tender pipeline",
+          "x": 24,
+          "y": 24,
+          "width": 1232,
+          "height": 672,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#f4f8f2",
+          "borderColor": "#c9d9c5",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [
+              "main"
+            ],
+            "maxRows": 5000,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>\n  :root{--bg:#f4f8f2;--ink:#203528;--accent:#4d7b55;--grid:#c9d9c5;--soft:#e2ecdf;--positive:#2f7d50;--negative:#b64b4b}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Segoe UI,system-ui,sans-serif}main{padding:38px}h1{font-size:32px;margin:0 0 5px}.sub{color:#627067;margin:0 0 28px}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0 28px}.kpi,.panel,.stage{background:#fff;border:1px solid var(--grid);border-radius:14px;padding:18px}.kpi b{display:block;font-size:30px}.kpi span,.muted{color:#6b786e}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.stage h2,.panel h2{font-size:18px;margin:0 0 12px}.card{border-left:5px solid var(--accent);background:#f9fbf8;border-radius:8px;padding:12px;margin:9px 0}.card b{display:block}.value{font-variant-numeric:tabular-nums}.bar{height:11px;background:var(--soft);border-radius:8px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:var(--accent)}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--grid)}th{background:var(--soft)}.badge{display:inline-block;padding:3px 9px;border-radius:12px;background:var(--soft);font-size:13px}.positive{color:var(--positive)}.negative{color:var(--negative)}@media(max-width:700px){main{padding:20px}}\n  </style></head><body><main><h1>Tender pipeline</h1><p class=\"sub\">Fictional sample data — replace or extend the embedded table to start working.</p><section class=\"kpis\"><div class=\"kpi\"><b>5</b><span>Active opportunities</span></div><div class=\"kpi\"><b>8.1m</b><span>Total pipeline</span></div><div class=\"kpi\"><b>61%</b><span>Weighted confidence</span></div><div class=\"kpi\"><b>1</b><span>Due this week</span></div></section><section class=\"grid\"><div class=\"stage\"><h2>Lead</h2><div class=\"card\"><b>Service contract North</b><span class=\"muted\">680k · Jon</span></div></div><div class=\"stage\"><h2>Qualification</h2><div class=\"card\"><b>Municipal energy upgrade</b><span class=\"muted\">1.85m · Eva</span></div></div><div class=\"stage\"><h2>Proposal</h2><div class=\"card\"><b>Office refurbishment</b><span class=\"muted\">920k · Jon</span></div></div><div class=\"stage\"><h2>Review / Won</h2><div class=\"card\"><b>Framework agreement 2027</b><span class=\"muted\">3.4m · Sara</span></div><div class=\"card\"><b>School ventilation</b><span class=\"muted\">Won · 1.25m</span></div></div></section></main></body></html>"
+        }
+      ]
+    },
+    {
+      "id": "tender-list",
+      "name": "Deadline report",
+      "hidden": false,
+      "background": {
+        "color": "#f4f8f2",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "tender-list-tile",
+          "kind": "html",
+          "title": "Tender deadlines",
+          "x": 24,
+          "y": 24,
+          "width": 1232,
+          "height": 672,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#f4f8f2",
+          "borderColor": "#c9d9c5",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [
+              "main"
+            ],
+            "maxRows": 5000,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>\n  :root{--bg:#f4f8f2;--ink:#203528;--accent:#4d7b55;--grid:#c9d9c5;--soft:#e2ecdf;--positive:#2f7d50;--negative:#b64b4b}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Segoe UI,system-ui,sans-serif}main{padding:38px}h1{font-size:32px;margin:0 0 5px}.sub{color:#627067;margin:0 0 28px}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0 28px}.kpi,.panel,.stage{background:#fff;border:1px solid var(--grid);border-radius:14px;padding:18px}.kpi b{display:block;font-size:30px}.kpi span,.muted{color:#6b786e}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.stage h2,.panel h2{font-size:18px;margin:0 0 12px}.card{border-left:5px solid var(--accent);background:#f9fbf8;border-radius:8px;padding:12px;margin:9px 0}.card b{display:block}.value{font-variant-numeric:tabular-nums}.bar{height:11px;background:var(--soft);border-radius:8px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:var(--accent)}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--grid)}th{background:var(--soft)}.badge{display:inline-block;padding:3px 9px;border-radius:12px;background:var(--soft);font-size:13px}.positive{color:var(--positive)}.negative{color:var(--negative)}@media(max-width:700px){main{padding:20px}}\n  </style></head><body><main><h1>Tender deadline report</h1><p class=\"sub\">Sort priorities and prepare the next bid meeting.</p><div class=\"panel\"><h2>Upcoming deadlines</h2><table><thead><tr><th>Tender</th><th>Stage</th><th>Deadline</th><th>Owner</th><th>Confidence</th></tr></thead><tbody><tr><td>Municipal energy upgrade</td><td><span class=\"badge\">Qualification</span></td><td>2026-12-15</td><td>Eva</td><td>60%</td></tr><tr><td>Office refurbishment</td><td><span class=\"badge\">Proposal</span></td><td>2026-12-02</td><td>Jon</td><td>75%</td></tr><tr><td>Framework agreement 2027</td><td><span class=\"badge\">Review</span></td><td>2026-11-28</td><td>Sara</td><td>45%</td></tr><tr><td>School ventilation</td><td><span class=\"badge\">Won</span></td><td>2026-11-12</td><td>Eva</td><td>100%</td></tr><tr><td>Service contract North</td><td><span class=\"badge\">Lead</span></td><td>2027-01-08</td><td>Jon</td><td>25%</td></tr></tbody></table></div></main></body></html>"
+        }
+      ]
+    }
+  ],
+  "parameters": [],
+  "relationships": [],
+  "sources": [
+    {
+      "id": "main",
+      "name": "Tenders",
+      "kind": "main",
+      "tileId": "",
+      "query": {
+        "connectionName": "",
+        "data": {
+          "columns": [
+            "Tender ID",
+            "Tender",
+            "Stage",
+            "Deadline",
+            "Value",
+            "Owner",
+            "Confidence"
+          ],
+          "rows": [
+            [
+              "T-101",
+              "Municipal energy upgrade",
+              "Qualification",
+              "2026-12-15",
+              "1 850 000",
+              "Eva",
+              "60%"
+            ],
+            [
+              "T-102",
+              "Office refurbishment",
+              "Proposal",
+              "2026-12-02",
+              "920 000",
+              "Jon",
+              "75%"
+            ],
+            [
+              "T-103",
+              "Framework agreement 2027",
+              "Review",
+              "2026-11-28",
+              "3 400 000",
+              "Sara",
+              "45%"
+            ],
+            [
+              "T-104",
+              "School ventilation",
+              "Won",
+              "2026-11-12",
+              "1 250 000",
+              "Eva",
+              "100%"
+            ],
+            [
+              "T-105",
+              "Service contract North",
+              "Lead",
+              "2027-01-08",
+              "680 000",
+              "Jon",
+              "25%"
+            ]
+          ],
+          "types": [
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String"
+          ]
+        },
+        "filters": [],
+        "measureValues": {},
+        "measures": [],
+        "parameters": [],
+        "previewLimit": 1000,
+        "queryText": "",
+        "totalRows": 5
+      }
+    }
+  ],
+  "settings": {
+    "leftPaneCollapsed": true,
+    "leftPaneWidth": 280,
+    "pageListPosition": "top",
+    "palettes": [],
+    "rightPaneCollapsed": true,
+    "rightPaneWidth": 360,
+    "showDesignHandles": false,
+    "showHiddenPages": false,
+    "showTypeTags": false,
+    "theme": {
+      "colors": [
+        "#4d7b55",
+        "#6d9773",
+        "#91b397",
+        "#dcae6b",
+        "#477d8c"
+      ],
+      "name": "Qvitr Starter",
+      "roles": {
+        "accent": "#4d7b55",
+        "grid": "#c9d9c5",
+        "headerBackground": "#e2ecdf",
+        "headerText": "#203528",
+        "negative": "#b64b4b",
+        "onAccent": "#ffffff",
+        "positive": "#2f7d50",
+        "surface": "#f4f8f2",
+        "text": "#203528"
+      }
+    }
+  }
+}

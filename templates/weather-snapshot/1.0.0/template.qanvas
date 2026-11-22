@@ -1,0 +1,159 @@
+{
+  "version": 2,
+  "packageVersion": 1,
+  "name": "Public Weather Snapshot",
+  "localSources": [],
+  "pages": [
+    {
+      "id": "weather",
+      "name": "Weather",
+      "hidden": false,
+      "background": {
+        "color": "#f4f8f2",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "weather-tile",
+          "kind": "html",
+          "title": "Weather snapshot",
+          "x": 24,
+          "y": 24,
+          "width": 1232,
+          "height": 672,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#f4f8f2",
+          "borderColor": "#c9d9c5",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [
+              "main"
+            ],
+            "maxRows": 5000,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>\n  :root{--bg:#f4f8f2;--ink:#203528;--accent:#4d7b55;--grid:#c9d9c5;--soft:#e2ecdf;--positive:#2f7d50;--negative:#b64b4b}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Segoe UI,system-ui,sans-serif}main{padding:38px}h1{font-size:32px;margin:0 0 5px}.sub{color:#627067;margin:0 0 28px}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0 28px}.kpi,.panel,.stage{background:#fff;border:1px solid var(--grid);border-radius:14px;padding:18px}.kpi b{display:block;font-size:30px}.kpi span,.muted{color:#6b786e}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.stage h2,.panel h2{font-size:18px;margin:0 0 12px}.card{border-left:5px solid var(--accent);background:#f9fbf8;border-radius:8px;padding:12px;margin:9px 0}.card b{display:block}.value{font-variant-numeric:tabular-nums}.bar{height:11px;background:var(--soft);border-radius:8px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:var(--accent)}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--grid)}th{background:var(--soft)}.badge{display:inline-block;padding:3px 9px;border-radius:12px;background:var(--soft);font-size:13px}.positive{color:var(--positive)}.negative{color:var(--negative)}@media(max-width:700px){main{padding:20px}}\n  </style></head><body><main><h1>Weather snapshot</h1><p class=\"sub\">Public API demonstration with cached starter data.</p><section class=\"grid\"><div class=\"kpi\"><span>Ålesund</span><b>7.2°C</b><span>Cloudy · wind 9.4 km/h</span></div><div class=\"kpi\"><span>Oslo</span><b>2.1°C</b><span>Partly cloudy · wind 4.8 km/h</span></div><div class=\"kpi\"><span>Bergen</span><b>8.5°C</b><span>Rain · wind 12.2 km/h</span></div><div class=\"kpi\"><span>Trondheim</span><b>3.8°C</b><span>Cloudy · wind 6.1 km/h</span></div></section><div class=\"panel\" style=\"margin-top:20px\"><h2>How to use this example</h2><p>The file includes cached sample values, so it works immediately. Replace or refresh the source from the public Open-Meteo API when online.</p><p class=\"muted\">No API key is required. Verify public API terms before production use.</p></div></main></body></html>"
+        }
+      ]
+    }
+  ],
+  "parameters": [],
+  "relationships": [],
+  "sources": [
+    {
+      "id": "main",
+      "name": "Open-Meteo weather",
+      "kind": "main",
+      "tileId": "",
+      "webApi": {
+        "url": "https://api.open-meteo.com/v1/forecast?latitude=62.47&longitude=6.15&current=temperature_2m,wind_speed_10m,weather_code&timezone=auto",
+        "arrayPath": "",
+        "maxRows": 100,
+        "columnAliases": [],
+        "excludedColumns": []
+      },
+      "query": {
+        "connectionName": "",
+        "data": {
+          "columns": [
+            "City",
+            "Observed",
+            "Temperature °C",
+            "Wind km/h",
+            "Conditions"
+          ],
+          "rows": [
+            [
+              "Ålesund",
+              "2026-11-22",
+              "7.2",
+              "9.4",
+              "Cloudy"
+            ],
+            [
+              "Oslo",
+              "2026-11-22",
+              "2.1",
+              "4.8",
+              "Partly cloudy"
+            ],
+            [
+              "Bergen",
+              "2026-11-22",
+              "8.5",
+              "12.2",
+              "Rain"
+            ],
+            [
+              "Trondheim",
+              "2026-11-22",
+              "3.8",
+              "6.1",
+              "Cloudy"
+            ]
+          ],
+          "types": [
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String"
+          ]
+        },
+        "filters": [],
+        "measureValues": {},
+        "measures": [],
+        "parameters": [],
+        "previewLimit": 1000,
+        "queryText": "",
+        "totalRows": 4
+      }
+    }
+  ],
+  "settings": {
+    "leftPaneCollapsed": true,
+    "leftPaneWidth": 280,
+    "pageListPosition": "top",
+    "palettes": [],
+    "rightPaneCollapsed": true,
+    "rightPaneWidth": 360,
+    "showDesignHandles": false,
+    "showHiddenPages": false,
+    "showTypeTags": false,
+    "theme": {
+      "colors": [
+        "#4d7b55",
+        "#6d9773",
+        "#91b397",
+        "#dcae6b",
+        "#477d8c"
+      ],
+      "name": "Qvitr Starter",
+      "roles": {
+        "accent": "#4d7b55",
+        "grid": "#c9d9c5",
+        "headerBackground": "#e2ecdf",
+        "headerText": "#203528",
+        "negative": "#b64b4b",
+        "onAccent": "#ffffff",
+        "positive": "#2f7d50",
+        "surface": "#f4f8f2",
+        "text": "#203528"
+      }
+    }
+  }
+}

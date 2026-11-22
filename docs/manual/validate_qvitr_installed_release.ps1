@@ -94,7 +94,20 @@ if (-not $SkipLaunch) {
         }
     } finally {
         $env:WEBVIEW2_USER_DATA_FOLDER = $oldWebView
-        if (Test-Path -LiteralPath $profileRoot) { Remove-Item -LiteralPath $profileRoot -Recurse -Force }
+        if (Test-Path -LiteralPath $profileRoot) {
+            $profileRemoved = $false
+            for ($attempt = 1; $attempt -le 10 -and -not $profileRemoved; $attempt++) {
+                try {
+                    Remove-Item -LiteralPath $profileRoot -Recurse -Force -ErrorAction Stop
+                    $profileRemoved = $true
+                } catch {
+                    if ($attempt -lt 10) { Start-Sleep -Milliseconds 500 }
+                }
+            }
+            if (-not $profileRemoved) {
+                Write-Warning "Could not remove the temporary WebView2 profile '$profileRoot' because a WebView2 process still has a file open. Validation results are unaffected."
+            }
+        }
     }
 }
 

@@ -1,0 +1,159 @@
+{
+  "version": 2,
+  "packageVersion": 1,
+  "name": "Management KPI Dashboard",
+  "localSources": [],
+  "pages": [
+    {
+      "id": "kpi-dashboard",
+      "name": "Executive dashboard",
+      "hidden": false,
+      "background": {
+        "color": "#f4f8f2",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "kpi-tile",
+          "kind": "html",
+          "title": "Executive dashboard",
+          "x": 24,
+          "y": 24,
+          "width": 1232,
+          "height": 672,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#f4f8f2",
+          "borderColor": "#c9d9c5",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [
+              "main"
+            ],
+            "maxRows": 5000,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>\n  :root{--bg:#f4f8f2;--ink:#203528;--accent:#4d7b55;--grid:#c9d9c5;--soft:#e2ecdf;--positive:#2f7d50;--negative:#b64b4b}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Segoe UI,system-ui,sans-serif}main{padding:38px}h1{font-size:32px;margin:0 0 5px}.sub{color:#627067;margin:0 0 28px}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0 28px}.kpi,.panel,.stage{background:#fff;border:1px solid var(--grid);border-radius:14px;padding:18px}.kpi b{display:block;font-size:30px}.kpi span,.muted{color:#6b786e}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.stage h2,.panel h2{font-size:18px;margin:0 0 12px}.card{border-left:5px solid var(--accent);background:#f9fbf8;border-radius:8px;padding:12px;margin:9px 0}.card b{display:block}.value{font-variant-numeric:tabular-nums}.bar{height:11px;background:var(--soft);border-radius:8px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:var(--accent)}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--grid)}th{background:var(--soft)}.badge{display:inline-block;padding:3px 9px;border-radius:12px;background:var(--soft);font-size:13px}.positive{color:var(--positive)}.negative{color:var(--negative)}@media(max-width:700px){main{padding:20px}}\n  </style></head><body><main><h1>Management dashboard</h1><p class=\"sub\">A clean starting point for recurring management reporting.</p><section class=\"kpis\"><div class=\"kpi\"><b>7.0m</b><span>Revenue YTD</span></div><div class=\"kpi\"><b>1.86m</b><span>Gross profit</span></div><div class=\"kpi\"><b>26.6%</b><span>Gross margin</span></div><div class=\"kpi\"><b>+12.4%</b><span>Growth</span></div></section><div class=\"grid\"><div class=\"panel\"><h2>Monthly revenue</h2><p><b>January</b> <span class=\"muted\">1 240 000</span></p><div class=\"bar\"><i style=\"width:65%\"></i></div><p><b>February</b> <span class=\"muted\">1 310 000</span></p><div class=\"bar\"><i style=\"width:72%\"></i></div><p><b>March</b> <span class=\"muted\">1 455 000</span></p><div class=\"bar\"><i style=\"width:79%\"></i></div><p><b>April</b> <span class=\"muted\">1 390 000</span></p><div class=\"bar\"><i style=\"width:86%\"></i></div><p><b>May</b> <span class=\"muted\">1 580 000</span></p><div class=\"bar\"><i style=\"width:93%\"></i></div></div><div class=\"panel\"><h2>Management notes</h2><p>Growth is strongest in March and May.</p><p>Margin remains above the 25% target.</p><p class=\"muted\">All values are fictional starter data.</p></div></div></main></body></html>"
+        }
+      ]
+    }
+  ],
+  "parameters": [],
+  "relationships": [],
+  "sources": [
+    {
+      "id": "main",
+      "name": "Monthly KPIs",
+      "kind": "main",
+      "tileId": "",
+      "query": {
+        "connectionName": "",
+        "data": {
+          "columns": [
+            "Month",
+            "Revenue",
+            "Gross profit",
+            "Margin",
+            "Customers"
+          ],
+          "rows": [
+            [
+              "January",
+              "1 240 000",
+              "312 000",
+              "25.2%",
+              "46"
+            ],
+            [
+              "February",
+              "1 310 000",
+              "341 000",
+              "26.0%",
+              "51"
+            ],
+            [
+              "March",
+              "1 455 000",
+              "402 000",
+              "27.6%",
+              "56"
+            ],
+            [
+              "April",
+              "1 390 000",
+              "365 000",
+              "26.3%",
+              "53"
+            ],
+            [
+              "May",
+              "1 580 000",
+              "438 000",
+              "27.7%",
+              "62"
+            ]
+          ],
+          "types": [
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String",
+            "System.String"
+          ]
+        },
+        "filters": [],
+        "measureValues": {},
+        "measures": [],
+        "parameters": [],
+        "previewLimit": 1000,
+        "queryText": "",
+        "totalRows": 5
+      }
+    }
+  ],
+  "settings": {
+    "leftPaneCollapsed": true,
+    "leftPaneWidth": 280,
+    "pageListPosition": "top",
+    "palettes": [],
+    "rightPaneCollapsed": true,
+    "rightPaneWidth": 360,
+    "showDesignHandles": false,
+    "showHiddenPages": false,
+    "showTypeTags": false,
+    "theme": {
+      "colors": [
+        "#4d7b55",
+        "#6d9773",
+        "#91b397",
+        "#dcae6b",
+        "#477d8c"
+      ],
+      "name": "Qvitr Starter",
+      "roles": {
+        "accent": "#4d7b55",
+        "grid": "#c9d9c5",
+        "headerBackground": "#e2ecdf",
+        "headerText": "#203528",
+        "negative": "#b64b4b",
+        "onAccent": "#ffffff",
+        "positive": "#2f7d50",
+        "surface": "#f4f8f2",
+        "text": "#203528"
+      }
+    }
+  }
+}

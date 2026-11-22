@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "generatedUtc": "2026-11-22T00:00:00Z",
+  "templates": [
+    {
+      "id": "tender-pipeline",
+      "version": "1.0.0",
+      "name": "Tender Pipeline",
+      "description": "Track opportunities, stages, values, owners and deadlines from one ready-made workspace.",
+      "category": "Sales",
+      "tags": [
+        "tender",
+        "pipeline",
+        "sales"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.15.0",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/tender-pipeline/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/tender-pipeline/1.0.0/preview.svg",
+      "sha256": "c769d9f6177e1ba709f5b3cf9c9be5cbf5a8c5f828c3f87c3cf82ef12dc3bbbf",
+      "size": 10258,
+      "dataMode": "Embedded sample data",
+      "featured": true
+    },
+    {
+      "id": "project-planner",
+      "version": "1.0.0",
+      "name": "Project Planner",
+      "description": "Editable Gantt plan with sample tasks and a management progress report.",
+      "category": "Projects",
+      "tags": [
+        "gantt",
+        "project",
+        "planning"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.15.0",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-planner/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-planner/1.0.0/preview.svg",
+      "sha256": "4561d6500f990fb6ccf6c8e606e4b22f7b95038a1e6dcb16a1aa93fd71592da1",
+      "size": 12176,
+      "dataMode": "Embedded sample data",
+      "featured": true
+    },
+    {
+      "id": "management-kpi",
+      "version": "1.0.0",
+      "name": "Management KPI Dashboard",
+      "description": "A polished executive KPI starting point with fictional monthly figures.",
+      "category": "Reporting",
+      "tags": [
+        "dashboard",
+        "kpi",
+        "management"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.15.0",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/management-kpi/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/management-kpi/1.0.0/preview.svg",
+      "sha256": "b43ba70289c41643f6a6dfc309cbcbc2526f4d9894d5c63cffb6b282ac9e0d8b",
+      "size": 6319,
+      "dataMode": "Embedded sample data",
+      "featured": true
+    },
+    {
+      "id": "weather-snapshot",
+      "version": "1.0.0",
+      "name": "Public Weather Snapshot",
+      "description": "Open-Meteo API example with cached values that render immediately.",
+      "category": "Public APIs",
+      "tags": [
+        "api",
+        "weather",
+        "demo"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.15.0",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/weather-snapshot/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/weather-snapshot/1.0.0/preview.svg",
+      "sha256": "9322289375da7b4629960ea71375485b522f7936c4b14d8aa6d3b7ff03d64e08",
+      "size": 6082,
+      "dataMode": "Cached public API sample",
+      "featured": false
+    },
+    {
+      "id": "country-growth",
+      "version": "1.0.0",
+      "name": "Nordic Growth Explorer",
+      "description": "World Bank GDP growth example with cached Nordic country data.",
+      "category": "Public APIs",
+      "tags": [
+        "api",
+        "economy",
+        "world bank"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.15.0",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/country-growth/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/country-growth/1.0.0/preview.svg",
+      "sha256": "be4ff578a93261f3f2c71b9232a82e7eb32291ab7793f1d2d882b23d77ab57d1",
+      "size": 6455,
+      "dataMode": "Cached public API sample",
+      "featured": false
+    }
+  ]
+}

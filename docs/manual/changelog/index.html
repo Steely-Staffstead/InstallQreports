@@ -340,6 +340,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start with a template
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../webview-workspaces/" class="md-nav__link">
         
   
@@ -1493,9 +1521,31 @@
 <li>Qvitr Experience now calls shared connections <strong>Sagas</strong> while Standard mode continues to use <strong>Connections</strong>.</li>
 <li>PDF and PowerPoint publishing can add a themed publication footer to every page or generate a dedicated publication cover page. PowerPoint details remain editable native objects.</li>
 </ul>
+<div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>47</strong></div><div><p class="week-dates">16–22 November 2026</p><h2>Integrated SQL assistance, clearer AI setup and more reliable authoring</h2></div></div>
+
+<ul>
+<li>Added a bundled, read-only SQL MCP server for Qanvas connections. Creators can expose only selected connections to the current report, inspect the available schema, run bounded queries and configure row limits with practical guidance for AI workflows.</li>
+<li>Added report-level AI connection selection and a recommended Qvitr workflow, so MCP access is deliberate per Qanvas file instead of automatically exposing every configured connection.</li>
+<li>Expanded AI workspaces with optional additional context folders, provider-specific model and effort controls, improved Claude sign-in and CLI discovery, and more reliable automatic application of completed workspace changes.</li>
+<li>Redesigned the AI and Canvas settings pages as coherent, responsive task flows with clearer grouping, compact status information and layouts that remain usable in narrower windows.</li>
+<li>Improved the main AI panel with better overflow handling, clearer request progress and connection guidance, while preserving access to workspace recovery actions.</li>
+<li>Kept Excel Formula Helper open after <strong>Insert into Excel</strong>, allowing several formulas to be inserted into different cells during one session.</li>
+<li>Restored and aligned exported-web annotation tools, including drawing and selection behavior, with the controls shown in the presentation toolbar.</li>
+<li>Added direct Report Grid export to Excel and clipboard, improved quick grid settings, and refined parameter, formula and error diagnostics across source workflows.</li>
+<li>Improved SQL authentication with Microsoft Entra token caching and clearer connection authentication controls, while keeping secrets outside report packages.</li>
+<li>Refined Gantt, List, chart-label, HTML, App and update-dialog presentation, including theme-aware installer/update colors and more consistent compact controls.</li>
+<li>Separated ClickOnce and Enterprise update channels so a normal ClickOnce update can no longer launch the Enterprise installer. A guided migration now requires ClickOnce removal first, and presentation mode adds a fixed mini-menu trigger plus Ctrl+wheel zoom over HTML content.</li>
+<li>The first save of a new Qanvas now proposes a safe <code>.qanvas</code> filename based on the canvas name, with <code>report.qanvas</code> retained as the fallback for unnamed documents.</li>
+<li>Added a template library to <strong>New</strong> with five ready-to-use starters for tender pipelines, Gantt project planning, management KPIs, public weather data and Nordic economic growth. Templates contain immediate sample data, open as a new unsaved canvas and are securely downloaded, verified and cached for offline reuse.</li>
+<li>Renamed the embedded manual-table structure action from <strong>Edit columns</strong> to <strong>Edit table</strong> to better describe that it controls the full table setup.</li>
+<li>Prepared Qvitr Enterprise version <strong>2026.11.21.1</strong>, aligned Office integration branding around <strong>QRep</strong>, and strengthened unsigned development-build and installed-release validation paths.</li>
+</ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>46</strong></div><div><p class="week-dates">9–15 November 2026</p><h2>Safer publishing, clearer sources and more reliable Office integration</h2></div></div>
 
 <ul>
+<li>Added an Excel manager for imported Qanvas images, with filters, image quality and selective updates available from the ribbon and the image context menu.</li>
+<li>Fixed <strong>Get from Qanvas</strong> when another Qanvas window is already open, and simplified the Excel ribbon by keeping import inside the QanvasWeb menu.</li>
+<li>Temporarily removed the QReports AI Assistant while the experience is being improved.</li>
 <li>Redesigned <strong>Settings</strong> and <strong>Presentation settings</strong> with clearer categories, focused detail pages and an easy return to the settings overview.</li>
 <li>Made source views easier to understand: API and SQL views now show their origin and open directly in the matching editor. Source menus use clearer groups and safer wording for destructive actions.</li>
 <li>Improved parameters across Query and API workflows. API requests now use the current report value correctly, parameter lists can be populated from an API source, and submitted requests make the resolved value easier to verify.</li>

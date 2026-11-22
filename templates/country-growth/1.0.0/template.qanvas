@@ -1,0 +1,172 @@
+{
+  "version": 2,
+  "packageVersion": 1,
+  "name": "Nordic Growth Explorer",
+  "localSources": [],
+  "pages": [
+    {
+      "id": "growth",
+      "name": "Country growth",
+      "hidden": false,
+      "background": {
+        "color": "#f4f8f2",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 900,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "growth-tile",
+          "kind": "html",
+          "title": "Country growth",
+          "x": 24,
+          "y": 24,
+          "width": 1232,
+          "height": 672,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#f4f8f2",
+          "borderColor": "#c9d9c5",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [
+              "main"
+            ],
+            "maxRows": 5000,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>\n  :root{--bg:#f4f8f2;--ink:#203528;--accent:#4d7b55;--grid:#c9d9c5;--soft:#e2ecdf;--positive:#2f7d50;--negative:#b64b4b}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Segoe UI,system-ui,sans-serif}main{padding:38px}h1{font-size:32px;margin:0 0 5px}.sub{color:#627067;margin:0 0 28px}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0 28px}.kpi,.panel,.stage{background:#fff;border:1px solid var(--grid);border-radius:14px;padding:18px}.kpi b{display:block;font-size:30px}.kpi span,.muted{color:#6b786e}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.stage h2,.panel h2{font-size:18px;margin:0 0 12px}.card{border-left:5px solid var(--accent);background:#f9fbf8;border-radius:8px;padding:12px;margin:9px 0}.card b{display:block}.value{font-variant-numeric:tabular-nums}.bar{height:11px;background:var(--soft);border-radius:8px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:var(--accent)}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--grid)}th{background:var(--soft)}.badge{display:inline-block;padding:3px 9px;border-radius:12px;background:var(--soft);font-size:13px}.positive{color:var(--positive)}.negative{color:var(--negative)}@media(max-width:700px){main{padding:20px}}\n  </style></head><body><main><h1>Nordic economic growth</h1><p class=\"sub\">World Bank public API demonstration with cached values.</p><section class=\"kpis\"><div class=\"kpi\"><span>Norway · 2023</span><b class=\"positive\">0.5%</b><span>Real GDP growth</span></div><div class=\"kpi\"><span>Sweden · 2023</span><b class=\"negative\">-0.2%</b><span>Real GDP growth</span></div><div class=\"kpi\"><span>Denmark · 2023</span><b class=\"positive\">2.5%</b><span>Real GDP growth</span></div></section><div class=\"panel\"><h2>Historic sample</h2><table><thead><tr><th>Country</th><th>Year</th><th>GDP growth</th></tr></thead><tbody><tr><td>Norway</td><td>2021</td><td>3.9%</td></tr><tr><td>Norway</td><td>2022</td><td>3.0%</td></tr><tr><td>Norway</td><td>2023</td><td>0.5%</td></tr><tr><td>Sweden</td><td>2021</td><td>6.1%</td></tr><tr><td>Sweden</td><td>2022</td><td>2.8%</td></tr><tr><td>Sweden</td><td>2023</td><td>-0.2%</td></tr><tr><td>Denmark</td><td>2021</td><td>6.8%</td></tr><tr><td>Denmark</td><td>2022</td><td>1.5%</td></tr><tr><td>Denmark</td><td>2023</td><td>2.5%</td></tr></tbody></table></div></main></body></html>"
+        }
+      ]
+    }
+  ],
+  "parameters": [],
+  "relationships": [],
+  "sources": [
+    {
+      "id": "main",
+      "name": "World Bank GDP growth",
+      "kind": "main",
+      "tileId": "",
+      "webApi": {
+        "url": "https://api.worldbank.org/v2/country/NOR;SWE;DNK/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=100",
+        "arrayPath": "1",
+        "maxRows": 100,
+        "columnAliases": [],
+        "excludedColumns": []
+      },
+      "query": {
+        "connectionName": "",
+        "data": {
+          "columns": [
+            "Country",
+            "Year",
+            "GDP growth %"
+          ],
+          "rows": [
+            [
+              "Norway",
+              "2021",
+              "3.9"
+            ],
+            [
+              "Norway",
+              "2022",
+              "3.0"
+            ],
+            [
+              "Norway",
+              "2023",
+              "0.5"
+            ],
+            [
+              "Sweden",
+              "2021",
+              "6.1"
+            ],
+            [
+              "Sweden",
+              "2022",
+              "2.8"
+            ],
+            [
+              "Sweden",
+              "2023",
+              "-0.2"
+            ],
+            [
+              "Denmark",
+              "2021",
+              "6.8"
+            ],
+            [
+              "Denmark",
+              "2022",
+              "1.5"
+            ],
+            [
+              "Denmark",
+              "2023",
+              "2.5"
+            ]
+          ],
+          "types": [
+            "System.String",
+            "System.String",
+            "System.String"
+          ]
+        },
+        "filters": [],
+        "measureValues": {},
+        "measures": [],
+        "parameters": [],
+        "previewLimit": 1000,
+        "queryText": "",
+        "totalRows": 9
+      }
+    }
+  ],
+  "settings": {
+    "leftPaneCollapsed": true,
+    "leftPaneWidth": 280,
+    "pageListPosition": "top",
+    "palettes": [],
+    "rightPaneCollapsed": true,
+    "rightPaneWidth": 360,
+    "showDesignHandles": false,
+    "showHiddenPages": false,
+    "showTypeTags": false,
+    "theme": {
+      "colors": [
+        "#4d7b55",
+        "#6d9773",
+        "#91b397",
+        "#dcae6b",
+        "#477d8c"
+      ],
+      "name": "Qvitr Starter",
+      "roles": {
+        "accent": "#4d7b55",
+        "grid": "#c9d9c5",
+        "headerBackground": "#e2ecdf",
+        "headerText": "#203528",
+        "negative": "#b64b4b",
+        "onAccent": "#ffffff",
+        "positive": "#2f7d50",
+        "surface": "#f4f8f2",
+        "text": "#203528"
+      }
+    }
+  }
+}
