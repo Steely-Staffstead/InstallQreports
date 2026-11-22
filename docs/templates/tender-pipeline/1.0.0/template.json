@@ -1,0 +1,19 @@
+{
+  "id": "tender-pipeline",
+  "version": "1.0.0",
+  "name": "Tender Pipeline",
+  "description": "Track opportunities, stages, values, owners and deadlines from one ready-made workspace.",
+  "category": "Sales",
+  "tags": [
+    "tender",
+    "pipeline",
+    "sales"
+  ],
+  "locale": "en",
+  "minimumQvitrVersion": "2026.11.15.0",
+  "templateFile": "template.qanvas",
+  "previewFile": "preview.svg",
+  "dataMode": "Embedded sample data",
+  "featured": true,
+  "listed": false
+}

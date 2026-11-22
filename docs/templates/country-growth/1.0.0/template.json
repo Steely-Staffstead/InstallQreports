@@ -1,0 +1,1 @@
+{"id":"country-growth","version":"1.0.0","name":"Nordic Growth Explorer","description":"World Bank GDP growth example with cached Nordic country data.","category":"Public APIs","tags":["api","economy","world bank"],"locale":"en","minimumQvitrVersion":"2026.11.15.0","templateFile":"template.qanvas","previewFile":"preview.svg","dataMode":"Cached public API sample","featured":false}

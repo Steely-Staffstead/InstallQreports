@@ -1,0 +1,18 @@
+{
+  "id": "anbud",
+  "version": "1.0.0",
+  "name": "Anbudsverkt\u00F8y",
+  "description": "Administrere anbud og tilbud i selskapet",
+  "category": "Reporting",
+  "tags": [
+    "anbud",
+    "tender",
+    "pipeline"
+  ],
+  "locale": "no",
+  "minimumQvitrVersion": "2026.11.22.0",
+  "templateFile": "template.qanvas",
+  "previewFile": "preview.png",
+  "dataMode": "Embedded sample data",
+  "featured": true
+}

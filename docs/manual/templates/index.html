@@ -411,6 +411,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#add-an-official-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add an official template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#safety-and-privacy" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1498,6 +1509,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#add-an-official-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add an official template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#safety-and-privacy" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1539,6 +1561,10 @@
 <p>A template is downloaded, verified and opened as a new unsaved Qanvas. Saving creates your own copy; it never changes the published template. The first Save proposes a filename based on the canvas name.</p>
 <p>Every template includes sample data so it remains useful without a connection or network refresh. Replace the embedded rows or edit the source to connect the design to your own data. Public API examples identify the external service and include cached values so they also open when the API is unavailable.</p>
 <p>Qanvas caches the last valid catalog and any downloaded templates locally. Previously downloaded templates can therefore be reused when offline. <strong>Refresh</strong> checks for additions and updated template versions.</p>
+<h2 id="add-an-official-template">Add an official template</h2>
+<p>Open <strong>QanvasTemplateManager</strong> from the Visual Studio solution's <strong>tools</strong> folder. Select the <code>.qanvas</code> file and a preview image, enter the library metadata and choose <strong>Add template</strong>. The tool creates the immutable <code>documentation/templates/&lt;id&gt;/&lt;version&gt;</code> folder, writes <code>template.json</code>, validates the Qanvas file and rebuilds the catalog.</p>
+<p>Use a new semantic version instead of replacing a version that has already been published. Review and commit the generated files in <code>xlQuerySolution</code>, then select <strong>Publish to GitHub</strong> to run the normal documentation/template publisher. Publishing requires the authenticated, clean <code>InstallQreports</code> documentation checkout used by the existing release workflow.</p>
+<p>To withdraw a template version, select it under <strong>Manage catalog</strong> and choose <strong>Remove from catalog</strong>. This marks the version as hidden and rebuilds the catalog; it does not delete the Qanvas file, preview or metadata. Choose <strong>Restore to catalog</strong> to list it again. Review the generated Git changes and use <strong>Publish to GitHub</strong> before either change becomes public.</p>
 <h2 id="safety-and-privacy">Safety and privacy</h2>
 <p>Official templates are hosted with the Qvitr documentation, checked against a SHA-256 value and validated before opening. They contain no credentials, organization-specific connections or personal data. Review an external API's terms before using it for production reporting.</p>
 

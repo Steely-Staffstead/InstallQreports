@@ -1,0 +1,1 @@
+{"id":"project-planner","version":"1.0.0","name":"Project Planner","description":"Editable Gantt plan with sample tasks and a management progress report.","category":"Projects","tags":["gantt","project","planning"],"locale":"en","minimumQvitrVersion":"2026.11.15.0","templateFile":"template.qanvas","previewFile":"preview.svg","dataMode":"Embedded sample data","featured":true}
