@@ -1,0 +1,196 @@
+(() => {
+  const assetVersion = "20261122-channels-1";
+  if (!document.querySelector('link[href*="viewer-update.css"]')) {
+    const link = document.createElement("link");
+    const script = document.currentScript?.src || "";
+    link.rel = "stylesheet";
+    link.href = `${script.includes("/app/") ? "app/" : ""}viewer-update.css?v=${assetVersion}`;
+    document.head.append(link);
+  }
+
+  let dialog = null;
+  let send = null;
+  let requiredVersion = "";
+
+  const rgb = value => {
+    const text = String(value || "").trim();
+    const short = /^#([0-9a-f]{3})$/i.exec(text);
+    const full = /^#([0-9a-f]{6})$/i.exec(text);
+    if (short) return short[1].split("").map(channel => parseInt(channel + channel, 16));
+    if (full) return [0, 2, 4].map(index => parseInt(full[1].slice(index, index + 2), 16));
+    const functional = /^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/i.exec(text);
+    return functional ? functional.slice(1, 4).map(Number) : null;
+  };
+
+  const luminance = value => {
+    const channels = rgb(value);
+    if (!channels) return null;
+    const linear = channels.map(item => {
+      const channel = Math.max(0, Math.min(255, item)) / 255;
+      return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+    });
+    return .2126 * linear[0] + .7152 * linear[1] + .0722 * linear[2];
+  };
+
+  const contrast = (foreground, background) => {
+    const first = luminance(foreground);
+    const second = luminance(background);
+    if (first == null || second == null) return 0;
+    return (Math.max(first, second) + .05) / (Math.min(first, second) + .05);
+  };
+
+  const readable = (background, preferred, dark = "#182230", light = "#ffffff") => {
+    if (preferred && contrast(preferred, background) >= 4.5) return preferred;
+    return contrast(dark, background) >= contrast(light, background) ? dark : light;
+  };
+
+  const syncTheme = () => {
+    if (!dialog?.isConnected) return;
+    globalThis.qvitrApplyApplicationTheme?.(dialog);
+    const style = getComputedStyle(dialog);
+    const value = (name, fallback) => style.getPropertyValue(name).trim() || fallback;
+    const header = value("--qreports-header", "#11151b");
+    const surface = value("--qreports-surface", "#171b22");
+    const accent = value("--qreports-accent", "#72c7a5");
+    dialog.style.setProperty("--viewer-update-header", header);
+    dialog.style.setProperty("--viewer-update-header-text", readable(header, value("--qreports-header-text", "")));
+    dialog.style.setProperty("--viewer-update-text", readable(surface, value("--qreports-text", "")));
+    dialog.style.setProperty("--viewer-update-on-accent", readable(accent, value("--qreports-on-accent", "")));
+  };
+
+  const ensure = () => {
+    if (dialog?.isConnected) {
+      syncTheme();
+      return dialog;
+    }
+    dialog = document.createElement("dialog");
+    dialog.className = "viewer-update-dialog";
+    dialog.innerHTML = '<div class="viewer-update-shell"><header><div><p>Qvitr Viewer update</p><h2 data-update-title>Checking for updates</h2><span data-update-subtitle>Comparing the installed Viewer with the latest signed release.</span></div><button type="button" data-update-close aria-label="Close update window">×</button></header><section><div class="viewer-update-versions"><article><span>Installed</span><strong data-update-installed>—</strong></article><article><span>Required by report</span><strong data-update-required>—</strong></article><article><span>Latest available</span><strong data-update-available>Checking…</strong></article></div><div class="viewer-update-progress" data-update-progress hidden><div><span data-update-progress-label>Preparing…</span><b data-update-progress-value></b></div><progress max="100"></progress></div><div class="viewer-update-notes"><h3>What’s new</h3><p data-update-notes>Release information will appear after the check completes.</p></div><p class="viewer-update-error" data-update-error hidden></p></section><footer><button type="button" data-update-notes-button hidden>Full release notes</button><button type="button" data-update-clickonce hidden>Open ClickOnce address</button><span></span><button type="button" data-update-migrate hidden>Switch to Qvitr Enterprise…</button><button type="button" data-update-retry hidden>Try again</button><button type="button" class="primary" data-update-install hidden>Download and install</button><button type="button" class="primary" data-update-restart hidden>Restart Qvitr</button></footer></div>';
+    document.body.append(dialog);
+    syncTheme();
+    dialog.querySelector("[data-update-close]").onclick = () => dialog.close();
+    dialog.querySelector("[data-update-retry]").onclick = () => check();
+    dialog.querySelector("[data-update-install]").onclick = () => {
+      send?.("downloadUpdate");
+      render({ state: "downloading", percent: 0 });
+    };
+    dialog.querySelector("[data-update-notes-button]").onclick = () => send?.("openUpdateReleaseNotes");
+    dialog.querySelector("[data-update-clickonce]").onclick = () => send?.("openClickOnceUpdateSite");
+    dialog.querySelector("[data-update-migrate]").onclick = () => send?.("startEnterpriseMigration");
+    dialog.querySelector("[data-update-restart]").onclick = () => send?.("restartApplication");
+    return dialog;
+  };
+
+  function render(message = {}) {
+    const root = ensure();
+    const state = message.state || "checking";
+    const title = root.querySelector("[data-update-title]");
+    const subtitle = root.querySelector("[data-update-subtitle]");
+    const installed = root.querySelector("[data-update-installed]");
+    const required = root.querySelector("[data-update-required]");
+    const available = root.querySelector("[data-update-available]");
+    const notes = root.querySelector("[data-update-notes]");
+    const error = root.querySelector("[data-update-error]");
+    const progress = root.querySelector("[data-update-progress]");
+    const bar = progress.querySelector("progress");
+    const label = root.querySelector("[data-update-progress-label]");
+    const value = root.querySelector("[data-update-progress-value]");
+    const install = root.querySelector("[data-update-install]");
+    const retry = root.querySelector("[data-update-retry]");
+    const restart = root.querySelector("[data-update-restart]");
+    const notesButton = root.querySelector("[data-update-notes-button]");
+    const clickOnceButton = root.querySelector("[data-update-clickonce]");
+    const migrateButton = root.querySelector("[data-update-migrate]");
+    if (message.installedVersion) installed.textContent = message.installedVersion;
+    required.textContent = requiredVersion || "No minimum";
+    if (message.availableVersion) available.textContent = message.availableVersion;
+    error.hidden = true;
+    progress.hidden = !["downloading", "verifying", "launching"].includes(state);
+    install.hidden = !["available", "migration-ready"].includes(state);
+    retry.hidden = state !== "error";
+    restart.hidden = state !== "installer-launched";
+    notesButton.hidden = !["available", "current", "installer-launched"].includes(state);
+    clickOnceButton.hidden = state !== "clickonce";
+    migrateButton.hidden = state !== "clickonce";
+    if (state === "checking") {
+      title.textContent = "Checking for updates";
+      subtitle.textContent = "Reading the signed Qvitr release manifest.";
+      available.textContent = "Checking…";
+    } else if (state === "current") {
+      title.textContent = "Qvitr Viewer is up to date";
+      subtitle.textContent = "This installation matches the latest available release.";
+      notes.textContent = message.releaseNotes || "No additional release notes were supplied.";
+    } else if (state === "available") {
+      title.textContent = "A Qvitr update is available";
+      subtitle.textContent = `Installer ${message.installerVersion || message.availableVersion || ""} is ready to download.`;
+      notes.textContent = message.releaseNotes || "This release contains Viewer compatibility and reliability improvements.";
+    } else if (state === "clickonce") {
+      title.textContent = "Updates are managed by ClickOnce";
+      subtitle.textContent = "Use the original ClickOnce installation address for normal updates.";
+      available.textContent = "ClickOnce";
+      notes.textContent = message.message || "Denne installasjonen administreres av ClickOnce. Lukk Excel og installer oppdateringen fra den opprinnelige ClickOnce-adressen.";
+    } else if (state === "migration-ready") {
+      title.textContent = "Qvitr Enterprise is ready to download";
+      subtitle.textContent = `Installer ${message.installerVersion || message.availableVersion || ""} will replace the ClickOnce installation channel.`;
+      notes.textContent = message.releaseNotes || "Click Download and install only after ClickOnce has been removed and Office has been closed.";
+    } else if (state === "downloading") {
+      title.textContent = "Downloading the verified installer";
+      subtitle.textContent = "You can keep this window open while the package downloads.";
+      const percent = Number(message.percent);
+      if (Number.isFinite(percent)) bar.value = percent;
+      else bar.removeAttribute("value");
+      label.textContent = "Downloading update…";
+      value.textContent = Number.isFinite(percent) ? `${Math.round(percent)}%` : "";
+    } else if (state === "verifying") {
+      title.textContent = "Verifying the update";
+      subtitle.textContent = "Qvitr is checking SHA-256 integrity and the Windows publisher signature.";
+      bar.removeAttribute("value");
+      label.textContent = message.message || "Verifying installer…";
+      value.textContent = "";
+    } else if (state === "launching") {
+      title.textContent = "Starting Qvitr Setup";
+      subtitle.textContent = "Windows may ask for permission to run the verified installer.";
+      bar.removeAttribute("value");
+      label.textContent = message.message || "Opening installer…";
+      value.textContent = "";
+    } else if (state === "installer-launched") {
+      title.textContent = "Finish setup, then restart Qvitr";
+      subtitle.textContent = "Close Office applications, complete Qvitr Setup, and restart when installation finishes.";
+      available.textContent = message.availableVersion || available.textContent;
+      notes.textContent = "The verified installer is running. Restart only after Setup reports that installation is complete.";
+    } else if (state === "error") {
+      title.textContent = "The update could not continue";
+      subtitle.textContent = "Your current Qvitr installation was not changed.";
+      error.hidden = false;
+      error.textContent = message.message || "An unexpected update error occurred.";
+    }
+    root.dataset.state = state;
+  }
+
+  function check() {
+    render({ state: "checking" });
+    send?.("checkForUpdates");
+  }
+
+  function open(options = {}) {
+    send = options.post || send || (type => window.chrome?.webview?.postMessage?.({ type }));
+    requiredVersion = options.requiredVersion || requiredVersion;
+    const root = ensure();
+    if (!root.open) root.showModal();
+    check();
+  }
+
+  function handle(message) {
+    if (message?.type !== "updateStatus") return false;
+    render(message);
+    if (!dialog.open) dialog.showModal();
+    return true;
+  }
+
+  function requireVersion(version) {
+    requiredVersion = version || "";
+  }
+
+  window.addEventListener("qreports-settings-changed", syncTheme);
+  window.QvitrUpdateUi = { open, handle, requireVersion };
+})();

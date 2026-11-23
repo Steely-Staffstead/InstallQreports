@@ -1,0 +1,132 @@
+(() => {
+  const host = window.chrome?.webview;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = "template-library.css?v=20261122-1";
+  document.head.append(link);
+
+  let dialog = null;
+  let templates = [];
+  let bypassNew = false;
+  const value = (item, name, fallback = "") => item?.[name] ?? item?.[name[0].toUpperCase() + name.slice(1)] ?? fallback;
+  const esc = text => String(text ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+  const approvedPreview = url => {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === "https:" && parsed.hostname === "steely-staffstead.github.io" && parsed.pathname.startsWith("/InstallQreports/templates/") ? parsed.href : "";
+    } catch { return ""; }
+  };
+
+  function ensure() {
+    if (dialog?.isConnected) return dialog;
+    dialog = document.createElement("dialog");
+    dialog.className = "qanvas-template-dialog";
+    dialog.innerHTML = `<div class="qanvas-template-shell">
+      <header><div><p>START WITH QVITR</p><h2>New canvas</h2><span>Begin with a working application, report or blank canvas.</span></div><button type="button" data-template-close aria-label="Close">×</button></header>
+      <section class="qanvas-template-start">
+        <button type="button" class="qanvas-template-blank" data-template-blank><span>＋</span><b>Blank canvas</b><small>Start with an empty page and build your own structure.</small></button>
+        <div class="qanvas-template-library">
+          <div class="qanvas-template-tools"><label><span>Search templates</span><input type="search" data-template-search placeholder="Tender, project, dashboard…"></label><label><span>Category</span><select data-template-category><option value="">All categories</option></select></label><button type="button" data-template-refresh title="Refresh online catalog">↻ Refresh</button></div>
+          <p class="qanvas-template-status" data-template-status>Loading template library…</p>
+          <div class="qanvas-template-grid" data-template-grid aria-live="polite"></div>
+        </div>
+      </section>
+      <footer><span>Templates open as a new unsaved canvas. Your copy never changes the published template.</span><button type="button" data-template-close>Cancel</button></footer>
+    </div>`;
+    document.body.append(dialog);
+    globalThis.qvitrApplyApplicationTheme?.(dialog);
+    dialog.querySelectorAll("[data-template-close]").forEach(button => button.onclick = () => dialog.close());
+    dialog.querySelector("[data-template-search]").oninput = render;
+    dialog.querySelector("[data-template-category]").onchange = render;
+    dialog.querySelector("[data-template-refresh]").onclick = () => requestCatalog(true);
+    dialog.querySelector("[data-template-blank]").onclick = () => {
+      const button = document.querySelector('[data-action="new"]');
+      dialog.close();
+      bypassNew = true;
+      button?.click();
+      bypassNew = false;
+    };
+    dialog.querySelector("[data-template-grid]").onclick = async event => {
+      const button = event.target.closest("[data-template-use]");
+      if (!button) return;
+      const accepted = await window.qanvasOpenTemplate?.(button.dataset.templateUse);
+      if (!accepted) return;
+      dialog.querySelector("[data-template-status]").textContent = `Opening ${button.dataset.templateName || "template"}…`;
+      dialog.querySelectorAll("[data-template-use]").forEach(item => item.disabled = true);
+    };
+    return dialog;
+  }
+
+  function render() {
+    const root = ensure();
+    const search = root.querySelector("[data-template-search]").value.trim().toLocaleLowerCase();
+    const category = root.querySelector("[data-template-category]").value;
+    const matches = templates.filter(item => {
+      const itemCategory = value(item, "category");
+      const searchable = [value(item, "name"), value(item, "description"), itemCategory, ...(value(item, "tags", []))].join(" ").toLocaleLowerCase();
+      return (!category || itemCategory === category) && (!search || searchable.includes(search));
+    });
+    root.querySelector("[data-template-grid]").innerHTML = matches.length ? matches.map(item => {
+      const id = value(item, "id"), name = value(item, "name"), preview = approvedPreview(value(item, "previewUrl"));
+      const dataMode = value(item, "dataMode").toLocaleLowerCase();
+      const mode = dataMode.includes("api") ? "Public API example with cached data" : dataMode.includes("sample") ? "Includes sample data" : dataMode || "Layout template";
+      return `<article class="qanvas-template-card${value(item, "featured", false) ? " featured" : ""}">
+        <div class="qanvas-template-preview"${preview ? ` style="background-image:url('${esc(preview)}')"` : ""}><span>${esc(value(item, "category", "Template"))}</span></div>
+        <div><h3>${esc(name)}</h3><p>${esc(value(item, "description"))}</p><small>${esc(mode)} · v${esc(value(item, "version"))}</small></div>
+        <button type="button" class="primary" data-template-use="${esc(id)}" data-template-name="${esc(name)}">Use template</button>
+      </article>`;
+    }).join("") : '<div class="qanvas-template-empty"><b>No matching templates</b><span>Try another search or category.</span></div>';
+  }
+
+  function setCatalog(message) {
+    templates = Array.isArray(message.templates) ? message.templates : [];
+    const root = ensure(), categorySelect = root.querySelector("[data-template-category]"), selected = categorySelect.value;
+    const categories = [...new Set(templates.map(item => value(item, "category")).filter(Boolean))].sort();
+    categorySelect.innerHTML = '<option value="">All categories</option>' + categories.map(category => `<option ${category === selected ? "selected" : ""}>${esc(category)}</option>`).join("");
+    const status = root.querySelector("[data-template-status]");
+    status.textContent = templates.length ? `${templates.length} ready-to-use templates${message.offline ? " · offline cache" : ""}` : message.message || "No templates are currently available.";
+    status.classList.toggle("warning", !!message.offline);
+    root.querySelectorAll("[data-template-use]").forEach(item => item.disabled = false);
+    render();
+  }
+
+  function requestCatalog(forceRefresh = false) {
+    const root = ensure();
+    root.querySelector("[data-template-status]").textContent = forceRefresh ? "Refreshing template library…" : "Loading template library…";
+    if (!host) {
+      templates = [];
+      root.querySelector("[data-template-status]").textContent = "The online template library requires the Qanvas desktop app.";
+      render();
+      return;
+    }
+    host.postMessage({ type: "templateCatalog", forceRefresh });
+  }
+
+  function open() {
+    const root = ensure();
+    if (!root.open) root.showModal();
+    requestCatalog(false);
+    setTimeout(() => root.querySelector("[data-template-search]")?.focus(), 0);
+  }
+
+  document.addEventListener("click", event => {
+    if (bypassNew || !event.target.closest('[data-action="new"]')) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    open();
+  }, true);
+
+  host?.addEventListener("message", event => {
+    const message = event.data;
+    if (message?.type === "templateCatalog") setCatalog(message);
+    if (message?.type === "templateError") {
+      const root = ensure();
+      root.querySelector("[data-template-status]").textContent = message.message || "The template could not be opened.";
+      root.querySelector("[data-template-status]").classList.add("warning");
+      root.querySelectorAll("[data-template-use]").forEach(item => item.disabled = false);
+    }
+    if (message?.type === "loadTemplate") dialog?.close();
+  });
+
+  window.QanvasTemplateLibrary = { open };
+})();
