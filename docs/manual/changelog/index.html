@@ -1521,6 +1521,17 @@
 <li>Qvitr Experience now calls shared connections <strong>Sagas</strong> while Standard mode continues to use <strong>Connections</strong>.</li>
 <li>PDF and PowerPoint publishing can add a themed publication footer to every page or generate a dedicated publication cover page. PowerPoint details remain editable native objects.</li>
 </ul>
+<div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>48</strong></div><div><p class="week-dates">23–29 November 2026</p><h2>Simpler source setup and clearer support</h2></div></div>
+
+<ul>
+<li>New canvases can start without a data source. Qanvas asks for one only when a data-dependent tile is added, while text, HTML and other optional-source content can remain unconnected.</li>
+<li>The Source Inspector stays hidden until a source exists. The reserved Main source can now be deleted like other sources; its connection, data, measures, filters and cached preview are cleared and the empty slot remains hidden until reused.</li>
+<li>Formula Helper now follows the selected Qvitr application theme and remains open after insertion so several formulas can be added during one session.</li>
+<li>Excel source-update failures now remain visible with a practical network, firewall or allowed-IP explanation and direct actions to close or inspect the technical log.</li>
+<li><strong>About QRep</strong> now combines the health snapshot, log access and a portable support bundle for troubleshooting.</li>
+<li>Improved Presentation mode interaction over HTML tiles, including right-click actions, keyboard page navigation and zoom behavior after interacting with embedded content.</li>
+<li>Improved keyboard navigation and focus handling across pages and tabs, including expected forward and reverse tab-switching shortcuts.</li>
+</ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>47</strong></div><div><p class="week-dates">16–22 November 2026</p><h2>Integrated SQL assistance, clearer AI setup and more reliable authoring</h2></div></div>
 
 <ul>
@@ -1537,9 +1548,9 @@
 <li>Separated ClickOnce and Enterprise update channels so a normal ClickOnce update can no longer launch the Enterprise installer. A guided migration now requires ClickOnce removal first, and presentation mode adds a fixed mini-menu trigger plus Ctrl+wheel zoom over HTML content.</li>
 <li>The first save of a new Qanvas now proposes a safe <code>.qanvas</code> filename based on the canvas name, with <code>report.qanvas</code> retained as the fallback for unnamed documents.</li>
 <li>Added a template library to <strong>New</strong> with five ready-to-use starters for tender pipelines, Gantt project planning, management KPIs, public weather data and Nordic economic growth. Templates contain immediate sample data, open as a new unsaved canvas and are securely downloaded, verified and cached for offline reuse.</li>
+<li>Expanded template setup into a source-mapping wizard. It separates embedded samples from connected sources, maps portable logical names to compatible local Development/Test/Production connections, opens advanced source setup when needed and can refresh mapped sources against the template schema contract before use. Also added publisher-controlled <strong>Save personal copy</strong> for Viewer App sessions, clearer save/app completion receipts, and an AI/MCP permission summary that distinguishes workspace write access, read-only context folders, active connections and excluded credentials.</li>
 <li>Added <strong>QanvasTemplateManager</strong> under solution tools. Maintainers can select a Qanvas file and preview, enter searchable metadata, validate and version the template, safely remove or restore catalog entries without deleting their files, rebuild the catalog and explicitly publish it to GitHub without editing the catalog builder.</li>
 <li>Renamed the embedded manual-table structure action from <strong>Edit columns</strong> to <strong>Edit table</strong> to better describe that it controls the full table setup.</li>
-<li>Published Qvitr Enterprise <strong>12.0.21</strong> with application version <strong>2026.11.22.0</strong>, aligned Office integration branding around <strong>QRep</strong>, and strengthened unsigned development-build and installed-release validation paths.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>46</strong></div><div><p class="week-dates">9–15 November 2026</p><h2>Safer publishing, clearer sources and more reliable Office integration</h2></div></div>
 
@@ -1553,7 +1564,6 @@
 <li>Expanded API projected-table setup so each returned table can include only the columns needed by the report.</li>
 <li>Improved Diagnostics with clearer missing-connection and schema-change information, suggested field matches, downstream impact, repair actions and update summaries.</li>
 <li>Added tags to Gantt tasks for filtering, badges and reporting, and aligned remaining Gantt controls with the selected theme.</li>
-<li>Added an installation release check that verifies the packaged Qvitr files and exercises the main windows and workspaces before an installer is accepted.</li>
 <li>Added a guided <strong>Publish</strong> workflow with readiness checks, publisher and freshness details, Viewer compatibility testing, reconciliation rules, recipient notes, and output choices for Viewer, webpage, PDF and PowerPoint.</li>
 <li>Added a clearer Creator start experience for reports, apps, HTML experiences, documents, Gantt/task lists and AI-assisted creation, while keeping exact page layouts in a separate chooser.</li>
 <li>Reorganized tile and graphic creation into task-led groups. Text, App and HTML objects can now remain intentionally unconnected; data visuals still require a source.</li>
@@ -1563,8 +1573,8 @@
 <li>Standardized <strong>Apply</strong>, <strong>Apply &amp; refresh</strong>, <strong>Cancel</strong> and unapplied-change warnings across Query, API, Measures, App, HTML and SVG workspaces.</li>
 <li>Improved HTML authoring with built-in source-aware examples, optional sources, better action spacing, horizontal text padding and safer file-dialog handling.</li>
 <li>Fixed PowerPoint <strong>Get from Qanvas</strong> so page and tile previews render in an isolated background session and return images instead of opening the normal Qanvas editor.</li>
-<li>Fixed Excel Canvas refresh discovery for Visual Studio, VSTO shadow-copy and ClickOnce locations, and fixed the parallel Release rebuild race that could omit the Qanvas host or LegacyBridge interop files.</li>
-<li>Fixed manual update detection so Enterprise releases publish a newer Qanvas application version, bypass stale GitHub CDN manifests, and block future uploads when clients would otherwise see the new installer as already up to date.</li>
+<li>Fixed Excel Canvas refresh so the installed Qanvas application is found and opened reliably across supported installation types.</li>
+<li>Fixed manual update detection so newer Enterprise versions are offered correctly instead of appearing to be already installed.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>45</strong></div><div><p class="week-dates">2–8 November 2026</p><h2>Interactive apps, data-bound HTML and a more capable Grid</h2></div></div>
 
@@ -1589,7 +1599,7 @@
 <li>Added initial Microsoft Entra SSO support for API connections. Qvitr uses MSAL to acquire delegated access tokens, reuses a DPAPI-protected token cache silently, opens the system browser when interaction is required, and resumes a pending source update after sign-in. Email code remains the default general-purpose login method.</li>
 <li>Qanvas AI now checks the configured CLI before opening and directs users to the AI settings when setup is missing.</li>
 <li>Gantt mouse-wheel progress editing now shows a compact themed progress indicator on the selected task.</li>
-<li>The Excel add-in now resolves Qanvas beside the deployed add-in assembly, fixing <strong>Get from Qanvas</strong> opening a different runtime after ClickOnce installation. Publish validation also compares the packaged runtime and import-picker assets with the current build.</li>
+<li>The Excel add-in now resolves Qanvas beside the deployed add-in, fixing <strong>Get from Qanvas</strong> opening a different application version after ClickOnce installation.</li>
 <li>Added an opt-in structured JSON companion for hierarchical API sources. App and HTML tiles can consume the preserved JSON while every existing table, matrix, relationship, measure and filter continues to use the normal flattened table. HTML tiles include a built-in searchable JSON reader, and focused AI receives a bounded structural sample for advanced renderer design.</li>
 <li>Added ready-to-use HTML examples for source profiling, record exploration and an automatic KPI snapshot. The source profile reports nulls, completeness, unique values, average, low/high, median and mode, and includes an interactive per-column distribution without requiring AI.</li>
 <li>Fixed HTML focused AI for reports whose source collection is stored as a keyed object. The AI context now normalizes both keyed and array source collections and includes source type, connection, schema, parameters and bounded data samples.</li>
@@ -1673,12 +1683,7 @@
 
 <ul>
 <li>Simplified Report Grid to one rectangular A1 cell model. The former dedicated column-header, row-label and corner cells were removed; every grid cell now supports the same content, formatting and formula behavior, while filters remain on the row and column axes.</li>
-<li>Added a user-initiated <strong>Check for updates</strong> command to Qanvas, Excel and PowerPoint. Enterprise installations never check automatically.</li>
-<li>Added a dedicated GitHub <code>qvitr-update.json</code> manifest with separate Qanvas file and MSI installer versions, setup URL, release URL and SHA-256 hash.</li>
-<li>Added confirmation, download progress, hash checking, Authenticode presence checking and elevated setup launch to the shared Qanvas updater.</li>
-<li>Added a one-command GitHub release script that can build, sign, stage, validate and upload Qvitr Enterprise, with validation-only, draft and reuse-existing-build options.</li>
-<li>Strengthened release validation so the update manifest, MSI and bootstrapper must agree with the requested version and installer hash before upload.</li>
-<li>Updated installer guidance to require a new three-part MSI version for each release; signing certificates do not require the installer version to remain fixed.</li>
+<li>Added a secure, user-initiated <strong>Check for updates</strong> flow to Qanvas, Excel and PowerPoint, with release information, confirmation, download progress and a guided installer launch. Enterprise installations never check automatically.</li>
 <li>Added direct Qanvas source relationships with multi-field keys and explicit Dimension or Measure lookup roles. Linked dimension fields can group tables, form matrix axes, and drive chart categories/groups without physically expanding the primary detail table. Source and page filters on a Dimension master propagate to directly linked fact sources. Tables, matrices, charts, and the full Chart Designer can use measures from a linked, pre-aggregated source. The relationship editor reports loaded-data cardinality and requires a unique Dimension key.</li>
 <li>Fixed folder and single-file webpage exports so source relationships remain in the offline snapshot. Exported visuals now calculate linked fields/measures and propagate filters from Dimension master tables in the same way as Presentation mode.</li>
 <li>Fixed native Mini DAX source-field parsing so physical names containing underscores, including <code>accounts_receivable</code>, are aggregated correctly instead of being truncated at the first underscore.</li>
@@ -1723,7 +1728,6 @@
 <li>Improved Query and API editing with resizable panes, themed results, safer API link navigation and clearer request/output inspection.</li>
 <li>Improved Chart Web heatmaps, multiples, label isolation, plot margins and direct navigation from a selected chart element to its property section.</li>
 <li>Added reusable Qanvas examples and regression coverage for layouts, filters, matrices, rich text, SVG, Gantt, AI workflows, PowerPoint integration and publish contents.</li>
-<li>Strengthened ClickOnce packaging so current QanvasWeb and ChartWeb runtime files and web assets are included and can be validated before an installer is published.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>38</strong></div><div><p class="week-dates">14–20 September 2026</p><h2>Clearer query feedback, API navigation and PDF reports</h2></div></div>
 
@@ -1748,9 +1752,8 @@
 <li>Added local JSONL schema groups, saved source views/combined sources, reopening definitions, dependency-aware source refresh, import source comments and replayable/removable import steps.</li>
 <li>Expanded Chart Web and Canvas chart properties with responsive plots, multiples, shared-axis/layout controls, grouped shading, label typography, date formats, direct property navigation and plot margins.</li>
 <li>Expanded Matrix subtotal/layout controls, sticky headers, larger item limits and signed data bars; refined local pictures, image sizing, graphic sections and editable text hyperlinks.</li>
-<li>Added offline webpage export definitions with folder/single-HTML formats, named historic files, bundled data/images, page tabs, sorting, filters, date/range calendars, toggles and configurable report header/subheader/button appearance.</li>
 <li>
-<p>Release audit corrected QanvasWeb executable discovery and publish checks after the rename. A fresh signed ClickOnce publish and live Excel startup test are required before shipping these changes.</p>
+<p>Added offline webpage export definitions with folder/single-HTML formats, named historic files, bundled data/images, page tabs, sorting, filters, date/range calendars, toggles and configurable report header/subheader/button appearance.</p>
 </li>
 <li>
 <p>Improved Query Web and its visual join designer with selectable table columns, aliases, table actions, resizable layout, multiple editable join connections, directional join arrows, and join-type tooltips.</p>
@@ -1759,7 +1762,6 @@
 <li>Improved the Measure workspace with expression highlighting, autocomplete, keyboard indentation, clearer selected suggestions, and a docked, resizable function-reference pane.</li>
 <li>Refined Canvas image and chart tiles with transparent backgrounds, stable image positioning when scrollbars are hidden, reduced borders and margins, clearer update/editor status messages, and hidden background cons ole windows when Chart Web opens.</li>
 <li>Corrected Excel add-in connection loading and strengthened Canvas/Matrix specification round-tripping between files and embedded Excel specifications.</li>
-<li>Changed Canvas Web packaging to split self-contained deployment so the first installation contains the .NET runtime while later ClickOnce updates can reuse unchanged runtime files.</li>
 <li>Fixed <code>setreport</code> template refreshes so dependent <code>_control</code> formulas are recalculated after report-specific parameters are applied, including MTD versus prior-year templates.</li>
 <li>Added host-independent calculated parameters with arithmetic and <code>PREVIOUSYEAR</code>, <code>PREVIOUSPERIOD</code>, and <code>ADDMONTHS</code> helpers, removing the need to rely on Excel formulas for common reporting-period calculations.</li>
 </ul>
