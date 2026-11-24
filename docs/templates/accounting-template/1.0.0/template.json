@@ -15,5 +15,5 @@
   "previewFile": "preview.png",
   "dataMode": "Embedded sample data",
   "featured": true,
-  "listed": true
+  "listed": false
 }
