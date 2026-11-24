@@ -1,0 +1,19 @@
+{
+  "id": "accounting-template",
+  "version": "1.0.1",
+  "name": "Accounting analysis",
+  "description": "See overview of accounting and analysis with scenario tester",
+  "category": "Reporting",
+  "tags": [
+    "Accounting",
+    "financial",
+    "reporting"
+  ],
+  "locale": "no",
+  "minimumQvitrVersion": "2026.11.22.0",
+  "templateFile": "template.qanvas",
+  "previewFile": "preview.png",
+  "dataMode": "Embedded sample data",
+  "featured": true,
+  "listed": true
+}
