@@ -344,6 +344,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#qvitr-installers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qvitr installers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#qvitr-enterprise-installer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1554,6 +1565,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#qvitr-installers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Qvitr installers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#qvitr-enterprise-installer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1660,6 +1682,22 @@
 
 
 <h1 id="installation">Installation</h1>
+<h2 id="qvitr-installers">Qvitr installers</h2>
+<p>Qvitr is moving to two installation scopes:</p>
+<ul>
+<li><strong>Qvitr User Setup</strong> is intended to become the default for ordinary users. It
+  installs for the current Windows user under <code>%LocalAppData%</code>, registers the
+  Office add-ins for that user and does not require administrator privileges.</li>
+<li><strong>Qvitr Enterprise Setup</strong> remains available for IT-managed, machine-wide
+  deployment and can install the required .NET 8 Desktop Runtime.</li>
+</ul>
+<p>Both packages install the same Qvitr functionality. Viewer or Creator access is
+decided by the user's Qvitr licence, not by the selected installer.</p>
+<p>The recommended User Setup includes a private .NET 8 Desktop Runtime and remains
+administrator-free. A smaller <strong>User Setup – existing .NET 8</strong> package is also
+available. It checks for a compatible x64 Windows Desktop Runtime before
+installation and stops with guidance when the prerequisite is missing. Installing
+Microsoft's shared runtime is still a machine-level administrator operation.</p>
 <h2 id="qvitr-enterprise-installer">Qvitr Enterprise installer</h2>
 <p>The recommended Windows package is <strong>Qvitr Enterprise</strong>. It installs Qanvas and, when selected, the Excel and PowerPoint integrations. The installer also supplies the required .NET 8 Desktop Runtime when it is missing.</p>
 <ol>
@@ -1669,13 +1707,16 @@
 <li>Open Qanvas or Office and verify the Qvitr commands are available.</li>
 </ol>
 <h3 id="manual-updates">Manual updates</h3>
-<p>Qvitr does not check for enterprise updates automatically. Choose <strong>Check for updates</strong> from:</p>
+<p>Choose <strong>Check for updates</strong> from:</p>
 <ul>
 <li>Qanvas: <strong>Help (?) &gt; Check for updates</strong>;</li>
 <li>Excel: <strong>QRep &gt; Settings &gt; Check for updates</strong>;</li>
 <li>PowerPoint: <strong>QReports &gt; Help &gt; Check for updates</strong>.</li>
 </ul>
-<p>Qvitr compares the installed Qanvas file version with the latest release manifest. When a newer release exists, it asks before downloading. The download is checked against its SHA-256 hash and must contain an Authenticode signature before Windows setup is opened. Close Qanvas, Excel and PowerPoint before confirming the installation so their installed files are not locked.</p>
+<p>Qvitr compares the installed Qanvas file version with the latest release manifest. When a newer release exists, it asks before downloading. User Setup downloads the current-user MSI and launches it without elevation; Enterprise downloads the machine-wide setup and requests administrator approval. Each download is checked against its own SHA-256 hash and must contain an Authenticode signature before Windows setup is opened. Close Qanvas, Excel and PowerPoint before confirming the installation so their installed files are not locked.</p>
+<p>In <strong>Settings &gt; General</strong>, enable <strong>Check for updates when Qanvas starts</strong> to
+perform a quiet startup check. Qanvas opens the update proposal only when a newer
+signed release is available; it never downloads or installs without confirmation.</p>
 <h2 id="legacy-clickonce-excel-installation">Legacy ClickOnce Excel installation</h2>
 <h2 id="requirements">Requirements</h2>
 <ul>
@@ -1694,7 +1735,7 @@
 <h3 id="switch-from-clickonce-to-qvitr-enterprise">Switch from ClickOnce to Qvitr Enterprise</h3>
 <p>Use <strong>Check for updates &gt; Switch to Qvitr Enterprise</strong> for the guided migration. Close Excel and PowerPoint, remove the ClickOnce QReports/QRep entry from <strong>Windows Settings &gt; Installed apps</strong>, and only then continue to download the signed Enterprise installer. Do not install Enterprise over ClickOnce: both channels can otherwise register the same Office add-in with different versions.</p>
 <h2 id="upgrade">Upgrade</h2>
-<p>For Qvitr Enterprise, use <strong>Check for updates</strong> manually. For the legacy ClickOnce installation, close and reopen Excel after a release and follow its ClickOnce prompt if one appears.</p>
+<p>For Qvitr User Setup or Enterprise, use <strong>Check for updates</strong> manually or enable the optional startup check. For the legacy ClickOnce installation, close and reopen Excel after a release and follow its ClickOnce prompt if one appears.</p>
 
 
 

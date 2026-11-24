@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedUtc": "2026-11-23T09:15:16.064Z",
+  "generatedUtc": "2026-11-24T18:49:35.750Z",
   "templates": [
     {
       "id": "project-planner",
@@ -19,6 +19,26 @@
       "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-planner/1.0.0/preview.svg",
       "sha256": "4561d6500f990fb6ccf6c8e606e4b22f7b95038a1e6dcb16a1aa93fd71592da1",
       "size": 12176,
+      "dataMode": "Embedded sample data",
+      "featured": true
+    },
+    {
+      "id": "accounting-template",
+      "version": "1.0.0",
+      "name": "Accounting analysis",
+      "description": "See overview of accounting and analysis with scenario tester",
+      "category": "Reporting",
+      "tags": [
+        "Accounting",
+        "financial",
+        "reporting"
+      ],
+      "locale": "no",
+      "minimumQvitrVersion": "2026.11.22.0",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/accounting-template/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/accounting-template/1.0.0/preview.png",
+      "sha256": "385e1afcc19e310e6e09241cf05dd1244ddbc6f64128e0f93405e6b4bb69799a",
+      "size": 154990,
       "dataMode": "Embedded sample data",
       "featured": true
     },

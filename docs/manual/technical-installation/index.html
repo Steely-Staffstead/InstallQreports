@@ -1367,6 +1367,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation-scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation scopes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#qvitr-enterprise-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1548,6 +1559,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation-scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation scopes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#qvitr-enterprise-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1648,15 +1670,35 @@
 
 
 <h1 id="installation-and-updates">Installation and updates</h1>
+<h2 id="installation-scopes">Installation scopes</h2>
+<p>Qvitr has separate installer products so installation scope is explicit:</p>
+<ul>
+<li><strong>Qvitr User Setup</strong> uses <code>%LocalAppData%</code> and HKCU Office registration. The
+  normal package carries a private app-local .NET 8 Desktop Runtime and needs no
+  administrator rights. A smaller package omits those files and uses WiX's
+  <code>DotNetCompatibilityCheck</code> for the x64 desktop runtime before installation.</li>
+<li><strong>Qvitr Enterprise Setup</strong> uses machine-wide installation and registration.
+  It remains the supported choice for managed deployment and computers that need
+  the .NET 8 Desktop Runtime installed by setup.</li>
+</ul>
+<p>The products use distinct upgrade codes and install locations. Viewer and
+Creator permissions continue to come from the same signed per-user licence.
+Before moving between installation scopes, close Office and Qanvas and uninstall
+the previous scope to avoid two Office registrations pointing at different
+versions.</p>
 <h2 id="qvitr-enterprise-deployment">Qvitr Enterprise deployment</h2>
 <p>Qvitr Enterprise is the current machine-wide WiX installation channel. Its bootstrapper contains the application MSI and installs the .NET 8 Desktop Runtime when required. The selectable components are Qanvas standalone, Excel integration and PowerPoint integration.</p>
-<p>Enterprise updates are deliberately manual. Qanvas, Excel and PowerPoint launch the same Qanvas update checker with <code>--check-updates</code>. It downloads <code>qvitr-update.json</code> from the latest GitHub release and compares its <code>applicationVersion</code> with the installed <code>QanvasWeb.exe</code> file version. It does not contact GitHub at application startup.</p>
+<p>Qanvas, Excel and PowerPoint launch the same update checker with <code>--check-updates</code>.
+Qanvas can additionally perform an opt-in startup check. It downloads only the
+small <code>qvitr-update.json</code> manifest, stays silent when current or offline, and
+opens the update proposal only when <code>applicationVersion</code> is newer. Downloads and
+installation always require explicit confirmation.</p>
 <p>The manifest keeps two versions separate:</p>
 <ul>
 <li><code>applicationVersion</code>: the four-part Qanvas file version used to decide whether an update is available;</li>
 <li><code>installerVersion</code>: the three-part WiX/MSI version used by Windows Installer. This must increase for every upgrade, even when the same signing certificate is used.</li>
 </ul>
-<p>After confirmation, setup is downloaded to the user's temporary Qvitr update directory, verified against the manifest SHA-256 value, checked for an Authenticode signature and started with elevation.</p>
+<p>After confirmation, the package for the detected installation scope is downloaded to the user's temporary Qvitr update directory, verified against its manifest SHA-256 value and checked for an Authenticode signature. Enterprise setup starts with elevation. User Setup starts the current-user MSI without elevation.</p>
 <h3 id="build-and-publish">Build and publish</h3>
 <p>The complete GitHub release flow can be run with one command:</p>
 <pre><code class="language-powershell">.\documentation\update_github_enterprise_release.bat 12.0.2
