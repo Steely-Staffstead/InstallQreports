@@ -1,0 +1,977 @@
+{
+  "version": 2,
+  "packageVersion": 1,
+  "name": "Budget",
+  "localSources": [],
+  "apps": [
+    {
+      "id": "budget-start-app",
+      "name": "Budget start",
+      "runtime": "sandboxed-html",
+      "template": "blank",
+      "entry": "index.html",
+      "permissions": {
+        "data": "read",
+        "measures": "read",
+        "parameters": "read",
+        "parameterAccess": [],
+        "filters": "read",
+        "navigation": "read",
+        "network": "none",
+        "storage": "none",
+        "actions": [],
+        "tables": [],
+        "sourceRefresh": [],
+        "setup": {
+          "ganttTileIds": [],
+          "options": false,
+          "clearTasks": false,
+          "removeOwnPage": true,
+          "listTileIds": [],
+          "listSetup": false,
+          "listClear": false,
+          "gridTileIds": [
+            "budget-grid"
+          ],
+          "gridWrite": true,
+          "gridClear": true
+        }
+      },
+      "currentSpec": "Start guide for the Budget template: name the four periods (B1:E1), set the departments in A2:A11 with a total formula per row in F, clear the example amounts (B2:E11) and remove its own start page.",
+      "designHistory": [],
+      "bindings": [],
+      "assets": [],
+      "files": [
+        {
+          "path": "index.html",
+          "type": "text/html",
+          "content": "<!doctype html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"guide\">\n    <header>\n      <div>\n        <h1>Get started with the budget</h1>\n        <p>Name the periods, add your departments and clear the example amounts.</p>\n      </div>\n      <div class=\"progress\" role=\"progressbar\" aria-label=\"Setup progress\" aria-valuemin=\"0\">\n        <span id=\"progress-text\">Loading…</span>\n        <i><b id=\"progress-bar\"></b></i>\n      </div>\n    </header>\n    <ol id=\"steps\"></ol>\n    <p class=\"error\" id=\"error\" role=\"alert\" hidden></p>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>\n"
+        },
+        {
+          "path": "styles.css",
+          "type": "text/css",
+          "content": ":root {\n  --surface: #ffffff;\n  --text: #1d2939;\n  --accent: #4f6ee8;\n  --on-accent: #ffffff;\n  --grid: #d5dce8;\n  --positive: #16844a;\n  --negative: #c43d4b;\n  --muted: #5d6b82;\n}\n\n* { box-sizing: border-box; }\n\nhtml, body {\n  margin: 0;\n  background: var(--surface);\n  color: var(--text);\n  font: 13px/1.45 \"Segoe UI\", system-ui, sans-serif;\n}\n\n.guide { padding: 16px 18px; }\n\nheader {\n  display: flex;\n  align-items: flex-start;\n  gap: 16px;\n  margin-bottom: 12px;\n}\n\nheader > div:first-child { flex: 1; min-width: 0; }\nh1 { margin: 0; font-size: 20px; line-height: 1.25; }\nheader p { margin: 3px 0 0; color: var(--muted); }\n\n.progress { display: grid; justify-items: end; gap: 5px; font-size: 12px; color: var(--muted); }\n.progress i { display: block; width: 150px; height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 16%, transparent); overflow: hidden; }\n.progress b { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .25s ease; }\n\nol { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }\n\n.step { border: 1px solid var(--grid); border-radius: 10px; }\n.step.open { border: 2px solid var(--accent); }\n\n.step-head {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  width: 100%;\n  min-height: 42px;\n  padding: 8px 12px;\n  border: 0;\n  background: transparent;\n  color: inherit;\n  font: inherit;\n  text-align: left;\n  cursor: pointer;\n}\n\n.step-head b { flex: 1; font-size: 14px; }\n.step-head small { color: var(--muted); }\n\n.check {\n  display: grid;\n  place-items: center;\n  width: 24px;\n  height: 24px;\n  border: 1.5px solid var(--grid);\n  border-radius: 50%;\n  font-size: 12px;\n  font-weight: 600;\n}\n\n.step.done .check { border-color: var(--positive); background: var(--positive); color: #fff; }\n\n.step-body { padding: 0 12px 12px 46px; }\n.step-body p { margin: 0 0 8px; }\n\n.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; padding: 0; list-style: none; }\n.chips li { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px 2px 9px; border: 1px solid var(--grid); border-radius: 999px; font-size: 12px; }\n.chips li.empty { padding-right: 9px; color: var(--muted); }\n.chips button { width: 18px; height: 18px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }\n\n.add { display: flex; gap: 6px; margin-bottom: 8px; }\n.add input { flex: 1; min-width: 0; height: 30px; padding: 0 9px; border: 1px solid var(--grid); border-radius: 7px; font: inherit; }\n\n.actions { display: flex; flex-wrap: wrap; gap: 6px; }\n\nbutton.button {\n  min-height: 30px;\n  padding: 4px 12px;\n  border: 1px solid var(--grid);\n  border-radius: 7px;\n  background: var(--surface);\n  color: var(--text);\n  font: inherit;\n  cursor: pointer;\n}\n\nbutton.primary { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }\nbutton.danger { border-color: var(--negative); color: var(--negative); }\nbutton:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n\n.error { margin: 10px 0 0; padding: 8px 10px; border: 1px solid var(--negative); border-radius: 8px; color: var(--negative); }\n\n.options { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }\n.option { display: inline-flex; align-items: center; gap: 6px; }\n.periods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 8px; }\n.periods input { min-width: 0; height: 30px; padding: 0 9px; border: 1px solid var(--grid); border-radius: 7px; font: inherit; }\n"
+        },
+        {
+          "path": "app.js",
+          "type": "text/javascript",
+          "content": "// Start guide for the Budget template, built as a Qanvas app.\r\n// The budget is a Report Grid: row 1 holds the period names (B1:E1), rows 2-11 the departments (column A) with amounts\r\n// (B:E) and a total per department (F), and row 12 the column totals. The app uses qanvas.setup to read and write cells,\r\n// clear the example amounts (Qanvas asks first) and remove its own page.\r\n\r\nconst firstRow = 2;\r\nconst lastRow = 11;\r\nconst maxDepartments = lastRow - firstRow + 1;\r\n\r\nconst steps = [\r\n  { id: \"periods\", title: \"Name the periods\" },\r\n  { id: \"departments\", title: \"Add your departments\" },\r\n  { id: \"amounts\", title: \"Clear the example amounts\" },\r\n  { id: \"finish\", title: \"Finish and remove this start page\" }\r\n];\r\n\r\nlet periods = [];\r\nlet departments = [];\r\nlet amounts = 0;\r\nlet state = { done: {}, open: \"\" };\r\n\r\nconst stepList = document.getElementById(\"steps\");\r\nconst errorBox = document.getElementById(\"error\");\r\n\r\nfunction escapeHtml(value) {\r\n  return String(value ?? \"\").replace(/[&<>\"']/g, character => ({ \"&\": \"&amp;\", \"<\": \"&lt;\", \">\": \"&gt;\", '\"': \"&quot;\", \"'\": \"&#39;\" })[character]);\r\n}\r\n\r\nfunction showError(error) {\r\n  errorBox.hidden = !error;\r\n  errorBox.textContent = error ? (error.message || String(error)) : \"\";\r\n}\r\n\r\nfunction isDone(step) {\r\n  if (step.id === \"amounts\" && amounts === 0) return true;\r\n  return state.done[step.id] === true;\r\n}\r\n\r\nfunction applyTheme(theme) {\r\n  const root = document.documentElement.style;\r\n  for (const name of [\"surface\", \"text\", \"accent\", \"grid\", \"positive\", \"negative\"]) {\r\n    if (theme && theme[name]) root.setProperty(`--${name}`, theme[name]);\r\n  }\r\n  if (theme && theme.onAccent) root.setProperty(\"--on-accent\", theme.onAccent);\r\n}\r\n\r\nfunction stepBody(step) {\r\n  const done = `<button type=\"button\" class=\"button primary\" data-done=\"${step.id}\">Done</button>`;\r\n  if (step.id === \"periods\") {\r\n    const inputs = periods.map((value, index) => `<input type=\"text\" data-period=\"${index}\" value=\"${escapeHtml(value)}\" aria-label=\"Period ${index + 1}\">`).join(\"\");\r\n    return `<p>The four amount columns. Use quarters, months or anything that fits your budget.</p><div class=\"periods\">${inputs}</div><div class=\"actions\"><button type=\"button\" class=\"button\" data-save-periods>Save names</button>${done}</div>`;\r\n  }\r\n  if (step.id === \"departments\") {\r\n    const chips = departments.map(value =>\r\n      `<li><span>${escapeHtml(value)}</span><button type=\"button\" data-remove-department=\"${escapeHtml(value)}\" aria-label=\"Remove ${escapeHtml(value)}\">×</button></li>`\r\n    ).join(\"\") || '<li class=\"empty\">None yet</li>';\r\n    return `<p>One row per department, up to ${maxDepartments}. Totals are calculated for you.</p><ul class=\"chips\">${chips}</ul><div class=\"add\"><input type=\"text\" data-department-input placeholder=\"Name of department\" aria-label=\"Name of department\"><button type=\"button\" class=\"button\" data-add-department>Add</button></div><div class=\"actions\">${done}</div>`;\r\n  }\r\n  if (step.id === \"amounts\") {\r\n    if (!amounts) return \"<p>There are no amounts in the budget. Type them straight into the grid.</p>\";\r\n    return `<p>The budget has ${amounts} example amounts. Qanvas asks before clearing them; names and totals stay, and you can undo with Ctrl+Z.</p><div class=\"actions\"><button type=\"button\" class=\"button danger\" data-clear>Clear ${amounts} amounts</button><button type=\"button\" class=\"button\" data-done=\"amounts\">Keep them</button></div>`;\r\n  }\r\n  if (step.id === \"finish\") return '<p>Remove this start page when you are done. The budget stays.</p><div class=\"actions\"><button type=\"button\" class=\"button primary\" data-remove-page>Remove the start page</button></div>';\r\n  return \"\";\r\n}\r\n\r\nfunction render() {\r\n  const doneCount = steps.filter(isDone).length;\r\n  const firstOpen = steps.find(step => !isDone(step));\r\n  const open = state.open || (firstOpen ? firstOpen.id : \"\");\r\n  document.getElementById(\"progress-text\").textContent = `${doneCount} of ${steps.length} done`;\r\n  document.getElementById(\"progress-bar\").style.width = `${Math.round(doneCount / steps.length * 100)}%`;\r\n  stepList.innerHTML = steps.map((step, index) => {\r\n    const done = isDone(step);\r\n    const expanded = step.id === open;\r\n    return `<li class=\"step${done ? \" done\" : \"\"}${expanded ? \" open\" : \"\"}\"><button type=\"button\" class=\"step-head\" data-toggle=\"${step.id}\" aria-expanded=\"${expanded}\"><span class=\"check\" aria-hidden=\"true\">${done ? \"✓\" : index + 1}</span><b>${step.title}</b></button>${expanded ? `<div class=\"step-body\">${stepBody(step)}</div>` : \"\"}</li>`;\r\n  }).join(\"\");\r\n}\r\n\r\nasync function refresh() {\r\n  const header = await qanvas.setup.readGrid(\"B1:E1\");\r\n  periods = header.values[0];\r\n  const names = await qanvas.setup.readGrid(`A${firstRow}:A${lastRow}`);\r\n  departments = names.values.map(row => row[0]).filter(value => value.trim());\r\n  const values = await qanvas.setup.readGrid(`B${firstRow}:E${lastRow}`);\r\n  amounts = values.values.flat().filter(value => String(value).trim() && !String(value).startsWith(\"=\")).length;\r\n  render();\r\n}\r\n\r\n// Departments fill rows 2-11 from the top; each named row gets its total formula.\r\nasync function writeDepartments(names) {\r\n  if (names.length > maxDepartments) throw new Error(`The budget has room for ${maxDepartments} departments.`);\r\n  const rows = [];\r\n  for (let index = 0; index < maxDepartments; index++) rows.push([names[index] || \"\"]);\r\n  await qanvas.setup.writeGrid(`A${firstRow}`, rows);\r\n  const totals = [];\r\n  for (let index = 0; index < maxDepartments; index++) {\r\n    const row = firstRow + index;\r\n    totals.push([names[index] ? `=SUM(B${row}:E${row})` : \"\"]);\r\n  }\r\n  await qanvas.setup.writeGrid(`F${firstRow}`, totals);\r\n  await refresh();\r\n}\r\n\r\nasync function addDepartment() {\r\n  const input = stepList.querySelector(\"[data-department-input]\");\r\n  const value = input ? input.value.trim() : \"\";\r\n  if (!value) return;\r\n  if (departments.some(name => name.toLowerCase() === value.toLowerCase())) throw new Error(`${value} is already in the budget.`);\r\n  await writeDepartments([...departments, value]);\r\n  const next = stepList.querySelector(\"[data-department-input]\");\r\n  if (next) next.focus();\r\n}\r\n\r\nasync function run(task) {\r\n  showError(null);\r\n  try {\r\n    await task();\r\n  } catch (error) {\r\n    showError(error);\r\n  }\r\n}\r\n\r\nasync function markDone(id) {\r\n  state.done[id] = true;\r\n  state.open = \"\";\r\n  await qanvas.setup.state.set(state);\r\n  render();\r\n}\r\n\r\nstepList.addEventListener(\"click\", event => {\r\n  const target = event.target.closest(\"button\");\r\n  if (!target) return;\r\n  if (target.dataset.toggle) {\r\n    state.open = state.open === target.dataset.toggle ? \"-\" : target.dataset.toggle;\r\n    render();\r\n    return;\r\n  }\r\n  if (target.hasAttribute(\"data-save-periods\")) run(async () => {\r\n    const names = [...stepList.querySelectorAll(\"[data-period]\")].map(input => input.value.trim());\r\n    await qanvas.setup.writeGrid(\"B1\", [names]);\r\n    await refresh();\r\n  });\r\n  if (target.hasAttribute(\"data-add-department\")) run(addDepartment);\r\n  if (target.dataset.removeDepartment) run(() => writeDepartments(departments.filter(name => name !== target.dataset.removeDepartment)));\r\n  if (target.dataset.done) run(() => markDone(target.dataset.done));\r\n  if (target.hasAttribute(\"data-clear\")) run(async () => { const result = await qanvas.setup.clearGrid(`B${firstRow}:E${lastRow}`); if (!result.cancelled) { state.open = \"\"; await refresh(); } });\r\n  if (target.hasAttribute(\"data-remove-page\")) run(() => qanvas.setup.removeOwnPage());\r\n});\r\n\r\nstepList.addEventListener(\"keydown\", event => {\r\n  if (event.target.closest(\"[data-department-input]\") && event.key === \"Enter\") {\r\n    event.preventDefault();\r\n    run(addDepartment);\r\n  }\r\n});\r\n\r\nwindow.addEventListener(\"message\", event => {\r\n  if (event.data?.type !== \"qanvas.init\") return;\r\n  applyTheme(event.data.payload?.theme);\r\n  run(async () => {\r\n    state = { done: {}, open: \"\", ...((await qanvas.setup.state.get()) || {}) };\r\n    await refresh();\r\n  });\r\n});\r\n\r\nparent.postMessage({ type: \"qanvas.ready\" }, \"*\");\r\n"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-start",
+      "name": "Start here",
+      "hidden": false,
+      "background": {
+        "color": "#f7f9fc",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "start-app",
+          "kind": "app",
+          "title": "Get started",
+          "x": 24,
+          "y": 64,
+          "width": 720,
+          "height": 640,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 4,
+          "filters": [],
+          "app": {
+            "appId": "budget-start-app",
+            "sourceId": "main",
+            "sourceIds": [
+              "main"
+            ],
+            "useFilteredContext": true,
+            "allowInteraction": true,
+            "maxRows": 5000
+          }
+        },
+        {
+          "id": "start-info",
+          "kind": "html",
+          "title": "About this template",
+          "x": 764,
+          "y": 64,
+          "width": 492,
+          "height": 640,
+          "sourceId": "main",
+          "showHeader": false,
+          "transparentBackground": true,
+          "noBorder": true,
+          "background": "transparent",
+          "borderColor": "#d5dce8",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [],
+            "maxRows": 0,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><style>*{box-sizing:border-box}html,body{margin:0;background:transparent;color:#1d2939;font:13px/1.5 Segoe UI,system-ui,sans-serif}h1{margin:0;font-size:22px}p{margin:2px 0 0;color:#5d6b82}section{background:#fff;border:1px solid #d5dce8;border-radius:12px;padding:14px 16px;margin-bottom:12px}h2{margin:0 0 8px;font-size:15px}ul{margin:0;padding-left:18px}li{margin:0 0 6px}.note{padding:10px 12px;border-radius:10px;background:#eef2fa;color:#5d6b82;font-size:12.5px}</style></head><body><section><h2>How it works</h2><p style=\"margin:0;color:inherit\">The <b>Budget</b> page is a Report Grid. Type amounts directly in the cells. The <b>Total</b> column and row are formulas, so they update by themselves.</p></section><section><h2>What you can change</h2><ul><li><b>Periods and departments</b> – the guide, or type in the grid.</li><li><b>Formats and colors</b> – select cells and use the format controls above the grid.</li><li><b>More rows</b> – right-click a row number to insert rows; check that the totals still cover them.</li></ul></section><div class=\"note\">This page is only for getting started. The last step in the guide removes it.</div></body></html>"
+        },
+        {
+          "id": "nav-start-budget",
+          "kind": "pageLink",
+          "title": "Go to Budget",
+          "x": 1086,
+          "y": 12,
+          "width": 170,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-budget",
+            "pillHtml": "<p style=\"text-align: center\">Budget →</p>",
+            "heading": "Budget",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-budget",
+      "name": "Budget",
+      "hidden": false,
+      "background": {
+        "color": "#f7f9fc",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "budget-title",
+          "kind": "html",
+          "title": "Budget",
+          "x": 24,
+          "y": 8,
+          "width": 700,
+          "height": 48,
+          "sourceId": "main",
+          "showHeader": false,
+          "transparentBackground": true,
+          "noBorder": true,
+          "background": "transparent",
+          "borderColor": "#d5dce8",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [],
+            "maxRows": 0,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><style>*{box-sizing:border-box}html,body{margin:0;background:transparent;color:#1d2939;font:13px/1.5 Segoe UI,system-ui,sans-serif}h1{margin:0;font-size:22px}p{margin:2px 0 0;color:#5d6b82}section{background:#fff;border:1px solid #d5dce8;border-radius:12px;padding:14px 16px;margin-bottom:12px}h2{margin:0 0 8px;font-size:15px}ul{margin:0;padding-left:18px}li{margin:0 0 6px}.note{padding:10px 12px;border-radius:10px;background:#eef2fa;color:#5d6b82;font-size:12.5px}</style></head><body><h1>Budget</h1><p>Amounts per department and period. Totals are calculated.</p></body></html>"
+        },
+        {
+          "id": "budget-grid",
+          "kind": "reportGrid",
+          "title": "Budget",
+          "x": 24,
+          "y": 64,
+          "width": 1232,
+          "height": 470,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 3,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "reportGrid": {
+            "showColumnLetters": true,
+            "showRowNumbers": true,
+            "showFormulaBar": true,
+            "allowPresentEditing": true,
+            "frozenRows": 1,
+            "frozenColumns": 1,
+            "paddingTop": 0,
+            "paddingBottom": 0,
+            "columns": [
+              {
+                "id": "col-a",
+                "width": 260
+              },
+              {
+                "id": "col-b",
+                "width": 170
+              },
+              {
+                "id": "col-c",
+                "width": 170
+              },
+              {
+                "id": "col-d",
+                "width": 170
+              },
+              {
+                "id": "col-e",
+                "width": 170
+              },
+              {
+                "id": "col-f",
+                "width": 190
+              }
+            ],
+            "rows": [
+              {
+                "id": "row-header",
+                "kind": "measure",
+                "height": 32,
+                "cells": [
+                  {
+                    "text": "Department",
+                    "style": {
+                      "bold": true,
+                      "background": "#eef2fa",
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "Q1",
+                    "style": {
+                      "bold": true,
+                      "background": "#eef2fa",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "text": "Q2",
+                    "style": {
+                      "bold": true,
+                      "background": "#eef2fa",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "text": "Q3",
+                    "style": {
+                      "bold": true,
+                      "background": "#eef2fa",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "text": "Q4",
+                    "style": {
+                      "bold": true,
+                      "background": "#eef2fa",
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "text": "Total",
+                    "style": {
+                      "bold": true,
+                      "background": "#eef2fa",
+                      "align": "center"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-2",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "Sales",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "120000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "135000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "128000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "150000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(B2:E2)",
+                    "format": "N0",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-3",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "Marketing",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "45000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "52000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "40000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "61000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(B3:E3)",
+                    "format": "N0",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-4",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "Operations",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "88000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "90000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "92000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "95000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(B4:E4)",
+                    "format": "N0",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-5",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "IT",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "30000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "28000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "35000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "32000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(B5:E5)",
+                    "format": "N0",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-6",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "Administration",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "22000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "22000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "23000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "24000",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(B6:E6)",
+                    "format": "N0",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-7",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-8",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-9",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-10",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-11",
+                "kind": "measure",
+                "cells": [
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "format": "N0",
+                    "style": {
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "style": {
+                      "align": "right",
+                      "bold": true
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "row-total",
+                "kind": "measure",
+                "height": 32,
+                "cells": [
+                  {
+                    "text": "Total",
+                    "style": {
+                      "bold": true,
+                      "background": "#f1f4f9",
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(B2:B11)",
+                    "format": "N0",
+                    "style": {
+                      "bold": true,
+                      "background": "#f1f4f9",
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(C2:C11)",
+                    "format": "N0",
+                    "style": {
+                      "bold": true,
+                      "background": "#f1f4f9",
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(D2:D11)",
+                    "format": "N0",
+                    "style": {
+                      "bold": true,
+                      "background": "#f1f4f9",
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(E2:E11)",
+                    "format": "N0",
+                    "style": {
+                      "bold": true,
+                      "background": "#f1f4f9",
+                      "align": "right"
+                    }
+                  },
+                  {
+                    "text": "",
+                    "formula": "=SUM(F2:F11)",
+                    "format": "N0",
+                    "style": {
+                      "bold": true,
+                      "background": "#f1f4f9",
+                      "align": "right"
+                    }
+                  }
+                ]
+              }
+            ],
+            "style": {
+              "background": "#ffffff",
+              "color": "#1d2939",
+              "fontFamily": "Segoe UI",
+              "fontSize": 14,
+              "align": "left",
+              "verticalAlign": "middle",
+              "wrapText": false,
+              "borderColor": "#d5dce8",
+              "borderWidth": 1,
+              "borderStyle": "solid",
+              "themeColors": {
+                "background": "surface",
+                "color": "text",
+                "borderColor": "grid"
+              }
+            },
+            "headerStyle": {
+              "background": "#eef2fa",
+              "color": "#1d2939",
+              "bold": true,
+              "borderWidth": 1,
+              "themeColors": {
+                "background": "headerBackground",
+                "color": "headerText",
+                "borderColor": "grid"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "parameters": [],
+  "relationships": [],
+  "sources": [
+    {
+      "id": "main",
+      "name": "Main",
+      "kind": "main",
+      "tileId": "",
+      "query": {
+        "connectionName": "",
+        "queryText": "",
+        "data": {
+          "columns": [],
+          "types": [],
+          "rows": []
+        },
+        "measures": [],
+        "filters": [],
+        "parameters": [],
+        "totalRows": 0
+      }
+    }
+  ],
+  "settings": {
+    "theme": {
+      "name": "Starter",
+      "colors": [
+        "#4f6ee8",
+        "#16a3a3",
+        "#e08a2c",
+        "#8b5cf6",
+        "#e05a7a",
+        "#5b8c3a"
+      ],
+      "roles": {
+        "accent": "#4f6ee8",
+        "grid": "#d5dce8",
+        "headerBackground": "#eef2fa",
+        "headerText": "#1d2939",
+        "negative": "#c43d4b",
+        "onAccent": "#ffffff",
+        "positive": "#16844a",
+        "surface": "#f7f9fc",
+        "text": "#1d2939"
+      }
+    },
+    "showDesignHandles": false,
+    "showHiddenPages": false,
+    "showTypeTags": false,
+    "pageListPosition": "left"
+  }
+}

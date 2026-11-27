@@ -1,7 +1,29 @@
 {
   "schemaVersion": 1,
-  "generatedUtc": "2026-11-24T21:03:04.878Z",
+  "generatedUtc": "2026-11-27T21:10:18.323Z",
   "templates": [
+    {
+      "id": "project-board",
+      "version": "1.0.0",
+      "name": "Project board",
+      "description": "Gantt plan and Kanban board on the same tasks, a report of projects and tasks per employee, and a Start here guide. Includes fictional example tasks.",
+      "category": "Projects",
+      "tags": [
+        "gantt",
+        "kanban",
+        "project",
+        "planning",
+        "employees"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.27.2",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-board/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-board/1.0.0/preview.svg",
+      "sha256": "c241de73cd3d208432df8a413c5a612bd4aea5f6cdf89a4e7e4feaf1750a4a02",
+      "size": 51180,
+      "dataMode": "Embedded sample data",
+      "featured": true
+    },
     {
       "id": "project-planner",
       "version": "1.0.0",
@@ -37,8 +59,8 @@
       "minimumQvitrVersion": "2026.11.22.0",
       "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/accounting-template/1.0.1/template.qanvas",
       "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/accounting-template/1.0.1/preview.png",
-      "sha256": "3366581aec7ba4c96d59213abeab48a02efac06cc8ea40c5e90280926325def4",
-      "size": 173247,
+      "sha256": "c7bb4ac0af254b0960fbc8c6b7cdb7f76fad1a6c22a1668c8bb2d3b42163161a",
+      "size": 173355,
       "dataMode": "Embedded sample data",
       "featured": true
     },
@@ -81,6 +103,92 @@
       "size": 6319,
       "dataMode": "Embedded sample data",
       "featured": true
+    },
+    {
+      "id": "budget-grid",
+      "version": "1.0.0",
+      "name": "Budget",
+      "description": "A budget in a Report Grid with totals per department and period, and a setup app that names the periods, adds departments and clears the example amounts.",
+      "category": "Finance",
+      "tags": [
+        "budget",
+        "grid",
+        "finance",
+        "setup app"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.27.2",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/budget-grid/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/budget-grid/1.0.0/preview.svg",
+      "sha256": "1b8069e4a37d028b8ef17125209ede5191f544f55c57318efcec9186b2c1dcf1",
+      "size": 42065,
+      "dataMode": "Embedded sample data",
+      "featured": false
+    },
+    {
+      "id": "project-board-empty",
+      "version": "1.0.0",
+      "name": "Project board (empty)",
+      "description": "The Project board template without example tasks or employees: Gantt plan, Kanban board, report per employee and a Start here guide.",
+      "category": "Projects",
+      "tags": [
+        "gantt",
+        "kanban",
+        "project",
+        "planning",
+        "employees"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.27.2",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-board-empty/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-board-empty/1.0.0/preview.svg",
+      "sha256": "66f994fa1062d5cbb497f2095321c2e432f358bd3898e7b05eea25e4be324bfb",
+      "size": 42584,
+      "dataMode": "Empty, ready for your tasks",
+      "featured": false
+    },
+    {
+      "id": "project-board-app",
+      "version": "1.0.0",
+      "name": "Project board (setup app)",
+      "description": "The Project board template where the Start here guide is a Qanvas app that sets up the Gantt through qanvas.setup. A starting point for your own setup apps.",
+      "category": "Projects",
+      "tags": [
+        "gantt",
+        "kanban",
+        "project",
+        "planning",
+        "employees"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.27.2",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-board-app/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/project-board-app/1.0.0/preview.svg",
+      "sha256": "5e97af1c3939e292e204b6401ecffee47aff13d04b6e5fa8eebb13d5537ddd67",
+      "size": 63131,
+      "dataMode": "Embedded sample data",
+      "featured": false
+    },
+    {
+      "id": "task-list",
+      "version": "1.0.0",
+      "name": "Task list",
+      "description": "A task board on its own data (not linked to a Gantt) with a setup app that sets statuses, priorities and board columns and removes the example tasks.",
+      "category": "Projects",
+      "tags": [
+        "tasks",
+        "kanban",
+        "list",
+        "setup app"
+      ],
+      "locale": "en",
+      "minimumQvitrVersion": "2026.11.27.2",
+      "templateUrl": "https://steely-staffstead.github.io/InstallQreports/templates/task-list/1.0.0/template.qanvas",
+      "previewUrl": "https://steely-staffstead.github.io/InstallQreports/templates/task-list/1.0.0/preview.svg",
+      "sha256": "489bbcf4ceb9569b74c54386eab068be2c9da664ded81bbf6763c4f8e8dd4a73",
+      "size": 45497,
+      "dataMode": "Embedded sample data",
+      "featured": false
     },
     {
       "id": "country-growth",

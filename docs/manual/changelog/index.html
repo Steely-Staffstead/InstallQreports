@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitr Office integrations">
+        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitris Office integrations">
       
       
       
@@ -27,7 +27,7 @@
     
     
       
-        <title>Changelog - Qvitr Documentation</title>
+        <title>Changelog - Qvitris Documentation</title>
       
     
     
@@ -86,7 +86,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Qvitr Documentation" class="md-header__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+    <a href=".." title="Qvitris Documentation" class="md-header__button md-logo" aria-label="Qvitris Documentation" data-md-component="logo">
       
   <img src="../assets/images/qanvas-logo.png" alt="logo">
 
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Qvitr Documentation
+            Qvitris Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -185,12 +185,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Qvitr Documentation" class="md-nav__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+    <a href=".." title="Qvitris Documentation" class="md-nav__button md-logo" aria-label="Qvitris Documentation" data-md-component="logo">
       
   <img src="../assets/images/qanvas-logo.png" alt="logo">
 
     </a>
-    Qvitr Documentation
+    Qvitris Documentation
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1507,10 +1507,10 @@
 <p>User-visible changes are grouped by calendar week. Dates identify the Monday-to-Sunday period in which the work was completed.</p>
 <h2 id="release-1-share-with-confidence">Release 1 — Share with confidence</h2>
 <ul>
-<li>Renamed the full authoring experience from <strong>Qvitr Developer</strong> to <strong>Qvitr Creator</strong>. Existing license and document compatibility are unchanged.</li>
-<li>Added one <strong>Publish</strong> wizard that guides creators through readiness, publisher and freshness information, Viewer testing, and final output to Qvitr Viewer, webpage, PDF or PowerPoint.</li>
+<li>Renamed the full authoring experience from <strong>Qvitris Developer</strong> to <strong>Qvitris Creator</strong>. Existing license and document compatibility are unchanged.</li>
+<li>Added one <strong>Publish</strong> wizard that guides creators through readiness, publisher and freshness information, Viewer testing, and final output to Qvitris Viewer, webpage, PDF or PowerPoint.</li>
 <li>Added a publish-readiness report for visible pages, Viewer object support, source references and saved-data coverage. Blocking problems prevent publishing while non-blocking risks remain clearly visible.</li>
-<li>Added publisher, contact, data-as-of time and recipient notes to the Qanvas document. Qvitr Viewer and exported webpages show the useful publication context without exposing credentials.</li>
+<li>Added publisher, contact, data-as-of time and recipient notes to the Qanvas document. Qvitris Viewer and exported webpages show the useful publication context without exposing credentials.</li>
 <li>Added a locked Viewer compatibility test before sharing. The test result and time are stored with the report so the publisher can see whether the current version was checked.</li>
 <li>Improved the free Viewer start experience with clear Viewer branding, report ownership and data-freshness information while keeping filters, parameters, links, scrolling and declared App actions interactive.</li>
 <li>Added a Viewer report-home card with publisher/contact details, data freshness, compatibility status, recipient guidance and a portable-content summary. Recipients can reopen it from <strong>Report info</strong> in presentation mode.</li>
@@ -1518,15 +1518,39 @@
 <li>Reorganized the source inspector around recurring authoring work: one full-width <strong>Update source</strong> action, paired <strong>Preview data</strong> and <strong>Edit source</strong> actions, and visible <strong>Measures</strong> and <strong>Relationships</strong> actions. Rename now sits beside the source name; compact facts keep Source, Rows, Measures and Last update; Parameters remain in the global toolbar; and Column types plus API-only Authentication move under <strong>More source tools</strong>.</li>
 <li>Standardized the completion model across Query, API, Measures, App, HTML and SVG workspaces. Each workspace now distinguishes local draft or library saves from <strong>Apply</strong>, shows whether changes remain unapplied, uses <strong>Apply &amp; refresh</strong> when a source reruns, labels non-committing exits <strong>Cancel</strong>, and warns before unapplied work is discarded.</li>
 <li>Refined the Diagnostics Center with a resizable dialog that remembers its size and a single-source inspection view. A source selector replaces compressed side-by-side cards, while report-wide blocker, warning and healthy-source totals remain visible. Each update now records parameter, connection, authentication, request, schema and snapshot stages with timing and last-good-snapshot preservation. The primary <strong>Update source</strong> action also refreshes saved local dependencies in base-to-derived order before rerunning the selected source.</li>
-<li>Qvitr Experience now calls shared connections <strong>Sagas</strong> while Standard mode continues to use <strong>Connections</strong>.</li>
+<li>Qvitris Experience now calls shared connections <strong>Sagas</strong> while Standard mode continues to use <strong>Connections</strong>.</li>
 <li>PDF and PowerPoint publishing can add a themed publication footer to every page or generate a dedicated publication cover page. PowerPoint details remain editable native objects.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>48</strong></div><div><p class="week-dates">23–29 November 2026</p><h2>Simpler source setup and clearer support</h2></div></div>
 
 <ul>
+<li>New <strong>Project board</strong> templates: a Gantt plan, a Kanban board on the same tasks and a report of projects and tasks per employee, with example tasks, an empty version and a <strong>Start here</strong> setup guide. New <strong>Task list</strong> and <strong>Budget</strong> (Report Grid) templates come with setup apps.</li>
+<li>App tiles can work as setup guides through <code>qanvas.setup</code>: edit Gantt owners, projects and statuses, list choices and board columns, and Report Grid cells, delete example data and remove their own start page. Each ability is granted under <strong>Setup access</strong>, Qanvas asks before anything is deleted, and every change can be undone.</li>
+<li>The AI panel shows clearly when AI is working (elapsed time, latest activity and a waiting notice when nothing happens), stays visible under <strong>Send</strong>, and has an effort choice (default Medium) that applies from the next request.</li>
+<li>Importing pages with an embedded Gantt keeps one Gantt source with its calculated columns, and embedded Gantt sources now have a <strong>Measures</strong> button.</li>
+<li>Visual filters have a <strong>Toggle</strong> display for true/false fields, and dropdown filters open with theme colors.</li>
+<li>Kanban boards linked to a Gantt can use the Gantt's owner, project, status and tag colors and color cards by a field.</li>
+<li>Fixed: the automatic update at startup stopped at 0%; long status bar messages no longer change the canvas zoom.</li>
+<li>Large reports are much faster: on an 84-page test report with 45 sources and 350,000 rows the slowest page switch dropped from 5.8 s to 0.6 s (charts, measures and Grid filters).</li>
+<li>Exported webpages can act as small apps: each reader's page, zoom, filters and notes are remembered, and with the export option enabled lists, Gantt tasks and grids can be edited and saved back into the HTML file.</li>
+<li>Screen readers get chart descriptions with the data as a table, named board columns and cards with announced moves, a card panel dialog and a Publish workflow that announces its steps.</li>
+<li>Board cards can be colored with theme or custom colors, keep their scroll position after edits and follow the canvas theme; calculated columns are no longer shown in the card panel.</li>
+<li>Relative date filters have a new <strong>From N days ago (including future dates)</strong> option and show the dates they cover.</li>
+<li>HTML tiles can copy their full source file path; the installer uses new slate and blue artwork.</li>
+<li>List tiles have a <strong>Board</strong> view: cards in columns with optional row groups, drag and drop with mouse or finger, draggable column order that is saved, card and column colors, and <strong>Task board</strong> and <strong>Kanban</strong> presets with tags.</li>
+<li>Board cards open in a <strong>card panel</strong> for editing every field, with previous/next, delete, move, resize and a dock-right or floating layout.</li>
+<li>New list option <strong>Card board connected to Gantt</strong> shows the tasks of an embedded Gantt as cards; moving or editing a card updates the Gantt. Status, priority, owner and project values that differ only in capitalization are unified.</li>
+<li>New list field type <strong>Formatted text</strong> uses the Gantt description editor. Images can no longer be inserted into task descriptions.</li>
+<li>Export PDF and PowerPoint can export <strong>Selected pages</strong>, start in the export profile's folder and warn when publisher or data-update details are missing. PowerPoint slides no longer capture an open dialog.</li>
+<li>Publish Qanvas chooses the export profile before the Viewer test, so the test and the Viewer file show only the pages that will be published. Settings › Publishing stores a default publisher.</li>
+<li>Single-file webpage exports are about 70% smaller.</li>
+<li>Added Properties search, a minimizable ribbon, <strong>Go to Qanvas objects</strong> (Ctrl+K) in the Help menu, cleanup of temporary AI files and a content background option for table, matrix and list tiles.</li>
+<li>Accidental pinch or Ctrl+mouse-wheel zoom no longer enlarges the whole application; Ctrl+0 fits the canvas and restores the zoom.</li>
+<li>Added the <strong>Accounting analysis</strong> starter template with sample data.</li>
+<li>Renamed the customer-facing product brand from <strong>Qvitr</strong> to <strong>Qvitris</strong> across Qanvas, Viewer/Creator, Office integrations, licensing, updates, installers and help. Existing licenses, <code>.qanvas</code> files, settings, update endpoints and installer upgrade identities remain compatible.</li>
 <li>New canvases can start without a data source. Qanvas asks for one only when a data-dependent tile is added, while text, HTML and other optional-source content can remain unconnected.</li>
 <li>The Source Inspector stays hidden until a source exists. The reserved Main source can now be deleted like other sources; its connection, data, measures, filters and cached preview are cleared and the empty slot remains hidden until reused.</li>
-<li>Formula Helper now follows the selected Qvitr application theme and remains open after insertion so several formulas can be added during one session.</li>
+<li>Formula Helper now follows the selected Qvitris application theme and remains open after insertion so several formulas can be added during one session.</li>
 <li>Excel source-update failures now remain visible with a practical network, firewall or allowed-IP explanation and direct actions to close or inspect the technical log.</li>
 <li><strong>About QRep</strong> now combines the health snapshot, log access and a portable support bundle for troubleshooting.</li>
 <li>Improved Presentation mode interaction over HTML tiles, including right-click actions, keyboard page navigation and zoom behavior after interacting with embedded content.</li>
@@ -1534,17 +1558,21 @@
 <li>Renamed the customer-facing license levels to <strong>Creator</strong> and <strong>Viewer</strong> while keeping existing Pro, Standard and Free license keys compatible.</li>
 <li>Excel imports now preserve the selected Qanvas page or tile proportions, including tall web-layout pages, and <strong>Edit image</strong> opens the page linked to that image.</li>
 <li>Aligned Qanvas loading, update and license dialogs with the selected application theme and clearer operation-specific status text.</li>
-<li>Added the first <strong>Qvitr User Setup</strong> package for current-user installation without machine-wide Office registration; Enterprise remains available for IT-managed deployment and both use the same Viewer/Creator license.</li>
+<li>Added the first <strong>Qvitris User Setup</strong> package for current-user installation without machine-wide Office registration; Enterprise remains available for IT-managed deployment and both use the same Viewer/Creator license.</li>
 <li>User Setup now has a recommended administrator-free package with a private .NET 8 Desktop Runtime and a smaller package that verifies an existing compatible runtime before installation. Restored the manual update dialog, made updates preserve the installed User/Enterprise scope, and added an optional quiet startup check that proposes an update only when one is available.</li>
 <li>Present mode now supports one-finger horizontal swipes for page navigation, a two-finger horizontal alternative that avoids Windows edge gestures, and two-finger vertical swipes for showing or hiding the top menu.</li>
 <li>Presentation swipe navigation now also works over non-interactive areas of embedded HTML and Qanvas App tiles.</li>
 <li>Reorganized the AI panel around the active document session. Applying workspace changes is now the clear primary action, local-file updates explain their recovery backup, and less frequent export, reconnect, instruction and sign-in tools stay available in a compact Advanced workspace section.</li>
+<li>Added a guided source-replacement workflow so embedded template data can be replaced by SQL, API or other sources while preserving report bindings and reviewing schema compatibility.</li>
+<li>Improved the template catalogue workflow with editable new versions, automatic hiding of superseded versions and defensive latest-version filtering in Qanvas.</li>
+<li>Added the <strong>Slate Sky</strong> canvas palette and connected it to the <strong>Soft slate</strong> application theme for consistent new reports and chart colors.</li>
+<li>Fixed the visible previous/next controls in Presentation mode so clicks reliably change page above canvas and HTML content, with unavailable directions disabled on the first and last page.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>47</strong></div><div><p class="week-dates">16–22 November 2026</p><h2>Integrated SQL assistance, clearer AI setup and more reliable authoring</h2></div></div>
 
 <ul>
 <li>Added a bundled, read-only SQL MCP server for Qanvas connections. Creators can expose only selected connections to the current report, inspect the available schema, run bounded queries and configure row limits with practical guidance for AI workflows.</li>
-<li>Added report-level AI connection selection and a recommended Qvitr workflow, so MCP access is deliberate per Qanvas file instead of automatically exposing every configured connection.</li>
+<li>Added report-level AI connection selection and a recommended Qvitris workflow, so MCP access is deliberate per Qanvas file instead of automatically exposing every configured connection.</li>
 <li>Expanded AI workspaces with optional additional context folders, provider-specific model and effort controls, improved Claude sign-in and CLI discovery, and more reliable automatic application of completed workspace changes.</li>
 <li>Redesigned the AI and Canvas settings pages as coherent, responsive task flows with clearer grouping, compact status information and layouts that remain usable in narrower windows.</li>
 <li>Improved the main AI panel with better overflow handling, clearer request progress and connection guidance, while preserving access to workspace recovery actions.</li>
@@ -1601,10 +1629,10 @@
 <li>Added explicit query-column type overrides with detected types, input formats and invalid-value handling. The resolved types now flow into table previews, Measures, calculated columns, relationships and visual field/value handling.</li>
 <li>Expanded calculated columns and MiniDAX with stored output types and fixed formats, stricter type-aware quick creation, date/week helpers, improved previous-year filter context and calculated columns as finished table fields in previews and relationships.</li>
 <li>Expanded chart reference lines and bands with consistent navigation, label typography and appearances, line-graph stroke styles, and a larger set of working band patterns and effects.</li>
-<li>Added Qvitr Viewer and Creator modes, saved-source policies, viewer-safe declared App actions, the optional Qvitr experience vocabulary, simplified theme-aware icons and the brighter Aurora Ring application icon.</li>
+<li>Added Qvitris Viewer and Creator modes, saved-source policies, viewer-safe declared App actions, the optional Qvitris experience vocabulary, simplified theme-aware icons and the brighter Aurora Ring application icon.</li>
 <li>Viewer mode now keeps report actions, hyperlinks and internal tile scrolling interactive while object selection and editing remain locked. Saved sources can refresh when the viewer machine can authenticate through an open API, stored connection or SSO.</li>
-<li>Added reusable email-code API sessions. Qvitr can request and verify a one-time code, protect the resulting token with the current Windows account, reuse it across application/bridge restarts until expiry, sign out explicitly, pin authenticated traffic to approved HTTPS origins, and mask sensitive request headers in diagnostics.</li>
-<li>Added initial Microsoft Entra SSO support for API connections. Qvitr uses MSAL to acquire delegated access tokens, reuses a DPAPI-protected token cache silently, opens the system browser when interaction is required, and resumes a pending source update after sign-in. Email code remains the default general-purpose login method.</li>
+<li>Added reusable email-code API sessions. Qvitris can request and verify a one-time code, protect the resulting token with the current Windows account, reuse it across application/bridge restarts until expiry, sign out explicitly, pin authenticated traffic to approved HTTPS origins, and mask sensitive request headers in diagnostics.</li>
+<li>Added initial Microsoft Entra SSO support for API connections. Qvitris uses MSAL to acquire delegated access tokens, reuses a DPAPI-protected token cache silently, opens the system browser when interaction is required, and resumes a pending source update after sign-in. Email code remains the default general-purpose login method.</li>
 <li>Qanvas AI now checks the configured CLI before opening and directs users to the AI settings when setup is missing.</li>
 <li>Gantt mouse-wheel progress editing now shows a compact themed progress indicator on the selected task.</li>
 <li>The Excel add-in now resolves Qanvas beside the deployed add-in, fixing <strong>Get from Qanvas</strong> opening a different application version after ClickOnce installation.</li>
@@ -1623,7 +1651,7 @@
 <li>Polished List and Form layout: headers and values align correctly, alternating row bands fill the full width, one-row and multi-row text boxes keep readable labels, and URL fields show their friendly screen tip instead of the stored address.</li>
 <li>New pages now show nine distinct page layouts, including Overview + details, Dashboard, Project plan, Four tiles, and Web page. Web page starts as a scrolling page with a text area that grows with its content. Layouts wait for you to choose when to add content.</li>
 <li>Made the tile chooser wider, added Gantt, and kept tile names on one line so choices are easier to scan.</li>
-<li>Fixed the installer header so dialog titles and explanations no longer overlap the Qvitr branding.</li>
+<li>Fixed the installer header so dialog titles and explanations no longer overlap the Qvitris branding.</li>
 <li>Improved Matrix subtotals. Bottom subtotals now use one clean total row by default, with the expand or collapse button on that row instead of repeating the group heading. The previous two-row style is still available, and the related settings are arranged in a clearer order.</li>
 <li>Improved Matrix and Table design with direct column resizing, ordering, renaming, automatic sizing and clearer right-click actions. Text columns now start left-aligned, while numeric values remain right-aligned.</li>
 <li>Improved the Measures workspace with separate lists for fields, calculated columns and measures, clearer drag-and-drop areas, quick measure creation, and matching results between the test matrix and Canvas visuals.</li>
@@ -1684,8 +1712,8 @@
 <li>Added complete Week labels and a Quarter scale to Gantt timelines. Exported Gantt views now retain resource view, level collapse, visible columns, read-only task information and the saved hidden-toolbar state.</li>
 <li>Improved Query workspace manual-table editing and resized the date picker into a compact, responsive calendar that remains usable in narrow windows.</li>
 <li>Fixed the enterprise updater's download-progress dialog and added direct release-note access before installation plus a release-note prompt the next time Qanvas opens after a successful upgrade.</li>
-<li>Restyled the update checker with the active Qanvas theme and branded the enterprise install, upgrade, progress and completion dialogs with the Qvitr visual design.</li>
-<li>Fixed elevated update launches so the Qvitr Enterprise installer is restored and brought in front of other application windows instead of opening unnoticed behind them.</li>
+<li>Restyled the update checker with the active Qanvas theme and branded the enterprise install, upgrade, progress and completion dialogs with the Qvitris visual design.</li>
+<li>Fixed elevated update launches so the Qvitris Enterprise installer is restored and brought in front of other application windows instead of opening unnoticed behind them.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>42</strong></div><div><p class="week-dates">12–18 October 2026</p><h2>Manual enterprise updates and safer GitHub releases</h2></div></div>
 
@@ -1716,7 +1744,7 @@
 <li>Added native-Gantt and custom-SVG guidance to the exported AI skill, including checks that requested images, links, timelines and theme bindings really exist instead of being claimed in text.</li>
 <li>Added connection-level API parameters shared by every API on a connection. Effective values now follow connection defaults → API defaults → Excel/Canvas/Query launch values, without writing temporary caller values back to saved definitions.</li>
 <li>Expanded Measure workspace with reference auditing, invalid-formula checks, rename propagation into dependent measures and Canvas objects, a compact Tools menu, progress feedback, folders, a complete searchable function reference and expression helper. Date functions including <code>TODAY()</code> are supported by Canvas visuals.</li>
-<li>Added Reset Main source, A4 portrait page presets, a 2×4 blank report-grid default, reusable palette roles, themed scrollbars and the opt-in Qvitr experience mode with alternate labels and artwork.</li>
+<li>Added Reset Main source, A4 portrait page presets, a 2×4 blank report-grid default, reusable palette roles, themed scrollbars and the opt-in Qvitris experience mode with alternate labels and artwork.</li>
 </ul>
 <div class="weekly-change"><div class="week-badge"><small>WEEK</small><strong>40</strong></div><div><p class="week-dates">28 September–4 October 2026</p><h2>Presentation delivery, linked Excel content and visual fidelity</h2></div></div>
 

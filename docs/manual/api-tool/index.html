@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitr Office integrations">
+        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitris Office integrations">
       
       
       
@@ -27,7 +27,7 @@
     
     
       
-        <title>API tool - Qvitr Documentation</title>
+        <title>API tool - Qvitris Documentation</title>
       
     
     
@@ -86,7 +86,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Qvitr Documentation" class="md-header__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+    <a href=".." title="Qvitris Documentation" class="md-header__button md-logo" aria-label="Qvitris Documentation" data-md-component="logo">
       
   <img src="../assets/images/qanvas-logo.png" alt="logo">
 
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Qvitr Documentation
+            Qvitris Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -185,12 +185,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Qvitr Documentation" class="md-nav__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+    <a href=".." title="Qvitris Documentation" class="md-nav__button md-logo" aria-label="Qvitris Documentation" data-md-component="logo">
       
   <img src="../assets/images/qanvas-logo.png" alt="logo">
 
     </a>
-    Qvitr Documentation
+    Qvitris Documentation
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1871,7 +1871,7 @@
 
 <h1 id="api-tool">API tool</h1>
 <blockquote>
-<p><strong>Creator feature:</strong> API Explorer requires the API Tool feature in the Qvitr Creator license. Use <strong>QRep &gt; Settings &gt; License Status</strong> to see the enabled features.</p>
+<p><strong>Creator feature:</strong> API Explorer requires the API Tool feature in the Qvitris Creator license. Use <strong>QRep &gt; Settings &gt; License Status</strong> to see the enabled features.</p>
 </blockquote>
 <p>API Web builds, tests, previews, and saves reusable API connections and endpoint definitions. The current ribbon button opens the WebView workspace; the previous API Explorer remains under <strong>Legacy tools</strong> for comparison. Its return route goes through Query Web so the definition can use the same parameters and Excel output logic as other QReports sources.</p>
 <p>Saved connections and APIs are grouped in the collapsible left pane. The centre contains the request method, connection, path, request tabs, and a vertically resizable response area. The right details pane contains connection-level settings. Both side panes can be collapsed and resized.</p>
@@ -1927,12 +1927,12 @@
 <pre><code class="language-text">POST request-login-code  { &quot;email&quot;: &quot;user@example.com&quot; }
 POST verify-login-code   { &quot;email&quot;: &quot;user@example.com&quot;, &quot;code&quot;: &quot;123456&quot; }
 </code></pre>
-<p>The verify response must contain a token and expiry, for example <code>{ "token": "...", "expiresAt": "2026-11-08T10:00:00Z" }</code>. Qvitr reuses the session until shortly before that expiry. A new code is needed after expiry, explicit sign-out, or when the API rejects the session with HTTP 401. The token is not stored in the connection or Qanvas document; it is encrypted with Windows DPAPI for the current Windows user. <strong>Sign out</strong> removes that private session.</p>
-<p>Allowed origins are stored with the connection. They restrict both login endpoints and authenticated API requests, including pagination next-links. If the field is left blank when the connection is created, Qvitr pins it to the BaseURL origin. Use HTTPS in production; plain HTTP is accepted only for localhost testing.</p>
+<p>The verify response must contain a token and expiry, for example <code>{ "token": "...", "expiresAt": "2026-11-08T10:00:00Z" }</code>. Qvitris reuses the session until shortly before that expiry. A new code is needed after expiry, explicit sign-out, or when the API rejects the session with HTTP 401. The token is not stored in the connection or Qanvas document; it is encrypted with Windows DPAPI for the current Windows user. <strong>Sign out</strong> removes that private session.</p>
+<p>Allowed origins are stored with the connection. They restrict both login endpoints and authenticated API requests, including pagination next-links. If the field is left blank when the connection is created, Qvitris pins it to the BaseURL origin. Use HTTPS in production; plain HTTP is accepted only for localhost testing.</p>
 <h3 id="microsoft-entra-sso">Microsoft Entra SSO</h3>
-<p>Use <strong>Microsoft Entra SSO</strong> for users in the organization's Microsoft tenant. Configure the tenant ID (or an explicit authority), the public desktop application's client ID, and one or more delegated API scopes such as <code>api://&lt;api-app-id&gt;/access_as_user</code>. Do not configure or distribute a client secret in Qvitr; an installed desktop application is a public client.</p>
-<p>Qvitr uses <a href="https://learn.microsoft.com/en-us/entra/msal/dotnet/">Microsoft Authentication Library (MSAL) for .NET</a>. MSAL is Microsoft's supported OAuth/OpenID Connect library. It obtains API access tokens, handles expiry, and attempts silent renewal from its protected user cache before opening the system browser for interactive sign-in. Qvitr encrypts the serialized MSAL cache with Windows DPAPI for the current Windows user and sends the returned access token using the configured header and prefix, normally <code>Authorization: Bearer</code>.</p>
-<p>The Reportportal/API must still be configured separately. It must expose a delegated API scope, validate the token signature, issuer, tenant, audience and scopes, map the Entra identity (<code>oid</code> or <code>preferred_username</code>) to an application user, and apply the same row-level access rules used by email-code sessions. Qvitr's allowed-origin setting prevents the desktop client from forwarding a token to an unexpected host; it does not replace server-side validation.</p>
+<p>Use <strong>Microsoft Entra SSO</strong> for users in the organization's Microsoft tenant. Configure the tenant ID (or an explicit authority), the public desktop application's client ID, and one or more delegated API scopes such as <code>api://&lt;api-app-id&gt;/access_as_user</code>. Do not configure or distribute a client secret in Qvitris; an installed desktop application is a public client.</p>
+<p>Qvitris uses <a href="https://learn.microsoft.com/en-us/entra/msal/dotnet/">Microsoft Authentication Library (MSAL) for .NET</a>. MSAL is Microsoft's supported OAuth/OpenID Connect library. It obtains API access tokens, handles expiry, and attempts silent renewal from its protected user cache before opening the system browser for interactive sign-in. Qvitris encrypts the serialized MSAL cache with Windows DPAPI for the current Windows user and sends the returned access token using the configured header and prefix, normally <code>Authorization: Bearer</code>.</p>
+<p>The Reportportal/API must still be configured separately. It must expose a delegated API scope, validate the token signature, issuer, tenant, audience and scopes, map the Entra identity (<code>oid</code> or <code>preferred_username</code>) to an application user, and apply the same row-level access rules used by email-code sessions. Qvitris's allowed-origin setting prevents the desktop client from forwarding a token to an unexpected host; it does not replace server-side validation.</p>
 <p>For the first version, select either <strong>Email code session</strong> or <strong>Microsoft Entra SSO</strong> on a connection. Email remains the general/default method. A second SSO-configured connection can point at the same API for frequent same-tenant users. Once the server accepts both token issuers, a later hybrid profile can attempt silent SSO first and offer email code when no tenant session exists. It must not change identity after an authorization failure such as HTTP 403.</p>
 <p>Do not include real tokens, passwords, or production URLs in screenshots or shared example workbooks. Use the connection and authentication settings approved by your organization. Submitted-request previews mask authorization, key, token, secret and cookie headers.</p>
 <h2 id="request-tabs">Request tabs</h2>
@@ -1978,7 +1978,7 @@ POST verify-login-code   { &quot;email&quot;: &quot;user@example.com&quot;, &quo
 <pre><code class="language-text">/sales/{{pyear}}/{{region}}
 </code></pre>
 <p>Use formatted parameter output where quoting or multi-value syntax is needed. Review the submitted request in <strong>Sent</strong> and avoid logging secrets. See <a href="../parameters/">Parameters</a>.</p>
-<p>The placeholder name is case-insensitive, so <code>{{station}}</code> resolves the parameter named <code>Station</code>. For an interactive parameter, the current value is used first; its default is used only when no current value is available. The <strong>Submitted request</strong> tab shows the resolved value that was actually sent. If a placeholder remains unresolved, Qvitr reports it before the request instead of silently substituting an unrelated test value.</p>
+<p>The placeholder name is case-insensitive, so <code>{{station}}</code> resolves the parameter named <code>Station</code>. For an interactive parameter, the current value is used first; its default is used only when no current value is available. The <strong>Submitted request</strong> tab shows the resolved value that was actually sent. If a placeholder remains unresolved, Qvitris reports it before the request instead of silently substituting an unrelated test value.</p>
 <p>Parameter list choices can come from a saved SQL query or API source. In Parameter Manager choose the list/lookup source, select the value column and, when useful, a separate display column. Refresh the lookup after changing its request parameters or authentication. Secrets remain part of the saved connection rather than the parameter definition.</p>
 <p>Select <strong>Connection parameters</strong> in the connection details pane to define defaults shared by every saved API under that connection. Select <strong>API parameters</strong> in the header to define defaults used only by the current API. Save the connection after changing connection parameters, and save the API after changing API parameters.</p>
 <p>At execution time, matching names are resolved case-insensitively in this order:</p>

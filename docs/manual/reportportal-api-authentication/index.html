@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitr Office integrations">
+        <meta name="description" content="User documentation for Qanvas, shared query and data tools, and the Qvitris Office integrations">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Report Portal API authentication - Qvitr Documentation</title>
+        <title>Report Portal API authentication - Qvitris Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Qvitr Documentation" class="md-header__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+    <a href=".." title="Qvitris Documentation" class="md-header__button md-logo" aria-label="Qvitris Documentation" data-md-component="logo">
       
   <img src="../assets/images/qanvas-logo.png" alt="logo">
 
@@ -95,7 +95,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Qvitr Documentation
+            Qvitris Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Qvitr Documentation" class="md-nav__button md-logo" aria-label="Qvitr Documentation" data-md-component="logo">
+    <a href=".." title="Qvitris Documentation" class="md-nav__button md-logo" aria-label="Qvitris Documentation" data-md-component="logo">
       
   <img src="../assets/images/qanvas-logo.png" alt="logo">
 
     </a>
-    Qvitr Documentation
+    Qvitris Documentation
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1423,10 +1423,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#qvitr-setup-portal-session" class="md-nav__link">
+  <a href="#qvitris-setup-portal-session" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Qvitr setup: portal session
+        Qvitris setup: portal session
       
     </span>
   </a>
@@ -1434,10 +1434,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#qvitr-setup-read-only-api-key" class="md-nav__link">
+  <a href="#qvitris-setup-read-only-api-key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Qvitr setup: read-only API key
+        Qvitris setup: read-only API key
       
     </span>
   </a>
@@ -1474,7 +1474,7 @@
 
 <h1 id="report-portal-api-authentication">Report Portal API authentication</h1>
 <p>Reviewed against <code>reportportal-main.zip</code> on 11 November 2026.</p>
-<p>The production <code>/api/login-options</code> endpoint was also checked on 11 November 2026. It reports <code>ssoEnabled: true</code> and the <code>organizations</code> Microsoft authority. Whether SSO is selected for a particular user is resolved from the supplied e-mail domain, so Qvitr discovers the client ID and authority at sign-in time instead of storing them in the connection.</p>
+<p>The production <code>/api/login-options</code> endpoint was also checked on 11 November 2026. It reports <code>ssoEnabled: true</code> and the <code>organizations</code> Microsoft authority. Whether SSO is selected for a particular user is resolved from the supplied e-mail domain, so Qvitris discovers the client ID and authority at sign-in time instead of storing them in the connection.</p>
 <h2 id="supported-portal-authentication">Supported portal authentication</h2>
 <p>The portal supports three client authentication paths:</p>
 <ol>
@@ -1482,8 +1482,8 @@
 <li>Portal bearer token in <code>Authorization: Bearer &lt;token&gt;</code> or <code>x-forecast-auth: Bearer &lt;token&gt;</code>. It is returned by <code>/api/verify-login-code</code> and supports the API operations allowed for the user, including write endpoints.</li>
 <li>Microsoft Entra SSO. The client obtains a Microsoft ID token and posts it to <code>/api/sso-login</code>. The portal validates the token and returns the same portal bearer-token format as the e-mail-code flow.</li>
 </ol>
-<p>The generic Qvitr <strong>Microsoft Entra API token</strong> mode is intentionally separate. It obtains an Entra access token for an API scope and is suitable only when the target API validates Entra access tokens directly. Report Portal does not do that; use <strong>Portal session (email code + SSO)</strong> instead.</p>
-<h2 id="qvitr-setup-portal-session">Qvitr setup: portal session</h2>
+<p>The generic Qvitris <strong>Microsoft Entra API token</strong> mode is intentionally separate. It obtains an Entra access token for an API scope and is suitable only when the target API validates Entra access tokens directly. Report Portal does not do that; use <strong>Portal session (email code + SSO)</strong> instead.</p>
+<h2 id="qvitris-setup-portal-session">Qvitris setup: portal session</h2>
 <p>In API Workspace:</p>
 <ol>
 <li>Create or select a connection.</li>
@@ -1503,16 +1503,16 @@
 <li>Save the connection.</li>
 <li>Enter the user's e-mail address and choose either:</li>
 <li><strong>Send code</strong>, then enter the received code and choose <strong>Verify and sign in</strong>; or</li>
-<li><strong>Sign in with Microsoft</strong>. Qvitr checks <code>/api/login-options?email=...</code>, opens Microsoft sign-in only when SSO is enabled for the domain, and exchanges the ID token at <code>/api/sso-login</code>.</li>
+<li><strong>Sign in with Microsoft</strong>. Qvitris checks <code>/api/login-options?email=...</code>, opens Microsoft sign-in only when SSO is enabled for the domain, and exchanges the ID token at <code>/api/sso-login</code>.</li>
 </ol>
 <p>The returned portal token is encrypted with Windows DPAPI for the current Windows user. It is not stored in the API definition, workbook or Qanvas file. The connection's allowed-origin list prevents the token from being sent to another host.</p>
-<h2 id="qvitr-setup-read-only-api-key">Qvitr setup: read-only API key</h2>
+<h2 id="qvitris-setup-read-only-api-key">Qvitris setup: read-only API key</h2>
 <p>For unattended read-only refreshes:</p>
 <ol>
 <li>Select <strong>API key</strong> authentication.</li>
 <li>Use key/header name <code>x-api-key</code>.</li>
 <li>Use location <strong>Header</strong>.</li>
-<li>Store the <code>tk_...</code> value through Qvitr Secrets; do not place it in default headers or the document.</li>
+<li>Store the <code>tk_...</code> value through Qvitris Secrets; do not place it in default headers or the document.</li>
 <li>Use only <code>GET</code> endpoints. The portal returns <code>403 API_KEY_READ_ONLY</code> for write requests.</li>
 </ol>
 <p>The base address <code>/api/</code> is not itself a data endpoint. Start with <code>GET /api/companies</code> to verify the connection. A <code>404</code> from <code>/api</code> therefore means only that no root endpoint exists. A <code>401</code> from <code>/api/companies</code> means the request reached the portal, but the key was not accepted. The key must match <code>tk_</code> plus 64 lowercase hexadecimal characters and must be present, active and unexpired in the same database/environment as the deployed portal; its owner must also be active.</p>
@@ -1527,8 +1527,8 @@
 <li>an enabled e-mail domain in <code>sec.sso_domain</code></li>
 <li>an active matching user in <code>sec.user_account</code></li>
 </ul>
-<p>For desktop Qvitr sign-in, add <code>http://localhost</code> to the same Entra app registration under <strong>Mobile and desktop applications</strong> and enable public-client flows. The existing web/SPA redirect URI remains in place for the portal browser client.</p>
-<p>If the domain is not configured for SSO, Qvitr leaves the e-mail-code option available. If Microsoft sign-in or the portal exchange fails, no Microsoft token is sent to a data endpoint and the user can use e-mail code instead.</p>
+<p>For desktop Qvitris sign-in, add <code>http://localhost</code> to the same Entra app registration under <strong>Mobile and desktop applications</strong> and enable public-client flows. The existing web/SPA redirect URI remains in place for the portal browser client.</p>
+<p>If the domain is not configured for SSO, Qvitris leaves the e-mail-code option available. If Microsoft sign-in or the portal exchange fails, no Microsoft token is sent to a data endpoint and the user can use e-mail code instead.</p>
 
 
 

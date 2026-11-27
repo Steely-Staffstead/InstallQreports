@@ -112,7 +112,7 @@ if (-not $SkipLaunch) {
 }
 
 if (-not $SkipBrowserSmoke) {
-    $smoke = Join-Path $source 'CanvasWeb\tests\installed-release-proof.cjs'
+    $smoke = Join-Path $source 'CanvasWeb\tests\tools\installed-release-proof.cjs'
     & node $smoke --installed-root $installed --sample $sample
     if ($LASTEXITCODE -ne 0) { throw "Installed UI release proof failed with exit code $LASTEXITCODE." }
 }

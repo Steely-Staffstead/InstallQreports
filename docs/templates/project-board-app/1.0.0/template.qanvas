@@ -1,0 +1,1657 @@
+{
+  "version": 2,
+  "packageVersion": 1,
+  "name": "Project board (setup app)",
+  "localSources": [],
+  "apps": [
+    {
+      "id": "project-board-start-app",
+      "name": "Project board start",
+      "runtime": "sandboxed-html",
+      "template": "blank",
+      "entry": "index.html",
+      "permissions": {
+        "data": "read",
+        "measures": "read",
+        "parameters": "read",
+        "parameterAccess": [],
+        "filters": "read",
+        "navigation": "read",
+        "network": "none",
+        "storage": "none",
+        "actions": [],
+        "tables": [],
+        "sourceRefresh": [],
+        "setup": {
+          "ganttTileIds": [
+            "project-gantt"
+          ],
+          "options": true,
+          "clearTasks": true,
+          "removeOwnPage": true
+        }
+      },
+      "currentSpec": "Start guide for the Project board template: add employees and projects to the Gantt, delete the example tasks, check statuses, and remove its own start page. Progress is saved with qanvas.setup.state.",
+      "designHistory": [],
+      "bindings": [],
+      "assets": [],
+      "files": [
+        {
+          "path": "index.html",
+          "type": "text/html",
+          "content": "<!doctype html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"guide\">\n    <header>\n      <div>\n        <h1>Get started with Project board</h1>\n        <p>Replace the examples with your own people, projects and tasks.</p>\n      </div>\n      <div class=\"progress\" role=\"progressbar\" aria-label=\"Setup progress\" aria-valuemin=\"0\">\n        <span id=\"progress-text\">Loading…</span>\n        <i><b id=\"progress-bar\"></b></i>\n      </div>\n    </header>\n    <ol id=\"steps\"></ol>\n    <p class=\"error\" id=\"error\" role=\"alert\" hidden></p>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>\n"
+        },
+        {
+          "path": "styles.css",
+          "type": "text/css",
+          "content": ":root {\n  --surface: #ffffff;\n  --text: #1d2939;\n  --accent: #4f6ee8;\n  --on-accent: #ffffff;\n  --grid: #d5dce8;\n  --positive: #16844a;\n  --negative: #c43d4b;\n  --muted: #5d6b82;\n}\n\n* { box-sizing: border-box; }\n\nhtml, body {\n  margin: 0;\n  background: var(--surface);\n  color: var(--text);\n  font: 13px/1.45 \"Segoe UI\", system-ui, sans-serif;\n}\n\n.guide { padding: 16px 18px; }\n\nheader {\n  display: flex;\n  align-items: flex-start;\n  gap: 16px;\n  margin-bottom: 12px;\n}\n\nheader > div:first-child { flex: 1; min-width: 0; }\nh1 { margin: 0; font-size: 20px; line-height: 1.25; }\nheader p { margin: 3px 0 0; color: var(--muted); }\n\n.progress { display: grid; justify-items: end; gap: 5px; font-size: 12px; color: var(--muted); }\n.progress i { display: block; width: 150px; height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 16%, transparent); overflow: hidden; }\n.progress b { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .25s ease; }\n\nol { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }\n\n.step { border: 1px solid var(--grid); border-radius: 10px; }\n.step.open { border: 2px solid var(--accent); }\n\n.step-head {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  width: 100%;\n  min-height: 42px;\n  padding: 8px 12px;\n  border: 0;\n  background: transparent;\n  color: inherit;\n  font: inherit;\n  text-align: left;\n  cursor: pointer;\n}\n\n.step-head b { flex: 1; font-size: 14px; }\n.step-head small { color: var(--muted); }\n\n.check {\n  display: grid;\n  place-items: center;\n  width: 24px;\n  height: 24px;\n  border: 1.5px solid var(--grid);\n  border-radius: 50%;\n  font-size: 12px;\n  font-weight: 600;\n}\n\n.step.done .check { border-color: var(--positive); background: var(--positive); color: #fff; }\n\n.step-body { padding: 0 12px 12px 46px; }\n.step-body p { margin: 0 0 8px; }\n\n.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; padding: 0; list-style: none; }\n.chips li { display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px 2px 9px; border: 1px solid var(--grid); border-radius: 999px; font-size: 12px; }\n.chips li.empty { padding-right: 9px; color: var(--muted); }\n.chips button { width: 18px; height: 18px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }\n\n.add { display: flex; gap: 6px; margin-bottom: 8px; }\n.add input { flex: 1; min-width: 0; height: 30px; padding: 0 9px; border: 1px solid var(--grid); border-radius: 7px; font: inherit; }\n\n.actions { display: flex; flex-wrap: wrap; gap: 6px; }\n\nbutton.button {\n  min-height: 30px;\n  padding: 4px 12px;\n  border: 1px solid var(--grid);\n  border-radius: 7px;\n  background: var(--surface);\n  color: var(--text);\n  font: inherit;\n  cursor: pointer;\n}\n\nbutton.primary { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }\nbutton.danger { border-color: var(--negative); color: var(--negative); }\nbutton:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n\n.error { margin: 10px 0 0; padding: 8px 10px; border: 1px solid var(--negative); border-radius: 8px; color: var(--negative); }\n"
+        },
+        {
+          "path": "app.js",
+          "type": "text/javascript",
+          "content": "// Start guide for the Project board template, built as a Qanvas app.\n// It uses qanvas.setup (granted under App tile > Setup access) to edit the Gantt, delete the example tasks and remove\n// its own page, and qanvas.setup.state to remember which steps are done.\n\nconst steps = [\n  { id: \"owners\", title: \"Add your employees\" },\n  { id: \"groups\", title: \"Add your projects\" },\n  { id: \"examples\", title: \"Remove the example tasks\" },\n  { id: \"statuses\", title: \"Check statuses and Kanban columns\" },\n  { id: \"finish\", title: \"Finish and remove this start page\" }\n];\n\nlet gantt = null;\nlet state = { done: {}, open: \"\" };\n\nconst list = document.getElementById(\"steps\");\nconst errorBox = document.getElementById(\"error\");\n\nfunction escapeHtml(value) {\n  return String(value ?? \"\").replace(/[&<>\"']/g, character => ({ \"&\": \"&amp;\", \"<\": \"&lt;\", \">\": \"&gt;\", '\"': \"&quot;\", \"'\": \"&#39;\" })[character]);\n}\n\nfunction showError(error) {\n  errorBox.hidden = !error;\n  errorBox.textContent = error ? (error.message || String(error)) : \"\";\n}\n\nfunction isDone(step) {\n  if (step.id === \"examples\" && gantt && gantt.tasks === 0) return true;\n  return state.done[step.id] === true;\n}\n\nfunction applyTheme(theme) {\n  const root = document.documentElement.style;\n  for (const name of [\"surface\", \"text\", \"accent\", \"grid\", \"positive\", \"negative\"]) {\n    if (theme && theme[name]) root.setProperty(`--${name}`, theme[name]);\n  }\n  if (theme && theme.onAccent) root.setProperty(\"--on-accent\", theme.onAccent);\n}\n\nfunction chips(values, kind) {\n  if (!values.length) return '<ul class=\"chips\"><li class=\"empty\">None yet</li></ul>';\n  return '<ul class=\"chips\">' + values.map(value =>\n    `<li><span>${escapeHtml(value)}</span><button type=\"button\" data-remove=\"${kind}\" data-value=\"${escapeHtml(value)}\" aria-label=\"Remove ${escapeHtml(value)}\">×</button></li>`\n  ).join(\"\") + \"</ul>\";\n}\n\nfunction adder(kind, placeholder) {\n  return `<div class=\"add\"><input type=\"text\" data-input=\"${kind}\" placeholder=\"${placeholder}\" aria-label=\"${placeholder}\"><button type=\"button\" class=\"button\" data-add=\"${kind}\">Add</button></div>`;\n}\n\nfunction stepBody(step) {\n  if (!gantt) return \"<p>Loading the plan…</p>\";\n  const done = `<button type=\"button\" class=\"button primary\" data-done=\"${step.id}\">Done</button>`;\n  if (step.id === \"owners\") return `<p>Owners are the people tasks are assigned to.</p>${chips(gantt.owners, \"owner\")}${adder(\"owner\", \"Name of employee\")}<div class=\"actions\">${done}</div>`;\n  if (step.id === \"groups\") return `<p>Projects group the tasks and form the rows on the Kanban board.</p>${chips(gantt.groups, \"group\")}${adder(\"group\", \"Name of project\")}<div class=\"actions\">${done}</div>`;\n  if (step.id === \"examples\") {\n    if (!gantt.tasks) return \"<p>The plan has no tasks. Add tasks in the Gantt or with ＋ on a Kanban column.</p>\";\n    return `<p>The plan has ${gantt.tasks} example tasks. Qanvas asks before deleting them, and you can undo with Ctrl+Z.</p><div class=\"actions\"><button type=\"button\" class=\"button danger\" data-clear>Delete ${gantt.tasks} example tasks</button><button type=\"button\" class=\"button\" data-done=\"examples\">Keep them</button></div>`;\n  }\n  if (step.id === \"statuses\") return `<p>The Kanban columns follow these statuses: <b>${escapeHtml(gantt.statuses.join(\", \"))}</b>. Change them in the Gantt settings.</p><div class=\"actions\"><button type=\"button\" class=\"button\" data-open=\"gantt\">Open the Gantt</button>${done}</div>`;\n  if (step.id === \"finish\") return '<p>Remove this start page when you are done. The plan, board and report stay.</p><div class=\"actions\"><button type=\"button\" class=\"button primary\" data-remove-page>Remove the start page</button></div>';\n  return \"\";\n}\n\nfunction render() {\n  const doneCount = steps.filter(isDone).length;\n  const firstOpen = steps.find(step => !isDone(step));\n  const open = state.open || (firstOpen ? firstOpen.id : \"\");\n  document.getElementById(\"progress-text\").textContent = `${doneCount} of ${steps.length} done`;\n  document.getElementById(\"progress-bar\").style.width = `${Math.round(doneCount / steps.length * 100)}%`;\n  list.innerHTML = steps.map((step, index) => {\n    const done = isDone(step);\n    const expanded = step.id === open;\n    return `<li class=\"step${done ? \" done\" : \"\"}${expanded ? \" open\" : \"\"}\"><button type=\"button\" class=\"step-head\" data-toggle=\"${step.id}\" aria-expanded=\"${expanded}\"><span class=\"check\" aria-hidden=\"true\">${done ? \"✓\" : index + 1}</span><b>${step.title}</b></button>${expanded ? `<div class=\"step-body\">${stepBody(step)}</div>` : \"\"}</li>`;\n  }).join(\"\");\n}\n\nasync function refresh() {\n  gantt = await qanvas.setup.gantt();\n  render();\n}\n\nasync function saveState() {\n  await qanvas.setup.state.set(state);\n}\n\nasync function run(task) {\n  showError(null);\n  try {\n    await task();\n  } catch (error) {\n    showError(error);\n  }\n}\n\nasync function addValue(kind) {\n  const input = list.querySelector(`[data-input=\"${kind}\"]`);\n  const value = input ? input.value.trim() : \"\";\n  if (!value) return;\n  const result = await qanvas.setup.addOption(kind, value);\n  if (!result.added) showError(new Error(result.reason || \"The name was not added.\"));\n  await refresh();\n  const next = list.querySelector(`[data-input=\"${kind}\"]`);\n  if (next) next.focus();\n}\n\nlist.addEventListener(\"click\", event => {\n  const target = event.target.closest(\"button\");\n  if (!target) return;\n  if (target.dataset.toggle) {\n    state.open = state.open === target.dataset.toggle ? \"-\" : target.dataset.toggle;\n    render();\n    return;\n  }\n  if (target.dataset.add) run(() => addValue(target.dataset.add));\n  if (target.dataset.remove) run(async () => { await qanvas.setup.removeOption(target.dataset.remove, target.dataset.value); await refresh(); });\n  if (target.dataset.done) run(async () => { state.done[target.dataset.done] = true; state.open = \"\"; await saveState(); render(); });\n  if (target.hasAttribute(\"data-clear\")) run(async () => { const result = await qanvas.setup.clearTasks(); if (!result.cancelled) { state.open = \"\"; await refresh(); } });\n  if (target.dataset.open) run(() => qanvas.setup.openSettings(target.dataset.open));\n  if (target.hasAttribute(\"data-remove-page\")) run(() => qanvas.setup.removeOwnPage());\n});\n\nlist.addEventListener(\"keydown\", event => {\n  const input = event.target.closest(\"[data-input]\");\n  if (input && event.key === \"Enter\") {\n    event.preventDefault();\n    run(() => addValue(input.dataset.input));\n  }\n});\n\nwindow.addEventListener(\"message\", event => {\n  if (event.data?.type !== \"qanvas.init\") return;\n  applyTheme(event.data.payload?.theme);\n  run(async () => {\n    state = { done: {}, open: \"\", ...((await qanvas.setup.state.get()) || {}) };\n    await refresh();\n  });\n});\n\nparent.postMessage({ type: \"qanvas.ready\" }, \"*\");\n"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-start",
+      "name": "Start here",
+      "hidden": false,
+      "background": {
+        "color": "#f7f9fc",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "start-app",
+          "kind": "app",
+          "title": "Get started",
+          "x": 24,
+          "y": 64,
+          "width": 720,
+          "height": 640,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 4,
+          "filters": [],
+          "app": {
+            "appId": "project-board-start-app",
+            "sourceId": "main",
+            "sourceIds": [
+              "main"
+            ],
+            "useFilteredContext": true,
+            "allowInteraction": true,
+            "maxRows": 5000
+          }
+        },
+        {
+          "id": "start-info",
+          "kind": "html",
+          "title": "About this template",
+          "x": 764,
+          "y": 64,
+          "width": 492,
+          "height": 640,
+          "sourceId": "main",
+          "showHeader": false,
+          "transparentBackground": true,
+          "noBorder": true,
+          "background": "transparent",
+          "borderColor": "#d5dce8",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [],
+            "maxRows": 0,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>\n:root{--ink:#1d2939;--muted:#5d6b82;--grid:#d5dce8;--soft:#eef2fa}\n*{box-sizing:border-box}html,body{margin:0;background:transparent;color:var(--ink);font:13px/1.5 Segoe UI,system-ui,sans-serif}\nmain{display:grid;gap:12px;padding:2px}section{background:#fff;border:1px solid var(--grid);border-radius:12px;padding:14px 16px}h2{margin:0 0 8px;font-size:15px}\nul{margin:0;padding-left:18px}li{margin:0 0 7px}.note{padding:10px 12px;border-radius:10px;background:var(--soft);color:var(--muted);font-size:12.5px}\n</style></head><body><main>\n<section><h2>How the template works</h2><p style=\"margin:0\">The <b>Gantt plan</b>, the <b>Kanban board</b> and the <b>Report</b> use the same tasks. Change a task in one place and it updates everywhere. Use the buttons at the top of each page to move between them.</p></section>\n<section><h2>What you can change</h2><ul>\n<li><b>Statuses</b> – Gantt settings › Status. The Kanban columns follow them.</li>\n<li><b>Colors</b> – owners, projects and statuses have colors in the Gantt settings. The Kanban board uses them (List designer › Colors from the Gantt).</li>\n<li><b>Card fields</b> – List designer › Board › Fields on cards.</li>\n<li><b>Report</b> – the measures <i>Tasks</i>, <i>Projects</i> and <i>Open tasks</i> are in Measures on the source <i>Project tasks</i>.</li>\n</ul></section>\n<div class=\"note\">This page is only for getting started. The last step in the guide removes it, or right-click <b>Start here</b> in the page list and choose Delete.</div>\n</main></body></html>"
+        },
+        {
+          "id": "nav-start-plan",
+          "kind": "pageLink",
+          "title": "Go to Project plan",
+          "x": 746,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-plan",
+            "pillHtml": "<p style=\"text-align: center\">Project plan →</p>",
+            "heading": "Project plan",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        },
+        {
+          "id": "nav-start-board",
+          "kind": "pageLink",
+          "title": "Go to Kanban",
+          "x": 916,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-board",
+            "pillHtml": "<p style=\"text-align: center\">Kanban →</p>",
+            "heading": "Kanban",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        },
+        {
+          "id": "nav-start-report",
+          "kind": "pageLink",
+          "title": "Go to Report",
+          "x": 1086,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-report",
+            "pillHtml": "<p style=\"text-align: center\">Report →</p>",
+            "heading": "Report",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-plan",
+      "name": "Project plan",
+      "hidden": false,
+      "background": {
+        "color": "#f7f9fc",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "plan-title",
+          "kind": "html",
+          "title": "Project plan",
+          "x": 24,
+          "y": 8,
+          "width": 700,
+          "height": 48,
+          "sourceId": "main",
+          "showHeader": false,
+          "transparentBackground": true,
+          "noBorder": true,
+          "background": "transparent",
+          "borderColor": "#d5dce8",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [],
+            "maxRows": 0,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><style>html,body{margin:0;background:transparent;color:#1d2939;font:14px/1.3 Segoe UI,system-ui,sans-serif}h1{margin:0;font-size:22px}p{margin:2px 0 0;color:#5d6b82}</style></head><body><h1>Project plan</h1><p>Plan tasks, owners and dates. The Kanban board and report use the same tasks.</p></body></html>"
+        },
+        {
+          "id": "project-gantt",
+          "kind": "gantt",
+          "title": "Project plan",
+          "x": 24,
+          "y": 64,
+          "width": 1232,
+          "height": 640,
+          "sourceId": "main",
+          "showHeader": false,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "filters": [],
+          "design": {
+            "ganttSpec": {
+              "task": "Task",
+              "id": "Task ID",
+              "start": "Start",
+              "end": "End",
+              "group": "Project / Group",
+              "owner": "Owner",
+              "tags": "Tags",
+              "progress": "Progress",
+              "plannedHours": "Planned hours",
+              "registeredHours": "Hours used",
+              "status": "Status",
+              "priority": "Priority",
+              "description": "Description",
+              "milestone": "Milestone",
+              "dependsOn": "Depends on",
+              "defaultStatus": "Open",
+              "defaultPriority": "Normal",
+              "dataStorage": "embedded",
+              "editable": true,
+              "publishAsSource": true,
+              "publishedSourceName": "Project tasks",
+              "publishedSourceId": "gantt:project-gantt",
+              "groupByGroup": true,
+              "ownerListMode": true,
+              "statusListMode": true,
+              "groupListMode": true,
+              "autoStatusFromProgress": true,
+              "useThemeColors": true,
+              "ownerOptions": [
+                {
+                  "value": "Anna Berg",
+                  "label": "Anna Berg",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "color1",
+                  "color": "#4f6ee8"
+                },
+                {
+                  "value": "Jonas Lie",
+                  "label": "Jonas Lie",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "color2",
+                  "color": "#4f6ee8"
+                },
+                {
+                  "value": "Sara Holm",
+                  "label": "Sara Holm",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "color3",
+                  "color": "#4f6ee8"
+                },
+                {
+                  "value": "Ola Nygård",
+                  "label": "Ola Nygård",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "color4",
+                  "color": "#4f6ee8"
+                },
+                {
+                  "value": "Emma Dahl",
+                  "label": "Emma Dahl",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "color5",
+                  "color": "#4f6ee8"
+                }
+              ],
+              "groupOptions": [
+                {
+                  "value": "Office renovation",
+                  "label": "Office renovation",
+                  "badge": false,
+                  "colorMode": "theme",
+                  "themeRole": "color1",
+                  "color": "#4f6ee8"
+                },
+                {
+                  "value": "New website",
+                  "label": "New website",
+                  "badge": false,
+                  "colorMode": "theme",
+                  "themeRole": "color2",
+                  "color": "#4f6ee8"
+                },
+                {
+                  "value": "Customer service rollout",
+                  "label": "Customer service rollout",
+                  "badge": false,
+                  "colorMode": "theme",
+                  "themeRole": "color3",
+                  "color": "#4f6ee8"
+                }
+              ],
+              "statusOptions": [
+                {
+                  "value": "Open",
+                  "label": "Open",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "color1",
+                  "color": "#4f6ee8",
+                  "core": true,
+                  "colorBar": true
+                },
+                {
+                  "value": "In progress",
+                  "label": "In progress",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "accent",
+                  "color": "#4f6ee8",
+                  "core": true,
+                  "colorBar": true
+                },
+                {
+                  "value": "Completed",
+                  "label": "Completed",
+                  "badge": true,
+                  "colorMode": "theme",
+                  "themeRole": "positive",
+                  "color": "#4f6ee8",
+                  "core": true,
+                  "colorBar": true
+                }
+              ],
+              "tagOptions": [],
+              "showToday": true,
+              "showWeekends": true,
+              "timeScale": "week",
+              "rowHeight": 34
+            },
+            "ganttData": {
+              "columns": [
+                "Task ID",
+                "Task",
+                "Project / Group",
+                "Start",
+                "End",
+                "Progress",
+                "Milestone",
+                "Depends on",
+                "Owner",
+                "Status",
+                "Priority",
+                "Tags",
+                "Description",
+                "Planned hours",
+                "Hours used"
+              ],
+              "types": [
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String",
+                "System.String"
+              ],
+              "rows": [
+                [
+                  "1",
+                  "Kick-off and scope",
+                  "Office renovation",
+                  "2026-12-01",
+                  "2026-12-02",
+                  1,
+                  true,
+                  "",
+                  "Anna Berg",
+                  "Completed",
+                  "High",
+                  "planning",
+                  "Agree scope, budget and contacts.",
+                  6,
+                  6
+                ],
+                [
+                  "2",
+                  "Site survey",
+                  "Office renovation",
+                  "2026-12-02",
+                  "2026-12-04",
+                  1,
+                  false,
+                  "1",
+                  "Ola Nygård",
+                  "Completed",
+                  "Normal",
+                  "survey",
+                  "Measure rooms and check installations.",
+                  12,
+                  11
+                ],
+                [
+                  "3",
+                  "Electrical plan",
+                  "Office renovation",
+                  "2026-12-07",
+                  "2026-12-11",
+                  0.6,
+                  false,
+                  "2",
+                  "Ola Nygård",
+                  "In progress",
+                  "High",
+                  "electrical",
+                  "Draw circuits, lighting and outlets.",
+                  20,
+                  12
+                ],
+                [
+                  "4",
+                  "Ventilation upgrade",
+                  "Office renovation",
+                  "2026-12-14",
+                  "2026-12-23",
+                  0.2,
+                  false,
+                  "2",
+                  "Jonas Lie",
+                  "In progress",
+                  "Normal",
+                  "ventilation",
+                  "Replace units in meeting rooms.",
+                  32,
+                  6
+                ],
+                [
+                  "5",
+                  "Handover",
+                  "Office renovation",
+                  "2027-01-11",
+                  "2027-01-11",
+                  0,
+                  true,
+                  "3,4",
+                  "Anna Berg",
+                  "Open",
+                  "Normal",
+                  "",
+                  "Final inspection and handover.",
+                  4,
+                  0
+                ],
+                [
+                  "6",
+                  "Content plan",
+                  "New website",
+                  "2026-12-01",
+                  "2026-12-08",
+                  1,
+                  false,
+                  "",
+                  "Emma Dahl",
+                  "Completed",
+                  "Normal",
+                  "content",
+                  "List pages and owners of each page.",
+                  16,
+                  15
+                ],
+                [
+                  "7",
+                  "Design",
+                  "New website",
+                  "2026-12-08",
+                  "2026-12-18",
+                  0.5,
+                  false,
+                  "6",
+                  "Sara Holm",
+                  "In progress",
+                  "High",
+                  "design",
+                  "Layout, colors and components.",
+                  40,
+                  20
+                ],
+                [
+                  "8",
+                  "Build pages",
+                  "New website",
+                  "2027-01-04",
+                  "2027-01-22",
+                  0,
+                  false,
+                  "7",
+                  "Jonas Lie",
+                  "Open",
+                  "Normal",
+                  "build",
+                  "Build templates and publish content.",
+                  60,
+                  0
+                ],
+                [
+                  "9",
+                  "Test and launch",
+                  "New website",
+                  "2027-01-25",
+                  "2027-01-29",
+                  0,
+                  true,
+                  "8",
+                  "Emma Dahl",
+                  "Open",
+                  "High",
+                  "launch",
+                  "Test on phone and desktop, then launch.",
+                  16,
+                  0
+                ],
+                [
+                  "10",
+                  "Map current process",
+                  "Customer service rollout",
+                  "2026-12-03",
+                  "2026-12-10",
+                  0.8,
+                  false,
+                  "",
+                  "Sara Holm",
+                  "In progress",
+                  "Normal",
+                  "process",
+                  "Interview the service team.",
+                  18,
+                  14
+                ],
+                [
+                  "11",
+                  "Choose ticket tool",
+                  "Customer service rollout",
+                  "2026-12-14",
+                  "2026-12-18",
+                  0,
+                  false,
+                  "10",
+                  "Anna Berg",
+                  "Open",
+                  "High",
+                  "tools",
+                  "Compare two tools and decide.",
+                  10,
+                  0
+                ],
+                [
+                  "12",
+                  "Train the team",
+                  "Customer service rollout",
+                  "2027-01-11",
+                  "2027-01-15",
+                  0,
+                  false,
+                  "11",
+                  "Emma Dahl",
+                  "Open",
+                  "Normal",
+                  "training",
+                  "Two short sessions per team.",
+                  12,
+                  0
+                ],
+                [
+                  "13",
+                  "Go live",
+                  "Customer service rollout",
+                  "2027-01-18",
+                  "2027-01-18",
+                  0,
+                  true,
+                  "12",
+                  "Sara Holm",
+                  "Open",
+                  "Low",
+                  "launch",
+                  "Switch to the new tool.",
+                  2,
+                  0
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "id": "nav-plan-board",
+          "kind": "pageLink",
+          "title": "Go to Kanban",
+          "x": 916,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-board",
+            "pillHtml": "<p style=\"text-align: center\">Kanban →</p>",
+            "heading": "Kanban",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        },
+        {
+          "id": "nav-plan-report",
+          "kind": "pageLink",
+          "title": "Go to Report",
+          "x": 1086,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-report",
+            "pillHtml": "<p style=\"text-align: center\">Report →</p>",
+            "heading": "Report",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-board",
+      "name": "Kanban",
+      "hidden": false,
+      "background": {
+        "color": "#f7f9fc",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "board-title",
+          "kind": "html",
+          "title": "Kanban",
+          "x": 24,
+          "y": 8,
+          "width": 700,
+          "height": 48,
+          "sourceId": "main",
+          "showHeader": false,
+          "transparentBackground": true,
+          "noBorder": true,
+          "background": "transparent",
+          "borderColor": "#d5dce8",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [],
+            "maxRows": 0,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><style>html,body{margin:0;background:transparent;color:#1d2939;font:14px/1.3 Segoe UI,system-ui,sans-serif}h1{margin:0;font-size:22px}p{margin:2px 0 0;color:#5d6b82}</style></head><body><h1>Kanban</h1><p>Drag cards between columns to change status. Changes are saved in the plan.</p></body></html>"
+        },
+        {
+          "id": "project-board",
+          "kind": "list",
+          "title": "Kanban",
+          "x": 24,
+          "y": 64,
+          "width": 1232,
+          "height": 640,
+          "sourceId": "gantt:project-gantt",
+          "showHeader": false,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 3,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "themeBindings": {
+            "background": "surface",
+            "borderColor": "grid",
+            "header.background": "headerBackground",
+            "header.color": "headerText"
+          },
+          "list": {
+            "storage": "linked",
+            "preset": "basic",
+            "viewMode": "board",
+            "allowLinkedEditing": true,
+            "allowPresentEditing": true,
+            "exposeAsDatasource": false,
+            "showToolbarTitle": true,
+            "toolbarTitle": "Tasks by status",
+            "showSearch": true,
+            "searchAlign": "right",
+            "density": "compact",
+            "contentInset": "none",
+            "board": {
+              "columnField": "Status",
+              "laneField": "Project / Group",
+              "titleField": "Task",
+              "cardFields": [
+                "Owner",
+                "End",
+                "Tags"
+              ],
+              "cardFieldsCustom": true,
+              "columnWidth": 260,
+              "collapsedLanes": [],
+              "columnOrder": [
+                "Open",
+                "In progress",
+                "Completed"
+              ],
+              "useGanttColors": true,
+              "cardColorField": "owner"
+            },
+            "permissions": {
+              "add": true,
+              "duplicate": true,
+              "delete": true,
+              "move": true,
+              "markComplete": false
+            }
+          }
+        },
+        {
+          "id": "nav-board-plan",
+          "kind": "pageLink",
+          "title": "Go to Project plan",
+          "x": 916,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-plan",
+            "pillHtml": "<p style=\"text-align: center\">Project plan →</p>",
+            "heading": "Project plan",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        },
+        {
+          "id": "nav-board-report",
+          "kind": "pageLink",
+          "title": "Go to Report",
+          "x": 1086,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-report",
+            "pillHtml": "<p style=\"text-align: center\">Report →</p>",
+            "heading": "Report",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        }
+      ]
+    },
+    {
+      "id": "page-report",
+      "name": "Report",
+      "hidden": false,
+      "background": {
+        "color": "#f7f9fc",
+        "fit": "cover",
+        "image": "",
+        "themeRole": "surface",
+        "useTheme": true
+      },
+      "canvas": {
+        "width": 1280,
+        "height": 720,
+        "mode": "preset",
+        "preset": "1280x720"
+      },
+      "filters": [],
+      "graphics": [],
+      "tiles": [
+        {
+          "id": "report-title",
+          "kind": "html",
+          "title": "Report",
+          "x": 24,
+          "y": 8,
+          "width": 700,
+          "height": 48,
+          "sourceId": "main",
+          "showHeader": false,
+          "transparentBackground": true,
+          "noBorder": true,
+          "background": "transparent",
+          "borderColor": "#d5dce8",
+          "borderThickness": 0,
+          "filters": [],
+          "htmlData": {
+            "sourceIds": [],
+            "maxRows": 0,
+            "useFilteredContext": true,
+            "bindings": []
+          },
+          "htmlDocument": "<!doctype html><html><head><meta charset=\"utf-8\"><style>html,body{margin:0;background:transparent;color:#1d2939;font:14px/1.3 Segoe UI,system-ui,sans-serif}h1{margin:0;font-size:22px}p{margin:2px 0 0;color:#5d6b82}</style></head><body><h1>Report</h1><p>Projects and tasks per employee.</p></body></html>"
+        },
+        {
+          "id": "report-per-employee",
+          "kind": "matrix",
+          "title": "Per employee",
+          "x": 24,
+          "y": 64,
+          "width": 600,
+          "height": 310,
+          "sourceId": "gantt:project-gantt",
+          "showHeader": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 3,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "themeBindings": {
+            "background": "surface",
+            "borderColor": "grid",
+            "header.background": "headerBackground",
+            "header.color": "headerText"
+          },
+          "design": {
+            "matrixSpec": {
+              "rows": [
+                "Owner"
+              ],
+              "columns": [],
+              "values": [
+                {
+                  "field": "Projects",
+                  "caption": "Projects",
+                  "aggregation": "Sum"
+                },
+                {
+                  "field": "Tasks",
+                  "caption": "Tasks",
+                  "aggregation": "Sum"
+                },
+                {
+                  "field": "Open tasks",
+                  "caption": "Open tasks",
+                  "aggregation": "Sum"
+                },
+                {
+                  "field": "Hours used total",
+                  "caption": "Hours used",
+                  "aggregation": "Sum"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "report-per-project",
+          "kind": "matrix",
+          "title": "Per project",
+          "x": 24,
+          "y": 394,
+          "width": 600,
+          "height": 310,
+          "sourceId": "gantt:project-gantt",
+          "showHeader": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 3,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "themeBindings": {
+            "background": "surface",
+            "borderColor": "grid",
+            "header.background": "headerBackground",
+            "header.color": "headerText"
+          },
+          "design": {
+            "matrixSpec": {
+              "rows": [
+                "Project / Group"
+              ],
+              "columns": [],
+              "values": [
+                {
+                  "field": "Tasks",
+                  "caption": "Tasks",
+                  "aggregation": "Sum"
+                },
+                {
+                  "field": "Open tasks",
+                  "caption": "Open tasks",
+                  "aggregation": "Sum"
+                },
+                {
+                  "field": "Planned hours total",
+                  "caption": "Planned hours",
+                  "aggregation": "Sum"
+                },
+                {
+                  "field": "Hours used total",
+                  "caption": "Hours used",
+                  "aggregation": "Sum"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "report-tasks-chart",
+          "kind": "chart",
+          "title": "Tasks per employee",
+          "x": 644,
+          "y": 64,
+          "width": 612,
+          "height": 310,
+          "sourceId": "gantt:project-gantt",
+          "showHeader": false,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 3,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "themeBindings": {
+            "background": "surface",
+            "borderColor": "grid",
+            "header.background": "headerBackground",
+            "header.color": "headerText"
+          },
+          "design": {
+            "chartSettingsJson": "{\"name\":\"Tasks per employee\",\"type\":\"bar\",\"background\":\"#ffffff\",\"showLegend\":false,\"showGrid\":true,\"ui\":{\"x\":\"Owner\",\"y\":\"Tasks\",\"group\":\"None\",\"subgroup\":\"None\"},\"renderer\":{\"PaletteName\":\"Canvas\",\"ShowLegend\":false,\"ShowValueLabels\":true,\"ValueAxisFormat\":\"Auto\",\"ValueLabelFormat\":\"Auto\",\"CategoryOrder\":\"Natural\",\"LegendPosition\":\"Bottom\",\"ShowTitle\":true,\"TitleColorMode\":\"theme\",\"TitleColorThemeRole\":\"text\"},\"series\":[{\"index\":0,\"name\":\"Tasks\",\"spec\":{\"column\":\"Tasks\",\"kind\":\"Bar\",\"legend\":\"Tasks\"}}]}",
+            "chartSpec": {
+              "Kind": "bar",
+              "Name": "Tasks per employee",
+              "SeriesSpecs": [
+                {
+                  "ColumnName": "Tasks",
+                  "Id": "report-tasks-chart-series",
+                  "Kind": "Bar",
+                  "Labels": {
+                    "Delimiter": "Space",
+                    "Format": "Auto",
+                    "Parts": 2,
+                    "Position": "Auto",
+                    "Show": true
+                  }
+                }
+              ],
+              "Style": {
+                "AxisXStyle": {
+                  "Angle": 0,
+                  "Labels": {
+                    "Size": 11
+                  }
+                },
+                "AxisYStyle": {
+                  "Labels": {
+                    "Size": 11
+                  }
+                },
+                "BackgroundColor": "#ffffff",
+                "BackgroundColorMode": "theme",
+                "BackgroundColorThemeRole": "surface",
+                "GroupBy": "",
+                "HeaderText": "Tasks per employee",
+                "LgdVisible": false,
+                "PaletteName": "Canvas",
+                "SubgroupBy": "None",
+                "ValueStyle": {
+                  "Format": "Auto",
+                  "Size": 11,
+                  "Visible": true
+                },
+                "Xcolumn": "Owner",
+                "Ycolumn": "Tasks",
+                "XOrder": 0
+              },
+              "ChartOptions": {
+                "ShowTitle": true,
+                "TitleColorMode": "theme",
+                "TitleColorThemeRole": "text",
+                "ShowLegend": false,
+                "ShowValueLabels": true,
+                "CategoryOrder": "Natural",
+                "LegendPosition": "Bottom",
+                "PaletteName": "Canvas",
+                "ValueAxisFormat": "Auto",
+                "ValueLabelFormat": "Auto",
+                "CategoryAxisSize": 11,
+                "ValueAxisSize": 11,
+                "ValueLabelSize": 12
+              }
+            }
+          }
+        },
+        {
+          "id": "report-open-chart",
+          "kind": "chart",
+          "title": "Open tasks per employee",
+          "x": 644,
+          "y": 394,
+          "width": 612,
+          "height": 310,
+          "sourceId": "gantt:project-gantt",
+          "showHeader": false,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 3,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "themeBindings": {
+            "background": "surface",
+            "borderColor": "grid",
+            "header.background": "headerBackground",
+            "header.color": "headerText"
+          },
+          "design": {
+            "chartSettingsJson": "{\"name\":\"Open tasks per employee\",\"type\":\"bar\",\"background\":\"#ffffff\",\"showLegend\":false,\"showGrid\":true,\"ui\":{\"x\":\"Owner\",\"y\":\"Open tasks\",\"group\":\"None\",\"subgroup\":\"None\"},\"renderer\":{\"PaletteName\":\"Canvas\",\"ShowLegend\":false,\"ShowValueLabels\":true,\"ValueAxisFormat\":\"Auto\",\"ValueLabelFormat\":\"Auto\",\"CategoryOrder\":\"Natural\",\"LegendPosition\":\"Bottom\",\"ShowTitle\":true,\"TitleColorMode\":\"theme\",\"TitleColorThemeRole\":\"text\"},\"series\":[{\"index\":0,\"name\":\"Open tasks\",\"spec\":{\"column\":\"Open tasks\",\"kind\":\"Bar\",\"legend\":\"Open tasks\"}}]}",
+            "chartSpec": {
+              "Kind": "bar",
+              "Name": "Open tasks per employee",
+              "SeriesSpecs": [
+                {
+                  "ColumnName": "Open tasks",
+                  "Id": "report-open-chart-series",
+                  "Kind": "Bar",
+                  "Labels": {
+                    "Delimiter": "Space",
+                    "Format": "Auto",
+                    "Parts": 2,
+                    "Position": "Auto",
+                    "Show": true
+                  }
+                }
+              ],
+              "Style": {
+                "AxisXStyle": {
+                  "Angle": 0,
+                  "Labels": {
+                    "Size": 11
+                  }
+                },
+                "AxisYStyle": {
+                  "Labels": {
+                    "Size": 11
+                  }
+                },
+                "BackgroundColor": "#ffffff",
+                "BackgroundColorMode": "theme",
+                "BackgroundColorThemeRole": "surface",
+                "GroupBy": "",
+                "HeaderText": "Open tasks per employee",
+                "LgdVisible": false,
+                "PaletteName": "Canvas",
+                "SubgroupBy": "None",
+                "ValueStyle": {
+                  "Format": "Auto",
+                  "Size": 11,
+                  "Visible": true
+                },
+                "Xcolumn": "Owner",
+                "Ycolumn": "Open tasks",
+                "XOrder": 0
+              },
+              "ChartOptions": {
+                "ShowTitle": true,
+                "TitleColorMode": "theme",
+                "TitleColorThemeRole": "text",
+                "ShowLegend": false,
+                "ShowValueLabels": true,
+                "CategoryOrder": "Natural",
+                "LegendPosition": "Bottom",
+                "PaletteName": "Canvas",
+                "ValueAxisFormat": "Auto",
+                "ValueLabelFormat": "Auto",
+                "CategoryAxisSize": 11,
+                "ValueAxisSize": 11,
+                "ValueLabelSize": 12
+              }
+            }
+          }
+        },
+        {
+          "id": "nav-report-plan",
+          "kind": "pageLink",
+          "title": "Go to Project plan",
+          "x": 916,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-plan",
+            "pillHtml": "<p style=\"text-align: center\">Project plan →</p>",
+            "heading": "Project plan",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        },
+        {
+          "id": "nav-report-board",
+          "kind": "pageLink",
+          "title": "Go to Kanban",
+          "x": 1086,
+          "y": 12,
+          "width": 160,
+          "height": 36,
+          "sourceId": "main",
+          "showHeader": false,
+          "noBorder": true,
+          "transparentBackground": true,
+          "background": "#ffffff",
+          "borderColor": "#d5dce8",
+          "borderThickness": 1,
+          "rounding": 0,
+          "filters": [],
+          "header": {
+            "background": "#eef2fa",
+            "fontFamily": "Segoe UI",
+            "fontSize": 13,
+            "color": "#1d2939",
+            "alignment": "left",
+            "bold": true,
+            "italic": false,
+            "underline": false
+          },
+          "pageLink": {
+            "style": "pill",
+            "icon": "arrow",
+            "actionType": "page",
+            "target": "page",
+            "pageId": "page-board",
+            "pillHtml": "<p style=\"text-align: center\">Kanban →</p>",
+            "heading": "Kanban",
+            "line1": "",
+            "line2": "",
+            "caption": "OPEN ↗",
+            "useTheme": true,
+            "backgroundRole": "surface",
+            "accent": "#4f6ee8",
+            "verticalAlign": "middle",
+            "appTileId": "",
+            "appCommand": "",
+            "appCommandParameters": "{}"
+          },
+          "themeBindings": {
+            "pageLink.accent": "accent",
+            "pageLink.background": "surface"
+          }
+        }
+      ]
+    }
+  ],
+  "parameters": [],
+  "relationships": [],
+  "sources": [
+    {
+      "id": "main",
+      "name": "Main",
+      "kind": "main",
+      "tileId": "",
+      "query": {
+        "connectionName": "",
+        "queryText": "",
+        "data": {
+          "columns": [],
+          "types": [],
+          "rows": []
+        },
+        "measures": [],
+        "filters": [],
+        "parameters": [],
+        "totalRows": 0
+      }
+    },
+    {
+      "id": "gantt:project-gantt",
+      "name": "Project tasks",
+      "kind": "gantt",
+      "tileId": "project-gantt",
+      "query": {
+        "connectionName": "Embedded Gantt",
+        "queryText": "",
+        "data": {
+          "columns": [],
+          "types": [],
+          "rows": []
+        },
+        "measures": [
+          {
+            "Name": "Tasks",
+            "Kind": 0,
+            "Expression": "DISTINCTCOUNT([Task ID])",
+            "FormatString": "N0",
+            "DataType": "Number",
+            "IsCustom": true,
+            "Folder": "",
+            "ShowInMatrix": true,
+            "BarInMatrix": false
+          },
+          {
+            "Name": "Projects",
+            "Kind": 0,
+            "Expression": "DISTINCTCOUNT([Project / Group])",
+            "FormatString": "N0",
+            "DataType": "Number",
+            "IsCustom": true,
+            "Folder": "",
+            "ShowInMatrix": true,
+            "BarInMatrix": false
+          },
+          {
+            "Name": "Open tasks",
+            "Kind": 0,
+            "Expression": "COUNT(Status <> \"Completed\")",
+            "FormatString": "N0",
+            "DataType": "Number",
+            "IsCustom": true,
+            "Folder": "",
+            "ShowInMatrix": true,
+            "BarInMatrix": false
+          },
+          {
+            "Name": "Planned hours total",
+            "Kind": 0,
+            "Expression": "SUM([Planned hours])",
+            "FormatString": "N0",
+            "DataType": "Number",
+            "IsCustom": true,
+            "Folder": "",
+            "ShowInMatrix": true,
+            "BarInMatrix": false
+          },
+          {
+            "Name": "Hours used total",
+            "Kind": 0,
+            "Expression": "SUM([Hours used])",
+            "FormatString": "N0",
+            "DataType": "Number",
+            "IsCustom": true,
+            "Folder": "",
+            "ShowInMatrix": true,
+            "BarInMatrix": false
+          }
+        ],
+        "filters": [],
+        "parameters": [],
+        "totalRows": 0,
+        "measureValues": {}
+      }
+    }
+  ],
+  "settings": {
+    "theme": {
+      "name": "Project board",
+      "colors": [
+        "#4f6ee8",
+        "#16a3a3",
+        "#e08a2c",
+        "#8b5cf6",
+        "#e05a7a",
+        "#5b8c3a"
+      ],
+      "roles": {
+        "accent": "#4f6ee8",
+        "grid": "#d5dce8",
+        "headerBackground": "#eef2fa",
+        "headerText": "#1d2939",
+        "negative": "#c43d4b",
+        "onAccent": "#ffffff",
+        "positive": "#16844a",
+        "surface": "#f7f9fc",
+        "text": "#1d2939"
+      }
+    },
+    "showDesignHandles": false,
+    "showHiddenPages": false,
+    "showTypeTags": false,
+    "pageListPosition": "left"
+  }
+}
